@@ -23,5 +23,11 @@
       "48": "icons/icon48.png",
       "128": "icons/icon128.png"
     }
-  }
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://client.falixnodes.net/server/console*"],
+      "js": ["features/hideConsoleTabs.js"]
+    }
+  ]
 }

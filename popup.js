@@ -1,4 +1,5 @@
 const toggleBtn = document.getElementById('toggle');
+const hideConsoleTabsCheckbox = document.getElementById('hideConsoleTabs');
 
 function updateButton(enabled) {
   if (enabled) {
@@ -10,15 +11,31 @@ function updateButton(enabled) {
   }
 }
 
-chrome.storage.sync.get({ enabled: true }, (data) => {
+// Load states
+chrome.storage.sync.get({ enabled: true, hideConsoleTabs: false }, (data) => {
   updateButton(data.enabled);
+  if (hideConsoleTabsCheckbox) {
+    hideConsoleTabsCheckbox.checked = data.hideConsoleTabs;
+    hideConsoleTabsCheckbox.disabled = !data.enabled;
+  }
 });
 
+// Toggle main extension
 toggleBtn.addEventListener('click', () => {
   chrome.storage.sync.get({ enabled: true }, (data) => {
     const newState = !data.enabled;
     chrome.storage.sync.set({ enabled: newState }, () => {
       updateButton(newState);
+      if (hideConsoleTabsCheckbox) {
+        hideConsoleTabsCheckbox.disabled = !newState;
+      }
     });
   });
 });
+
+// Toggle feature
+if (hideConsoleTabsCheckbox) {
+  hideConsoleTabsCheckbox.addEventListener('change', (e) => {
+    chrome.storage.sync.set({ hideConsoleTabs: e.target.checked });
+  });
+}
