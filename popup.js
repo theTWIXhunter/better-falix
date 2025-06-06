@@ -3,6 +3,7 @@ const hideConsoleTabsCheckbox = document.getElementById('hideConsoleTabs');
 const moveBackupsNavCheckbox = document.getElementById('moveBackupsNav');
 const moveMonitoringNavCheckbox = document.getElementById('moveMonitoringNav');
 const moveLogsNavCheckbox = document.getElementById('moveLogsNav');
+const hideExternalStartPageCheckbox = document.getElementById('hideExternalStartPage');
 
 function updateButton(enabled) {
   if (enabled) {
@@ -15,7 +16,14 @@ function updateButton(enabled) {
 }
 
 // Load states
-chrome.storage.sync.get({ enabled: true, hideConsoleTabs: false, moveBackupsNav: false, moveMonitoringNav: false, moveLogsNav: false }, (data) => {
+chrome.storage.sync.get({
+  enabled: true,
+  hideConsoleTabs: false,
+  moveBackupsNav: false,
+  moveMonitoringNav: false,
+  moveLogsNav: false,
+  hideExternalStartPage: false
+}, (data) => {
   updateButton(data.enabled);
   if (hideConsoleTabsCheckbox) {
     hideConsoleTabsCheckbox.checked = data.hideConsoleTabs;
@@ -32,6 +40,10 @@ chrome.storage.sync.get({ enabled: true, hideConsoleTabs: false, moveBackupsNav:
   if (moveLogsNavCheckbox) {
     moveLogsNavCheckbox.checked = !!data.moveLogsNav;
     moveLogsNavCheckbox.disabled = !data.enabled;
+  }
+  if (hideExternalStartPageCheckbox) {
+    hideExternalStartPageCheckbox.checked = !!data.hideExternalStartPage;
+    hideExternalStartPageCheckbox.disabled = !data.enabled;
   }
 });
 
@@ -52,6 +64,9 @@ toggleBtn.addEventListener('click', () => {
       }
       if (moveLogsNavCheckbox) {
         moveLogsNavCheckbox.disabled = !newState;
+      }
+      if (hideExternalStartPageCheckbox) {
+        hideExternalStartPageCheckbox.disabled = !newState;
       }
     });
   });
@@ -79,5 +94,11 @@ if (moveMonitoringNavCheckbox) {
 if (moveLogsNavCheckbox) {
   moveLogsNavCheckbox.addEventListener('change', function() {
     chrome.storage.sync.set({ moveLogsNav: this.checked });
+  });
+}
+
+if (hideExternalStartPageCheckbox) {
+  hideExternalStartPageCheckbox.addEventListener('change', function() {
+    chrome.storage.sync.set({ hideExternalStartPage: this.checked });
   });
 }
