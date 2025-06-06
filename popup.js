@@ -33,6 +33,7 @@ chrome.storage.sync.get({
   removeNavbarSupportLinks: false
 }, (data) => {
   updateButton(data.enabled);
+  if (!data.enabled) return; // Only check feature boxes if enabled
   if (hideConsoleTabsCheckbox) hideConsoleTabsCheckbox.checked = data.hideConsoleTabs;
   if (moveBackupsNavCheckbox) moveBackupsNavCheckbox.checked = data.moveBackupsNav;
   if (moveMonitoringNavCheckbox) moveMonitoringNavCheckbox.checked = data.moveMonitoringNav;
