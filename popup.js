@@ -5,6 +5,7 @@ const moveMonitoringNavCheckbox = document.getElementById('moveMonitoringNav');
 const moveLogsNavCheckbox = document.getElementById('moveLogsNav');
 const removeExternalStartNavCheckbox = document.getElementById('removeExternalStartNav');
 const removeNavbarSupportLinksCheckbox = document.getElementById('removeNavbarSupportLinks');
+const removeConsoleFilesCategoryCheckbox = document.getElementById('removeConsoleFilesCategory');
 
 function updateButton(enabled) {
   if (enabled) {
@@ -20,6 +21,7 @@ function updateButton(enabled) {
   if (moveLogsNavCheckbox) moveLogsNavCheckbox.disabled = !enabled;
   if (removeExternalStartNavCheckbox) removeExternalStartNavCheckbox.disabled = !enabled;
   if (removeNavbarSupportLinksCheckbox) removeNavbarSupportLinksCheckbox.disabled = !enabled;
+  if (removeConsoleFilesCategoryCheckbox) removeConsoleFilesCategoryCheckbox.disabled = !enabled;
 }
 
 // Load states
@@ -30,7 +32,8 @@ chrome.storage.sync.get({
   moveMonitoringNav: false,
   moveLogsNav: false,
   removeExternalStartNav: false,
-  removeNavbarSupportLinks: false
+  removeNavbarSupportLinks: false,
+  removeConsoleFilesCategory: false
 }, (data) => {
   updateButton(data.enabled);
   // Always update checkbox checked state, even if disabled
@@ -40,6 +43,7 @@ chrome.storage.sync.get({
   if (moveLogsNavCheckbox) moveLogsNavCheckbox.checked = !!data.moveLogsNav;
   if (removeExternalStartNavCheckbox) removeExternalStartNavCheckbox.checked = !!data.removeExternalStartNav;
   if (removeNavbarSupportLinksCheckbox) removeNavbarSupportLinksCheckbox.checked = !!data.removeNavbarSupportLinks;
+  if (removeConsoleFilesCategoryCheckbox) removeConsoleFilesCategoryCheckbox.checked = !!data.removeConsoleFilesCategory;
   // Disable checkboxes if extension is disabled
   updateButton(data.enabled);
 });
@@ -91,5 +95,11 @@ if (removeNavbarSupportLinksCheckbox) {
   removeNavbarSupportLinksCheckbox.addEventListener('change', (e) => {
     if (removeNavbarSupportLinksCheckbox.disabled) return;
     chrome.storage.sync.set({ removeNavbarSupportLinks: e.target.checked });
+  });
+}
+if (removeConsoleFilesCategoryCheckbox) {
+  removeConsoleFilesCategoryCheckbox.addEventListener('change', (e) => {
+    if (removeConsoleFilesCategoryCheckbox.disabled) return;
+    chrome.storage.sync.set({ removeConsoleFilesCategory: e.target.checked });
   });
 }
