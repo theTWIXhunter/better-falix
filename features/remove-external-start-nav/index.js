@@ -1,9 +1,9 @@
 console.log('[better-falix] remove-external-start-nav script loaded');
 
-chrome.storage.sync.get('removeExternalStartNav', ({ removeExternalStartNav }) => {
-  console.log('[better-falix] chrome.storage.sync.get callback', { removeExternalStartNav });
-  if (!removeExternalStartNav) {
-    console.log('[better-falix] Remove External Start Nav: feature disabled');
+chrome.storage.sync.get({ enabled: true, removeExternalStartNav: false }, (data) => {
+  console.log('[better-falix] chrome.storage.sync.get callback', { enabled: data.enabled, removeExternalStartNav: data.removeExternalStartNav });
+  if (!data.enabled || !data.removeExternalStartNav) {
+    console.log('[better-falix] Remove External Start Nav: feature or extension disabled');
     return;
   }
   function hideExternalStartNav() {
