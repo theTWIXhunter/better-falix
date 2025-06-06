@@ -10,4 +10,3 @@ chrome.storage.sync.get({ hideConsoleTabs: false, enabled: true }, (data) => {
   const observer = new MutationObserver(hideTabs);
   observer.observe(document.body, { childList: true, subtree: true });
 });
-a

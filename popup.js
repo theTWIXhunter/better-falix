@@ -39,4 +39,3 @@ if (hideConsoleTabsCheckbox) {
     chrome.storage.sync.set({ hideConsoleTabs: e.target.checked });
   });
 }
-a
