@@ -4,6 +4,7 @@ const moveBackupsNavCheckbox = document.getElementById('moveBackupsNav');
 const moveMonitoringNavCheckbox = document.getElementById('moveMonitoringNav');
 const moveLogsNavCheckbox = document.getElementById('moveLogsNav');
 const removeExternalStartNavCheckbox = document.getElementById('removeExternalStartNav');
+const removeNavbarSupportLinksCheckbox = document.getElementById('removeNavbarSupportLinks');
 
 function updateButton(enabled) {
   if (enabled) {
@@ -13,6 +14,12 @@ function updateButton(enabled) {
     toggleBtn.textContent = 'Enable Extensions';
     toggleBtn.classList.add('off');
   }
+  if (hideConsoleTabsCheckbox) hideConsoleTabsCheckbox.disabled = !enabled;
+  if (moveBackupsNavCheckbox) moveBackupsNavCheckbox.disabled = !enabled;
+  if (moveMonitoringNavCheckbox) moveMonitoringNavCheckbox.disabled = !enabled;
+  if (moveLogsNavCheckbox) moveLogsNavCheckbox.disabled = !enabled;
+  if (removeExternalStartNavCheckbox) removeExternalStartNavCheckbox.disabled = !enabled;
+  if (removeNavbarSupportLinksCheckbox) removeNavbarSupportLinksCheckbox.disabled = !enabled;
 }
 
 // Load states
@@ -22,29 +29,16 @@ chrome.storage.sync.get({
   moveBackupsNav: false,
   moveMonitoringNav: false,
   moveLogsNav: false,
-  removeExternalStartNav: false
+  removeExternalStartNav: false,
+  removeNavbarSupportLinks: false
 }, (data) => {
   updateButton(data.enabled);
-  if (hideConsoleTabsCheckbox) {
-    hideConsoleTabsCheckbox.checked = data.hideConsoleTabs;
-    hideConsoleTabsCheckbox.disabled = !data.enabled;
-  }
-  if (moveBackupsNavCheckbox) {
-    moveBackupsNavCheckbox.checked = !!data.moveBackupsNav;
-    moveBackupsNavCheckbox.disabled = !data.enabled;
-  }
-  if (moveMonitoringNavCheckbox) {
-    moveMonitoringNavCheckbox.checked = !!data.moveMonitoringNav;
-    moveMonitoringNavCheckbox.disabled = !data.enabled;
-  }
-  if (moveLogsNavCheckbox) {
-    moveLogsNavCheckbox.checked = !!data.moveLogsNav;
-    moveLogsNavCheckbox.disabled = !data.enabled;
-  }
-  if (removeExternalStartNavCheckbox) {
-    removeExternalStartNavCheckbox.checked = !!data.removeExternalStartNav;
-    removeExternalStartNavCheckbox.disabled = !data.enabled;
-  }
+  if (hideConsoleTabsCheckbox) hideConsoleTabsCheckbox.checked = data.hideConsoleTabs;
+  if (moveBackupsNavCheckbox) moveBackupsNavCheckbox.checked = data.moveBackupsNav;
+  if (moveMonitoringNavCheckbox) moveMonitoringNavCheckbox.checked = data.moveMonitoringNav;
+  if (moveLogsNavCheckbox) moveLogsNavCheckbox.checked = data.moveLogsNav;
+  if (removeExternalStartNavCheckbox) removeExternalStartNavCheckbox.checked = data.removeExternalStartNav;
+  if (removeNavbarSupportLinksCheckbox) removeNavbarSupportLinksCheckbox.checked = data.removeNavbarSupportLinks;
 });
 
 // Toggle main extension
@@ -53,52 +47,38 @@ toggleBtn.addEventListener('click', () => {
     const newState = !data.enabled;
     chrome.storage.sync.set({ enabled: newState }, () => {
       updateButton(newState);
-      if (hideConsoleTabsCheckbox) {
-        hideConsoleTabsCheckbox.disabled = !newState;
-      }
-      if (moveBackupsNavCheckbox) {
-        moveBackupsNavCheckbox.disabled = !newState;
-      }
-      if (moveMonitoringNavCheckbox) {
-        moveMonitoringNavCheckbox.disabled = !newState;
-      }
-      if (moveLogsNavCheckbox) {
-        moveLogsNavCheckbox.disabled = !newState;
-      }
-      if (removeExternalStartNavCheckbox) {
-        removeExternalStartNavCheckbox.disabled = !newState;
-      }
     });
   });
 });
 
-// Toggle feature
+// Toggle features
 if (hideConsoleTabsCheckbox) {
   hideConsoleTabsCheckbox.addEventListener('change', (e) => {
     chrome.storage.sync.set({ hideConsoleTabs: e.target.checked });
   });
 }
-
 if (moveBackupsNavCheckbox) {
-  moveBackupsNavCheckbox.addEventListener('change', function() {
-    chrome.storage.sync.set({ moveBackupsNav: this.checked });
+  moveBackupsNavCheckbox.addEventListener('change', (e) => {
+    chrome.storage.sync.set({ moveBackupsNav: e.target.checked });
   });
 }
-
 if (moveMonitoringNavCheckbox) {
-  moveMonitoringNavCheckbox.addEventListener('change', function() {
-    chrome.storage.sync.set({ moveMonitoringNav: this.checked });
+  moveMonitoringNavCheckbox.addEventListener('change', (e) => {
+    chrome.storage.sync.set({ moveMonitoringNav: e.target.checked });
   });
 }
-
 if (moveLogsNavCheckbox) {
-  moveLogsNavCheckbox.addEventListener('change', function() {
-    chrome.storage.sync.set({ moveLogsNav: this.checked });
+  moveLogsNavCheckbox.addEventListener('change', (e) => {
+    chrome.storage.sync.set({ moveLogsNav: e.target.checked });
   });
 }
-
 if (removeExternalStartNavCheckbox) {
-  removeExternalStartNavCheckbox.addEventListener('change', function() {
-    chrome.storage.sync.set({ removeExternalStartNav: this.checked });
+  removeExternalStartNavCheckbox.addEventListener('change', (e) => {
+    chrome.storage.sync.set({ removeExternalStartNav: e.target.checked });
+  });
+}
+if (removeNavbarSupportLinksCheckbox) {
+  removeNavbarSupportLinksCheckbox.addEventListener('change', (e) => {
+    chrome.storage.sync.set({ removeNavbarSupportLinks: e.target.checked });
   });
 }

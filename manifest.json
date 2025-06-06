@@ -51,7 +51,7 @@
     },
     {
       "matches": ["https://client.falixnodes.net/*"],
-      "js": ["features/remove-navbar-footer-buttons/index.js"],
+      "js": ["features/remove-navbar-support-links/index.js"],
       "run_at": "document_idle"
     }
   ]

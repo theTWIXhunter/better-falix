@@ -1,6 +1,6 @@
-(function removeNavbarFooterButtons() {
+(function removeNavbarSupportLinks() {
   const remove = () => {
-    const el = document.querySelector('.navbar-user-profile');
+    const el = document.querySelector('.navbar-support-links');
     if (el) el.remove();
   };
   remove();
