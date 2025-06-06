@@ -1,5 +1,6 @@
 const toggleBtn = document.getElementById('toggle');
 const hideConsoleTabsCheckbox = document.getElementById('hideConsoleTabs');
+const moveBackupsNavCheckbox = document.getElementById('moveBackupsNav');
 
 function updateButton(enabled) {
   if (enabled) {
@@ -40,10 +41,12 @@ if (hideConsoleTabsCheckbox) {
   });
 }
 
-document.getElementById('moveBackupsNav').addEventListener('change', function() {
-  chrome.storage.sync.set({ moveBackupsNav: this.checked });
-});
+if (moveBackupsNavCheckbox) {
+  moveBackupsNavCheckbox.addEventListener('change', function() {
+    chrome.storage.sync.set({ moveBackupsNav: this.checked });
+  });
 
-chrome.storage.sync.get('moveBackupsNav', ({ moveBackupsNav }) => {
-  document.getElementById('moveBackupsNav').checked = !!moveBackupsNav;
-});
+  chrome.storage.sync.get('moveBackupsNav', ({ moveBackupsNav }) => {
+    moveBackupsNavCheckbox.checked = !!moveBackupsNav;
+  });
+}
