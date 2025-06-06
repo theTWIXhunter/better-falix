@@ -33,13 +33,13 @@ chrome.storage.sync.get({
   removeNavbarSupportLinks: false
 }, (data) => {
   updateButton(data.enabled);
-  if (!data.enabled) return; // Only check feature boxes if enabled
+  if (!data.enabled) return;
   if (hideConsoleTabsCheckbox) hideConsoleTabsCheckbox.checked = data.hideConsoleTabs;
-  if (moveBackupsNavCheckbox) moveBackupsNavCheckbox.checked = data.moveBackupsNav;
-  if (moveMonitoringNavCheckbox) moveMonitoringNavCheckbox.checked = data.moveMonitoringNav;
-  if (moveLogsNavCheckbox) moveLogsNavCheckbox.checked = data.moveLogsNav;
-  if (removeExternalStartNavCheckbox) removeExternalStartNavCheckbox.checked = data.removeExternalStartNav;
-  if (removeNavbarSupportLinksCheckbox) removeNavbarSupportLinksCheckbox.checked = data.removeNavbarSupportLinks;
+  if (moveBackupsNavCheckbox) moveBackupsNavCheckbox.checked = !!data.moveBackupsNav;
+  if (moveMonitoringNavCheckbox) moveMonitoringNavCheckbox.checked = !!data.moveMonitoringNav;
+  if (moveLogsNavCheckbox) moveLogsNavCheckbox.checked = !!data.moveLogsNav;
+  if (removeExternalStartNavCheckbox) removeExternalStartNavCheckbox.checked = !!data.removeExternalStartNav;
+  if (removeNavbarSupportLinksCheckbox) removeNavbarSupportLinksCheckbox.checked = !!data.removeNavbarSupportLinks;
   // Disable checkboxes if extension is disabled
   updateButton(data.enabled);
 });
