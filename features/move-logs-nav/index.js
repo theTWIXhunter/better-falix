@@ -1,5 +1,5 @@
-chrome.storage.sync.get('moveLogsNav', ({ moveLogsNav }) => {
-  if (!moveLogsNav) return;
+chrome.storage.sync.get({ enabled: true, moveLogsNav: false }, (data) => {
+  if (!data.enabled || !data.moveLogsNav) return;
   function moveLogs() {
     const logsItem = Array.from(document.querySelectorAll('.nav-item .nav-link')).find(link =>
       link.textContent.trim() === 'Logs'
