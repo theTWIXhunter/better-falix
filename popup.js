@@ -33,7 +33,7 @@ chrome.storage.sync.get({
   removeNavbarSupportLinks: false
 }, (data) => {
   updateButton(data.enabled);
-  if (!data.enabled) return;
+  // Always update checkbox checked state, even if disabled
   if (hideConsoleTabsCheckbox) hideConsoleTabsCheckbox.checked = data.hideConsoleTabs;
   if (moveBackupsNavCheckbox) moveBackupsNavCheckbox.checked = !!data.moveBackupsNav;
   if (moveMonitoringNavCheckbox) moveMonitoringNavCheckbox.checked = !!data.moveMonitoringNav;
@@ -50,6 +50,8 @@ toggleBtn.addEventListener('click', () => {
     const newState = !data.enabled;
     chrome.storage.sync.set({ enabled: newState }, () => {
       updateButton(newState);
+      // Optionally, reload the page to apply changes immediately
+      // window.location.reload();
     });
   });
 });
@@ -57,31 +59,37 @@ toggleBtn.addEventListener('click', () => {
 // Toggle features
 if (hideConsoleTabsCheckbox) {
   hideConsoleTabsCheckbox.addEventListener('change', (e) => {
+    if (hideConsoleTabsCheckbox.disabled) return;
     chrome.storage.sync.set({ hideConsoleTabs: e.target.checked });
   });
 }
 if (moveBackupsNavCheckbox) {
   moveBackupsNavCheckbox.addEventListener('change', (e) => {
+    if (moveBackupsNavCheckbox.disabled) return;
     chrome.storage.sync.set({ moveBackupsNav: e.target.checked });
   });
 }
 if (moveMonitoringNavCheckbox) {
   moveMonitoringNavCheckbox.addEventListener('change', (e) => {
+    if (moveMonitoringNavCheckbox.disabled) return;
     chrome.storage.sync.set({ moveMonitoringNav: e.target.checked });
   });
 }
 if (moveLogsNavCheckbox) {
   moveLogsNavCheckbox.addEventListener('change', (e) => {
+    if (moveLogsNavCheckbox.disabled) return;
     chrome.storage.sync.set({ moveLogsNav: e.target.checked });
   });
 }
 if (removeExternalStartNavCheckbox) {
   removeExternalStartNavCheckbox.addEventListener('change', (e) => {
+    if (removeExternalStartNavCheckbox.disabled) return;
     chrome.storage.sync.set({ removeExternalStartNav: e.target.checked });
   });
 }
 if (removeNavbarSupportLinksCheckbox) {
   removeNavbarSupportLinksCheckbox.addEventListener('change', (e) => {
+    if (removeNavbarSupportLinksCheckbox.disabled) return;
     chrome.storage.sync.set({ removeNavbarSupportLinks: e.target.checked });
   });
 }
