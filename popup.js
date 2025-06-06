@@ -39,3 +39,11 @@ if (hideConsoleTabsCheckbox) {
     chrome.storage.sync.set({ hideConsoleTabs: e.target.checked });
   });
 }
+
+document.getElementById('moveBackupsNav').addEventListener('change', function() {
+  chrome.storage.sync.set({ moveBackupsNav: this.checked });
+});
+
+chrome.storage.sync.get('moveBackupsNav', ({ moveBackupsNav }) => {
+  document.getElementById('moveBackupsNav').checked = !!moveBackupsNav;
+});
