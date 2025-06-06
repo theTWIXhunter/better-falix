@@ -1,6 +1,6 @@
 # Better Falix
 
-Better Falix is a browser extension that enhances the FalixNodes client-side experience by allowing you to customize and improve the website's navigation and interface.
+Better Falix is a browser extension that enhances the Falixnodes client-side experience by allowing you to customize and improve the website's navigation and interface.
 
 ## Features
 
@@ -24,11 +24,11 @@ Better Falix is a browser extension that enhances the FalixNodes client-side exp
    Use the checkboxes to enable or disable individual features. Use the main toggle button to enable or disable all features at once.
 
 4. **Changes Apply Instantly:**  
-   Most changes take effect immediately. If not, try refreshing the FalixNodes page.
+   Most changes take effect immediately. If not, try refreshing the Falixnodes page.
 
 ## Development
 
-- All feature scripts check the global "enabled" state and their individual feature flag before running.
+- All feature scripts should check the global "enabled" state and their individual feature flag before running.
 - To add new features, create a new script in the `features/` directory and follow the same pattern.
 
 ## License
@@ -36,4 +36,4 @@ Better Falix is a browser extension that enhances the FalixNodes client-side exp
 MIT
 
 ---
-This project is not affiliated with FalixNodes.
+This project is not affiliated with Falixnodes.
