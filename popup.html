@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Better Falix</title>
+  <style>
+    body { min-width: 250px; font-family: sans-serif; margin: 0; padding: 16px; }
+    #toggle { 
+      width: 100%; 
+      padding: 24px 0; 
+      font-size: 1.5em; 
+      margin-bottom: 16px; 
+      background: #0078d7; 
+      color: white; 
+      border: none; 
+      border-radius: 8px; 
+      cursor: pointer; 
+      transition: background 0.2s;
+    }
+    #toggle.off { background: #aaa; }
+    .desc { font-size: 0.95em; color: #444; }
+  </style>
+</head>
+<body>
+  <button id="toggle">Enable Extensions</button>
+  <div class="desc">Toggle to enable or disable all extension features.</div>
+  <script src="popup.js"></script>
+</body>
+</html>
