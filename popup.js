@@ -39,6 +39,8 @@ chrome.storage.sync.get({
   if (moveLogsNavCheckbox) moveLogsNavCheckbox.checked = data.moveLogsNav;
   if (removeExternalStartNavCheckbox) removeExternalStartNavCheckbox.checked = data.removeExternalStartNav;
   if (removeNavbarSupportLinksCheckbox) removeNavbarSupportLinksCheckbox.checked = data.removeNavbarSupportLinks;
+  // Disable checkboxes if extension is disabled
+  updateButton(data.enabled);
 });
 
 // Toggle main extension
