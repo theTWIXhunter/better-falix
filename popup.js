@@ -13,11 +13,15 @@ function updateButton(enabled) {
 }
 
 // Load states
-chrome.storage.sync.get({ enabled: true, hideConsoleTabs: false }, (data) => {
+chrome.storage.sync.get({ enabled: true, hideConsoleTabs: false, moveBackupsNav: false }, (data) => {
   updateButton(data.enabled);
   if (hideConsoleTabsCheckbox) {
     hideConsoleTabsCheckbox.checked = data.hideConsoleTabs;
     hideConsoleTabsCheckbox.disabled = !data.enabled;
+  }
+  if (moveBackupsNavCheckbox) {
+    moveBackupsNavCheckbox.checked = !!data.moveBackupsNav;
+    moveBackupsNavCheckbox.disabled = !data.enabled;
   }
 });
 
@@ -29,6 +33,9 @@ toggleBtn.addEventListener('click', () => {
       updateButton(newState);
       if (hideConsoleTabsCheckbox) {
         hideConsoleTabsCheckbox.disabled = !newState;
+      }
+      if (moveBackupsNavCheckbox) {
+        moveBackupsNavCheckbox.disabled = !newState;
       }
     });
   });
@@ -44,9 +51,5 @@ if (hideConsoleTabsCheckbox) {
 if (moveBackupsNavCheckbox) {
   moveBackupsNavCheckbox.addEventListener('change', function() {
     chrome.storage.sync.set({ moveBackupsNav: this.checked });
-  });
-
-  chrome.storage.sync.get('moveBackupsNav', ({ moveBackupsNav }) => {
-    moveBackupsNavCheckbox.checked = !!moveBackupsNav;
   });
 }
