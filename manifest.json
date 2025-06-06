@@ -27,7 +27,22 @@
   "content_scripts": [
     {
       "matches": ["https://client.falixnodes.net/server/console*"],
-      "js": ["features/hideConsoleTabs.js"]
+      "js": ["features/hide-console-tabs/index.js"]
+    },
+    {
+      "matches": ["https://client.falixnodes.net/*"],
+      "js": ["features/move-backups-nav/index.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://client.falixnodes.net/*"],
+      "js": ["features/move-monitoring-nav/index.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://client.falixnodes.net/*"],
+      "js": ["features/move-logs-nav/index.js"],
+      "run_at": "document_idle"
     }
   ]
 }

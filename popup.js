@@ -1,5 +1,8 @@
 const toggleBtn = document.getElementById('toggle');
 const hideConsoleTabsCheckbox = document.getElementById('hideConsoleTabs');
+const moveBackupsNavCheckbox = document.getElementById('moveBackupsNav');
+const moveMonitoringNavCheckbox = document.getElementById('moveMonitoringNav');
+const moveLogsNavCheckbox = document.getElementById('moveLogsNav');
 
 function updateButton(enabled) {
   if (enabled) {
@@ -12,11 +15,29 @@ function updateButton(enabled) {
 }
 
 // Load states
-chrome.storage.sync.get({ enabled: true, hideConsoleTabs: false }, (data) => {
+chrome.storage.sync.get({
+  enabled: true,
+  hideConsoleTabs: false,
+  moveBackupsNav: false,
+  moveMonitoringNav: false,
+  moveLogsNav: false
+}, (data) => {
   updateButton(data.enabled);
   if (hideConsoleTabsCheckbox) {
     hideConsoleTabsCheckbox.checked = data.hideConsoleTabs;
     hideConsoleTabsCheckbox.disabled = !data.enabled;
+  }
+  if (moveBackupsNavCheckbox) {
+    moveBackupsNavCheckbox.checked = !!data.moveBackupsNav;
+    moveBackupsNavCheckbox.disabled = !data.enabled;
+  }
+  if (moveMonitoringNavCheckbox) {
+    moveMonitoringNavCheckbox.checked = !!data.moveMonitoringNav;
+    moveMonitoringNavCheckbox.disabled = !data.enabled;
+  }
+  if (moveLogsNavCheckbox) {
+    moveLogsNavCheckbox.checked = !!data.moveLogsNav;
+    moveLogsNavCheckbox.disabled = !data.enabled;
   }
 });
 
@@ -29,6 +50,15 @@ toggleBtn.addEventListener('click', () => {
       if (hideConsoleTabsCheckbox) {
         hideConsoleTabsCheckbox.disabled = !newState;
       }
+      if (moveBackupsNavCheckbox) {
+        moveBackupsNavCheckbox.disabled = !newState;
+      }
+      if (moveMonitoringNavCheckbox) {
+        moveMonitoringNavCheckbox.disabled = !newState;
+      }
+      if (moveLogsNavCheckbox) {
+        moveLogsNavCheckbox.disabled = !newState;
+      }
     });
   });
 });
@@ -37,5 +67,23 @@ toggleBtn.addEventListener('click', () => {
 if (hideConsoleTabsCheckbox) {
   hideConsoleTabsCheckbox.addEventListener('change', (e) => {
     chrome.storage.sync.set({ hideConsoleTabs: e.target.checked });
+  });
+}
+
+if (moveBackupsNavCheckbox) {
+  moveBackupsNavCheckbox.addEventListener('change', function() {
+    chrome.storage.sync.set({ moveBackupsNav: this.checked });
+  });
+}
+
+if (moveMonitoringNavCheckbox) {
+  moveMonitoringNavCheckbox.addEventListener('change', function() {
+    chrome.storage.sync.set({ moveMonitoringNav: this.checked });
+  });
+}
+
+if (moveLogsNavCheckbox) {
+  moveLogsNavCheckbox.addEventListener('change', function() {
+    chrome.storage.sync.set({ moveLogsNav: this.checked });
   });
 }
