@@ -1,5 +1,5 @@
-chrome.storage.sync.get('moveBackupsNav', ({ moveBackupsNav }) => {
-  if (!moveBackupsNav) return;
+chrome.storage.sync.get('moveMonitoringNav', ({ moveMonitoringNav }) => {
+  if (!moveMonitoringNav) return;
   function moveMonitoring() {
     const monitoringItem = Array.from(document.querySelectorAll('.nav-item .nav-link')).find(link =>
       link.textContent.trim() === 'Monitoring'
