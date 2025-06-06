@@ -1,9 +1,13 @@
+console.log('[better-falix] remove-external-start-nav script loaded');
+
 chrome.storage.sync.get('removeExternalStartNav', ({ removeExternalStartNav }) => {
+  console.log('[better-falix] chrome.storage.sync.get callback', { removeExternalStartNav });
   if (!removeExternalStartNav) {
     console.log('[better-falix] Remove External Start Nav: feature disabled');
     return;
   }
   function hideExternalStartNav() {
+    console.log('[better-falix] hideExternalStartNav called');
     // Find all nav-link spans and look for "Remote Startup"
     const spans = Array.from(document.querySelectorAll('.nav-item .nav-link span'));
     console.log('[better-falix] Found nav-link spans:', spans.map(s => s.textContent.trim()));
@@ -18,7 +22,10 @@ chrome.storage.sync.get('removeExternalStartNav', ({ removeExternalStartNav }) =
     }
   }
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', hideExternalStartNav);
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log('[better-falix] DOMContentLoaded event fired');
+      hideExternalStartNav();
+    });
   } else {
     hideExternalStartNav();
   }
