@@ -6,19 +6,30 @@ Better Falix is a browser extension that enhances the Falixnodes client-side exp
 - **Enable/Disable All Features:** A master toggle to quickly enable or disable all extension features.
 
 **GENERAL**
-- **Hide Console Tabs:** Optionally hide unnecessary console tabs for a cleaner interface.
-- **Replace Account Category**: Hides the sidebar "Account" category and adds a custom popup menu to the profile icon with quick links to Profile Settings and Logout.
-- **Remove SFTP info from upload**: Removes the SFTP info and its divider from the upload button dropdown for a cleaner UI.
-- **Remove How To Connect**: Removes all "How to connect" steps, DNS verification sections, and the "Server Name" row from the connect button And add back the IPwithPORT.
-- **Remove-exit-discount:** Removes the most annoying popup ever (the exit discount modal and its backdrop) from falixnodes.net.
-- **its-just paper:** Renames "Craftbukkit / Spigot / PaperSpigot" to "Paper" in the server type dropdown for clarity.
+- **Hide Console Tabs:**
+ Optionally hide unnecessary console tabs for a cleaner interface.
+- **Replace Account Category**: 
+Hides the sidebar "Account" category and adds a custom popup menu to the profile icon with quick links to Profile Settings and Logout.
+- **Remove SFTP info from upload**: 
+Removes the SFTP info and its divider from the upload button dropdown for a cleaner UI.
+- **Remove How To Connect**: 
+Removes all "How to connect" steps, DNS verification sections, and the "Server Name" row from the connect button And add back the IPwithPORT.
+- **Remove-exit-discount:** 
+Removes the most annoying popup ever (the exit discount modal and its backdrop) from falixnodes.net.
+- **its-just paper:** 
+Renames "Craftbukkit / Spigot / PaperSpigot" to "Paper" in the server type dropdown for clarity.
 
 **NAVIGATION**
-- **Move "Backups" to Server Settings:** Relocate the "Backups" navigation item to the Server Settings section.
-- **Move "Monitoring" to Advanced:** Move the "Monitoring" navigation item to the Advanced section.
-- **Move "Logs" to Advanced:** Move the "Logs" navigation item to the Advanced section.
-- **Remove "Remote Startup" Nav Item:** Hide the "Remote Startup" navigation item from the sidebar.
-- **Remove Navbar Support Links:** Optionally remove support-related links from the navbar.
+- **Move "Backups" to Server Settings:** 
+Relocate the "Backups" navigation item to the Server Settings section.
+- **Move "Monitoring" to Advanced:** 
+Move the "Monitoring" navigation item to the Advanced section.
+- **Move "Logs" to Advanced:** 
+Move the "Logs" navigation item to the Advanced section.
+- **Remove "Remote Startup" Nav Item:** 
+Hide the "Remote Startup" navigation item from the sidebar.
+- **Remove Navbar Support Links:** 
+Optionally remove support-related links from the navbar.
 
 
 
