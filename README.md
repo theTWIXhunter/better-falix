@@ -55,6 +55,10 @@ Manifest.json:
       "run_at": "document_idle"
     }
 ```
+README.md
+```md
+- **FEATURENAME:** 1 line Feature description here (by author).
+```
 
 - All feature scripts should check the global "enabled" state and their individual feature flag before running.
 
