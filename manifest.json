@@ -70,8 +70,13 @@
       "run_at": "document_idle"
     },
     {
-      "matches": ["https://client.falixnodes.net/*"],
+      "matches": ["https://client.falixnodes.net/server/filemanager/*"],
       "js": ["features/remove-sftp-upload/index.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://client.falixnodes.net/server/console"],
+      "js": ["features/remove-how-to-connect/index.js"],
       "run_at": "document_idle"
     }
   ]

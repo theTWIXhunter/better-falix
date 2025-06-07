@@ -13,6 +13,7 @@ Better Falix is a browser extension that enhances the Falixnodes client-side exp
 - **Enable/Disable All Features:** A master toggle to quickly enable or disable all extension features.
 - **Replace Account Category**: Hides the sidebar "Account" category and adds a custom popup menu to the profile icon with quick links to Profile Settings and Logout.
 - **Remove SFTP info from upload**: Removes the SFTP info and its divider from the upload button dropdown for a cleaner UI.
+- **Remove How To Connect**: Removes all "How to connect" steps, DNS verification sections, and the "Server Name" row from the connect button for a cleaner look.
 
 ## Usage
 

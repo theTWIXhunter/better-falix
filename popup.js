@@ -14,7 +14,8 @@ const featureIds = [
   'removeExternalStartNav',
   'removeNavbarSupportLinks',
   'removeConsoleFilesCategory',
-  'removeSftpUpload'
+  'removeSftpUpload',
+  'removeHowToConnect'
 ];
 
 function setFeatureBtnState(btn, enabled) {
@@ -55,7 +56,8 @@ document.addEventListener('DOMContentLoaded', () => {
     removeExternalStartNav: false,
     removeNavbarSupportLinks: false,
     removeConsoleFilesCategory: false,
-    removeSftpUpload: false
+    removeSftpUpload: false,
+    removeHowToConnect: false
   }, (data) => {
     updateToggleBtn(data.enabled);
     updateFeatureButtons(data);
