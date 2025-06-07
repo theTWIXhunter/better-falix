@@ -33,10 +33,6 @@ Hide the "Remote Startup" navigation item from the sidebar.
 Optionally remove support-related links from the navbar.
 
 
-
-
-
-
 ## Usage
 
 1. **Install the Extension:**  
@@ -59,8 +55,8 @@ Optionally remove support-related links from the navbar.
 popup.HTML:
 ```html
       <div class="feature-row">
-        <span class="feature-label">it's just paper</span>
-        <button class="feature-btn" id="FEATURENAME" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+        <span class="feature-label" data-tooltip="1 line Feature description here (by author).">FEATURE NAME</span>
+        <button class="feature-btn" id="removeConsoleFilesCategory" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
       </div>
 ```
 popup.JS:

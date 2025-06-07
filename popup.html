@@ -152,27 +152,27 @@
     <div class="category">General</div>
     <div class="feature-list">
       <div class="feature-row">
-        <span class="feature-label">Hide Console Tabs</span>
+        <span class="feature-label" data-tooltip="Optionally hide unnecessary console tabs for a cleaner interface.">Hide Console Tabs</span>
         <button class="feature-btn" id="hideConsoleTabs" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
       </div>
       <div class="feature-row">
-        <span class="feature-label">Replace Account Category</span>
+        <span class="feature-label" data-tooltip="Hides the sidebar 'Account' category and adds a custom popup menu to the profile icon with quick links to Profile Settings and Logout.">Replace Account Category</span>
         <button class="feature-btn" id="replaceAccountCategory" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
       </div>
       <div class="feature-row">
-        <span class="feature-label">Remove SFTP info from upload</span>
+        <span class="feature-label" data-tooltip="Removes the SFTP info and its divider from the upload button dropdown for a cleaner UI.">Remove SFTP info from upload</span>
         <button class="feature-btn" id="removeSftpUpload" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
       </div>
       <div class="feature-row">
-        <span class="feature-label">Remove How To Connect</span>
+        <span class="feature-label" data-tooltip="Removes all 'How to connect' steps, DNS verification sections, and the 'Server Name' row from the connect button for a cleaner look.">Remove How To Connect</span>
         <button class="feature-btn" id="removeHowToConnect" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
       </div>
       <div class="feature-row">
-        <span class="feature-label">Remove-exit-discount</span>
+        <span class="feature-label" data-tooltip="Removes the most annoying popup ever (the exit discount modal and its backdrop) from falixnodes.net.">Remove-exit-discount</span>
         <button class="feature-btn" id="removeExitDiscount" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
       </div>
       <div class="feature-row">
-        <span class="feature-label">it's just paper</span>
+        <span class="feature-label" data-tooltip="Renames 'Craftbukkit / Spigot / PaperSpigot' to 'Paper' in the server type dropdown for clarity.">it's just paper</span>
         <button class="feature-btn" id="itsjustPaper" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
       </div>
     </div>
@@ -181,38 +181,61 @@
     <div class="category">Navigation</div>
     <div class="feature-list">
       <div class="feature-row">
-        <span class="feature-label">Server Name Button<br></span>
+        <span class="feature-label" data-tooltip="Makes the server name (current-server-info) clickable to go to the main page.">Server Name Button</span>
         <button class="feature-btn" id="serverNameButton" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
       </div>
       <div class="feature-row">
-        <span class="feature-label">Move "Backups" to Server Settings</span>
+        <span class="feature-label" data-tooltip="Relocate the 'Backups' navigation item to the Server Settings section.">Move "Backups" to Server Settings</span>
         <button class="feature-btn" id="moveBackupsNav" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
       </div>
       <div class="feature-row">
-        <span class="feature-label">Move "Monitoring" to Advanced</span>
+        <span class="feature-label" data-tooltip="Move the 'Monitoring' navigation item to the Advanced section.">Move "Monitoring" to Advanced</span>
         <button class="feature-btn" id="moveMonitoringNav" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
       </div>
       <div class="feature-row">
-        <span class="feature-label">Move "Logs" to Advanced</span>
+        <span class="feature-label" data-tooltip="Move the 'Logs' navigation item to the Advanced section.">Move "Logs" to Advanced</span>
         <button class="feature-btn" id="moveLogsNav" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
       </div>
       <div class="feature-row">
-        <span class="feature-label">Remove "Remote Startup" nav item</span>
+        <span class="feature-label" data-tooltip="Hide the 'Remote Startup' navigation item from the sidebar.">Remove "Remote Startup" nav item</span>
         <button class="feature-btn" id="removeExternalStartNav" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
       </div>
       <div class="feature-row">
-        <span class="feature-label">Remove Navbar Support Links</span>
+        <span class="feature-label" data-tooltip="Optionally remove support-related links from the navbar.">Remove Navbar Support Links</span>
         <button class="feature-btn" id="removeNavbarSupportLinks" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
       </div>
       <div class="feature-row">
-        <span class="feature-label">Remove "Console" and "Files" categories</span>
+        <span class="feature-label" data-tooltip="Remove 'Console' and 'Files' categories (keep items).">Remove "Console" and "Files" categories</span>
         <button class="feature-btn" id="removeConsoleFilesCategory" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
       </div>
-
     </div>
     <!-- Footer -->
     <div class="footer">&copy; 2025 the_twix_hunter. All rights reserved.</div>
   </div>
   <script src="popup.js"></script>
+  <style>
+    /* Tooltip styles */
+    .feature-label[data-tooltip] {
+      position: relative;
+      cursor: help;
+    }
+    .feature-label[data-tooltip]:hover::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      left: 0;
+      top: 120%;
+      background: #23272b;
+      color: #fff;
+      padding: 7px 12px;
+      border-radius: 6px;
+      font-size: 0.97em;
+      white-space: pre-line;
+      z-index: 1000;
+      box-shadow: 0 2px 8px 0 rgba(0,0,0,0.18);
+      min-width: 180px;
+      max-width: 320px;
+      pointer-events: none;
+    }
+  </style>
 </body>
 </html>
