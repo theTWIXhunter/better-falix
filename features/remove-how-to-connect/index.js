@@ -66,6 +66,12 @@ chrome.storage.sync.get({ enabled: true, removeHowToConnect: false }, (data) => 
       const bedrockClone = bedrockItem.cloneNode(true);
       javaItem.replaceWith(bedrockClone);
     }
+
+    // Always show the connect-bedrock-details box
+    if (bedrockDetails) {
+      bedrockDetails.style.display = '';
+      bedrockDetails.classList.remove('d-none');
+    }
   }
 
   // Fix: always run after DOMContentLoaded to ensure all elements exist
