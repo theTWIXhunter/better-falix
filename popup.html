@@ -203,9 +203,25 @@
     // Map feature state to button UI
     function setFeatureBtnState(btn, enabled) {
       btn.setAttribute('aria-pressed', enabled ? 'true' : 'false');
+      // Visual feedback for toggled state
+      if (enabled) {
+        btn.classList.add('on');
+      } else {
+        btn.classList.remove('on');
+      }
     }
 
     // Load states and update UI
+    function updateFeatureButtons(data) {
+      featureIds.forEach(id => {
+        const btn = document.getElementById(id);
+        if (btn) {
+          setFeatureBtnState(btn, !!data[id]);
+          btn.disabled = !data.enabled;
+        }
+      });
+    }
+
     chrome.storage.sync.get({
       enabled: true,
       hideConsoleTabs: false,
@@ -229,15 +245,7 @@
         }
       }
       updateToggleBtn(data.enabled);
-
-      // Feature buttons
-      featureIds.forEach(id => {
-        const btn = document.getElementById(id);
-        if (btn) {
-          setFeatureBtnState(btn, !!data[id]);
-          btn.disabled = !data.enabled;
-        }
-      });
+      updateFeatureButtons(data);
     });
 
     // Main toggle logic
@@ -246,10 +254,7 @@
         const newState = !data.enabled;
         chrome.storage.sync.set({ enabled: newState }, () => {
           // Update all feature buttons
-          featureIds.forEach(id => {
-            const btn = document.getElementById(id);
-            if (btn) btn.disabled = !newState;
-          });
+          chrome.storage.sync.get(null, updateFeatureButtons);
           // Update main toggle button
           this.textContent = newState ? 'Disable Extensions' : 'Enable Extensions';
           this.classList.toggle('off', !newState);
@@ -268,7 +273,10 @@
           setFeatureBtnState(btn, newState);
           const obj = {};
           obj[id] = newState;
-          chrome.storage.sync.set(obj);
+          chrome.storage.sync.set(obj, () => {
+            // Ensure UI stays in sync with storage
+            chrome.storage.sync.get(null, updateFeatureButtons);
+          });
         });
         // Keyboard accessibility
         btn.addEventListener('keydown', function(e) {
