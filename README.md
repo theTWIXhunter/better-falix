@@ -30,6 +30,7 @@ Move the "Logs" navigation item to the Advanced section.
 Hide the "Remote Startup" navigation item from the sidebar.
 - **Remove Navbar Support Links:** 
 Optionally remove support-related links from the navbar.
+- **server-name-button:** Makes the server name (current-server-info) clickable to go to the main page.
 
 
 
