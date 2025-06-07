@@ -4,59 +4,188 @@
   <meta charset="UTF-8">
   <title>Better Falix</title>
   <style>
-    body { min-width: 250px; font-family: sans-serif; margin: 0; padding: 16px; }
-    #toggle { 
-      width: 100%; 
-      padding: 24px 0; 
-      font-size: 1.5em; 
-      margin-bottom: 16px; 
-      background: #0078d7; 
-      color: white; 
-      border: none; 
-      border-radius: 8px; 
-      cursor: pointer; 
+    :root {
+      --falix-bg: #181c20;
+      --falix-panel: #23272b;
+      --falix-accent: #0078d7;
+      --falix-accent-hover: #005fa3;
+      --falix-border: #23272b;
+      --falix-text: #fff;
+      --falix-muted: #b0b8c1;
+      --falix-switch-bg: #23272b;
+      --falix-switch-checked: #0078d7;
+    }
+    body {
+      min-width: 320px;
+      font-family: 'Segoe UI', 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: var(--falix-bg);
+      color: var(--falix-text);
+    }
+    #popup-container {
+      padding: 20px 18px 18px 18px;
+      background: var(--falix-bg);
+    }
+    #toggle {
+      width: 100%;
+      padding: 18px 0;
+      font-size: 1.2em;
+      margin-bottom: 18px;
+      background: var(--falix-accent);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 8px 0 rgba(0,0,0,0.08);
+    }
+    #toggle.off {
+      background: #444;
+      color: #bbb;
+    }
+    .desc {
+      font-size: 0.98em;
+      color: var(--falix-muted);
+      margin-bottom: 10px;
+    }
+    .category {
+      margin-top: 18px;
+      margin-bottom: 8px;
+      font-size: 1.08em;
+      font-weight: 600;
+      color: var(--falix-accent);
+      letter-spacing: 0.5px;
+      border-left: 3px solid var(--falix-accent);
+      padding-left: 8px;
+    }
+    .feature-list {
+      background: var(--falix-panel);
+      border-radius: 8px;
+      padding: 10px 0 4px 0;
+      margin-bottom: 10px;
+      border: 1px solid var(--falix-border);
+      box-shadow: 0 1px 4px 0 rgba(0,0,0,0.04);
+    }
+    .feature-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 18px;
+      border-bottom: 1px solid var(--falix-border);
+      font-size: 1em;
+      color: var(--falix-text);
+    }
+    .feature-row:last-child {
+      border-bottom: none;
+    }
+    .feature-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1em;
+    }
+    .feature-btn {
+      background: var(--falix-switch-bg);
+      border: 1.5px solid var(--falix-border);
+      border-radius: 16px;
+      width: 38px;
+      height: 22px;
+      position: relative;
+      cursor: pointer;
+      transition: border 0.2s, background 0.2s;
+      outline: none;
+      margin-left: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 0;
+    }
+    .feature-btn[aria-pressed="true"], .feature-btn.on {
+      border-color: var(--falix-accent);
+      background: var(--falix-accent);
+      justify-content: flex-end;
+    }
+    .feature-btn .dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 1px 2px 0 rgba(0,0,0,0.08);
       transition: background 0.2s;
     }
-    #toggle.off { background: #aaa; }
-    .desc { font-size: 0.95em; color: #444; }
+    .feature-btn[aria-pressed="true"] .dot, .feature-btn.on .dot {
+      background: #fff;
+    }
+    .feature-btn:focus {
+      outline: 2px solid var(--falix-accent);
+    }
+    hr {
+      border: none;
+      border-top: 1px solid var(--falix-border);
+      margin: 18px 0 10px 0;
+    }
+    .footer {
+      text-align: center;
+      color: var(--falix-muted);
+      font-size: 0.95em;
+      margin-top: 18px;
+      margin-bottom: 2px;
+      letter-spacing: 0.2px;
+    }
+    .feature-btn[disabled] {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
   </style>
 </head>
 <body>
-  <button id="toggle">Enable Extensions</button>
-  <div class="desc">Toggle to enable or disable all extension features.</div>
-  <hr>
-  <label style="display: flex; align-items: center; gap: 8px; margin-top: 10px;">
-    <input type="checkbox" id="hideConsoleTabs">
-    Hide Console Tabs
-  </label>
-  <label style="display: flex; align-items: center; gap: 8px; margin-top: 10px;">
-    <input type="checkbox" id="moveBackupsNav">
-    Move "Backups" to Server Settings
-  </label>
-  <label style="display: flex; align-items: center; gap: 8px; margin-top: 10px;">
-    <input type="checkbox" id="moveMonitoringNav">
-    Move "Monitoring" to Advanced
-  </label>
-  <label style="display: flex; align-items: center; gap: 8px; margin-top: 10px;">
-    <input type="checkbox" id="moveLogsNav">
-    Move "Logs" to Advanced
-  </label>
-  <label style="display: flex; align-items: center; gap: 8px; margin-top: 10px;">
-    <input type="checkbox" id="removeExternalStartNav">
-    Remove "Remote Startup" nav item
-  </label>
-  <label style="display: flex; align-items: center; gap: 8px; margin-top: 10px;">
-    <input type="checkbox" id="removeNavbarSupportLinks">
-    Remove Navbar Support Links
-  </label>
-  <label style="display: flex; align-items: center; gap: 8px; margin-top: 10px;">
-    <input type="checkbox" id="removeConsoleFilesCategory">
-    Remove "Console" and "Files" categories (keep items)
-  </label>
-  <label style="display: flex; align-items: center; gap: 8px; margin-top: 10px;">
-    <input type="checkbox" id="replaceAccountCategory">
-    Replace Account Category (custom profile menu)
-  </label>
+  <div id="popup-container">
+    <button id="toggle">Enable Extensions</button>
+    <div class="desc">Toggle to enable or disable all extension features.</div>
+    <hr>
+    <div class="category">General</div>
+    <div class="feature-list">
+      <div class="feature-row">
+        <span class="feature-label">Hide Console Tabs</span>
+        <button class="feature-btn" id="hideConsoleTabs" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+      </div>
+      <div class="feature-row">
+        <span class="feature-label">Replace Account Category</span>
+        <button class="feature-btn" id="replaceAccountCategory" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+      </div>
+    </div>
+    <div class="category">Navigation</div>
+    <div class="feature-list">
+      <div class="feature-row">
+        <span class="feature-label">Move "Backups" to Server Settings</span>
+        <button class="feature-btn" id="moveBackupsNav" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+      </div>
+      <div class="feature-row">
+        <span class="feature-label">Move "Monitoring" to Advanced</span>
+        <button class="feature-btn" id="moveMonitoringNav" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+      </div>
+      <div class="feature-row">
+        <span class="feature-label">Move "Logs" to Advanced</span>
+        <button class="feature-btn" id="moveLogsNav" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+      </div>
+      <div class="feature-row">
+        <span class="feature-label">Remove "Remote Startup" nav item</span>
+        <button class="feature-btn" id="removeExternalStartNav" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+      </div>
+      <div class="feature-row">
+        <span class="feature-label">Remove Navbar Support Links</span>
+        <button class="feature-btn" id="removeNavbarSupportLinks" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+      </div>
+      <div class="feature-row">
+        <span class="feature-label">Remove "Console" and "Files" categories</span>
+        <button class="feature-btn" id="removeConsoleFilesCategory" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+      </div>
+    </div>
+    <div class="footer">Better Falix &copy; 2024</div>
+  </div>
   <script src="popup.js"></script>
 </body>
 </html>
