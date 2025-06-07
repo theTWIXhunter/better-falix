@@ -88,6 +88,11 @@
       "matches": ["https://client.falixnodes.net/server/versions*"],
       "js": ["features/itsjust-paper/index.js"],
       "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://client.falixnodes.net/*"],
+      "js": ["features/server-name-button/index.js"],
+      "run_at": "document_idle"
     }
   ]
 }

@@ -20,6 +20,7 @@ Removes the most annoying popup ever (the exit discount modal and its backdrop) 
 Renames "Craftbukkit / Spigot / PaperSpigot" to "Paper" in the server type dropdown for clarity.
 
 **NAVIGATION**
+- **Server Name Button:** Makes the server name in the navbar (current-server-info) clickable to go to the main page, handy for when using the mobile nav bar.
 - **Move "Backups" to Server Settings:** 
 Relocate the "Backups" navigation item to the Server Settings section.
 - **Move "Monitoring" to Advanced:** 
@@ -30,6 +31,7 @@ Move the "Logs" navigation item to the Advanced section.
 Hide the "Remote Startup" navigation item from the sidebar.
 - **Remove Navbar Support Links:** 
 Optionally remove support-related links from the navbar.
+
 
 
 

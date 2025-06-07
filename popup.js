@@ -17,7 +17,8 @@ const featureIds = [
   'removeSftpUpload',
   'removeHowToConnect',
   'removeExitDiscount',
-  'itsjustPaper'
+  'itsjustPaper',
+  'serverNameButton'
 ];
 
 function setFeatureBtnState(btn, enabled) {
@@ -61,7 +62,8 @@ document.addEventListener('DOMContentLoaded', () => {
     removeSftpUpload: false,
     removeHowToConnect: false,
     removeExitDiscount: false,
-    itsjustPaper: false
+    itsjustPaper: false,
+    serverNameButton: false
   }, (data) => {
     updateToggleBtn(data.enabled);
     updateFeatureButtons(data);
