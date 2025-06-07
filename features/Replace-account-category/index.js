@@ -17,41 +17,60 @@ chrome.storage.sync.get({ enabled: true, replaceAccountCategory: false }, (data)
       const popup = document.createElement('div');
       popup.id = 'bf-profile-popup';
       popup.style.position = 'fixed';
-      popup.style.background = '#222';
-      popup.style.color = '#fff';
-      popup.style.border = '1px solid #444';
-      popup.style.borderRadius = '6px';
-      popup.style.boxShadow = '0 2px 8px rgba(0,0,0,0.2)';
-      popup.style.padding = '8px 0';
-      popup.style.minWidth = '160px';
+      popup.style.background = 'var(--bs-dark, #181c20)';
+      popup.style.color = 'var(--bs-light, #fff)';
+      popup.style.border = '1px solid var(--bs-border-color, #23272b)';
+      popup.style.borderRadius = '0.5rem';
+      popup.style.boxShadow = '0 4px 24px 0 rgba(0,0,0,0.25)';
+      popup.style.padding = '0.5rem 0';
+      popup.style.minWidth = '180px';
       popup.style.zIndex = '99999';
       popup.style.display = 'none';
+      popup.style.fontFamily = 'inherit';
+      popup.style.fontSize = '1rem';
 
       // Profile Settings
       const settings = document.createElement('a');
       settings.href = 'https://client.falixnodes.net/profile/settings';
       settings.textContent = 'Profile Settings';
-      settings.style.display = 'block';
-      settings.style.padding = '8px 16px';
-      settings.style.color = '#fff';
+      settings.style.display = 'flex';
+      settings.style.alignItems = 'center';
+      settings.style.gap = '0.5rem';
+      settings.style.padding = '0.75rem 1.25rem';
+      settings.style.color = 'var(--bs-light, #fff)';
       settings.style.textDecoration = 'none';
       settings.style.cursor = 'pointer';
-      settings.addEventListener('mouseover', () => settings.style.background = '#333');
+      settings.style.transition = 'background 0.15s';
+      settings.addEventListener('mouseover', () => settings.style.background = 'var(--bs-secondary-bg, #23272b)');
       settings.addEventListener('mouseout', () => settings.style.background = 'none');
+      // Optionally add an icon
+      // settings.innerHTML = '<i class="fa-solid fa-user-gear"></i> Profile Settings';
 
       // Logout
       const logout = document.createElement('a');
       logout.href = 'https://client.falixnodes.net/logout';
       logout.textContent = 'Logout';
-      logout.style.display = 'block';
-      logout.style.padding = '8px 16px';
-      logout.style.color = '#fff';
+      logout.style.display = 'flex';
+      logout.style.alignItems = 'center';
+      logout.style.gap = '0.5rem';
+      logout.style.padding = '0.75rem 1.25rem';
+      logout.style.color = 'var(--bs-light, #fff)';
       logout.style.textDecoration = 'none';
       logout.style.cursor = 'pointer';
-      logout.addEventListener('mouseover', () => logout.style.background = '#333');
+      logout.style.transition = 'background 0.15s';
+      logout.addEventListener('mouseover', () => logout.style.background = 'var(--bs-secondary-bg, #23272b)');
       logout.addEventListener('mouseout', () => logout.style.background = 'none');
+      // Optionally add an icon
+      // logout.innerHTML = '<i class="fa-solid fa-arrow-right-from-bracket"></i> Logout';
+
+      // Divider
+      const divider = document.createElement('div');
+      divider.style.height = '1px';
+      divider.style.background = 'var(--bs-border-color, #23272b)';
+      divider.style.margin = '0.25rem 0';
 
       popup.appendChild(settings);
+      popup.appendChild(divider);
       popup.appendChild(logout);
 
       document.body.appendChild(popup);
