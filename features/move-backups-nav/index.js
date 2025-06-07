@@ -1,5 +1,15 @@
-chrome.storage.sync.get({ enabled: true, moveBackupsNav: false }, (data) => {
-  if (!data.enabled || !data.moveBackupsNav) return;
+// [better-falix] move-backups-nav: Script loading
+console.log('[better-falix] move-backups-nav: Script loading');
+
+chrome.storage.sync.get({ moveBackupsNav: false, enabled: true }, (data) => {
+  if (!data.enabled || !data.moveBackupsNav) {
+    console.log('[better-falix] move-backups-nav: Script disabled');
+    return;
+  }
+  console.log('[better-falix] move-backups-nav: Script enabled');
+
+  //  --------- START FEATURE ----------
+
   function moveBackups() {
     const backupsItem = Array.from(document.querySelectorAll('.nav-item .nav-link')).find(link =>
       link.textContent.trim() === 'Backups'
@@ -16,4 +26,8 @@ chrome.storage.sync.get({ enabled: true, moveBackupsNav: false }, (data) => {
   } else {
     moveBackups();
   }
+
+  setTimeout(() => {
+    console.log('[better-falix] move-backups-nav: Script loaded sucsessfully');
+  }, 10);
 });

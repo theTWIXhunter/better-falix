@@ -1,12 +1,25 @@
-// Hide the .console-tabs div if the feature is enabled
+// [better-falix] hide-console-tabs: Script loading
+console.log('[better-falix] hide-console-tabs: Script loading');
+
 chrome.storage.sync.get({ hideConsoleTabs: false, enabled: true }, (data) => {
-  if (!data.enabled || !data.hideConsoleTabs) return;
+  if (!data.enabled || !data.hideConsoleTabs) {
+    console.log('[better-falix] hide-console-tabs: Script disabled');
+    return;
+  }
+  console.log('[better-falix] hide-console-tabs: Script enabled');
+
+  //  --------- START FEATURE ----------
+
   const hideTabs = () => {
     const el = document.querySelector('.console-tabs');
     if (el) el.style.display = 'none';
   };
-  // Try immediately and also after DOM changes
   hideTabs();
   const observer = new MutationObserver(hideTabs);
   observer.observe(document.body, { childList: true, subtree: true });
+
+  // [better-falix] hide-console-tabs: Script loaded sucsessfully
+  setTimeout(() => {
+    console.log('[better-falix] hide-console-tabs: Script loaded sucsessfully');
+  }, 10);
 });

@@ -1,5 +1,14 @@
+// [better-falix] remove-how-to-connect: Script loading
+console.log('[better-falix] remove-how-to-connect: Script loading');
+
 chrome.storage.sync.get({ enabled: true, removeHowToConnect: false }, (data) => {
-  if (!data.enabled || !data.removeHowToConnect) return;
+  if (!data.enabled || !data.removeHowToConnect) {
+    console.log('[better-falix] remove-how-to-connect: Script disabled');
+    return;
+  }
+  console.log('[better-falix] remove-how-to-connect: Script enabled');
+
+  //  --------- START FEATURE ----------
 
   function removeHowToConnectSections() {
     // Remove all elements with class "connect-step"
@@ -86,4 +95,8 @@ chrome.storage.sync.get({ enabled: true, removeHowToConnect: false }, (data) => 
   } else {
     setTimeout(removeHowToConnectSections, 0);
   }
+
+  setTimeout(() => {
+    console.log('[better-falix] remove-how-to-connect: Script loaded sucsessfully');
+  }, 10);
 });

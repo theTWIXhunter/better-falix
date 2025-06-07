@@ -1,5 +1,14 @@
+// [better-falix] replace-account-category: Script loading
+console.log('[better-falix] replace-account-category: Script loading');
+
 chrome.storage.sync.get({ enabled: true, replaceAccountCategory: false }, (data) => {
-  if (!data.enabled || !data.replaceAccountCategory) return;
+  if (!data.enabled || !data.replaceAccountCategory) {
+    console.log('[better-falix] replace-account-category: Script disabled');
+    return;
+  }
+  console.log('[better-falix] replace-account-category: Script enabled');
+
+  //  --------- START FEATURE ----------
 
   (function replaceAccountCategory() {
     function hideAccountCategory() {
@@ -137,4 +146,8 @@ chrome.storage.sync.get({ enabled: true, replaceAccountCategory: false }, (data)
       run();
     }
   })();
+
+  setTimeout(() => {
+    console.log('[better-falix] replace-account-category: Script loaded sucsessfully');
+  }, 10);
 });

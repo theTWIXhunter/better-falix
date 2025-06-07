@@ -1,6 +1,14 @@
-// Remove the exit discount modal and its backdrop on falixnodes.net
+// [better-falix] remove-exit-discount: Script loading
+console.log('[better-falix] remove-exit-discount: Script loading');
+
 chrome.storage.sync.get({ enabled: true, removeExitDiscount: false }, (data) => {
-  if (!data.enabled || !data.removeExitDiscount) return;
+  if (!data.enabled || !data.removeExitDiscount) {
+    console.log('[better-falix] remove-exit-discount: Script disabled');
+    return;
+  }
+  console.log('[better-falix] remove-exit-discount: Script enabled');
+
+  //  --------- START FEATURE ----------
 
   function removeExitDiscountModal() {
     // Remove modal by id
@@ -17,4 +25,8 @@ chrome.storage.sync.get({ enabled: true, removeExitDiscount: false }, (data) => 
   } else {
     removeExitDiscountModal();
   }
+
+  setTimeout(() => {
+    console.log('[better-falix] remove-exit-discount: Script loaded sucsessfully');
+  }, 10);
 });

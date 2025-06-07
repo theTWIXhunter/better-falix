@@ -1,5 +1,15 @@
-chrome.storage.sync.get({ enabled: true, moveLogsNav: false }, (data) => {
-  if (!data.enabled || !data.moveLogsNav) return;
+// [better-falix] move-logs-nav: Script loading
+console.log('[better-falix] move-logs-nav: Script loading');
+
+chrome.storage.sync.get({ moveLogsNav: false, enabled: true }, (data) => {
+  if (!data.enabled || !data.moveLogsNav) {
+    console.log('[better-falix] move-logs-nav: Script disabled');
+    return;
+  }
+  console.log('[better-falix] move-logs-nav: Script enabled');
+
+  //  --------- START FEATURE ----------
+
   function moveLogs() {
     const logsItem = Array.from(document.querySelectorAll('.nav-item .nav-link')).find(link =>
       link.textContent.trim() === 'Logs'
@@ -23,4 +33,8 @@ chrome.storage.sync.get({ enabled: true, moveLogsNav: false }, (data) => {
   } else {
     moveLogs();
   }
+
+  setTimeout(() => {
+    console.log('[better-falix] move-logs-nav: Script loaded sucsessfully');
+  }, 10);
 });
