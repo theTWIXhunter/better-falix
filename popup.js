@@ -1,14 +1,38 @@
-const toggleBtn = document.getElementById('toggle');
-const hideConsoleTabsCheckbox = document.getElementById('hideConsoleTabs');
-const moveBackupsNavCheckbox = document.getElementById('moveBackupsNav');
-const moveMonitoringNavCheckbox = document.getElementById('moveMonitoringNav');
-const moveLogsNavCheckbox = document.getElementById('moveLogsNav');
-const removeExternalStartNavCheckbox = document.getElementById('removeExternalStartNav');
-const removeNavbarSupportLinksCheckbox = document.getElementById('removeNavbarSupportLinks');
-const removeConsoleFilesCategoryCheckbox = document.getElementById('removeConsoleFilesCategory');
-const replaceAccountCategoryCheckbox = document.getElementById('replaceAccountCategory');
+document.addEventListener('DOMContentLoaded', () => {
+  console.log('popup.js loaded');
+  // Optional: visually confirm by changing the popup background
+  document.body.style.border = '3px solid #0078d7';
+});
 
-function updateButton(enabled) {
+const toggleBtn = document.getElementById('toggle');
+const featureIds = [
+  'hideConsoleTabs',
+  'replaceAccountCategory',
+  'moveBackupsNav',
+  'moveMonitoringNav',
+  'moveLogsNav',
+  'removeExternalStartNav',
+  'removeNavbarSupportLinks',
+  'removeConsoleFilesCategory'
+];
+
+function setFeatureBtnState(btn, enabled) {
+  btn.setAttribute('aria-pressed', enabled ? 'true' : 'false');
+  btn.classList.toggle('on', enabled);
+}
+
+function updateFeatureButtons(data) {
+  featureIds.forEach(id => {
+    const btn = document.getElementById(id);
+    if (btn) {
+      setFeatureBtnState(btn, !!data[id]);
+      btn.disabled = !data.enabled;
+    }
+  });
+}
+
+function updateToggleBtn(enabled) {
+  const toggleBtn = document.getElementById('toggle');
   if (enabled) {
     toggleBtn.textContent = 'Disable Extensions';
     toggleBtn.classList.remove('off');
@@ -16,103 +40,57 @@ function updateButton(enabled) {
     toggleBtn.textContent = 'Enable Extensions';
     toggleBtn.classList.add('off');
   }
-  if (hideConsoleTabsCheckbox) hideConsoleTabsCheckbox.disabled = !enabled;
-  if (moveBackupsNavCheckbox) moveBackupsNavCheckbox.disabled = !enabled;
-  if (moveMonitoringNavCheckbox) moveMonitoringNavCheckbox.disabled = !enabled;
-  if (moveLogsNavCheckbox) moveLogsNavCheckbox.disabled = !enabled;
-  if (removeExternalStartNavCheckbox) removeExternalStartNavCheckbox.disabled = !enabled;
-  if (removeNavbarSupportLinksCheckbox) removeNavbarSupportLinksCheckbox.disabled = !enabled;
-  if (removeConsoleFilesCategoryCheckbox) removeConsoleFilesCategoryCheckbox.disabled = !enabled;
-  if (replaceAccountCategoryCheckbox) replaceAccountCategoryCheckbox.disabled = !enabled;
 }
 
-// Load states
-chrome.storage.sync.get({
-  enabled: true,
-  hideConsoleTabs: false,
-  moveBackupsNav: false,
-  moveMonitoringNav: false,
-  moveLogsNav: false,
-  removeExternalStartNav: false,
-  removeNavbarSupportLinks: false,
-  removeConsoleFilesCategory: false,
-  replaceAccountCategory: false
-}, (data) => {
-  updateButton(data.enabled);
-  // Always update checkbox checked state, even if disabled
-  if (hideConsoleTabsCheckbox) hideConsoleTabsCheckbox.checked = data.hideConsoleTabs;
-  if (moveBackupsNavCheckbox) moveBackupsNavCheckbox.checked = !!data.moveBackupsNav;
-  if (moveMonitoringNavCheckbox) moveMonitoringNavCheckbox.checked = !!data.moveMonitoringNav;
-  if (moveLogsNavCheckbox) moveLogsNavCheckbox.checked = !!data.moveLogsNav;
-  if (removeExternalStartNavCheckbox) removeExternalStartNavCheckbox.checked = !!data.removeExternalStartNav;
-  if (removeNavbarSupportLinksCheckbox) removeNavbarSupportLinksCheckbox.checked = !!data.removeNavbarSupportLinks;
-  if (removeConsoleFilesCategoryCheckbox) removeConsoleFilesCategoryCheckbox.checked = !!data.removeConsoleFilesCategory;
-  if (replaceAccountCategoryCheckbox) {
-    replaceAccountCategoryCheckbox.checked = !!data.replaceAccountCategory;
-    replaceAccountCategoryCheckbox.disabled = !data.enabled;
-  }
-  // Disable checkboxes if extension is disabled
-  updateButton(data.enabled);
-});
+// Initial load
+document.addEventListener('DOMContentLoaded', () => {
+  chrome.storage.sync.get({
+    enabled: true,
+    hideConsoleTabs: false,
+    replaceAccountCategory: false,
+    moveBackupsNav: false,
+    moveMonitoringNav: false,
+    moveLogsNav: false,
+    removeExternalStartNav: false,
+    removeNavbarSupportLinks: false,
+    removeConsoleFilesCategory: false
+  }, (data) => {
+    updateToggleBtn(data.enabled);
+    updateFeatureButtons(data);
+  });
 
-// Toggle main extension
-toggleBtn.addEventListener('click', () => {
-  chrome.storage.sync.get({ enabled: true }, (data) => {
-    const newState = !data.enabled;
-    chrome.storage.sync.set({ enabled: newState }, () => {
-      updateButton(newState);
-      // Optionally, reload the page to apply changes immediately
-      // window.location.reload();
+  // Main toggle logic
+  document.getElementById('toggle').addEventListener('click', function() {
+    chrome.storage.sync.get({ enabled: true }, (data) => {
+      const newState = !data.enabled;
+      chrome.storage.sync.set({ enabled: newState }, () => {
+        updateToggleBtn(newState);
+        chrome.storage.sync.get(null, updateFeatureButtons);
+      });
     });
   });
-});
 
-// Toggle features
-if (hideConsoleTabsCheckbox) {
-  hideConsoleTabsCheckbox.addEventListener('change', (e) => {
-    if (hideConsoleTabsCheckbox.disabled) return;
-    chrome.storage.sync.set({ hideConsoleTabs: e.target.checked });
+  // Feature toggle logic
+  featureIds.forEach(id => {
+    const btn = document.getElementById(id);
+    if (btn) {
+      btn.addEventListener('click', function() {
+        if (btn.disabled) return;
+        const current = btn.getAttribute('aria-pressed') === 'true';
+        const newState = !current;
+        setFeatureBtnState(btn, newState);
+        const obj = {};
+        obj[id] = newState;
+        chrome.storage.sync.set(obj, () => {
+          chrome.storage.sync.get(null, updateFeatureButtons);
+        });
+      });
+      btn.addEventListener('keydown', function(e) {
+        if (e.key === ' ' || e.key === 'Enter') {
+          e.preventDefault();
+          btn.click();
+        }
+      });
+    }
   });
-}
-if (moveBackupsNavCheckbox) {
-  moveBackupsNavCheckbox.addEventListener('change', (e) => {
-    if (moveBackupsNavCheckbox.disabled) return;
-    chrome.storage.sync.set({ moveBackupsNav: e.target.checked });
-  });
-}
-if (moveMonitoringNavCheckbox) {
-  moveMonitoringNavCheckbox.addEventListener('change', (e) => {
-    if (moveMonitoringNavCheckbox.disabled) return;
-    chrome.storage.sync.set({ moveMonitoringNav: e.target.checked });
-  });
-}
-if (moveLogsNavCheckbox) {
-  moveLogsNavCheckbox.addEventListener('change', (e) => {
-    if (moveLogsNavCheckbox.disabled) return;
-    chrome.storage.sync.set({ moveLogsNav: e.target.checked });
-  });
-}
-if (removeExternalStartNavCheckbox) {
-  removeExternalStartNavCheckbox.addEventListener('change', (e) => {
-    if (removeExternalStartNavCheckbox.disabled) return;
-    chrome.storage.sync.set({ removeExternalStartNav: e.target.checked });
-  });
-}
-if (removeNavbarSupportLinksCheckbox) {
-  removeNavbarSupportLinksCheckbox.addEventListener('change', (e) => {
-    if (removeNavbarSupportLinksCheckbox.disabled) return;
-    chrome.storage.sync.set({ removeNavbarSupportLinks: e.target.checked });
-  });
-}
-if (removeConsoleFilesCategoryCheckbox) {
-  removeConsoleFilesCategoryCheckbox.addEventListener('change', (e) => {
-    if (removeConsoleFilesCategoryCheckbox.disabled) return;
-    chrome.storage.sync.set({ removeConsoleFilesCategory: e.target.checked });
-  });
-}
-if (replaceAccountCategoryCheckbox) {
-  replaceAccountCategoryCheckbox.addEventListener('change', (e) => {
-    if (replaceAccountCategoryCheckbox.disabled) return;
-    chrome.storage.sync.set({ replaceAccountCategory: e.target.checked });
-  });
-}
+});

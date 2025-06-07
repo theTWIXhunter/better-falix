@@ -95,7 +95,7 @@
       height: 22px;
       position: relative;
       cursor: pointer;
-      transition: border 0.2s;
+      transition: border 0.2s, background 0.2s;
       outline: none;
       margin-left: 8px;
       display: flex;
@@ -103,7 +103,7 @@
       justify-content: flex-start;
       padding: 0;
     }
-    .feature-btn[aria-pressed="true"] {
+    .feature-btn[aria-pressed="true"], .feature-btn.on {
       border-color: var(--falix-accent);
       background: var(--falix-accent);
       justify-content: flex-end;
@@ -116,7 +116,7 @@
       box-shadow: 0 1px 2px 0 rgba(0,0,0,0.08);
       transition: background 0.2s;
     }
-    .feature-btn[aria-pressed="true"] .dot {
+    .feature-btn[aria-pressed="true"] .dot, .feature-btn.on .dot {
       background: #fff;
     }
     .feature-btn:focus {
@@ -187,106 +187,5 @@
     <div class="footer">Better Falix &copy; 2024</div>
   </div>
   <script src="popup.js"></script>
-  <script>
-    // Feature button IDs
-    const featureIds = [
-      'hideConsoleTabs',
-      'replaceAccountCategory',
-      'moveBackupsNav',
-      'moveMonitoringNav',
-      'moveLogsNav',
-      'removeExternalStartNav',
-      'removeNavbarSupportLinks',
-      'removeConsoleFilesCategory'
-    ];
-
-    // Map feature state to button UI
-    function setFeatureBtnState(btn, enabled) {
-      btn.setAttribute('aria-pressed', enabled ? 'true' : 'false');
-      // Visual feedback for toggled state
-      if (enabled) {
-        btn.classList.add('on');
-      } else {
-        btn.classList.remove('on');
-      }
-    }
-
-    // Load states and update UI
-    function updateFeatureButtons(data) {
-      featureIds.forEach(id => {
-        const btn = document.getElementById(id);
-        if (btn) {
-          setFeatureBtnState(btn, !!data[id]);
-          btn.disabled = !data.enabled;
-        }
-      });
-    }
-
-    chrome.storage.sync.get({
-      enabled: true,
-      hideConsoleTabs: false,
-      replaceAccountCategory: false,
-      moveBackupsNav: false,
-      moveMonitoringNav: false,
-      moveLogsNav: false,
-      removeExternalStartNav: false,
-      removeNavbarSupportLinks: false,
-      removeConsoleFilesCategory: false
-    }, (data) => {
-      // Main toggle
-      const toggleBtn = document.getElementById('toggle');
-      function updateToggleBtn(enabled) {
-        if (enabled) {
-          toggleBtn.textContent = 'Disable Extensions';
-          toggleBtn.classList.remove('off');
-        } else {
-          toggleBtn.textContent = 'Enable Extensions';
-          toggleBtn.classList.add('off');
-        }
-      }
-      updateToggleBtn(data.enabled);
-      updateFeatureButtons(data);
-    });
-
-    // Main toggle logic
-    document.getElementById('toggle').addEventListener('click', function() {
-      chrome.storage.sync.get({ enabled: true }, (data) => {
-        const newState = !data.enabled;
-        chrome.storage.sync.set({ enabled: newState }, () => {
-          // Update all feature buttons
-          chrome.storage.sync.get(null, updateFeatureButtons);
-          // Update main toggle button
-          this.textContent = newState ? 'Disable Extensions' : 'Enable Extensions';
-          this.classList.toggle('off', !newState);
-        });
-      });
-    });
-
-    // Feature toggle logic
-    featureIds.forEach(id => {
-      const btn = document.getElementById(id);
-      if (btn) {
-        btn.addEventListener('click', function() {
-          if (btn.disabled) return;
-          const current = btn.getAttribute('aria-pressed') === 'true';
-          const newState = !current;
-          setFeatureBtnState(btn, newState);
-          const obj = {};
-          obj[id] = newState;
-          chrome.storage.sync.set(obj, () => {
-            // Ensure UI stays in sync with storage
-            chrome.storage.sync.get(null, updateFeatureButtons);
-          });
-        });
-        // Keyboard accessibility
-        btn.addEventListener('keydown', function(e) {
-          if (e.key === ' ' || e.key === 'Enter') {
-            e.preventDefault();
-            btn.click();
-          }
-        });
-      }
-    });
-  </script>
 </body>
 </html>
