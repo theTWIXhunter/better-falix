@@ -67,8 +67,16 @@ chrome.storage.sync.get({ enabled: true, replaceAccountCategory: false }, (data)
         clearTimeout(popupTimeout);
         const rect = profile.getBoundingClientRect();
         popup.style.left = (rect.left + window.scrollX) + 'px';
-        popup.style.top = (rect.bottom + window.scrollY) + 'px';
+        // Position above the profile box
+        popup.style.top = (rect.top + window.scrollY - popup.offsetHeight - 8) + 'px';
         popup.style.display = 'block';
+        // If popup is not yet rendered, force a reflow and reposition
+        if (popup.offsetHeight === 0) {
+          popup.style.display = 'block';
+          setTimeout(() => {
+            popup.style.top = (rect.top + window.scrollY - popup.offsetHeight - 8) + 'px';
+          }, 0);
+        }
       }
       function hidePopup() {
         popupTimeout = setTimeout(() => {
