@@ -44,7 +44,24 @@ chrome.storage.sync.get({ enabled: true, replaceAccountCategory: false }, (data)
       settings.addEventListener('mouseover', () => settings.style.background = 'var(--bs-secondary-bg, #23272b)');
       settings.addEventListener('mouseout', () => settings.style.background = 'none');
       // Optionally add an icon
-      // settings.innerHTML = '<i class="fa-solid fa-user-gear"></i> Profile Settings';
+      settings.innerHTML = '<i class="fa-solid fa-user-gear"></i> Profile Settings';
+
+      // Activity
+      const activity = document.createElement('a');
+      activity.href = 'https://client.falixnodes.net/profile/activity';
+      activity.textContent = 'Activity';
+      activity.style.display = 'flex';
+      activity.style.alignItems = 'center';
+      activity.style.gap = '0.5rem';
+      activity.style.padding = '0.75rem 1.25rem';
+      activity.style.color = 'var(--bs-light, #fff)';
+      activity.style.textDecoration = 'none';
+      activity.style.cursor = 'pointer';
+      activity.style.transition = 'background 0.15s';
+      activity.addEventListener('mouseover', () => activity.style.background = 'var(--bs-secondary-bg, #23272b)');
+      activity.addEventListener('mouseout', () => activity.style.background = 'none');
+      // Optionally add an icon
+      activity.innerHTML = '<i class="fa-solid fa-clock-rotate-left"></i> Activity';
 
       // Logout
       const logout = document.createElement('a');
@@ -61,7 +78,7 @@ chrome.storage.sync.get({ enabled: true, replaceAccountCategory: false }, (data)
       logout.addEventListener('mouseover', () => logout.style.background = 'var(--bs-secondary-bg, #23272b)');
       logout.addEventListener('mouseout', () => logout.style.background = 'none');
       // Optionally add an icon
-      // logout.innerHTML = '<i class="fa-solid fa-arrow-right-from-bracket"></i> Logout';
+      logout.innerHTML = '<i class="fa-solid fa-arrow-right-from-bracket"></i> Logout';
 
       // Divider
       const divider = document.createElement('div');
@@ -70,6 +87,8 @@ chrome.storage.sync.get({ enabled: true, replaceAccountCategory: false }, (data)
       divider.style.margin = '0.25rem 0';
 
       popup.appendChild(settings);
+      popup.appendChild(divider);
+      popup.appendChild(activity);
       popup.appendChild(divider);
       popup.appendChild(logout);
 
