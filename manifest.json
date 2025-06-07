@@ -85,7 +85,7 @@
       "run_at": "document_idle"
     },
     {
-      "matches": ["https://client.falixnodes.net/server/versions"],
+      "matches": ["https://client.falixnodes.net/*"],
       "js": ["features/itsjust-paper/index.js"],
       "run_at": "document_idle"
     }
