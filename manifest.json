@@ -78,6 +78,11 @@
       "matches": ["https://client.falixnodes.net/server/console"],
       "js": ["features/remove-how-to-connect/index.js"],
       "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://falixnodes.net/*"],
+      "js": ["features/remove-exit-discount/index.js"],
+      "run_at": "document_idle"
     }
   ]
 }
