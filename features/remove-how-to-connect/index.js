@@ -38,7 +38,6 @@ chrome.storage.sync.get({ enabled: true, removeHowToConnect: false }, (data) => 
         if (copyBtn) {
           // Clone the copy button and update its onclick/copy value
           const newCopyBtn = copyBtn.cloneNode(true);
-          // Try to update the copy value to match the addressText
           newCopyBtn.setAttribute('onclick', `copyConnectionInfo('${addressText}', this)`);
           row.appendChild(newCopyBtn);
         }
@@ -46,8 +45,13 @@ chrome.storage.sync.get({ enabled: true, removeHowToConnect: false }, (data) => 
         const afterRow = Array.from(bedrockDetails.querySelectorAll('.bedrock-detail-row')).find(r =>
           r.querySelector('.bedrock-label')?.textContent.trim() === 'Server Address:'
         );
-        if (afterRow && afterRow.nextSibling) {
-          bedrockDetails.insertBefore(row, afterRow.nextSibling);
+        // Fix: always append if afterRow is not found or afterRow.nextSibling is null
+        if (afterRow) {
+          if (afterRow.nextSibling) {
+            bedrockDetails.insertBefore(row, afterRow.nextSibling);
+          } else {
+            bedrockDetails.appendChild(row);
+          }
         } else {
           bedrockDetails.appendChild(row);
         }
@@ -64,9 +68,10 @@ chrome.storage.sync.get({ enabled: true, removeHowToConnect: false }, (data) => 
     }
   }
 
+  // Fix: always run after DOMContentLoaded to ensure all elements exist
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', removeHowToConnectSections);
   } else {
-    removeHowToConnectSections();
+    setTimeout(removeHowToConnectSections, 0);
   }
 });
