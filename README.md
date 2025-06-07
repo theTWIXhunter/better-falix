@@ -15,6 +15,7 @@ Better Falix is a browser extension that enhances the Falixnodes client-side exp
 - **Remove SFTP info from upload**: Removes the SFTP info and its divider from the upload button dropdown for a cleaner UI.
 - **Remove How To Connect**: Removes all "How to connect" steps, DNS verification sections, and the "Server Name" row from the connect button for a cleaner look.
 - **Remove-exit-discount:** Removes the most annoying popup ever (the exit discount modal and its backdrop) from falixnodes.net.
+- **its-just paper:** Renames "Craftbukkit / Spigot / PaperSpigot" to "Paper" in the server type dropdown for clarity.
 
 ## Usage
 

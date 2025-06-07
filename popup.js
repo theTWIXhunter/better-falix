@@ -16,7 +16,8 @@ const featureIds = [
   'removeConsoleFilesCategory',
   'removeSftpUpload',
   'removeHowToConnect',
-  'removeExitDiscount'
+  'removeExitDiscount',
+  'itsjustPaper'
 ];
 
 function setFeatureBtnState(btn, enabled) {
@@ -59,7 +60,8 @@ document.addEventListener('DOMContentLoaded', () => {
     removeConsoleFilesCategory: false,
     removeSftpUpload: false,
     removeHowToConnect: false,
-    removeExitDiscount: false
+    removeExitDiscount: false,
+    itsjustPaper: false
   }, (data) => {
     updateToggleBtn(data.enabled);
     updateFeatureButtons(data);
