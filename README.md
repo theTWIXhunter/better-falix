@@ -33,8 +33,55 @@ Better Falix is a browser extension that enhances the Falixnodes client-side exp
 
 ## Development
 
+- To add new features, Create a new folder in the `features/` directory and put your main code inside together with (optional) extra data and/or assets.
+
+- Add your feature to the Popup by adding:
+popup.HTML:
+```html
+      <div class="feature-row">
+        <span class="feature-label">it's just paper</span>
+        <button class="feature-btn" id="FEATURENAME" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+      </div>
+```
+popup.JS:
+```JS
+    FEATURENAME: false
+```
+Manifest.json:
+```json
+    {
+      "matches": ["https://client.falixnodes.net/server/versions*"],
+      "js": ["features/FEATURENAME/index.js"],
+      "run_at": "document_idle"
+    }
+```
+
 - All feature scripts should check the global "enabled" state and their individual feature flag before running.
-- To add new features, create a new script in the `features/` directory and follow the same pattern.
+
+Start your script with:
+```js
+// [better-falix] FEATURENAME: Script loading
+console.log('[better-falix] FEATURENAME: Script loading');
+
+chrome.storage.sync.get({ FEATURENAME: false, enabled: true }, (data) => {
+  if (!data.enabled || !data FEATURENAME) {
+    console.log('[better-falix] FEATURENAME: Script disabled');
+    return;
+  }
+  console.log('[better-falix] FEATURENAME: Script enabled');
+
+  //  --------- START FEATURE ----------
+```
+ ### Logging: all logging should happen in the following format:
+
+```
+[Better-Falix] FEATURENAME: logged message here
+```
+   A basic feature logs the following events:
+   - Script loading (at the start of the file)
+   - Script Enabled (after the enabled check)
+   - Script Disabled (when the enabled check fails)
+   - Script loaded sucsessfully (somewher at the end)
 
 ## License
 
