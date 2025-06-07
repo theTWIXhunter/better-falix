@@ -29,56 +29,44 @@ chrome.storage.sync.get({ enabled: true, replaceAccountCategory: false }, (data)
       popup.style.fontFamily = 'inherit';
       popup.style.fontSize = '1rem';
 
+      // Helper to create a menu item with icon HTML
+      function createMenuItem(href, html, mouseoverBg) {
+        const a = document.createElement('a');
+        a.href = href;
+        a.innerHTML = html;
+        a.style.display = 'flex';
+        a.style.alignItems = 'center';
+        a.style.gap = '0.5rem';
+        a.style.padding = '0.75rem 1.25rem';
+        a.style.color = 'var(--bs-light, #fff)';
+        a.style.textDecoration = 'none';
+        a.style.cursor = 'pointer';
+        a.style.transition = 'background 0.15s';
+        a.addEventListener('mouseover', () => a.style.background = mouseoverBg);
+        a.addEventListener('mouseout', () => a.style.background = 'none');
+        return a;
+      }
+
       // Profile Settings
-      const settings = document.createElement('a');
-      settings.href = 'https://client.falixnodes.net/profile/settings';
-      settings.textContent = 'Profile Settings';
-      settings.style.display = 'flex';
-      settings.style.alignItems = 'center';
-      settings.style.gap = '0.5rem';
-      settings.style.padding = '0.75rem 1.25rem';
-      settings.style.color = 'var(--bs-light, #fff)';
-      settings.style.textDecoration = 'none';
-      settings.style.cursor = 'pointer';
-      settings.style.transition = 'background 0.15s';
-      settings.addEventListener('mouseover', () => settings.style.background = 'var(--bs-secondary-bg, #23272b)');
-      settings.addEventListener('mouseout', () => settings.style.background = 'none');
-      // Optionally add an icon
-      settings.innerHTML = '<i class="fa-solid fa-user-gear"></i> Profile Settings';
+      const settings = createMenuItem(
+        'https://client.falixnodes.net/profile/settings',
+        '<i class="fa-solid fa-user-gear"></i> Profile Settings',
+        'var(--bs-secondary-bg, #23272b)'
+      );
 
       // Activity
-      const activity = document.createElement('a');
-      activity.href = 'https://client.falixnodes.net/profile/activity';
-      activity.textContent = 'Activity';
-      activity.style.display = 'flex';
-      activity.style.alignItems = 'center';
-      activity.style.gap = '0.5rem';
-      activity.style.padding = '0.75rem 1.25rem';
-      activity.style.color = 'var(--bs-light, #fff)';
-      activity.style.textDecoration = 'none';
-      activity.style.cursor = 'pointer';
-      activity.style.transition = 'background 0.15s';
-      activity.addEventListener('mouseover', () => activity.style.background = 'var(--bs-secondary-bg, #23272b)');
-      activity.addEventListener('mouseout', () => activity.style.background = 'none');
-      // Optionally add an icon
-      activity.innerHTML = '<i class="fa-solid fa-clock-rotate-left"></i> Activity';
+      const activity = createMenuItem(
+        'https://client.falixnodes.net/profile/activity',
+        '<i class="fa-solid fa-clock-rotate-left"></i> Activity',
+        'var(--bs-secondary-bg, #23272b)'
+      );
 
       // Logout
-      const logout = document.createElement('a');
-      logout.href = 'https://client.falixnodes.net/logout';
-      logout.textContent = 'Logout';
-      logout.style.display = 'flex';
-      logout.style.alignItems = 'center';
-      logout.style.gap = '0.5rem';
-      logout.style.padding = '0.75rem 1.25rem';
-      logout.style.color = 'var(--bs-light, #fff)';
-      logout.style.textDecoration = 'none';
-      logout.style.cursor = 'pointer';
-      logout.style.transition = 'background 0.15s';
-      logout.addEventListener('mouseover', () => logout.style.background = 'var(--bs-secondary-bg, #23272b)');
-      logout.addEventListener('mouseout', () => logout.style.background = 'none');
-      // Optionally add an icon
-      logout.innerHTML = '<i class="fa-solid fa-arrow-right-from-bracket"></i> Logout';
+      const logout = createMenuItem(
+        'https://client.falixnodes.net/logout',
+        '<i class="fa-solid fa-arrow-right-from-bracket"></i> Logout',
+        'var(--bs-secondary-bg, #23272b)'
+      );
 
       // Divider
       const divider = document.createElement('div');
@@ -87,7 +75,6 @@ chrome.storage.sync.get({ enabled: true, replaceAccountCategory: false }, (data)
       divider.style.margin = '0.25rem 0';
 
       popup.appendChild(settings);
-      popup.appendChild(divider);
       popup.appendChild(activity);
       popup.appendChild(divider);
       popup.appendChild(logout);
