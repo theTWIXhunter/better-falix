@@ -46,6 +46,23 @@ chrome.storage.sync.get({ enabled: true, replaceAccountCategory: false }, (data)
       // Optionally add an icon
       // settings.innerHTML = '<i class="fa-solid fa-user-gear"></i> Profile Settings';
 
+      // Activity
+      const activity = document.createElement('a');
+      activity.href = 'https://client.falixnodes.net/profile/activity';
+      activity.textContent = 'Activity';
+      activity.style.display = 'flex';
+      activity.style.alignItems = 'center';
+      activity.style.gap = '0.5rem';
+      activity.style.padding = '0.75rem 1.25rem';
+      activity.style.color = 'var(--bs-light, #fff)';
+      activity.style.textDecoration = 'none';
+      activity.style.cursor = 'pointer';
+      activity.style.transition = 'background 0.15s';
+      activity.addEventListener('mouseover', () => activity.style.background = 'var(--bs-secondary-bg, #23272b)');
+      activity.addEventListener('mouseout', () => activity.style.background = 'none');
+      // Optionally add an icon
+      // activity.innerHTML = '<i class="fa-solid fa-clock-rotate-left"></i> Activity';
+
       // Logout
       const logout = document.createElement('a');
       logout.href = 'https://client.falixnodes.net/logout';
@@ -70,6 +87,7 @@ chrome.storage.sync.get({ enabled: true, replaceAccountCategory: false }, (data)
       divider.style.margin = '0.25rem 0';
 
       popup.appendChild(settings);
+      popup.appendChild(activity);
       popup.appendChild(divider);
       popup.appendChild(logout);
 
