@@ -72,6 +72,12 @@ chrome.storage.sync.get({ enabled: true, removeHowToConnect: false }, (data) => 
       bedrockDetails.style.display = '';
       bedrockDetails.classList.remove('d-none');
     }
+
+    // Ensure connect-bedrock-details is inside #javaSteps for visibility
+    const javaSteps = document.getElementById('javaSteps');
+    if (javaSteps && bedrockDetails && bedrockDetails.parentElement !== javaSteps) {
+      javaSteps.appendChild(bedrockDetails);
+    }
   }
 
   // Fix: always run after DOMContentLoaded to ensure all elements exist
