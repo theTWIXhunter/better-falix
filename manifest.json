@@ -68,6 +68,11 @@
       "matches": ["https://client.falixnodes.net/*"],
       "js": ["features/Replace-account-category/index.js"],
       "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://client.falixnodes.net/*"],
+      "js": ["features/remove-sftp-upload/index.js"],
+      "run_at": "document_idle"
     }
   ]
 }
