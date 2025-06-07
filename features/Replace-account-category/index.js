@@ -10,16 +10,6 @@ chrome.storage.sync.get({ enabled: true, replaceAccountCategory: false }, (data)
       if (accountSection) accountSection.style.display = 'none';
     }
 
-    function hideOpenModals() {
-      // Hide any open modal dialogs
-      document.querySelectorAll('.modal.show, .modal[style*="display: block"]').forEach(modal => {
-        modal.classList.remove('show');
-        modal.style.display = 'none';
-      });
-      // Hide modal backdrops if present
-      document.querySelectorAll('.modal-backdrop').forEach(bd => bd.style.display = 'none');
-    }
-
     function createProfilePopup() {
       // Avoid duplicate popups
       if (document.getElementById('bf-profile-popup')) return;
@@ -66,30 +56,32 @@ chrome.storage.sync.get({ enabled: true, replaceAccountCategory: false }, (data)
 
       document.body.appendChild(popup);
 
-      // Show popup on profile click
+      // Show/hide popup on profile hover
       const profile = document.querySelector('.navbar-user-profile');
       if (!profile) return;
 
       profile.style.cursor = 'pointer';
 
-      profile.addEventListener('click', (e) => {
-        e.stopPropagation();
-        hideOpenModals();
-
-        // Position the popup below the profile icon
+      let popupTimeout;
+      function showPopup() {
+        clearTimeout(popupTimeout);
         const rect = profile.getBoundingClientRect();
         popup.style.left = (rect.left + window.scrollX) + 'px';
         popup.style.top = (rect.bottom + window.scrollY) + 'px';
         popup.style.display = 'block';
-      });
-
-      // Hide popup when clicking outside or on scroll/resize
-      function hidePopupOnEvent(e) {
-        if (!popup.contains(e.target) && e.target !== profile) {
-          popup.style.display = 'none';
-        }
       }
-      document.addEventListener('click', hidePopupOnEvent);
+      function hidePopup() {
+        popupTimeout = setTimeout(() => {
+          popup.style.display = 'none';
+        }, 150);
+      }
+
+      profile.addEventListener('mouseenter', showPopup);
+      profile.addEventListener('mouseleave', hidePopup);
+      popup.addEventListener('mouseenter', () => clearTimeout(popupTimeout));
+      popup.addEventListener('mouseleave', hidePopup);
+
+      // Hide on scroll/resize
       window.addEventListener('scroll', () => { popup.style.display = 'none'; });
       window.addEventListener('resize', () => { popup.style.display = 'none'; });
     }
