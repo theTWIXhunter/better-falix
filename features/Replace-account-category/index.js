@@ -10,6 +10,16 @@ chrome.storage.sync.get({ enabled: true, replaceAccountCategory: false }, (data)
       if (accountSection) accountSection.style.display = 'none';
     }
 
+    function hideOpenModals() {
+      // Hide any open modal dialogs
+      document.querySelectorAll('.modal.show, .modal[style*="display: block"]').forEach(modal => {
+        modal.classList.remove('show');
+        modal.style.display = 'none';
+      });
+      // Hide modal backdrops if present
+      document.querySelectorAll('.modal-backdrop').forEach(bd => bd.style.display = 'none');
+    }
+
     function createProfilePopup() {
       // Avoid duplicate popups
       if (document.getElementById('bf-profile-popup')) return;
@@ -65,11 +75,12 @@ chrome.storage.sync.get({ enabled: true, replaceAccountCategory: false }, (data)
       profile.style.position = 'relative';
       profile.addEventListener('click', (e) => {
         e.stopPropagation();
+        hideOpenModals();
         // Position the popup below the profile
         const rect = profile.getBoundingClientRect();
         popup.style.left = (rect.left + window.scrollX) + 'px';
         popup.style.top = (rect.bottom + window.scrollY) + 'px';
-        popup.style.display = popup.style.display === 'none' ? 'block' : 'none';
+        popup.style.display = 'block';
       });
 
       // Hide popup when clicking outside
