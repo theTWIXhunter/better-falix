@@ -26,9 +26,7 @@ chrome.storage.sync.get({ enabled: true, replaceAccountCategory: false }, (data)
 
       const popup = document.createElement('div');
       popup.id = 'bf-profile-popup';
-      popup.style.position = 'absolute';
-      popup.style.top = '100%';
-      popup.style.right = '0';
+      popup.style.position = 'fixed';
       popup.style.background = '#222';
       popup.style.color = '#fff';
       popup.style.border = '1px solid #444';
@@ -36,7 +34,7 @@ chrome.storage.sync.get({ enabled: true, replaceAccountCategory: false }, (data)
       popup.style.boxShadow = '0 2px 8px rgba(0,0,0,0.2)';
       popup.style.padding = '8px 0';
       popup.style.minWidth = '160px';
-      popup.style.zIndex = '9999';
+      popup.style.zIndex = '99999';
       popup.style.display = 'none';
 
       // Profile Settings
@@ -68,27 +66,32 @@ chrome.storage.sync.get({ enabled: true, replaceAccountCategory: false }, (data)
 
       document.body.appendChild(popup);
 
-      // Show/hide popup on profile click
+      // Show popup on profile click
       const profile = document.querySelector('.navbar-user-profile');
       if (!profile) return;
 
-      profile.style.position = 'relative';
+      profile.style.cursor = 'pointer';
+
       profile.addEventListener('click', (e) => {
         e.stopPropagation();
         hideOpenModals();
-        // Position the popup below the profile
+
+        // Position the popup below the profile icon
         const rect = profile.getBoundingClientRect();
         popup.style.left = (rect.left + window.scrollX) + 'px';
         popup.style.top = (rect.bottom + window.scrollY) + 'px';
         popup.style.display = 'block';
       });
 
-      // Hide popup when clicking outside
-      document.addEventListener('click', (e) => {
+      // Hide popup when clicking outside or on scroll/resize
+      function hidePopupOnEvent(e) {
         if (!popup.contains(e.target) && e.target !== profile) {
           popup.style.display = 'none';
         }
-      });
+      }
+      document.addEventListener('click', hidePopupOnEvent);
+      window.addEventListener('scroll', () => { popup.style.display = 'none'; });
+      window.addEventListener('resize', () => { popup.style.display = 'none'; });
     }
 
     function run() {
