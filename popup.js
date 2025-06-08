@@ -18,8 +18,7 @@ const featureIds = [
   'removeHowToConnect',
   'removeExitDiscount',
   'itsjustPaper',
-  'serverNameButton',
-  'forcemobilenavbar'
+  'serverNameButton'
 ];
 
 function setFeatureBtnState(btn, enabled) {
