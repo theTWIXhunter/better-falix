@@ -10,18 +10,16 @@ chrome.storage.sync.get({ enabled: true, serverNameButton: false }, (data) => {
 
   //  --------- START FEATURE ----------
 
+  const attached = new WeakSet();
+
   function makeServerNameClickable() {
     const el = document.querySelector('.current-server-info');
-    if (el && !el.dataset.betterFalixClickable) {
+    if (el && !attached.has(el)) {
       el.style.cursor = 'pointer';
-      // Remove any previous click handler by cloning
-      const newEl = el.cloneNode(true);
-      newEl.style.cursor = 'pointer';
-      newEl.addEventListener('click', () => {
+      el.addEventListener('click', () => {
         window.location.href = 'https://client.falixnodes.net/';
       });
-      newEl.dataset.betterFalixClickable = 'true';
-      el.replaceWith(newEl);
+      attached.add(el);
     }
   }
 
