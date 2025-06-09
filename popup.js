@@ -18,7 +18,9 @@ const featureIds = [
   'removeHowToConnect',
   'removeExitDiscount',
   'itsjustPaper',
-  'serverNameButton'
+  'serverNameButton',
+  'navbarHover',
+  'replaceSupportModal'
 ];
 
 function setFeatureBtnState(btn, enabled) {
@@ -63,7 +65,9 @@ document.addEventListener('DOMContentLoaded', () => {
     removeHowToConnect: false,
     removeExitDiscount: false,
     itsjustPaper: false,
-    serverNameButton: false
+    serverNameButton: false,
+    navbarHover: false,
+    replaceSupportModal: false,
   }, (data) => {
     updateToggleBtn(data.enabled);
     updateFeatureButtons(data);

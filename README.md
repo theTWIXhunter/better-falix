@@ -18,6 +18,10 @@ Removes all "How to connect" steps, DNS verification sections, and the "Server N
 Removes the most annoying popup ever (the exit discount modal and its backdrop) from falixnodes.net.
 - **its-just paper:** 
 Renames "Craftbukkit / Spigot / PaperSpigot" to "Paper" in the server type dropdown for clarity.
+- **Navbar Hover**
+Opens and closes the navbar when you hover on/off it.
+- **replace Support Modal**
+Replaces the support modal with a cleaner one and adds a copy all button.
 
 **NAVIGATION**
 - **Server Name Button:** Makes the server name in the navbar (current-server-info) clickable to go to the main page, handy for when using the mobile nav bar.
@@ -61,8 +65,17 @@ popup.HTML:
 ```
 popup.JS:
 ```JS
-    FEATURENAME: false
+const featureIds = [
+    FEATURENAME: false // add this line to the end
+   ];
 ```
+```JS
+document.addEventListener('DOMContentLoaded', () => {
+  chrome.storage.sync.get({
+    enabled: true,
+    FEATURENAME: false, // add this line to the end
+```
+
 Manifest.json:
 ```json
     {
@@ -97,6 +110,7 @@ chrome.storage.sync.get({ FEATURENAME: false, enabled: true }, (data) => {
 ```
 [Better-Falix] FEATURENAME: logged message here
 ```
+
    A basic feature logs the following events:
    - Script loading (at the start of the file)
    - Script Enabled (after the enabled check)
