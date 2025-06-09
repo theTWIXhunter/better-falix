@@ -18,7 +18,8 @@ const featureIds = [
   'removeHowToConnect',
   'removeExitDiscount',
   'itsjustPaper',
-  'serverNameButton'
+  'serverNameButton',
+  'navbarHover'
 ];
 
 function setFeatureBtnState(btn, enabled) {

@@ -1,12 +1,12 @@
-// [better-falix] open navigation hover: Script loading
-console.log('[Better-Falix] open navigation hover: Script loading');
+// [better-falix] navbarhover: Script loading
+console.log('[Better-Falix] navbarhover: Script loading');
 
-chrome.storage.sync.get({ openNavigationHover: false, enabled: true }, (data) => {
-  if (!data.enabled || !data.openNavigationHover) {
-    console.log('[Better-Falix] open navigation hover: Script disabled');
+chrome.storage.sync.get({ navbarHover: false, enabled: true }, (data) => {
+  if (!data.enabled || !data.navbarHover) {
+    console.log('[Better-Falix] navbarhover: Script disabled');
     return;
   }
-  console.log('[Better-Falix] open navigation hover: Script enabled');
+  console.log('[Better-Falix] navbarhover: Script enabled');
 
   // --------- START FEATURE ----------
 
