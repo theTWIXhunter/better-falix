@@ -65,8 +65,17 @@ popup.HTML:
 ```
 popup.JS:
 ```JS
-    FEATURENAME: false
+const featureIds = [
+    FEATURENAME: false // add this line to the end
+   ];
 ```
+```JS
+document.addEventListener('DOMContentLoaded', () => {
+  chrome.storage.sync.get({
+    enabled: true,
+    FEATURENAME: false, // add this line to the end
+```
+
 Manifest.json:
 ```json
     {
@@ -101,6 +110,7 @@ chrome.storage.sync.get({ FEATURENAME: false, enabled: true }, (data) => {
 ```
 [Better-Falix] FEATURENAME: logged message here
 ```
+
    A basic feature logs the following events:
    - Script loading (at the start of the file)
    - Script Enabled (after the enabled check)
