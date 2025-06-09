@@ -75,7 +75,6 @@ const featureIds = [
 ```JS
 document.addEventListener('DOMContentLoaded', () => {
   chrome.storage.sync.get({
-    enabled: true,
     FEATURENAME: false, // add this line to the end
 ```
 

@@ -52,7 +52,7 @@ function updateToggleBtn(enabled) {
 // Initial load
 document.addEventListener('DOMContentLoaded', () => {
   chrome.storage.sync.get({
-    enabled: true,
+    enabled: false,
     hideConsoleTabs: false,
     replaceAccountCategory: false,
     moveBackupsNav: false,
