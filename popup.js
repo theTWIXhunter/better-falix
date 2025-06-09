@@ -19,7 +19,8 @@ const featureIds = [
   'removeExitDiscount',
   'itsjustPaper',
   'serverNameButton',
-  'navbarHover'
+  'navbarHover',
+  'replaceSupportModal'
 ];
 
 function setFeatureBtnState(btn, enabled) {
