@@ -22,6 +22,9 @@ Renames "Craftbukkit / Spigot / PaperSpigot" to "Paper" in the server type dropd
 Opens and closes the navbar when you hover on/off it.
 - **replace Support Modal**
 Replaces the support modal with a cleaner one and adds a copy all button.
+- **Server Name Button**
+Makes the server name in the navbar clickable and redirect you to the main page.
+
 
 **NAVIGATION**
 - **Server Name Button:** Makes the server name in the navbar (current-server-info) clickable to go to the main page, handy for when using the mobile nav bar.
