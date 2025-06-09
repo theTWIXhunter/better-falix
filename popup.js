@@ -65,7 +65,9 @@ document.addEventListener('DOMContentLoaded', () => {
     removeHowToConnect: false,
     removeExitDiscount: false,
     itsjustPaper: false,
-    serverNameButton: false
+    serverNameButton: false,
+    navbarHover: false,
+    replaceSupportModal: false,
   }, (data) => {
     updateToggleBtn(data.enabled);
     updateFeatureButtons(data);
