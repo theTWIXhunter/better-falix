@@ -12,19 +12,31 @@ chrome.storage.sync.get({ enabled: true, serverNameButton: false }, (data) => {
 
   function makeServerNameClickable() {
     const el = document.querySelector('.current-server-info');
-    if (el) {
+    if (el && !el.dataset.betterFalixClickable) {
       el.style.cursor = 'pointer';
-      el.addEventListener('click', () => {
+      // Remove any previous click handler by cloning
+      const newEl = el.cloneNode(true);
+      newEl.style.cursor = 'pointer';
+      newEl.addEventListener('click', () => {
         window.location.href = 'https://client.falixnodes.net/';
       });
+      newEl.dataset.betterFalixClickable = 'true';
+      el.replaceWith(newEl);
     }
   }
 
+  // Initial run
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', makeServerNameClickable);
   } else {
     makeServerNameClickable();
   }
+
+  // Observe DOM changes to re-apply if needed
+  const observer = new MutationObserver(() => {
+    makeServerNameClickable();
+  });
+  observer.observe(document.body, { childList: true, subtree: true });
 
   setTimeout(() => {
     console.log('[better-falix] server-name-button: Script loaded sucsessfully');
