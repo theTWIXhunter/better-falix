@@ -18,6 +18,10 @@ Removes all "How to connect" steps, DNS verification sections, and the "Server N
 Removes the most annoying popup ever (the exit discount modal and its backdrop) from falixnodes.net.
 - **its-just paper:** 
 Renames "Craftbukkit / Spigot / PaperSpigot" to "Paper" in the server type dropdown for clarity.
+- **Navbar Hover**
+Opens and closes the navbar when you hover on/off it.
+- **replace Support Modal**
+Replaces the support modal with a cleaner one and adds a copy all button.
 
 **NAVIGATION**
 - **Server Name Button:** Makes the server name in the navbar (current-server-info) clickable to go to the main page, handy for when using the mobile nav bar.
