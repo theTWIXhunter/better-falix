@@ -148,4 +148,10 @@
     borderEls.forEach(function(el) {
         el.style.borderColor = '#e5e7eb';
     });
+
+    // Set .compact-info-value text to blue
+    var compactInfoValues = document.querySelectorAll('.compact-info-value');
+    compactInfoValues.forEach(function(el) {
+        el.style.color = '#007bff';
+    });
 })();
