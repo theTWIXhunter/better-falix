@@ -104,13 +104,15 @@
       "js": ["features/replace-support-modal/index.js"],
       "run_at": "document_idle"
     },
-
-
     {
       "matches": ["https://client.falixnodes.net/*"],
       "js": ["themes/light-mode/index.js"],
       "run_at": "document_idle"
-    }    
-
+    },
+    {
+      "matches": ["https://client.falixnodes.net/*"],
+      "js": ["themes/purple-mode/index.js"],
+      "run_at": "document_idle"
+    }
   ]
 }
