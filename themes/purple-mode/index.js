@@ -26,6 +26,32 @@
         document.documentElement.style.setProperty('--falix-accent', '#a259e6');
         document.documentElement.style.setProperty('--falix-accent-hover', '#7c3aed');
 
+        // Animate #PageTitle with a purple gradient fade
+        var pageTitle = document.getElementById('PageTitle');
+        if (pageTitle) {
+          // Only inject once
+          if (!document.getElementById('purple-mode-pagetitle-style')) {
+            var style = document.createElement('style');
+            style.id = 'purple-mode-pagetitle-style';
+            style.textContent = `
+#PageTitle {
+  background: linear-gradient(90deg, #7c3aed 0%, #a259e6 50%, #d8b4fe 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+  animation: pageTitleFade 4s linear infinite alternate;
+  transition: background 0.4s;
+}
+@keyframes pageTitleFade {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+`;
+            document.head.appendChild(style);
+          }
+        }
+
         // All elements with blue color or background
         [
           // Buttons, links, icons, progress, etc.
