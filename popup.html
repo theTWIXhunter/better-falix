@@ -322,10 +322,21 @@
       border-color: var(--falix-accent-hover, #005fa3);
     }
     .features-list.disabled,
-    .feature-list.disabled {
+    .feature-list.disabled,
+    .features-list.disabled .category,
+    .features-list.disabled .feature-label,
+    .features-list.disabled .feature-btn,
+    .features-list.disabled .feature-row,
+    .features-list.disabled .feature-list,
+    .features-list.disabled .category {
       opacity: 0.5;
       pointer-events: none;
       filter: grayscale(0.7);
+    }
+    .features-list.disabled .category {
+      /* Also gray out headers */
+      color: #b0b8c1 !important;
+      border-left-color: #b0b8c1 !important;
     }
   </style>
 </head>
@@ -344,73 +355,74 @@
 
     <div id="features-content">
       <div class="features-list">
-      <!-- General Features -->
-      <div class="category">General</div>
-      <div class="feature-list">
-        <div class="feature-row">
-          <span class="feature-label" data-tooltip="Optionally hide unnecessary console tabs for a cleaner interface.">Hide Console Tabs</span>
-          <button class="feature-btn" id="hideConsoleTabs" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+        <!-- General Features -->
+        <div class="category">General</div>
+        <div class="feature-list">
+          <div class="feature-row">
+            <span class="feature-label" data-tooltip="Optionally hide unnecessary console tabs for a cleaner interface.">Hide Console Tabs</span>
+            <button class="feature-btn" id="hideConsoleTabs" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+          </div>
+          <div class="feature-row">
+            <span class="feature-label" data-tooltip="Hides the sidebar 'Account' category and adds a custom popup menu to the profile icon with quick links to Profile Settings and Logout.">Replace Account Category</span>
+            <button class="feature-btn" id="replaceAccountCategory" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+          </div>
+          <div class="feature-row">
+            <span class="feature-label" data-tooltip="Removes the SFTP info and its divider from the upload button dropdown for a cleaner UI.">Remove SFTP info from upload</span>
+            <button class="feature-btn" id="removeSftpUpload" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+          </div>
+          <div class="feature-row">
+            <span class="feature-label" data-tooltip="Removes all 'How to connect' steps, DNS verification sections, and the 'Server Name' row from the connect button for a cleaner look.">Remove How To Connect</span>
+            <button class="feature-btn" id="removeHowToConnect" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+          </div>
+          <div class="feature-row">
+            <span class="feature-label" data-tooltip="Removes the most annoying popup ever (the exit discount modal and its backdrop) from falixnodes.net.">Remove Exit-Discount</span>
+            <button class="feature-btn" id="removeExitDiscount" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+          </div>
+          <div class="feature-row">
+            <span class="feature-label" data-tooltip="Renames 'Craftbukkit / Spigot / PaperSpigot' to 'Paper' in the server type dropdown for clarity.">it's just paper</span>
+            <button class="feature-btn" id="itsjustPaper" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+          </div>    
+          <div class="feature-row">
+            <span class="feature-label" data-tooltip="Opens and closes the navbar when you hover on/off it.">Navbar Hover</span>
+            <button class="feature-btn" id="navbarHover" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+          </div>   
+          <div class="feature-row">
+            <span class="feature-label" data-tooltip="Replaces the support modal with a cleaner one and adds a copy all button.">replace Support Modal</span>
+            <button class="feature-btn" id="replaceSupportModal" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+          </div>   
+          <div class="feature-row">
+            <span class="feature-label" data-tooltip="Makes the server name in the navbar clickable and redirect you to the main page.">Server Name Button</span>
+            <button class="feature-btn" id="serverNameButton" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+          </div>  
         </div>
-        <div class="feature-row">
-          <span class="feature-label" data-tooltip="Hides the sidebar 'Account' category and adds a custom popup menu to the profile icon with quick links to Profile Settings and Logout.">Replace Account Category</span>
-          <button class="feature-btn" id="replaceAccountCategory" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
-        </div>
-        <div class="feature-row">
-          <span class="feature-label" data-tooltip="Removes the SFTP info and its divider from the upload button dropdown for a cleaner UI.">Remove SFTP info from upload</span>
-          <button class="feature-btn" id="removeSftpUpload" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
-        </div>
-        <div class="feature-row">
-          <span class="feature-label" data-tooltip="Removes all 'How to connect' steps, DNS verification sections, and the 'Server Name' row from the connect button for a cleaner look.">Remove How To Connect</span>
-          <button class="feature-btn" id="removeHowToConnect" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
-        </div>
-        <div class="feature-row">
-          <span class="feature-label" data-tooltip="Removes the most annoying popup ever (the exit discount modal and its backdrop) from falixnodes.net.">Remove Exit-Discount</span>
-          <button class="feature-btn" id="removeExitDiscount" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
-        </div>
-        <div class="feature-row">
-          <span class="feature-label" data-tooltip="Renames 'Craftbukkit / Spigot / PaperSpigot' to 'Paper' in the server type dropdown for clarity.">it's just paper</span>
-          <button class="feature-btn" id="itsjustPaper" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
-        </div>    
-        <div class="feature-row">
-          <span class="feature-label" data-tooltip="Opens and closes the navbar when you hover on/off it.">Navbar Hover</span>
-          <button class="feature-btn" id="navbarHover" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
-        </div>   
-        <div class="feature-row">
-          <span class="feature-label" data-tooltip="Replaces the support modal with a cleaner one and adds a copy all button.">replace Support Modal</span>
-          <button class="feature-btn" id="replaceSupportModal" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
-        </div>   
-        <div class="feature-row">
-          <span class="feature-label" data-tooltip="Makes the server name in the navbar clickable and redirect you to the main page.">Server Name Button</span>
-          <button class="feature-btn" id="serverNameButton" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
-        </div>  
-      </div>
 
-      <!-- Navigation Features -->
-      <div class="category">Navigation</div>
-      <div class="feature-list">
-        <div class="feature-row">
-          <span class="feature-label" data-tooltip="Relocate the 'Backups' navigation item to the Server Settings section.">Move "Backups" to Server Settings</span>
-          <button class="feature-btn" id="moveBackupsNav" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
-        </div>
-        <div class="feature-row">
-          <span class="feature-label" data-tooltip="Move the 'Monitoring' navigation item to the Advanced section.">Move "Monitoring" to Advanced</span>
-          <button class="feature-btn" id="moveMonitoringNav" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
-        </div>
-        <div class="feature-row">
-          <span class="feature-label" data-tooltip="Move the 'Logs' navigation item to the Advanced section.">Move "Logs" to Advanced</span>
-          <button class="feature-btn" id="moveLogsNav" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
-        </div>
-        <div class="feature-row">
-          <span class="feature-label" data-tooltip="Hide the 'Remote Startup' navigation item from the sidebar.">Remove "Remote Startup" nav item</span>
-          <button class="feature-btn" id="removeExternalStartNav" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
-        </div>
-        <div class="feature-row">
-          <span class="feature-label" data-tooltip="Optionally remove support-related links from the navbar.">Remove Navbar Support Links</span>
-          <button class="feature-btn" id="removeNavbarSupportLinks" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
-        </div>
-        <div class="feature-row">
-          <span class="feature-label" data-tooltip="Remove 'Console' and 'Files' categories (keep items).">Remove "Console" and "Files" categories</span>
-          <button class="feature-btn" id="removeConsoleFilesCategory" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+        <!-- Navigation Features -->
+        <div class="category">Navigation</div>
+        <div class="feature-list">
+          <div class="feature-row">
+            <span class="feature-label" data-tooltip="Relocate the 'Backups' navigation item to the Server Settings section.">Move "Backups" to Server Settings</span>
+            <button class="feature-btn" id="moveBackupsNav" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+          </div>
+          <div class="feature-row">
+            <span class="feature-label" data-tooltip="Move the 'Monitoring' navigation item to the Advanced section.">Move "Monitoring" to Advanced</span>
+            <button class="feature-btn" id="moveMonitoringNav" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+          </div>
+          <div class="feature-row">
+            <span class="feature-label" data-tooltip="Move the 'Logs' navigation item to the Advanced section.">Move "Logs" to Advanced</span>
+            <button class="feature-btn" id="moveLogsNav" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+          </div>
+          <div class="feature-row">
+            <span class="feature-label" data-tooltip="Hide the 'Remote Startup' navigation item from the sidebar.">Remove "Remote Startup" nav item</span>
+            <button class="feature-btn" id="removeExternalStartNav" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+          </div>
+          <div class="feature-row">
+            <span class="feature-label" data-tooltip="Optionally remove support-related links from the navbar.">Remove Navbar Support Links</span>
+            <button class="feature-btn" id="removeNavbarSupportLinks" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+          </div>
+          <div class="feature-row">
+            <span class="feature-label" data-tooltip="Remove 'Console' and 'Files' categories (keep items).">Remove "Console" and "Files" categories</span>
+            <button class="feature-btn" id="removeConsoleFilesCategory" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+          </div>
         </div>
       </div>
     </div>
