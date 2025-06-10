@@ -64,6 +64,11 @@
   color: #a259e6 !important;
   fill: #a259e6 !important;
 }
+/* The underline for the active tab*/
+.console-tab-item.active .console-tab-count,
+.console-tab-item.active span {
+  color: #a259e6 !important;
+}
 .console-tab-item.active::after {
   content: "";
   display: block;
