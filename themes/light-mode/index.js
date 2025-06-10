@@ -1,8 +1,8 @@
-// [better-falix] LIGHT MODE THEME: Script loading
-console.log('[better-falix] LIGHT MODE THEME Script loading');
-
-
 (function() {
+    // [better-falix] LIGHT MODE THEME: Script loading
+    console.log('[better-falix] LIGHT MODE THEME Script loading');
+
+
     // Remove 'dark' class from <html> and <body>
     document.documentElement.classList.remove('dark');
     document.body.classList.remove('dark');
@@ -50,7 +50,7 @@ console.log('[better-falix] LIGHT MODE THEME Script loading');
     // Set navbar-support-links text to darkish gray
     var supportLinks = document.querySelectorAll('.navbar-support-links');
     supportLinks.forEach(function(el) {
-        el.style.color = '#1f1f1f';
+        el.style.color = '#333';
     });
 
     // Also make #console_box white with dark text and light border
@@ -103,4 +103,4 @@ console.log('[better-falix] LIGHT MODE THEME Script loading');
     borderEls.forEach(function(el) {
         el.style.borderColor = '#e5e7eb';
     });
-});
+})();
