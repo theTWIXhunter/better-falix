@@ -28,6 +28,17 @@ function setFeatureBtnState(btn, enabled) {
   btn.classList.toggle('on', enabled);
 }
 
+function setFeaturesListEnabled(enabled) {
+  // Gray out all .feature-list containers
+  document.querySelectorAll('.feature-list').forEach(list => {
+    if (enabled) {
+      list.classList.remove('disabled');
+    } else {
+      list.classList.add('disabled');
+    }
+  });
+}
+
 function updateFeatureButtons(data) {
   featureIds.forEach(id => {
     const btn = document.getElementById(id);
@@ -36,6 +47,7 @@ function updateFeatureButtons(data) {
       btn.disabled = !data.enabled;
     }
   });
+  setFeaturesListEnabled(data.enabled);
 }
 
 function updateToggleBtn(enabled) {
@@ -83,6 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
     updateToggleBtn(data.enabled);
     updateFeatureButtons(data);
     setThemesListEnabled(data.enabled);
+    setFeaturesListEnabled(data.enabled);
   });
 
   // Main toggle logic
@@ -94,6 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
         chrome.storage.sync.get(null, (allData) => {
           updateFeatureButtons(allData);
           setThemesListEnabled(allData.enabled);
+          setFeaturesListEnabled(allData.enabled);
         });
       });
     });

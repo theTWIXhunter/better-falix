@@ -63,6 +63,7 @@
       border-left: 3px solid var(--falix-accent);
       padding-left: 8px;
     }
+    .features-list,
     .feature-list {
       background: var(--falix-panel);
       border-radius: 8px;
@@ -320,7 +321,8 @@
       background: var(--falix-accent-hover, #005fa3);
       border-color: var(--falix-accent-hover, #005fa3);
     }
-    .themes-list.disabled {
+    .features-list.disabled,
+    .feature-list.disabled {
       opacity: 0.5;
       pointer-events: none;
       filter: grayscale(0.7);
@@ -341,6 +343,7 @@
     </div>
 
     <div id="features-content">
+      <div class="features-list">
       <!-- General Features -->
       <div class="category">General</div>
       <div class="feature-list">
