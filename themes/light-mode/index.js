@@ -6,7 +6,7 @@
     // Set Bootstrap theme to light
     document.documentElement.setAttribute('data-bs-theme', 'light');
 
-    // Optionally, set background color for light mode
+    // Set background color for light mode
     document.body.style.backgroundColor = '#fff';
 
     // Remove any dark-mode specific classes from all elements
@@ -14,8 +14,50 @@
         el.className = el.className.replace(/\bdark\b/g, '');
     });
 
-    // Optionally, override CSS variables for light mode
+    // Override CSS variables for light mode
     document.documentElement.style.setProperty('--falcon-card-bg', '#fff');
     document.documentElement.style.setProperty('--falcon-700', '#2c3e50');
     document.documentElement.style.setProperty('--falcon-500', '#6c757d');
+
+    // Make navbar white
+    var navbars = document.querySelectorAll('.navbar-vertical, .navbar-brand-container, .navbar-content-wrapper, .navbar-footer, .top-navbar');
+    navbars.forEach(function(nav) {
+        nav.style.background = '#fff';
+        nav.style.backgroundColor = '#fff';
+        nav.style.color = '#222';
+        nav.style.boxShadow = '0 1px 4px rgba(0,0,0,0.04)';
+    });
+
+    // Make widget cards white
+    var cards = document.querySelectorAll('.card, .resource-card, .compact-info-card, .modal-content');
+    cards.forEach(function(card) {
+        card.style.background = '#fff';
+        card.style.backgroundColor = '#fff';
+        card.style.color = '#222';
+        card.style.boxShadow = '0 1px 4px rgba(0,0,0,0.04)';
+    });
+
+    // Make sidebar and widget text dark for contrast
+    var darkTextEls = document.querySelectorAll(
+        '.navbar-vertical, .navbar-brand, .navbar-content-wrapper, .navbar-footer, .top-navbar, .card, .resource-card, .compact-info-card, .modal-content, .profile-name, .profile-tag, .support-info-text, .server-name'
+    );
+    darkTextEls.forEach(function(el) {
+        el.style.color = '#222';
+    });
+
+    // Remove any background gradients from nav and widgets
+    var gradientEls = document.querySelectorAll(
+        '.navbar-vertical, .navbar-footer, .card, .resource-card, .compact-info-card, .modal-content'
+    );
+    gradientEls.forEach(function(el) {
+        el.style.backgroundImage = 'none';
+    });
+
+    // Optionally, adjust border colors for light mode
+    var borderEls = document.querySelectorAll(
+        '.card, .resource-card, .compact-info-card, .modal-content, .navbar-footer'
+    );
+    borderEls.forEach(function(el) {
+        el.style.borderColor = '#e5e7eb';
+    });
 })();
