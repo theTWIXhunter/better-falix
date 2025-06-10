@@ -49,6 +49,17 @@ function updateToggleBtn(enabled) {
   }
 }
 
+function setThemesListEnabled(enabled) {
+  const themesList = document.querySelector('.themes-list');
+  if (themesList) {
+    if (enabled) {
+      themesList.classList.remove('disabled');
+    } else {
+      themesList.classList.add('disabled');
+    }
+  }
+}
+
 // Initial load
 document.addEventListener('DOMContentLoaded', () => {
   chrome.storage.sync.get({
@@ -71,6 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }, (data) => {
     updateToggleBtn(data.enabled);
     updateFeatureButtons(data);
+    setThemesListEnabled(data.enabled);
   });
 
   // Main toggle logic
@@ -79,7 +91,10 @@ document.addEventListener('DOMContentLoaded', () => {
       const newState = !data.enabled;
       chrome.storage.sync.set({ enabled: newState }, () => {
         updateToggleBtn(newState);
-        chrome.storage.sync.get(null, updateFeatureButtons);
+        chrome.storage.sync.get(null, (allData) => {
+          updateFeatureButtons(allData);
+          setThemesListEnabled(allData.enabled);
+        });
       });
     });
   });
