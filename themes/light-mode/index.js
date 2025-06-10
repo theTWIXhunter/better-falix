@@ -54,6 +54,7 @@
     whiteTextEls.forEach(function(el) {
         // Skip #PageTitle to keep it normal
         if (el.id === "PageTitle") return;
+        if (el.class === "compact-info-value copy-text") return;
         el.style.color = '#222';
         // For gradients, remove background-clip/text-fill
         el.style.background = 'none';
