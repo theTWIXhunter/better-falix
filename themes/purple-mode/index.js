@@ -26,7 +26,7 @@
         document.documentElement.style.setProperty('--falix-accent', '#a259e6');
         document.documentElement.style.setProperty('--falix-accent-hover', '#7c3aed');
 
-        // Animate #PageTitle with a purple color and lightly transparent box
+        // Animate #PageTitle with a purple gradient fade
         var pageTitle = document.getElementById('PageTitle');
         if (pageTitle) {
           // Only inject once
@@ -35,23 +35,25 @@
             style.id = 'purple-mode-pagetitle-style';
             style.textContent = `
 #PageTitle {
-  color: #a259e6 !important;
-  background: rgba(162,89,230,0.12) !important;
-  border-radius: 8px;
-  padding: 0.25em 0.75em;
-  -webkit-background-clip: border-box !important;
-  -webkit-text-fill-color: #a259e6 !important;
-  background-clip: border-box !important;
-  text-fill-color: #a259e6 !important;
-  animation: none !important;
-  transition: color 0.4s, background 0.4s;
-  font-weight: 700;
+  background: linear-gradient(90deg, #7c3aed 0%, #a259e6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+  animation: pageTitleFade 4s linear infinite alternate;
+  transition: background 0.4s;
 }
+@keyframes pageTitleFade {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+/* Make the underline purple */
 .title-underline.bg-primary {
-  background: #a259e6 !important;
+  background: linear-gradient(90deg, #a259e6 0%, #d8b4fe 100%) !important;
 }
+/* Make active console tab purple */
 .console-tab-item.active {
-  background: #a259e6 !important;
+  background: linear-gradient(90deg, #a259e6 0%, #d8b4fe 100%) !important;
   color: #fff !important;
   border-radius: 8px 8px 0 0;
   box-shadow: 0 2px 8px 0 rgba(162,89,230,0.08);
