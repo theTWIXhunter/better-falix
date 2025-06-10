@@ -45,6 +45,18 @@
         el.style.color = '#222';
     });
 
+    // Make previously white or light text dark for readability
+    var whiteTextEls = document.querySelectorAll(
+        '.text-white, .text-light, .text-gradient-primary, .text-primary, .fw-bold, .modal-title, .support-info-text, .profile-name, .profile-tag, .resource-name-modal, .resource-value-modal, .resource-desc-modal, .resource-details-modal, .server-name, .support-warning-text, .support-info-label, .support-info-value, .support-close-btn, .support-copy-btn, .profile-resources-icon'
+    );
+    whiteTextEls.forEach(function(el) {
+        el.style.color = '#222';
+        // For gradients, remove background-clip/text-fill
+        el.style.background = 'none';
+        el.style.webkitBackgroundClip = '';
+        el.style.webkitTextFillColor = '';
+    });
+
     // Remove any background gradients from nav and widgets
     var gradientEls = document.querySelectorAll(
         '.navbar-vertical, .navbar-footer, .card, .resource-card, .compact-info-card, .modal-content'
