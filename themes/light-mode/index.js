@@ -1,8 +1,8 @@
 // [better-falix]LIGHT MODE THEME: Script loading
 console.log('[better-falix] LIGHT MODE THEME: Script loading');
 
-// Use enabled: false as default so theme is only enabled if explicitly set
-chrome.storage.sync.get({ activeTheme: false, enabled: false }, (data) => {
+// Use enabled: true as default so theme is enabled unless explicitly disabled
+chrome.storage.sync.get({ activeTheme: false, enabled: true }, (data) => {
   if (!data.enabled || data.activeTheme !== 'light-mode') {
     console.log('[better-falix] LIGHT MODE THEME: Script disabled');
     return;
