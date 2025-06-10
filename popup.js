@@ -66,8 +66,19 @@ function setThemesListEnabled(enabled) {
   if (themesList) {
     if (enabled) {
       themesList.classList.remove('disabled');
+      // Also gray out theme cards and their children
+      themesList.querySelectorAll('.theme-card, .theme-label, .theme-select-btn, .theme-preview').forEach(el => {
+        el.style.pointerEvents = '';
+        el.style.filter = '';
+        el.style.opacity = '';
+      });
     } else {
       themesList.classList.add('disabled');
+      themesList.querySelectorAll('.theme-card, .theme-label, .theme-select-btn, .theme-preview').forEach(el => {
+        el.style.pointerEvents = 'none';
+        el.style.filter = 'grayscale(0.7)';
+        el.style.opacity = '0.5';
+      });
     }
   }
 }
