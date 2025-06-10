@@ -60,7 +60,7 @@
     }
 
     // Make console tabs white with dark text
-        var consoletabx = document.getElementsByClassName('console-tabs, console-output');
+        var consoletabx = document.getElementsByClassName('console-tabs, console-output, console-tab-container, console-tab-controls, console-terminal, console-input-container');
     if (consoleBox) {
         consoleBox.style.background = '#fff';
         consoleBox.style.backgroundColor = '#fff';
