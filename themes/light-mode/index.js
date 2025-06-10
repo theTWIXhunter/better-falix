@@ -10,7 +10,6 @@
       typeof chrome.storage.sync.get === "function"
     ) {
       chrome.storage.sync.get({ activeTheme: false, enabled: true }, function(data) {
-        // Check both: theme must be 'light-mode' and enabled must be true
         if (data.activeTheme !== 'light-mode' || data.enabled !== true) {
           console.log('[better-falix] LIGHT MODE THEME: Script disabled');
           return;
@@ -180,6 +179,155 @@
         // Make .checkbox-cell and .recycle-icon-wrapper light gray
         var lightGrayEls = document.querySelectorAll('.checkbox-cell, .recycle-icon-wrapper');
         lightGrayEls.forEach(function(el) {
+            el.style.background = '#f3f4f6';
+            el.style.backgroundColor = '#f3f4f6';
+            el.style.color = '#222';
+        });
+
+        // Mass actions panel white
+        var massActionsPanels = document.querySelectorAll('.mass-actions-panel');
+        massActionsPanels.forEach(function(el) {
+            el.style.background = '#fff';
+            el.style.color = '#222';
+        });
+
+        // Upload queue white
+        var uploadQueues = document.querySelectorAll('.upload-queue, .upload-queue-header, .upload-queue-body, .upload-item');
+        uploadQueues.forEach(function(el) {
+            el.style.background = '#fff';
+            el.style.color = '#222';
+        });
+
+        // Progress overlays white
+        var progressModals = document.querySelectorAll('.download-progress-modal, .upload-progress-modal');
+        progressModals.forEach(function(el) {
+            el.style.background = '#fff';
+            el.style.color = '#222';
+        });
+
+        // All modals white
+        var modalContents = document.querySelectorAll('.modal-content, .modal-header');
+        modalContents.forEach(function(el) {
+            el.style.background = '#fff';
+            el.style.color = '#222';
+        });
+
+        // Select all container white
+        var selectAllContainers = document.querySelectorAll('.select-all-container');
+        selectAllContainers.forEach(function(el) {
+            el.style.background = '#fff';
+            el.style.color = '#222';
+        });
+
+        // File table rows and cells white
+        var fileTableRows = document.querySelectorAll('.file-table tbody tr');
+        fileTableRows.forEach(function(el) {
+            el.style.background = '#fff';
+            el.style.color = '#222';
+        });
+        var fileTableCells = document.querySelectorAll('.file-table tbody tr td');
+        fileTableCells.forEach(function(el) {
+            el.style.background = '#fff';
+            el.style.color = '#222';
+        });
+
+        // File/folder/goback icon wrappers white
+        var iconWrappers = document.querySelectorAll('.file-icon-wrapper, .folder-icon-wrapper, .goback-icon-wrapper');
+        iconWrappers.forEach(function(el) {
+            el.style.background = '#fff';
+            el.style.color = '#222';
+        });
+
+        // Dropdown menus white
+        var dropdownMenus = document.querySelectorAll('.dropdown-menu, .custom-dropdown-menu, .context-menu-content');
+        dropdownMenus.forEach(function(el) {
+            el.style.background = '#fff';
+            el.style.color = '#222';
+        });
+
+        // Breadcrumbs white
+        var breadcrumbs = document.querySelectorAll('.breadcrumb, .breadcrumb-wrapper');
+        breadcrumbs.forEach(function(el) {
+            el.style.background = '#fff';
+            el.style.color = '#222';
+        });
+
+        // Error/empty state containers white
+        var emptyStates = document.querySelectorAll('.access-denied-container, .hexagon-bg');
+        emptyStates.forEach(function(el) {
+            el.style.background = '#fff';
+            el.style.color = '#222';
+        });
+
+        // Resource modal white
+        var resourceModals = document.querySelectorAll('.resources-grid-modal, .resource-item-modal');
+        resourceModals.forEach(function(el) {
+            el.style.background = '#fff';
+            el.style.color = '#222';
+        });
+
+        // Select all label white
+        var selectAllLabels = document.querySelectorAll('.select-all-label');
+        selectAllLabels.forEach(function(el) {
+            el.style.background = '#fff';
+            el.style.color = '#222';
+        });
+
+        // Sort bar/buttons white
+        var sortEls = document.querySelectorAll('.sort-options, .sort-btn');
+        sortEls.forEach(function(el) {
+            el.style.background = '#fff';
+            el.style.color = '#222';
+        });
+
+        // Mass actions header/content/buttons white
+        var massActionsEls = document.querySelectorAll('.mass-actions-header, .mass-actions-content, .mass-action-btn');
+        massActionsEls.forEach(function(el) {
+            el.style.background = '#fff';
+            el.style.color = '#222';
+        });
+
+        // Mobile action sheet white
+        var mobileActionSheets = document.querySelectorAll('.mobile-action-sheet, .mobile-action-sheet-overlay');
+        mobileActionSheets.forEach(function(el) {
+            el.style.background = '#fff';
+            el.style.color = '#222';
+        });
+
+        // Footer white
+        var footers = document.querySelectorAll('.footer-modern');
+        footers.forEach(function(el) {
+            el.style.background = '#fff';
+            el.style.color = '#222';
+        });
+
+        // Light gray for .mass-action-check, .file-table tbody tr.selected, .file-table tbody tr:hover
+        var lightGray2Els = document.querySelectorAll('.mass-action-check, .file-table tbody tr.selected, .file-table tbody tr:hover');
+        lightGray2Els.forEach(function(el) {
+            el.style.background = '#f3f4f6';
+            el.style.backgroundColor = '#f3f4f6';
+            el.style.color = '#222';
+        });
+
+        // Light gray for .file-table
+        var fileTables = document.querySelectorAll('.file-table');
+        fileTables.forEach(function(el) {
+            el.style.background = '#f3f4f6';
+            el.style.backgroundColor = '#f3f4f6';
+            el.style.color = '#222';
+        });
+
+        // Light gray for .select-all-container:hover
+        var selectAllHover = document.querySelectorAll('.select-all-container:hover');
+        selectAllHover.forEach(function(el) {
+            el.style.background = '#f3f4f6';
+            el.style.backgroundColor = '#f3f4f6';
+            el.style.color = '#222';
+        });
+
+        // Light gray for dropdown/context menu item hover
+        var dropdownHover = document.querySelectorAll('.dropdown-menu .dropdown-item:hover, .custom-dropdown-item:hover, .context-menu-item:hover');
+        dropdownHover.forEach(function(el) {
             el.style.background = '#f3f4f6';
             el.style.backgroundColor = '#f3f4f6';
             el.style.color = '#222';
