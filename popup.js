@@ -151,8 +151,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Theme selection logic
   function setActiveTheme(themeName) {
+      // Mark the selected button and card
       document.querySelectorAll('.theme-select-btn').forEach(btn => {
           btn.classList.toggle('selected', btn.dataset.theme === themeName);
+          // Also highlight the card for accessibility/visual feedback
+          if (btn.closest('.theme-card')) {
+              btn.closest('.theme-card').classList.toggle('selected', btn.dataset.theme === themeName);
+          }
       });
       chrome.storage.sync.set({ activeTheme: themeName });
   }
@@ -164,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   });
 
-  // Load active theme from storage
+  // Load active theme from storage and update UI
   chrome.storage.sync.get(['activeTheme'], function(data) {
       const activeTheme = data.activeTheme || 'default';
       setActiveTheme(activeTheme);
