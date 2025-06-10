@@ -59,15 +59,6 @@
         consoleBox.style.boxShadow = '0 1px 4px rgba(0,0,0,0.04)';
     }
 
-    // Make console tabs white with dark text
-        var consoletabx = document.getElementsByClassName('console-tabs, console-output, console-tab-container, console-tab-controls, console-terminal, console-input-container');
-    if (consoleBox) {
-        consoleBox.style.background = '#fff';
-        consoleBox.style.backgroundColor = '#fff';
-        consoleBox.style.color = '#222';
-        consoleBox.style.borderColor = '#e5e7eb';
-        consoleBox.style.boxShadow = '0 1px 4px rgba(0,0,0,0.04)';
-
     // Make sidebar and widget text dark for contrast
     var darkTextEls = document.querySelectorAll(
         '.navbar-vertical, .navbar-brand, .navbar-content-wrapper, .navbar-footer, .top-navbar, .card, .resource-card, .compact-info-card, .modal-content, .profile-name, .profile-tag, .support-info-text, .server-name'
@@ -108,4 +99,4 @@
     borderEls.forEach(function(el) {
         el.style.borderColor = '#e5e7eb';
     });
-}});
+});
