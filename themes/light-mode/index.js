@@ -42,6 +42,8 @@
         '.navbar-vertical, .navbar-brand, .navbar-content-wrapper, .navbar-footer, .top-navbar, .card, .resource-card, .compact-info-card, .modal-content, .profile-name, .profile-tag, .support-info-text, .server-name'
     );
     darkTextEls.forEach(function(el) {
+        // Skip #PageTitle to keep it normal
+        if (el.id === "PageTitle") return;
         el.style.color = '#222';
     });
 
@@ -50,6 +52,8 @@
         '.text-white, .text-light, .text-gradient-primary, .text-primary, .fw-bold, .modal-title, .support-info-text, .profile-name, .profile-tag, .resource-name-modal, .resource-value-modal, .resource-desc-modal, .resource-details-modal, .server-name, .support-warning-text, .support-info-label, .support-info-value, .support-close-btn, .support-copy-btn, .profile-resources-icon'
     );
     whiteTextEls.forEach(function(el) {
+        // Skip #PageTitle to keep it normal
+        if (el.id === "PageTitle") return;
         el.style.color = '#222';
         // For gradients, remove background-clip/text-fill
         el.style.background = 'none';
