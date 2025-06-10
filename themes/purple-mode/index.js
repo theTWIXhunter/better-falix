@@ -35,7 +35,7 @@
             style.id = 'purple-mode-pagetitle-style';
             style.textContent = `
 #PageTitle {
-  background: linear-gradient(90deg, #7c3aed 0%, #a259e6 50%, #d8b4fe 100%);
+  background: linear-gradient(90deg, #7c3aed 0%, #a259e6 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
