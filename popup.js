@@ -141,4 +141,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Set default tab
   activateTab('features');
+
+  // Theme selection logic
+  function setActiveTheme(themeName) {
+      document.querySelectorAll('.theme-select-btn').forEach(btn => {
+          btn.classList.toggle('selected', btn.dataset.theme === themeName);
+      });
+      chrome.storage.sync.set({ activeTheme: themeName });
+  }
+
+  // Load active theme from storage
+  chrome.storage.sync.get(['activeTheme'], function(data) {
+      const activeTheme = data.activeTheme || 'default';
+      setActiveTheme(activeTheme);
+  });
+
+  // Handle theme select button click
+  document.querySelectorAll('.theme-select-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+          setActiveTheme(this.dataset.theme);
+      });
+  });
 });

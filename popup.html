@@ -239,6 +239,77 @@
       transition: left 0.25s cubic-bezier(.4,0,.2,1);
       z-index: 0;
     }
+    /* Theme styles */
+    .themes-list {
+      display: flex;
+      justify-content: center;
+      gap: 48px;
+      margin-top: 16px;
+      margin-bottom: 16px;
+    }
+    .theme-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      width: 170px;
+    }
+    .theme-preview {
+      width: 150px;
+      height: 110px;
+      border-radius: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+      background: #fff;
+      object-fit: cover;
+      margin-bottom: 10px;
+      border: 2px solid transparent;
+      transition: border 0.2s;
+    }
+    .theme-card .theme-select-btn.selected ~ .theme-preview,
+    .theme-card.selected .theme-preview {
+      border: 2px solid var(--falix-accent, #0078d7);
+    }
+    .theme-label {
+      margin-top: 4px;
+      font-size: 15px;
+      color: #222;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+    .theme-select-btn {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 2px solid var(--falix-accent, #0078d7);
+      background: #fff;
+      position: absolute;
+      bottom: -18px;
+      left: 50%;
+      transform: translateX(-50%);
+      cursor: pointer;
+      transition: background 0.2s, border 0.2s;
+      outline: none;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .theme-select-btn.selected {
+      background: var(--falix-accent, #0078d7);
+      border-color: var(--falix-accent, #0078d7);
+    }
+    .theme-select-btn.selected::after {
+      content: '';
+      display: block;
+      width: 10px;
+      height: 10px;
+      background: #fff;
+      border-radius: 50%;
+    }
+    .theme-select-btn:hover {
+      background: var(--falix-accent-hover, #005fa3);
+      border-color: var(--falix-accent-hover, #005fa3);
+    }
   </style>
 </head>
 <body>
@@ -327,7 +398,18 @@
       </div>
     </div>
     <div id="themes-content" style="display:none;">
-      <p style="text-align:center; color:#888;">Themes settings coming soon.</p>
+      <div class="themes-list">
+        <div class="theme-card" data-theme="default">
+          <img src="themes/default/icon.png" alt="Default Theme" class="theme-preview">
+          <div class="theme-label">Default</div>
+          <button class="theme-select-btn" data-theme="default"></button>
+        </div>
+        <div class="theme-card" data-theme="light-mode">
+          <img src="themes/light-mode/icon.png" alt="Light Mode" class="theme-preview">
+          <div class="theme-label">Light Mode</div>
+          <button class="theme-select-btn" data-theme="light-mode"></button>
+        </div>
+      </div>
     </div>
     <!-- Footer -->
     <div class="footer">&copy; 2025 the_twix_hunter. All rights reserved.</div>
