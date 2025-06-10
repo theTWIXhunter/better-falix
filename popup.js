@@ -108,23 +108,37 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Slider logic
+  // Slider logic with animation
   const featuresTab = document.getElementById('features-tab');
   const themesTab = document.getElementById('themes-tab');
   const featuresContent = document.getElementById('features-content');
   const themesContent = document.getElementById('themes-content');
+  const sliderIndicator = document.getElementById('slider-indicator');
+
+  function activateTab(tab) {
+      if (tab === 'features') {
+          featuresTab.classList.add('active');
+          themesTab.classList.remove('active');
+          featuresContent.style.display = '';
+          themesContent.style.display = 'none';
+          sliderIndicator.style.left = '0%';
+      } else {
+          themesTab.classList.add('active');
+          featuresTab.classList.remove('active');
+          featuresContent.style.display = 'none';
+          themesContent.style.display = '';
+          sliderIndicator.style.left = '50%';
+      }
+  }
 
   featuresTab.addEventListener('click', function() {
-      featuresTab.classList.add('active');
-      themesTab.classList.remove('active');
-      featuresContent.style.display = '';
-      themesContent.style.display = 'none';
+      activateTab('features');
   });
 
   themesTab.addEventListener('click', function() {
-      themesTab.classList.add('active');
-      featuresTab.classList.remove('active');
-      featuresContent.style.display = 'none';
-      themesContent.style.display = '';
+      activateTab('themes');
   });
+
+  // Set default tab
+  activateTab('features');
 });

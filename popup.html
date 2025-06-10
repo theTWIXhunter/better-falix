@@ -182,6 +182,46 @@
       color: #fff;
       background: var(--falix-accent);
     }
+    .slider-tabs {
+      display: flex;
+      position: relative;
+      background: #181c24;
+      border-radius: 8px;
+      margin: 12px 0 18px 0;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+      overflow: hidden;
+      height: 38px;
+      width: 220px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .slider-tab-btn {
+      flex: 1;
+      z-index: 1;
+      background: none;
+      border: none;
+      color: #bfc9db;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      outline: none;
+      transition: color 0.2s;
+      height: 100%;
+    }
+    .slider-tab-btn.active {
+      color: #fff;
+    }
+    .slider-indicator {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 50%;
+      height: 100%;
+      background: #232b3a;
+      border-radius: 8px;
+      transition: left 0.25s cubic-bezier(.4,0,.2,1);
+      z-index: 0;
+    }
   </style>
 </head>
 <body>
@@ -191,10 +231,11 @@
     <div class="desc">Toggle to enable or disable all extension features.</div>
     <hr>
 
-    <!-- Slider for Features/Themes -->
-    <div id="popup-slider">
-      <button id="features-tab" class="popup-tab active">Features</button>
-      <button id="themes-tab" class="popup-tab">Themes</button>
+    <!-- Slider Tabs -->
+    <div class="slider-tabs">
+      <div class="slider-indicator" id="slider-indicator"></div>
+      <button class="slider-tab-btn active" id="features-tab" type="button">Console</button>
+      <button class="slider-tab-btn" id="themes-tab" type="button">Chat</button>
     </div>
 
     <div id="features-content">
