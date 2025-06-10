@@ -1,5 +1,22 @@
-
 (function() {
+    // [better-falix] LIGHT MODE THEME: Script loading
+    console.log('[better-falix] LIGHT MODE THEME Script loading');
+
+    // Check if both the theme and the general extension are enabled
+    if (
+      typeof window.chrome !== "undefined" &&
+      chrome.storage &&
+      chrome.storage.sync &&
+      typeof chrome.storage.sync.get === "function"
+    ) {
+      chrome.storage.sync.get({ activeTheme: false, enabled: true }, function(data) {
+        // Check both: theme must be 'light-mode' and enabled must be true
+        if (data.activeTheme !== 'light-mode' || data.enabled !== true) {
+          console.log('[better-falix] LIGHT MODE THEME: Script disabled');
+          return;
+        }
+        console.log('[better-falix] LIGHT MODE THEME: Script enabled');
+
         // Remove 'dark' class from <html> and <body>
         document.documentElement.classList.remove('dark');
         document.body.classList.remove('dark');
@@ -149,8 +166,10 @@
         // Set .compact-info-value text to blue
         var compactInfoValues = document.querySelectorAll('.compact-info-value');
         compactInfoValues.forEach(function(el) {
-      el.style.color = '#007bff';
-    });
-    });
-
-
+            el.style.color = '#007bff';
+        });
+      });
+    } else {
+      console.error('[better-falix] LIGHT MODE THEME: chrome.storage.sync.get is not available or not running as a Chrome extension content script');
+    }
+})();
