@@ -134,22 +134,20 @@ document.addEventListener('DOMContentLoaded', () => {
       }
   }
 
-  // Restore last active tab
+  // Restore last active tab (and only activate after storage is loaded)
   chrome.storage.sync.get(['popupActiveTab'], function(data) {
     const tab = data.popupActiveTab || 'features';
     activateTab(tab, false);
-  });
 
-  featuresTab.addEventListener('click', function() {
-      activateTab('features');
-  });
+    // Add event listeners only after initial activation to avoid race condition
+    featuresTab.addEventListener('click', function() {
+        activateTab('features');
+    });
 
-  themesTab.addEventListener('click', function() {
-      activateTab('themes');
+    themesTab.addEventListener('click', function() {
+        activateTab('themes');
+    });
   });
-
-  // Set default tab
-  activateTab('features');
 
   // Theme selection logic
   function setActiveTheme(themeName) {
