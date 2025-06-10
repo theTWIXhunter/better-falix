@@ -1,19 +1,13 @@
 // [better-falix]LIGHT MODE THEME: Script loading
 console.log('[better-falix] LIGHT MODE THEME: Script loading');
 
-// Only run in a Chrome extension context
-if (
-  typeof window.chrome !== "undefined" &&
-  chrome.storage &&
-  chrome.storage.sync &&
-  typeof chrome.storage.sync.get === "function"
-) {
-  chrome.storage.sync.get({ activeTheme: false, enabled: true }, function(data) {
-    if (!data.enabled || data.activeTheme !== 'light-mode') {
-      console.log('[better-falix] LIGHT MODE THEME: Script disabled');
-      return;
-    }
-    console.log('[better-falix] LIGHT MODE THEME: Script enabled');
+chrome.storage.sync.get({ activeTheme: false, enabled: true }, function(data) {
+  if (!data.enabled || data.activeTheme !== 'light-mode') {
+    console.log('[better-falix] LIGHT MODE THEME: Script disabled');
+    return;
+  }
+
+  console.log('[better-falix] LIGHT MODE THEME: Script enabled');
 
     //  --------- START FEATURE ----------
 
@@ -171,6 +165,4 @@ if (
     });
     });
 })();
-} else {
-  console.error('[better-falix] LIGHT MODE THEME: chrome.storage.sync.get is not available or not running as a Chrome extension content script');
-}
+
