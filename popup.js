@@ -53,10 +53,10 @@ function updateFeatureButtons(data) {
 function updateToggleBtn(enabled) {
   const toggleBtn = document.getElementById('toggle');
   if (enabled) {
-    toggleBtn.textContent = 'Disable Extensions';
+    toggleBtn.textContent = 'Disable Extension';
     toggleBtn.classList.remove('off');
   } else {
-    toggleBtn.textContent = 'Enable Extensions';
+    toggleBtn.textContent = 'Enable Extension';
     toggleBtn.classList.add('off');
   }
 }
