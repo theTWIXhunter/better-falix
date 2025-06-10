@@ -168,6 +168,22 @@
         compactInfoValues.forEach(function(el) {
             el.style.color = '#007bff';
         });
+
+        // Make .clickablebox white with black text
+        var clickableBoxes = document.querySelectorAll('.clickablebox');
+        clickableBoxes.forEach(function(el) {
+            el.style.background = '#fff';
+            el.style.backgroundColor = '#fff';
+            el.style.color = '#000';
+        });
+
+        // Make .checkbox-cell and .recycle-icon-wrapper light gray
+        var lightGrayEls = document.querySelectorAll('.checkbox-cell, .recycle-icon-wrapper');
+        lightGrayEls.forEach(function(el) {
+            el.style.background = '#f3f4f6';
+            el.style.backgroundColor = '#f3f4f6';
+            el.style.color = '#222';
+        });
       });
     } else {
       console.error('[better-falix] LIGHT MODE THEME: chrome.storage.sync.get is not available or not running as a Chrome extension content script');
