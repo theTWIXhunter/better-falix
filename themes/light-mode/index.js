@@ -82,6 +82,22 @@
         el.style.backgroundColor = '#fff';
     });
 
+    // Set plain text in <pre class="console-terminal"> to light black (#222)
+    var consoleTerminals = document.querySelectorAll('.console-terminal');
+    consoleTerminals.forEach(function(pre) {
+        // Walk all child nodes
+        pre.childNodes.forEach(function(node) {
+            // If it's a text node and not just whitespace
+            if (node.nodeType === Node.TEXT_NODE && node.textContent.trim() !== '') {
+                // Wrap in a span with color if not already wrapped
+                var span = document.createElement('span');
+                span.style.color = '#222';
+                span.textContent = node.textContent;
+                pre.replaceChild(span, node);
+            }
+        });
+    });
+
     // Also make #console_box white with dark text and light border
     var consoleBox = document.getElementById('console_box');
     if (consoleBox) {
