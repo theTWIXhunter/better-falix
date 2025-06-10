@@ -2,14 +2,15 @@
 console.log('[better-falix] LIGHT MODE THEME: Script loading');
 
 // Use enabled: true as default so theme is enabled unless explicitly disabled
-chrome.storage.sync.get({ activeTheme: false, enabled: true }, (data) => {
-  if (!data.enabled || data.activeTheme !== 'light-mode') {
-    console.log('[better-falix] LIGHT MODE THEME: Script disabled');
-    return;
-  }
-  console.log('[better-falix] LIGHT MODE THEME: Script enabled');
+if (typeof chrome !== "undefined" && chrome.storage && chrome.storage.sync && typeof chrome.storage.sync.get === "function") {
+  chrome.storage.sync.get({ activeTheme: false, enabled: true }, (data) => {
+    if (!data.enabled || data.activeTheme !== 'light-mode') {
+      console.log('[better-falix] LIGHT MODE THEME: Script disabled');
+      return;
+    }
+    console.log('[better-falix] LIGHT MODE THEME: Script enabled');
 
-  //  --------- START FEATURE ----------
+    //  --------- START FEATURE ----------
 
 (function() {
         // Remove 'dark' class from <html> and <body>
@@ -165,3 +166,6 @@ chrome.storage.sync.get({ activeTheme: false, enabled: true }, (data) => {
         });
     });
 })();
+} else {
+  console.error('[better-falix] LIGHT MODE THEME: chrome.storage.sync.get is not available');
+}
