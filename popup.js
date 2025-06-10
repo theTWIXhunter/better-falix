@@ -108,14 +108,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Slider logic with animation
+  // Slider logic with animation and tab memory
   const featuresTab = document.getElementById('features-tab');
   const themesTab = document.getElementById('themes-tab');
   const featuresContent = document.getElementById('features-content');
   const themesContent = document.getElementById('themes-content');
   const sliderIndicator = document.getElementById('slider-indicator');
 
-  function activateTab(tab) {
+  function activateTab(tab, save = true) {
       if (tab === 'features') {
           featuresTab.classList.add('active');
           themesTab.classList.remove('active');
@@ -129,7 +129,16 @@ document.addEventListener('DOMContentLoaded', () => {
           themesContent.style.display = '';
           sliderIndicator.style.left = '50%';
       }
+      if (save) {
+        chrome.storage.sync.set({ popupActiveTab: tab });
+      }
   }
+
+  // Restore last active tab
+  chrome.storage.sync.get(['popupActiveTab'], function(data) {
+    const tab = data.popupActiveTab || 'features';
+    activateTab(tab, false);
+  });
 
   featuresTab.addEventListener('click', function() {
       activateTab('features');
