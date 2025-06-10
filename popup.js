@@ -138,15 +138,15 @@ document.addEventListener('DOMContentLoaded', () => {
   chrome.storage.sync.get(['popupActiveTab'], function(data) {
     const tab = data.popupActiveTab || 'features';
     activateTab(tab, false);
+  });
 
-    // Add event listeners only after initial activation to avoid race condition
-    featuresTab.addEventListener('click', function() {
-        activateTab('features');
-    });
+  // Always register tab event listeners
+  featuresTab.addEventListener('click', function() {
+      activateTab('features');
+  });
 
-    themesTab.addEventListener('click', function() {
-        activateTab('themes');
-    });
+  themesTab.addEventListener('click', function() {
+      activateTab('themes');
   });
 
   // Theme selection logic
@@ -157,16 +157,16 @@ document.addEventListener('DOMContentLoaded', () => {
       chrome.storage.sync.set({ activeTheme: themeName });
   }
 
-  // Load active theme from storage
-  chrome.storage.sync.get(['activeTheme'], function(data) {
-      const activeTheme = data.activeTheme || 'default';
-      setActiveTheme(activeTheme);
-  });
-
-  // Handle theme select button click
+  // Always register theme select button event listeners
   document.querySelectorAll('.theme-select-btn').forEach(btn => {
       btn.addEventListener('click', function() {
           setActiveTheme(this.dataset.theme);
       });
+  });
+
+  // Load active theme from storage
+  chrome.storage.sync.get(['activeTheme'], function(data) {
+      const activeTheme = data.activeTheme || 'default';
+      setActiveTheme(activeTheme);
   });
 });
