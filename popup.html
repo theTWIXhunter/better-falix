@@ -16,7 +16,8 @@
       --falix-switch-checked: #0078d7;
     }
     body {
-      min-width: 320px;
+      min-width: 420px;
+      max-width: 520px;
       font-family: 'Segoe UI', 'Arial', sans-serif;
       margin: 0;
       padding: 0;
@@ -26,6 +27,7 @@
     #popup-container {
       padding: 20px 18px 18px 18px;
       background: var(--falix-bg);
+      max-width: 520px;
     }
     #toggle {
       width: 100%;
@@ -242,10 +244,17 @@
     /* Theme styles */
     .themes-list {
       display: flex;
-      justify-content: center;
-      gap: 48px;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 18px;
       margin-top: 16px;
       margin-bottom: 16px;
+      width: 100%;
+    }
+    .themes-row {
+      display: flex;
+      gap: 48px;
+      width: 100%;
     }
     .theme-card {
       display: flex;
@@ -408,8 +417,8 @@
         <b>Warning:</b> Themes are still under construction. We are not sure if all themes already work site-wide.<br>
         If you want to contribute to these themes, please do so on <a href="https://github.com/theTWIXhunter/better-falix" target="_blank" style="color:#7c3aed;text-decoration:underline;">github</a>.
       </div>
-      <div class="themes-list" style="flex-direction:column;align-items:center;gap:18px;">
-        <div style="display:flex;gap:48px;">
+      <div class="themes-list">
+        <div class="themes-row">
           <div class="theme-card" data-theme="default">
             <img src="themes/default/icon.png" alt="Default Theme" class="theme-preview">
             <div class="theme-label">Default</div>
@@ -421,10 +430,13 @@
             <button class="theme-select-btn" data-theme="light-mode"></button>
           </div>
         </div>
-        <div class="theme-card" data-theme="purple-mode">
-          <img src="themes/purple-mode/icon.png" alt="Purple Mode" class="theme-preview">
-          <div class="theme-label">Purple Mode</div>
-          <button class="theme-select-btn" data-theme="purple-mode"></button>
+        <div class="themes-row" style="justify-content: flex-start;">
+          <div style="width:170px;"></div>
+          <div class="theme-card" data-theme="purple-mode">
+            <img src="themes/purple-mode/icon.png" alt="Purple Mode" class="theme-preview">
+            <div class="theme-label">Purple Mode</div>
+            <button class="theme-select-btn" data-theme="purple-mode"></button>
+          </div>
         </div>
       </div>
     </div>
