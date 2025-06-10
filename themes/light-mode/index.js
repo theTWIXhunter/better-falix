@@ -37,6 +37,16 @@
         card.style.boxShadow = '0 1px 4px rgba(0,0,0,0.04)';
     });
 
+    // Also make #console_box white with dark text and light border
+    var consoleBox = document.getElementById('console_box');
+    if (consoleBox) {
+        consoleBox.style.background = '#fff';
+        consoleBox.style.backgroundColor = '#fff';
+        consoleBox.style.color = '#222';
+        consoleBox.style.borderColor = '#e5e7eb';
+        consoleBox.style.boxShadow = '0 1px 4px rgba(0,0,0,0.04)';
+    }
+
     // Make sidebar and widget text dark for contrast
     var darkTextEls = document.querySelectorAll(
         '.navbar-vertical, .navbar-brand, .navbar-content-wrapper, .navbar-footer, .top-navbar, .card, .resource-card, .compact-info-card, .modal-content, .profile-name, .profile-tag, .support-info-text, .server-name'
