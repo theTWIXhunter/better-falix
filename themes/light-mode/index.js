@@ -1,15 +1,3 @@
-// [better-falix]LIGHT MODE THEME: Script loading
-console.log('[better-falix] LIGHT MODE THEME: Script loading');
-
-chrome.storage.sync.get({ activeTheme: false, enabled: true }, function(data) {
-  if (!data.enabled || data.activeTheme !== 'light-mode') {
-    console.log('[better-falix] LIGHT MODE THEME: Script disabled');
-    return;
-  }
-
-  console.log('[better-falix] LIGHT MODE THEME: Script enabled');
-
-    //  --------- START FEATURE ----------
 
 (function() {
         // Remove 'dark' class from <html> and <body>
@@ -164,5 +152,5 @@ chrome.storage.sync.get({ activeTheme: false, enabled: true }, function(data) {
       el.style.color = '#007bff';
     });
     });
-})();
+
 
