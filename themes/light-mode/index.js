@@ -43,6 +43,12 @@
         el.style.color = '#000';
     });
 
+    // Set navbar-support-links text to darkish gray
+    var supportLinks = document.querySelectorAll('.navbar-support-links');
+    supportLinks.forEach(function(el) {
+        el.style.color = '#1f1f1f';
+    });
+
     // Also make #console_box white with dark text and light border
     var consoleBox = document.getElementById('console_box');
     if (consoleBox) {
@@ -52,6 +58,15 @@
         consoleBox.style.borderColor = '#e5e7eb';
         consoleBox.style.boxShadow = '0 1px 4px rgba(0,0,0,0.04)';
     }
+
+    // Make console tabs white with dark text
+        var consoletabx = document.getElementsByClassName('console-tabs, console-output');
+    if (consoleBox) {
+        consoleBox.style.background = '#fff';
+        consoleBox.style.backgroundColor = '#fff';
+        consoleBox.style.color = '#222';
+        consoleBox.style.borderColor = '#e5e7eb';
+        consoleBox.style.boxShadow = '0 1px 4px rgba(0,0,0,0.04)';
 
     // Make sidebar and widget text dark for contrast
     var darkTextEls = document.querySelectorAll(
@@ -93,4 +108,4 @@
     borderEls.forEach(function(el) {
         el.style.borderColor = '#e5e7eb';
     });
-})();
+}});
