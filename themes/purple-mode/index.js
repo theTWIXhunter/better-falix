@@ -26,7 +26,7 @@
         document.documentElement.style.setProperty('--falix-accent', '#a259e6');
         document.documentElement.style.setProperty('--falix-accent-hover', '#7c3aed');
 
-        // Animate #PageTitle with a purple color (no gradient)
+        // Animate #PageTitle with a purple color and lightly transparent box
         var pageTitle = document.getElementById('PageTitle');
         if (pageTitle) {
           // Only inject once
@@ -36,13 +36,16 @@
             style.textContent = `
 #PageTitle {
   color: #a259e6 !important;
-  background: none !important;
-  -webkit-background-clip: initial !important;
-  -webkit-text-fill-color: initial !important;
-  background-clip: initial !important;
-  text-fill-color: initial !important;
+  background: rgba(162,89,230,0.12) !important;
+  border-radius: 8px;
+  padding: 0.25em 0.75em;
+  -webkit-background-clip: border-box !important;
+  -webkit-text-fill-color: #a259e6 !important;
+  background-clip: border-box !important;
+  text-fill-color: #a259e6 !important;
   animation: none !important;
-  transition: color 0.4s;
+  transition: color 0.4s, background 0.4s;
+  font-weight: 700;
 }
 .title-underline.bg-primary {
   background: #a259e6 !important;
