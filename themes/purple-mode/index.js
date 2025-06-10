@@ -49,19 +49,31 @@
 }
 /* Make the underline purple */
 .title-underline.bg-primary {
-  background: linear-gradient(90deg, #a259e6 0%, #d8b4fe 100%) !important;
+  background: #a259e6 !important;
 }
-/* Make active console tab purple */
+/* Make active console tab slightly transparent purple with solid purple text and underline */
 .console-tab-item.active {
-  background: linear-gradient(90deg, #a259e6 0%, #d8b4fe 100%) !important;
-  color: #fff !important;
+  background: rgba(162,89,230,0.15) !important;
+  color: #a259e6 !important;
   border-radius: 8px 8px 0 0;
   box-shadow: 0 2px 8px 0 rgba(162,89,230,0.08);
+  position: relative;
 }
 .console-tab-item.active svg,
 .console-tab-item.active i {
-  color: #fff !important;
-  fill: #fff !important;
+  color: #a259e6 !important;
+  fill: #a259e6 !important;
+}
+.console-tab-item.active::after {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 20%;
+  right: 20%;
+  bottom: 0;
+  height: 3px;
+  border-radius: 2px 2px 0 0;
+  background: #a259e6 !important;
 }
 `;
             document.head.appendChild(style);
