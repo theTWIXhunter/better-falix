@@ -15,6 +15,8 @@
         }
         console.log('[better-falix] PURPLE MODE THEME: Script enabled');
 
+    //  --------- START FEATURE ----------
+
         // Change all blue accents to purple
         // Bootstrap/falcon variables
         document.documentElement.style.setProperty('--falcon-primary', '#a259e6');
