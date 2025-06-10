@@ -69,16 +69,22 @@
 .console-tab-item.active span {
   color: #a259e6 !important;
 }
-.console-tab-item.active::after {
-  content: "";
-  display: block;
-  position: absolute;
-  left: 20%;
-  right: 20%;
-  bottom: 0;
-  height: 3px;
-  border-radius: 2px 2px 0 0;
-  background: #a259e6 !important;
+/* Resource modules at the bottom */
+.resources-grid-modal .resource-item-modal {
+  background: rgba(162,89,230,0.08) !important;
+  border: 1.5px solid #a259e6 !important;
+  border-radius: 12px !important;
+}
+.resources-grid-modal .resource-icon-modal {
+  background: linear-gradient(135deg, #a259e6 0%, #d8b4fe 100%) !important;
+  color: #fff !important;
+}
+.resources-grid-modal .resource-name-modal,
+.resources-grid-modal .resource-value-modal {
+  color: #a259e6 !important;
+}
+.resources-grid-modal .progress-fill-modal {
+  background: linear-gradient(90deg, #a259e6 0%, #d8b4fe 100%) !important;
 }
 `;
             document.head.appendChild(style);
