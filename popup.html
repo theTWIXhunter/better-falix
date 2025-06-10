@@ -205,10 +205,27 @@
       font-weight: 500;
       cursor: pointer;
       outline: none;
-      transition: color 0.2s;
+      transition: color 0.2s, background 0.2s;
       height: 100%;
+      position: relative;
     }
     .slider-tab-btn.active {
+      color: #fff;
+    }
+    .slider-tab-btn.active::after {
+      content: "";
+      display: block;
+      position: absolute;
+      left: 20%;
+      right: 20%;
+      bottom: 0;
+      height: 3px;
+      border-radius: 2px 2px 0 0;
+      background: var(--falix-accent);
+      transition: background 0.2s;
+    }
+    .slider-tab-btn:hover {
+      background: var(--falix-accent-hover);
       color: #fff;
     }
     .slider-indicator {
@@ -234,8 +251,8 @@
     <!-- Slider Tabs -->
     <div class="slider-tabs">
       <div class="slider-indicator" id="slider-indicator"></div>
-      <button class="slider-tab-btn active" id="features-tab" type="button">Console</button>
-      <button class="slider-tab-btn" id="themes-tab" type="button">Chat</button>
+      <button class="slider-tab-btn active" id="features-tab" type="button">Features</button>
+      <button class="slider-tab-btn" id="themes-tab" type="button">Themes</button>
     </div>
 
     <div id="features-content">
