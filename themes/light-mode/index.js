@@ -1,3 +1,7 @@
+// [better-falix] LIGHT MODE THEME: Script loading
+console.log('[better-falix] LIGHT MODE THEME Script loading');
+
+
 (function() {
     // Remove 'dark' class from <html> and <body>
     document.documentElement.classList.remove('dark');
