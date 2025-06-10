@@ -53,6 +53,30 @@
         el.style.color = '#333';
     });
 
+    // Set console-tabs background to white
+    var consoleTabs = document.querySelectorAll('.console-tabs');
+    consoleTabs.forEach(function(el) {
+        el.style.background = '#fff';
+        el.style.backgroundColor = '#fff';
+    });
+
+    // Set console-output, console-terminal, and console-input-container background to white
+    var consoleOutput = document.querySelectorAll('.console-output');
+    consoleOutput.forEach(function(el) {
+        el.style.background = '#fff';
+        el.style.backgroundColor = '#fff';
+    });
+    var consoleTerminal = document.querySelectorAll('.console-terminal');
+    consoleTerminal.forEach(function(el) {
+        el.style.background = '#fff';
+        el.style.backgroundColor = '#fff';
+    });
+    var consoleInputContainer = document.querySelectorAll('.console-input-container');
+    consoleInputContainer.forEach(function(el) {
+        el.style.background = '#fff';
+        el.style.backgroundColor = '#fff';
+    });
+
     // Also make #console_box white with dark text and light border
     var consoleBox = document.getElementById('console_box');
     if (consoleBox) {
