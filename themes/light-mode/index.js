@@ -60,7 +60,7 @@
         el.style.backgroundColor = '#fff';
     });
 
-    // Set console-output, console-terminal, and console-input-container background to white
+    // Set console-output, console-terminal, console-input-container, and console-input background to white
     var consoleOutput = document.querySelectorAll('.console-output');
     consoleOutput.forEach(function(el) {
         el.style.background = '#fff';
@@ -73,6 +73,11 @@
     });
     var consoleInputContainer = document.querySelectorAll('.console-input-container');
     consoleInputContainer.forEach(function(el) {
+        el.style.background = '#fff';
+        el.style.backgroundColor = '#fff';
+    });
+    var consoleInput = document.querySelectorAll('.console-input');
+    consoleInput.forEach(function(el) {
         el.style.background = '#fff';
         el.style.backgroundColor = '#fff';
     });
