@@ -134,6 +134,11 @@
           }
         });
 
+        // Make all <svg> icons purple
+        document.querySelectorAll('svg').forEach(function(svg) {
+          svg.style.color = '#a259e6';
+        });
+
         // Make footer-links and nav-link active purple
         document.querySelectorAll('.footer-links.mb-4, .nav-link.active').forEach(function(el) {
           el.style.color = '#a259e6';
