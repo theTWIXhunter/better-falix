@@ -366,6 +366,18 @@
             if (el) el.style.color = '#222';
         });
 
+        // Set .console-tab-item text and icon to black
+        var consoleTabItems = document.querySelectorAll('.console-tab-item');
+        consoleTabItems.forEach(function(el) {
+            el.style.color = '#222';
+            // Set all SVG icons inside to black
+            var svgs = el.querySelectorAll('svg');
+            svgs.forEach(function(svg) {
+                svg.style.color = '#222';
+                svg.style.fill = '#222';
+            });
+        });
+
       });
     } else {
       console.error('[better-falix] LIGHT MODE THEME: chrome.storage.sync.get is not available or not running as a Chrome extension content script');
