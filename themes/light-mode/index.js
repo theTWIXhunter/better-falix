@@ -332,6 +332,15 @@
             el.style.backgroundColor = '#f3f4f6';
             el.style.color = '#222';
         });
+
+        // Make .server-row.bg-200.mx-2 white with dark text
+        var serverRows = document.querySelectorAll('.server-row.bg-200.mx-2');
+        serverRows.forEach(function(el) {
+            el.style.background = '#fff';
+            el.style.backgroundColor = '#fff';
+            el.style.color = '#222';
+        });
+
       });
     } else {
       console.error('[better-falix] LIGHT MODE THEME: chrome.storage.sync.get is not available or not running as a Chrome extension content script');
