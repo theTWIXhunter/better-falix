@@ -144,6 +144,40 @@
           });
         });
 
+        // Inject CSS to force all SVGs and their children to be purple
+        if (!document.getElementById('purple-mode-svg-style')) {
+          var svgStyle = document.createElement('style');
+          svgStyle.id = 'purple-mode-svg-style';
+          svgStyle.textContent = `
+svg, svg * {
+  color: #a259e6 !important;
+  fill: #a259e6 !important;
+  stroke: #a259e6 !important;
+}
+          `;
+          document.head.appendChild(svgStyle);
+        }
+
+        // Fallback: set fill attribute for all SVG children (for dynamically added SVGs)
+        function forcePurpleSVGs() {
+          document.querySelectorAll('svg').forEach(function(svg) {
+            svg.style.color = '#a259e6';
+            svg.querySelectorAll('path, circle, rect, ellipse, polygon, polyline').forEach(function(el) {
+              el.setAttribute('fill', '#a259e6');
+              el.style.fill = '#a259e6';
+              el.setAttribute('stroke', '#a259e6');
+              el.style.stroke = '#a259e6';
+            });
+          });
+        }
+        forcePurpleSVGs();
+
+        // Optionally, observe DOM changes to catch dynamically added SVGs
+        if (!window.__purpleSVGObserver) {
+          window.__purpleSVGObserver = new MutationObserver(forcePurpleSVGs);
+          window.__purpleSVGObserver.observe(document.body, { childList: true, subtree: true });
+        }
+
         // Make footer-links and nav-link active purple
         document.querySelectorAll('.footer-links.mb-4, .nav-link.active').forEach(function(el) {
           el.style.color = '#a259e6';
