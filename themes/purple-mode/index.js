@@ -258,6 +258,34 @@ input[type="checkbox"]:checked {
         document.querySelectorAll('.sort-label').forEach(function(el) {
           el.style.color = '#a259e6';
         });
+
+        // Make Chart.js graphs purple (lines, bars, etc.)
+        if (window.Chart && typeof window.Chart === 'function') {
+          // Monkey-patch Chart.js update to always set purple color
+          const origUpdate = window.Chart.prototype.update;
+          window.Chart.prototype.update = function(...args) {
+            if (this.data && Array.isArray(this.data.datasets)) {
+              this.data.datasets.forEach(ds => {
+                if (ds.type === 'line' || this.config.type === 'line') {
+                  ds.borderColor = '#a259e6';
+                  ds.backgroundColor = 'rgba(162,89,230,0.15)';
+                  ds.pointBackgroundColor = '#a259e6';
+                  ds.pointBorderColor = '#a259e6';
+                } else if (ds.type === 'bar' || this.config.type === 'bar') {
+                  ds.backgroundColor = '#a259e6';
+                  ds.borderColor = '#a259e6';
+                }
+              });
+            }
+            return origUpdate.apply(this, args);
+          };
+          // Force update all existing charts
+          if (window.Chart.instances) {
+            Object.values(window.Chart.instances).forEach(chart => {
+              if (chart && typeof chart.update === 'function') chart.update();
+            });
+          }
+        }
       });
     } else {
       console.error('[better-falix] PURPLE MODE THEME: chrome.storage.sync.get is not available or not running as a Chrome extension content script');
