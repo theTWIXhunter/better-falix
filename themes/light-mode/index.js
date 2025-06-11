@@ -378,6 +378,12 @@
             });
         });
 
+        // Make all <span> text black
+        var spanEls = document.querySelectorAll('span');
+        spanEls.forEach(function(el) {
+            el.style.color = '#000';
+        });
+
       });
     } else {
       console.error('[better-falix] LIGHT MODE THEME: chrome.storage.sync.get is not available or not running as a Chrome extension content script');
