@@ -134,9 +134,14 @@
           }
         });
 
-        // Make all <svg> icons purple
+        // Make all <svg> icons purple (forcefully)
         document.querySelectorAll('svg').forEach(function(svg) {
           svg.style.color = '#a259e6';
+          // Set fill on all child paths, circles, rects
+          svg.querySelectorAll('path, circle, rect').forEach(function(el) {
+            el.setAttribute('fill', '#a259e6');
+            el.style.fill = '#a259e6';
+          });
         });
 
         // Make footer-links and nav-link active purple
