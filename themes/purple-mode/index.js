@@ -219,6 +219,21 @@ svg:not(.no-purple):not(.console-btn-stop-svg):not(.console-btn-restart-svg):not
             }
           });
         });
+
+        // Make .compact-info-icon divs background purple but keep original alpha
+        document.querySelectorAll('.compact-info-icon').forEach(function(div) {
+          const bg = window.getComputedStyle(div).backgroundColor;
+          // Match rgba or rgb
+          const match = bg.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([0-9.]+))?\)/);
+          if (match) {
+            // Use original alpha if present, otherwise 1
+            const alpha = typeof match[4] !== 'undefined' ? match[4] : 1;
+            div.style.backgroundColor = `rgba(162,89,230,${alpha})`;
+          } else {
+            // fallback: just set to purple
+            div.style.backgroundColor = '#a259e6';
+          }
+        });
       });
     } else {
       console.error('[better-falix] PURPLE MODE THEME: chrome.storage.sync.get is not available or not running as a Chrome extension content script');
