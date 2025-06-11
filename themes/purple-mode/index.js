@@ -253,6 +253,11 @@ input[type="checkbox"]:checked {
           `;
           document.head.appendChild(checkboxStyle);
         }
+
+        // Make .sort-label text purple
+        document.querySelectorAll('.sort-label').forEach(function(el) {
+          el.style.color = '#a259e6';
+        });
       });
     } else {
       console.error('[better-falix] PURPLE MODE THEME: chrome.storage.sync.get is not available or not running as a Chrome extension content script');
