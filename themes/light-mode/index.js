@@ -333,11 +333,19 @@
             el.style.color = '#222';
         });
 
-        // Make .server-row.bg-200.mx-2 white with dark text
+        // Set color for server-info domain/ram/location
+        var serverInfoEls = document.querySelectorAll(
+            '.server-info.server-domain, .server-info.server-ram, .server-info.server-location'
+        );
+        serverInfoEls.forEach(function(el) {
+            el.style.color = 'rgb(34, 34, 34)';
+        });
+
+        // Make .server-row.bg-200.mx-2 white with dark text, force background
         var serverRows = document.querySelectorAll('.server-row.bg-200.mx-2');
         serverRows.forEach(function(el) {
-            el.style.background = '#fff';
-            el.style.backgroundColor = '#fff';
+            el.style.setProperty('background', '#fff', 'important');
+            el.style.setProperty('background-color', '#fff', 'important');
             el.style.color = '#222';
         });
 
