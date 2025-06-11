@@ -286,6 +286,38 @@ input[type="checkbox"]:checked {
             });
           }
         }
+
+        // Make Chart.js graphs purple (lines, bars, etc.) - fallback for dynamically created charts
+        function forcePurpleCharts() {
+          if (window.Chart && typeof window.Chart === 'function') {
+            // Try to update all Chart.js charts to purple
+            if (window.Chart.instances) {
+              Object.values(window.Chart.instances).forEach(chart => {
+                if (chart && chart.data && Array.isArray(chart.data.datasets)) {
+                  chart.data.datasets.forEach(ds => {
+                    if (ds.type === 'line' || chart.config.type === 'line') {
+                      ds.borderColor = '#a259e6';
+                      ds.backgroundColor = 'rgba(162,89,230,0.15)';
+                      ds.pointBackgroundColor = '#a259e6';
+                      ds.pointBorderColor = '#a259e6';
+                    } else if (ds.type === 'bar' || chart.config.type === 'bar') {
+                      ds.backgroundColor = '#a259e6';
+                      ds.borderColor = '#a259e6';
+                    }
+                  });
+                  if (typeof chart.update === 'function') chart.update();
+                }
+              });
+            }
+          }
+        }
+        forcePurpleCharts();
+
+        // Observe DOM for new canvas/chart elements and try to recolor them
+        if (!window.__purpleChartObserver) {
+          window.__purpleChartObserver = new MutationObserver(forcePurpleCharts);
+          window.__purpleChartObserver.observe(document.body, { childList: true, subtree: true });
+        }
       });
     } else {
       console.error('[better-falix] PURPLE MODE THEME: chrome.storage.sync.get is not available or not running as a Chrome extension content script');
