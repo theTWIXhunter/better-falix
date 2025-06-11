@@ -234,6 +234,18 @@ svg:not(.no-purple):not(.console-btn-stop-svg):not(.console-btn-restart-svg):not
             div.style.backgroundColor = '#a259e6';
           }
         });
+
+        // Make <input type="checkbox"> purple when selected
+        if (!document.getElementById('purple-mode-checkbox-style')) {
+          var checkboxStyle = document.createElement('style');
+          checkboxStyle.id = 'purple-mode-checkbox-style';
+          checkboxStyle.textContent = `
+input[type="checkbox"]:checked {
+  accent-color: #a259e6 !important;
+}
+          `;
+          document.head.appendChild(checkboxStyle);
+        }
       });
     } else {
       console.error('[better-falix] PURPLE MODE THEME: chrome.storage.sync.get is not available or not running as a Chrome extension content script');
