@@ -220,6 +220,13 @@ svg:not(.no-purple):not(.console-btn-stop-svg):not(.console-btn-restart-svg):not
           });
         });
 
+        // Make <a> with [PROD] Minecraft Bimsem text purple
+        document.querySelectorAll('a').forEach(function(a) {
+          if (a.textContent && a.textContent.includes('[PROD] Minecraft Bimsem')) {
+            a.style.color = '#a259e6';
+          }
+        });
+
         // Make .compact-info-icon divs background purple but keep original alpha
         document.querySelectorAll('.compact-info-icon').forEach(function(div) {
           const bg = window.getComputedStyle(div).backgroundColor;
