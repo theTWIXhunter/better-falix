@@ -290,25 +290,40 @@ input[type="checkbox"]:checked {
         // Make Chart.js graphs purple (lines, bars, etc.) - fallback for dynamically created charts
         function forcePurpleCharts() {
           if (window.Chart && typeof window.Chart === 'function') {
-            // Try to update all Chart.js charts to purple
+            // Chart.js v3/v4: Chart.instances is a Map or object
+            let charts = [];
             if (window.Chart.instances) {
-              Object.values(window.Chart.instances).forEach(chart => {
-                if (chart && chart.data && Array.isArray(chart.data.datasets)) {
-                  chart.data.datasets.forEach(ds => {
-                    if (ds.type === 'line' || chart.config.type === 'line') {
-                      ds.borderColor = '#a259e6';
-                      ds.backgroundColor = 'rgba(162,89,230,0.15)';
-                      ds.pointBackgroundColor = '#a259e6';
-                      ds.pointBorderColor = '#a259e6';
-                    } else if (ds.type === 'bar' || chart.config.type === 'bar') {
-                      ds.backgroundColor = '#a259e6';
-                      ds.borderColor = '#a259e6';
-                    }
-                  });
-                  if (typeof chart.update === 'function') chart.update();
-                }
-              });
+              if (typeof window.Chart.instances.forEach === 'function') {
+                // Map (v3+)
+                window.Chart.instances.forEach(chart => charts.push(chart));
+              } else {
+                // Object (v2)
+                charts = Object.values(window.Chart.instances);
+              }
             }
+            charts.forEach(chart => {
+              if (chart && chart.data && Array.isArray(chart.data.datasets)) {
+                chart.data.datasets.forEach(ds => {
+                  // Line chart
+                  if ((ds.type || chart.config.type) === 'line') {
+                    ds.borderColor = '#a259e6';
+                    ds.backgroundColor = 'rgba(162,89,230,0.15)';
+                    ds.pointBackgroundColor = '#a259e6';
+                    ds.pointBorderColor = '#a259e6';
+                  }
+                  // Bar chart
+                  if ((ds.type || chart.config.type) === 'bar') {
+                    ds.backgroundColor = '#a259e6';
+                    ds.borderColor = '#a259e6';
+                  }
+                  // Area/fill
+                  if (ds.fill === true || ds.fill === 'origin') {
+                    ds.backgroundColor = 'rgba(162,89,230,0.15)';
+                  }
+                });
+                if (typeof chart.update === 'function') chart.update();
+              }
+            });
           }
         }
         forcePurpleCharts();
