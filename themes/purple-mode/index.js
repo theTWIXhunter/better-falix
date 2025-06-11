@@ -133,6 +133,27 @@
             el.setAttribute('fill', '#a259e6');
           }
         });
+
+        // Make footer-links and nav-link active purple
+        document.querySelectorAll('.footer-links.mb-4, .nav-link.active').forEach(function(el) {
+          el.style.color = '#a259e6';
+        });
+
+        // Make specific <a> elements purple by their text content
+        [
+          'Privacy Policy',
+          'Terms of Service',
+          'Imprint',
+          'Knowledge Base',
+          'Join our Discord Server',
+          'Falix Benelux CommV'
+        ].forEach(function(text) {
+          document.querySelectorAll('a').forEach(function(a) {
+            if (a.textContent.trim() === text) {
+              a.style.color = '#a259e6';
+            }
+          });
+        });
       });
     } else {
       console.error('[better-falix] PURPLE MODE THEME: chrome.storage.sync.get is not available or not running as a Chrome extension content script');
