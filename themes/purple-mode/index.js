@@ -144,23 +144,44 @@
           });
         });
 
-        // Inject CSS to force all SVGs and their children to be purple
+        // Inject CSS to force all SVGs and their children to be purple, except inside excluded console-btns
         if (!document.getElementById('purple-mode-svg-style')) {
           var svgStyle = document.createElement('style');
           svgStyle.id = 'purple-mode-svg-style';
           svgStyle.textContent = `
-svg, svg * {
+svg:not(.no-purple):not(.console-btn-stop-svg):not(.console-btn-restart-svg):not(.console-btn-start-svg):not(.console-btn-connect-svg),
+svg:not(.no-purple):not(.console-btn-stop-svg):not(.console-btn-restart-svg):not(.console-btn-start-svg):not(.console-btn-connect-svg) * {
   color: #a259e6 !important;
   fill: #a259e6 !important;
   stroke: #a259e6 !important;
+}
+.console-btn.stop svg,
+.console-btn.restart svg,
+.console-btn.start svg,
+.console-btn.connect svg {
+  /* Reset to inherit or initial (remove purple override) */
+  color: initial !important;
+  fill: initial !important;
+  stroke: initial !important;
 }
           `;
           document.head.appendChild(svgStyle);
         }
 
-        // Fallback: set fill attribute for all SVG children (for dynamically added SVGs)
+        // Fallback: set fill attribute for all SVG children (for dynamically added SVGs), excluding those inside excluded console-btns
         function forcePurpleSVGs() {
+          // Select all SVGs not inside excluded console-btns
           document.querySelectorAll('svg').forEach(function(svg) {
+            // Check if this svg is inside any excluded button
+            if (
+              svg.closest('.console-btn.stop') ||
+              svg.closest('.console-btn.restart') ||
+              svg.closest('.console-btn.start') ||
+              svg.closest('.console-btn.connect')
+            ) {
+              // Skip excluded SVGs
+              return;
+            }
             svg.style.color = '#a259e6';
             svg.querySelectorAll('path, circle, rect, ellipse, polygon, polyline').forEach(function(el) {
               el.setAttribute('fill', '#a259e6');
