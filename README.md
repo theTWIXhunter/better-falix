@@ -43,7 +43,8 @@ Optionally remove support-related links from the navbar.
 **BUG FIXES**
 - **Fix cursed checkbox icon**
 Fixes the filemanager file selection checkbox being cursed (go look at it).
-
+- **Fix Collapsed falix icon**
+Fixes the falix icon being displayed when the navbar is collaped.
 
 ## Usage
 

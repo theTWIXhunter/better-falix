@@ -22,7 +22,8 @@ const featureIds = [
   'navbarHover',
   'replaceSupportModal',
   'fixcheckboxicon',
-  'uploadCreateHover'
+  'uploadCreateHover',
+  'fixcollapesnavbaricon'
 ];
 
 function setFeatureBtnState(btn, enabled) {
