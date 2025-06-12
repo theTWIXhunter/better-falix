@@ -330,58 +330,42 @@ input[type="checkbox"]:checked {
 
         // Force all Chart.js resource graphs to purple (line and fill)
         function patchResourceChartsToPurple() {
-          // Patch the prototype so all new charts use purple
           if (window.Chart && typeof window.Chart === 'function') {
-            const origLine = window.Chart.controllers.line;
-            if (origLine && !window.__purplePatched) {
-              window.Chart.controllers.line = window.Chart.controllers.line.extend({
-                draw: function() {
-                  // Set dataset color to purple before drawing
-                  this.getDataset().borderColor = '#a259e6';
-                  this.getDataset().backgroundColor = 'rgba(162,89,230,0.15)';
-                  if (Array.isArray(this.getDataset().pointBackgroundColor)) {
-                    this.getDataset().pointBackgroundColor = this.getDataset().pointBackgroundColor.map(() => '#a259e6');
-                  } else {
-                    this.getDataset().pointBackgroundColor = '#a259e6';
-                  }
-                  if (Array.isArray(this.getDataset().pointBorderColor)) {
-                    this.getDataset().pointBorderColor = this.getDataset().pointBorderColor.map(() => '#a259e6');
-                  } else {
-                    this.getDataset().pointBorderColor = '#a259e6';
-                  }
-                  origLine.prototype.draw.apply(this, arguments);
-                }
-              });
-              window.__purplePatched = true;
-            }
-          }
-          // Patch existing charts
-          if (window.Chart && window.Chart.instances) {
-            let charts = [];
-            if (typeof window.Chart.instances.forEach === 'function') {
-              window.Chart.instances.forEach(chart => charts.push(chart));
-            } else {
-              charts = Object.values(window.Chart.instances);
-            }
-            charts.forEach(chart => {
-              if (chart && chart.data && Array.isArray(chart.data.datasets)) {
-                chart.data.datasets.forEach(ds => {
-                  ds.borderColor = '#a259e6';
-                  ds.backgroundColor = 'rgba(162,89,230,0.15)';
-                  if (Array.isArray(ds.pointBackgroundColor)) {
-                    ds.pointBackgroundColor = ds.pointBackgroundColor.map(() => '#a259e6');
-                  } else {
+            // Patch all existing resource charts (cpuChart, ramChart, diskChart)
+            ['cpuChart', 'ramChart', 'diskChart'].forEach(chartName => {
+              if (window.consoleManager && window.consoleManager[chartName]) {
+                const chart = window.consoleManager[chartName];
+                if (chart && chart.data && Array.isArray(chart.data.datasets)) {
+                  chart.data.datasets.forEach(ds => {
+                    ds.borderColor = '#a259e6';
+                    ds.backgroundColor = 'rgba(162,89,230,0.15)';
                     ds.pointBackgroundColor = '#a259e6';
-                  }
-                  if (Array.isArray(ds.pointBorderColor)) {
-                    ds.pointBorderColor = ds.pointBorderColor.map(() => '#a259e6');
-                  } else {
                     ds.pointBorderColor = '#a259e6';
-                  }
-                });
-                if (typeof chart.update === 'function') chart.update();
+                  });
+                  if (typeof chart.update === 'function') chart.update();
+                }
               }
             });
+            // Patch all Chart.js charts (fallback for any others)
+            if (window.Chart.instances) {
+              let charts = [];
+              if (typeof window.Chart.instances.forEach === 'function') {
+                window.Chart.instances.forEach(chart => charts.push(chart));
+              } else {
+                charts = Object.values(window.Chart.instances);
+              }
+              charts.forEach(chart => {
+                if (chart && chart.data && Array.isArray(chart.data.datasets)) {
+                  chart.data.datasets.forEach(ds => {
+                    ds.borderColor = '#a259e6';
+                    ds.backgroundColor = 'rgba(162,89,230,0.15)';
+                    ds.pointBackgroundColor = '#a259e6';
+                    ds.pointBorderColor = '#a259e6';
+                  });
+                  if (typeof chart.update === 'function') chart.update();
+                }
+              });
+            }
           }
         }
         patchResourceChartsToPurple();
