@@ -9,20 +9,28 @@ chrome.storage.sync.get({ fixcollapesnavbaricon: false, enabled: true }, (data) 
   console.log('[better-falix] Fix-collapesed-navbar-icon: Script enabled');
 
   // --------- START FEATURE ----------
-  function hideImageWhenCollapes() {
+  function isSidebarCollapsed(sidebar) {
+    return sidebar.classList.contains('collapsed');
+  }
+  function isSidebarMobileOpen(sidebar) {
+    return sidebar.classList.contains('show');
+  }
+  function updateBrandVisibility() {
     const sidebar = document.getElementById('mainSidebar');
     if (!sidebar) return;
     const brand = sidebar.querySelector('.navbar-brand');
     if (!brand) return;
-    if (sidebar.classList.contains('collapsed')) {
-      brand.style.display = 'none';
+    // Desktop: hide when collapsed, show otherwise
+    if (window.innerWidth >= 1200) {
+      brand.style.display = isSidebarCollapsed(sidebar) ? 'none' : '';
     } else {
-      brand.style.display = '';
+      // Mobile: hide when not open, show when open
+      brand.style.display = isSidebarMobileOpen(sidebar) ? '' : 'none';
     }
   }
 
   // Initial check
-  hideImageWhenCollapes();
+  updateBrandVisibility();
 
   // Listen for sidebar class changes (collapse/expand)
   const sidebar = document.getElementById('mainSidebar');
@@ -30,6 +38,8 @@ chrome.storage.sync.get({ fixcollapesnavbaricon: false, enabled: true }, (data) 
     const observer = new MutationObserver(updateBrandVisibility);
     observer.observe(sidebar, { attributes: true, attributeFilter: ['class'] });
   }
+  // Also update on window resize (desktop/mobile switch)
+  window.addEventListener('resize', updateBrandVisibility);
 
   // [better-falix] Fix-collapesed-navbar-icon: Script loaded sucsessfully
   setTimeout(() => {
