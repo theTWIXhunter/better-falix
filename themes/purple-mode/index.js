@@ -380,7 +380,7 @@ input[type="checkbox"]:checked {
           var csStyle = document.createElement('style');
           csStyle.id = 'purple-mode-current-server-info-style';
           csStyle.textContent = `.current-server-info {
-  background: linear-gradient(90deg, #a259e6 0%, #d8b4fe 100%) !important;
+  background: linear-gradient(90deg, #a259e6 0%,rgb(172, 95, 254) 100%) !important;
 }
           `;
           document.head.appendChild(csStyle);
