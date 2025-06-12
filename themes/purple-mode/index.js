@@ -168,17 +168,27 @@ svg:not(.no-purple):not(.console-btn-stop-svg):not(.console-btn-restart-svg):not
           document.head.appendChild(svgStyle);
         }
 
-        // Fallback: set fill attribute for all SVG children (for dynamically added SVGs), excluding those inside excluded console-btns or .console-actions
+        // Fallback: set fill attribute for all SVG children (for dynamically added SVGs), 
+        // excluding those inside excluded console-btns, .console-actions, or .console-header .console-actions
         function forcePurpleSVGs() {
           document.querySelectorAll('svg').forEach(function(svg) {
-            // Exclude SVGs inside .console-btn.* or inside .console-actions
+            // Exclude SVGs inside .console-btn.* or inside .console-actions or inside .console-header .console-actions
             if (
               svg.closest('.console-btn.stop') ||
               svg.closest('.console-btn.restart') ||
               svg.closest('.console-btn.start') ||
               svg.closest('.console-btn.connect') ||
-              svg.closest('.console-actions')
+              svg.closest('.console-actions') ||
+              (svg.closest('.console-header') && svg.closest('.console-actions'))
             ) {
+              // Reset to original color if previously overridden
+              svg.style.color = '';
+              svg.querySelectorAll('path, circle, rect, ellipse, polygon, polyline').forEach(function(el) {
+                el.removeAttribute('fill');
+                el.style.fill = '';
+                el.removeAttribute('stroke');
+                el.style.stroke = '';
+              });
               return;
             }
             svg.style.color = '#a259e6';
