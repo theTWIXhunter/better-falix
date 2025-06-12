@@ -168,18 +168,17 @@ svg:not(.no-purple):not(.console-btn-stop-svg):not(.console-btn-restart-svg):not
           document.head.appendChild(svgStyle);
         }
 
-        // Fallback: set fill attribute for all SVG children (for dynamically added SVGs), excluding those inside excluded console-btns
+        // Fallback: set fill attribute for all SVG children (for dynamically added SVGs), excluding those inside excluded console-btns or .console-actions
         function forcePurpleSVGs() {
-          // Select all SVGs not inside excluded console-btns
           document.querySelectorAll('svg').forEach(function(svg) {
-            // Check if this svg is inside any excluded button
+            // Exclude SVGs inside .console-btn.* or inside .console-actions
             if (
               svg.closest('.console-btn.stop') ||
               svg.closest('.console-btn.restart') ||
               svg.closest('.console-btn.start') ||
-              svg.closest('.console-btn.connect')
+              svg.closest('.console-btn.connect') ||
+              svg.closest('.console-actions')
             ) {
-              // Skip excluded SVGs
               return;
             }
             svg.style.color = '#a259e6';
