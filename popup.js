@@ -20,7 +20,8 @@ const featureIds = [
   'itsjustPaper',
   'serverNameButton',
   'navbarHover',
-  'replaceSupportModal'
+  'replaceSupportModal',
+  'fixcheckboxicon'
 ];
 
 function setFeatureBtnState(btn, enabled) {
@@ -102,6 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
     serverNameButton: false,
     navbarHover: false,
     replaceSupportModal: false,
+    fixcheckboxicon: false
   }, (data) => {
     updateToggleBtn(data.enabled);
     updateFeatureButtons(data);
