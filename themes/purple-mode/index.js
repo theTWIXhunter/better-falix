@@ -350,10 +350,19 @@ input[type="checkbox"]:checked {
         document.head.appendChild(csStyle);
       }
 
-      // Make breadcrumbs and root file manager links purple
-      document.querySelectorAll('a[onclick^="fileManager.navigateToDirectory("]').forEach(function(a) {
-        a.style.color = '#a259e6 !important';
-      });
+      // Make breadcrumbs and root file manager links purple (using CSS for !important)
+      if (!document.getElementById('purple-mode-breadcrumb-style')) {
+        var breadcrumbStyle = document.createElement('style');
+        breadcrumbStyle.id = 'purple-mode-breadcrumb-style';
+        breadcrumbStyle.textContent = `
+a[onclick^="fileManager.navigateToDirectory("],
+li.breadcrumb-item,
+li.breadcrumb-item.active {
+  color: #a259e6 !important;
+}
+`;
+        document.head.appendChild(breadcrumbStyle);
+      }
     });
   } else {
     console.error('[better-falix] PURPLE MODE THEME: chrome.storage.sync.get is not available or not running as a Chrome extension content script');
