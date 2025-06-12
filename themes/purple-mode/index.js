@@ -374,6 +374,17 @@ input[type="checkbox"]:checked {
           window.__purpleChartObserver = new MutationObserver(patchResourceChartsToPurple);
           window.__purpleChartObserver.observe(document.body, { childList: true, subtree: true });
         }
+
+        // Make .current-server-info background a purple gradient
+        if (!document.getElementById('purple-mode-current-server-info-style')) {
+          var csStyle = document.createElement('style');
+          csStyle.id = 'purple-mode-current-server-info-style';
+          csStyle.textContent = `.current-server-info {
+  background: linear-gradient(90deg, #a259e6 0%, #d8b4fe 100%) !important;
+}
+          `;
+          document.head.appendChild(csStyle);
+        }
       });
     } else {
       console.error('[better-falix] PURPLE MODE THEME: chrome.storage.sync.get is not available or not running as a Chrome extension content script');
