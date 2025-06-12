@@ -332,6 +332,58 @@
             el.style.backgroundColor = '#f3f4f6';
             el.style.color = '#222';
         });
+
+        // Set color for server-info domain/ram/location
+        var serverInfoEls = document.querySelectorAll(
+            '.server-info.server-domain, .server-info.server-ram, .server-info.server-location'
+        );
+        serverInfoEls.forEach(function(el) {
+            el.style.color = 'rgb(34, 34, 34)';
+        });
+
+        // Make .server-row.bg-200.mx-2 white with dark text, force background
+        var serverRows = document.querySelectorAll('.server-row.bg-200.mx-2');
+        serverRows.forEach(function(el) {
+            el.style.setProperty('background', '#fff', 'important');
+            el.style.setProperty('background-color', '#fff', 'important');
+            el.style.color = '#222';
+        });
+
+        // Set background to white for island/world/player containers
+        var whiteBgEls = document.querySelectorAll(
+            '.island-container.mb-5, .world-card, .player-card'
+        );
+        whiteBgEls.forEach(function(el) {
+            el.style.setProperty('background', '#fff', 'important');
+            el.style.setProperty('background-color', '#fff', 'important');
+        });
+
+        // Set text color to black(ish) for #last-updated and .player-name
+        var blackTextEls = [
+            document.getElementById('last-updated')
+        ].concat(Array.from(document.querySelectorAll('.player-name')));
+        blackTextEls.forEach(function(el) {
+            if (el) el.style.color = '#222';
+        });
+
+        // Set .console-tab-item text and icon to black
+        var consoleTabItems = document.querySelectorAll('.console-tab-item');
+        consoleTabItems.forEach(function(el) {
+            el.style.color = '#222';
+            // Set all SVG icons inside to black
+            var svgs = el.querySelectorAll('svg');
+            svgs.forEach(function(svg) {
+                svg.style.color = '#222';
+                svg.style.fill = '#222';
+            });
+        });
+
+        // Make all <span> text black
+        var spanEls = document.querySelectorAll('span');
+        spanEls.forEach(function(el) {
+            el.style.color = '#000';
+        });
+
       });
     } else {
       console.error('[better-falix] LIGHT MODE THEME: chrome.storage.sync.get is not available or not running as a Chrome extension content script');
