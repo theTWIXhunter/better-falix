@@ -10,7 +10,7 @@ chrome.storage.sync.get({ uploadCreateHover: false, enabled: true }, (data) => {
 
   //  --------- START FEATURE ----------
   
-  function addHoverDropdown(id) {
+  function addHoverDropdown(id, delay = 0) {
     const btn = document.getElementById(id);
     if (!btn) return;
     const dropdown = btn.nextElementSibling;
@@ -23,7 +23,7 @@ chrome.storage.sync.get({ uploadCreateHover: false, enabled: true }, (data) => {
         btn.classList.add('show');
         dropdown.classList.add('show');
         dropdown.style.display = 'block';
-      }, 300); // 0.5 seconds delay
+      }, delay);
     });
     btn.addEventListener('mouseleave', () => {
       clearTimeout(openTimeout);
@@ -48,8 +48,8 @@ chrome.storage.sync.get({ uploadCreateHover: false, enabled: true }, (data) => {
   }
 
   function setup() {
-    addHoverDropdown('createDropdown');
-    addHoverDropdown('uploadDropdown');
+    addHoverDropdown('createDropdown', 500); // 0.5 seconds delay for create
+    addHoverDropdown('uploadDropdown', 0);   // no delay for upload
   }
 
   if (document.readyState === 'loading') {
