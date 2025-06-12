@@ -350,12 +350,9 @@ input[type="checkbox"]:checked {
         document.head.appendChild(csStyle);
       }
 
-      // Make breadcrumbs and root file manager link purple
-      document.querySelectorAll('a[onclick="fileManager.navigateToDirectory(\'/\')"]').forEach(function(a) {
+      // Make breadcrumbs and root file manager links purple
+      document.querySelectorAll('a[onclick^="fileManager.navigateToDirectory("]').forEach(function(a) {
         a.style.color = '#a259e6 !important';
-      });
-      document.querySelectorAll('li.breadcrumb-item').forEach(function(li) {
-        li.style.color = '#a259e6 !important';
       });
     });
   } else {
