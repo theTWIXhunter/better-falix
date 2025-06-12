@@ -349,6 +349,14 @@ input[type="checkbox"]:checked {
 `;
         document.head.appendChild(csStyle);
       }
+
+      // Make breadcrumbs and root file manager link purple
+      document.querySelectorAll('a[onclick="fileManager.navigateToDirectory(\'/\')"]').forEach(function(a) {
+        a.style.color = '#a259e6 !important';
+      });
+      document.querySelectorAll('li.breadcrumb-item').forEach(function(li) {
+        li.style.color = '#a259e6 !important';
+      });
     });
   } else {
     console.error('[better-falix] PURPLE MODE THEME: chrome.storage.sync.get is not available or not running as a Chrome extension content script');
