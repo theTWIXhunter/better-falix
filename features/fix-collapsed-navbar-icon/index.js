@@ -20,12 +20,11 @@ chrome.storage.sync.get({ fixcollapesnavbaricon: false, enabled: true }, (data) 
     if (!sidebar) return;
     const brand = sidebar.querySelector('.navbar-brand');
     if (!brand) return;
-    // Desktop: hide when collapsed, show otherwise
+    // Only care about desktop/collapsed state, ignore mobile "show"
     if (window.innerWidth >= 1200) {
       brand.style.display = isSidebarCollapsed(sidebar) ? 'none' : '';
     } else {
-      // Mobile: hide when not open, show when open
-      brand.style.display = isSidebarMobileOpen(sidebar) ? '' : 'none';
+      brand.style.display = '';
     }
   }
 
