@@ -39,6 +39,10 @@ Hide the "Remote Startup" navigation item from the sidebar.
 - **Remove Navbar Support Links:** 
 Optionally remove support-related links from the navbar.
 
+**BUG FIXES**
+- **Fix cursed checkbox icon**
+Fixes the filemanager file selection checkbox being cursed (go look at it).
+
 
 ## Usage
 
