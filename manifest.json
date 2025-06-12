@@ -118,6 +118,11 @@
       "matches": ["https://client.falixnodes.net/*"],
       "js": ["features/fix-checkbox-icon/index.js"],
       "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://client.falixnodes.net/*"],
+      "js": ["features/upload-create-hover/index.js"],
+      "run_at": "document_idle"
     }
   ]
 }

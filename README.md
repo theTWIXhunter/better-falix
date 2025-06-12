@@ -24,7 +24,8 @@ Opens and closes the navbar when you hover on/off it.
 Replaces the support modal with a cleaner one and adds a copy all button.
 - **Server Name Button**
 Makes the server name in the navbar clickable and redirect you to the main page.
-
+- **upload-create-hover:**  
+Makes the Upload and Create buttons show their dropdowns when hovered.
 
 **NAVIGATION**
 - **Server Name Button:** Makes the server name in the navbar (current-server-info) clickable to go to the main page, handy for when using the mobile nav bar.
