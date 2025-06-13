@@ -42,7 +42,7 @@ Optionally remove support-related links from the navbar.
 
 **BUG FIXES**
 - **Fix cursed checkbox icon**
-Fixes the filemanager file selection checkbox being cursed (go look at it).
+Fixes the filemanager file selection checkbox being cursed (issue should already be fixed, kept for legacy purposes).
 
 
 ## Usage
