@@ -22,7 +22,8 @@ const featureIds = [
   'navbarHover',
   'replaceSupportModal',
   'fixcheckboxicon',
-  'uploadCreateHover'
+  'uploadCreateHover',
+  'fixcollapesnavbaricon'
 ];
 
 function setFeatureBtnState(btn, enabled) {
@@ -106,6 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
     replaceSupportModal: false,
     fixcheckboxicon: false,
     uploadCreateHover: false,
+    fixcollapesnavbaricon: false,
   }, (data) => {
     updateToggleBtn(data.enabled);
     updateFeatureButtons(data);
