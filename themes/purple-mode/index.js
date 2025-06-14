@@ -372,7 +372,7 @@ li.breadcrumb-item.active {
 button.btn.btn-outline-primary[onclick="fileManager.analyzeDiskUsage()"] {
   color: #a259e6 !important;
   border-color: #d8b4fe !important;
-  background-color: #faf5ff !important;
+  background-color: #d8b4fe !important;
 }
 button.btn.btn-outline-primary[onclick="fileManager.analyzeDiskUsage()"]:hover,
 button.btn.btn-outline-primary[onclick="fileManager.analyzeDiskUsage()"]:focus {
@@ -391,6 +391,64 @@ button.btn.btn-outline-primary[onclick="fileManager.analyzeDiskUsage()"]:focus s
 }
 `;
         document.head.appendChild(analyzeBtnStyle);
+      }
+
+      // Make text inside .btn.btn-outline-secondary black
+      if (!document.getElementById('purple-mode-outline-secondary-style')) {
+        var outlineSecondaryStyle = document.createElement('style');
+        outlineSecondaryStyle.id = 'purple-mode-outline-secondary-style';
+        outlineSecondaryStyle.textContent = `
+.btn.btn-outline-secondary,
+.btn.btn-outline-secondary * {
+  color: #111 !important;
+}
+`;
+        document.head.appendChild(outlineSecondaryStyle);
+      }
+
+      // Make Chart.js legend text black for diskUsageChart and all charts
+      if (!document.getElementById('purple-mode-chart-legend-style')) {
+        var chartLegendStyle = document.createElement('style');
+        chartLegendStyle.id = 'purple-mode-chart-legend-style';
+        chartLegendStyle.textContent = `
+#diskUsageChart + div .legend,
+#diskUsageChart + .chartjs-size-monitor + div .legend,
+.chartjs-render-monitor ~ .chartjs-legend,
+.chartjs-legend,
+.chartjs-legend li,
+.chartjs-legend span,
+.chartjs-legend * {
+  color: #111 !important;
+  fill: #111 !important;
+}
+`;
+        document.head.appendChild(chartLegendStyle);
+      }
+
+      // Try to patch Chart.js legend label color via options (for dynamic charts)
+      function patchChartLegendColors() {
+        if (window.Chart && typeof window.Chart === 'function' && window.Chart.instances) {
+          let charts = [];
+          if (typeof window.Chart.instances.forEach === 'function') {
+            window.Chart.instances.forEach(chart => charts.push(chart));
+          } else {
+            charts = Object.values(window.Chart.instances);
+          }
+          charts.forEach(chart => {
+            if (chart.options && chart.options.plugins && chart.options.plugins.legend) {
+              if (!chart.options.plugins.legend.labels) chart.options.plugins.legend.labels = {};
+              chart.options.plugins.legend.labels.color = '#111';
+              if (typeof chart.update === 'function') chart.update();
+            }
+          });
+        }
+      }
+      patchChartLegendColors();
+
+      // Also observe DOM for new charts and patch legend color
+      if (!window.__purpleLegendObserver) {
+        window.__purpleLegendObserver = new MutationObserver(patchChartLegendColors);
+        window.__purpleLegendObserver.observe(document.body, { childList: true, subtree: true });
       }
     });
   } else {
