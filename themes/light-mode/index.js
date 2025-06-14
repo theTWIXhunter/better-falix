@@ -384,6 +384,28 @@
             el.style.color = '#000';
         });
 
+        // Set chart container background to rgb(150,150,150)
+        if (!document.getElementById('light-mode-chart-container-style')) {
+          var chartContainerStyle = document.createElement('style');
+          chartContainerStyle.id = 'light-mode-chart-container-style';
+          chartContainerStyle.textContent = `
+/* Try common chart container classes and direct parent of canvas */
+.chart-container,
+#diskUsageChart,
+#diskUsageChart:parent,
+#diskUsageChart:not(canvas) {
+  background-color: rgb(150,150,150) !important;
+}
+#diskUsageChart {
+  background-color: transparent !important;
+}
+#diskUsageChart:parent {
+  background-color: rgb(150,150,150) !important;
+}
+`;
+          document.head.appendChild(chartContainerStyle);
+        }
+
         // Force background-color: white !important for modal-body, modal-header bg-1000 border-700, card-body
         // and make all text and headers inside black
         if (!document.getElementById('light-mode-modal-card-style')) {
