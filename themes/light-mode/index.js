@@ -406,6 +406,18 @@
           document.head.appendChild(chartContainerStyle);
         }
 
+        // Make label.btn.btn-outline-secondary[for="recursiveMode"] text black
+        if (!document.getElementById('light-mode-outline-secondary-label-style')) {
+          var outlineSecondaryLabelStyle = document.createElement('style');
+          outlineSecondaryLabelStyle.id = 'light-mode-outline-secondary-label-style';
+          outlineSecondaryLabelStyle.textContent = `
+label.btn.btn-outline-secondary[for="recursiveMode"] {
+  color: #000 !important;
+}
+`;
+          document.head.appendChild(outlineSecondaryLabelStyle);
+        }
+
         // Force background-color: white !important for modal-body, modal-header bg-1000 border-700, card-body
         // and make all text and headers inside black
         if (!document.getElementById('light-mode-modal-card-style')) {
