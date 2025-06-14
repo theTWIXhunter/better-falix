@@ -384,6 +384,29 @@
             el.style.color = '#000';
         });
 
+        // Force background-color: white !important for modal-body, modal-header bg-1000 border-700, card-body
+        // and make all text and headers inside black
+        if (!document.getElementById('light-mode-modal-card-style')) {
+          var style = document.createElement('style');
+          style.id = 'light-mode-modal-card-style';
+          style.textContent = `
+.modal-body,
+.modal-header.bg-1000.border-700,
+.card-body {
+  background-color: #fff !important;
+}
+.modal-body,
+.modal-header.bg-1000.border-700,
+.card-body,
+.modal-body *:not(.btn),
+.modal-header.bg-1000.border-700 *:not(.btn),
+.card-body *:not(.btn) {
+  color: #000 !important;
+}
+`;
+          document.head.appendChild(style);
+        }
+
       });
     } else {
       console.error('[better-falix] LIGHT MODE THEME: chrome.storage.sync.get is not available or not running as a Chrome extension content script');

@@ -363,6 +363,35 @@ li.breadcrumb-item.active {
 `;
         document.head.appendChild(breadcrumbStyle);
       }
+
+      // Make "Analyze" button (btn-outline-primary with fileManager.analyzeDiskUsage) light purple
+      if (!document.getElementById('purple-mode-analyze-btn-style')) {
+        var analyzeBtnStyle = document.createElement('style');
+        analyzeBtnStyle.id = 'purple-mode-analyze-btn-style';
+        analyzeBtnStyle.textContent = `
+button.btn.btn-outline-primary[onclick="fileManager.analyzeDiskUsage()"] {
+  color: #a259e6 !important;
+  border-color: #d8b4fe !important;
+  background-color: #faf5ff !important;
+}
+button.btn.btn-outline-primary[onclick="fileManager.analyzeDiskUsage()"]:hover,
+button.btn.btn-outline-primary[onclick="fileManager.analyzeDiskUsage()"]:focus {
+  color: #fff !important;
+  background-color: #a259e6 !important;
+  border-color: #a259e6 !important;
+}
+button.btn.btn-outline-primary[onclick="fileManager.analyzeDiskUsage()"] svg {
+  color: #a259e6 !important;
+  fill: #a259e6 !important;
+}
+button.btn.btn-outline-primary[onclick="fileManager.analyzeDiskUsage()"]:hover svg,
+button.btn.btn-outline-primary[onclick="fileManager.analyzeDiskUsage()"]:focus svg {
+  color: #fff !important;
+  fill: #fff !important;
+}
+`;
+        document.head.appendChild(analyzeBtnStyle);
+      }
     });
   } else {
     console.error('[better-falix] PURPLE MODE THEME: chrome.storage.sync.get is not available or not running as a Chrome extension content script');
