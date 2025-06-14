@@ -384,6 +384,63 @@
             el.style.color = '#000';
         });
 
+        // Set chart container background to rgb(150,150,150)
+        if (!document.getElementById('light-mode-chart-container-style')) {
+          var chartContainerStyle = document.createElement('style');
+          chartContainerStyle.id = 'light-mode-chart-container-style';
+          chartContainerStyle.textContent = `
+/* Try common chart container classes and direct parent of canvas */
+.chart-container,
+#diskUsageChart,
+#diskUsageChart:parent,
+#diskUsageChart:not(canvas) {
+  background-color: rgb(150,150,150) !important;
+}
+#diskUsageChart {
+  background-color: transparent !important;
+}
+#diskUsageChart:parent {
+  background-color: rgb(150,150,150) !important;
+}
+`;
+          document.head.appendChild(chartContainerStyle);
+        }
+
+        // Make label.btn.btn-outline-secondary[for="recursiveMode"] text black
+        if (!document.getElementById('light-mode-outline-secondary-label-style')) {
+          var outlineSecondaryLabelStyle = document.createElement('style');
+          outlineSecondaryLabelStyle.id = 'light-mode-outline-secondary-label-style';
+          outlineSecondaryLabelStyle.textContent = `
+label.btn.btn-outline-secondary[for="recursiveMode"] {
+  color: #000 !important;
+}
+`;
+          document.head.appendChild(outlineSecondaryLabelStyle);
+        }
+
+        // Force background-color: white !important for modal-body, modal-header bg-1000 border-700, card-body
+        // and make all text and headers inside black
+        if (!document.getElementById('light-mode-modal-card-style')) {
+          var style = document.createElement('style');
+          style.id = 'light-mode-modal-card-style';
+          style.textContent = `
+.modal-body,
+.modal-header.bg-1000.border-700,
+.card-body {
+  background-color: #fff !important;
+}
+.modal-body,
+.modal-header.bg-1000.border-700,
+.card-body,
+.modal-body *:not(.btn),
+.modal-header.bg-1000.border-700 *:not(.btn),
+.card-body *:not(.btn) {
+  color: #000 !important;
+}
+`;
+          document.head.appendChild(style);
+        }
+
       });
     } else {
       console.error('[better-falix] LIGHT MODE THEME: chrome.storage.sync.get is not available or not running as a Chrome extension content script');
