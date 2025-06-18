@@ -79,6 +79,6 @@ chrome.storage.sync.get({ replaceSupportModal: false, enabled: true }, (data) =>
   }
 
   setTimeout(() => {
-    console.log('[better-falix] replaceSupportModal: Script loaded sucsessfully');
+    console.log('[better-falix] replaceSupportModal: Script loaded successfully');
   }, 10);
 });

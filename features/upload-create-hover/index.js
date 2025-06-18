@@ -59,6 +59,6 @@ chrome.storage.sync.get({ uploadCreateHover: false, enabled: true }, (data) => {
   }
 
   setTimeout(() => {
-    console.log('[better-falix] upload-create-hover: Script loaded sucsessfully');
+    console.log('[better-falix] upload-create-hover: Script loaded successfully');
   }, 10);
 });

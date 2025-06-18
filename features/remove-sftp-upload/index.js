@@ -50,6 +50,6 @@ chrome.storage.sync.get({ enabled: true, removeSftpUpload: false }, (data) => {
   }
 
   setTimeout(() => {
-    console.log('[better-falix] remove-sftp-upload: Script loaded sucsessfully');
+    console.log('[better-falix] remove-sftp-upload: Script loaded successfully');
   }, 10);
 });

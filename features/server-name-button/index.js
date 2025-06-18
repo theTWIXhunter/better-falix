@@ -37,7 +37,7 @@ chrome.storage.sync.get({ enabled: true, serverNameButton: false }, (data) => {
   observer.observe(document.body, { childList: true, subtree: true });
 
   setTimeout(() => {
-    console.log('[better-falix] server-name-button: Script loaded sucsessfully');
+    console.log('[better-falix] server-name-button: Script loaded successfully');
   }, 10);
 });
 

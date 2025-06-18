@@ -22,6 +22,6 @@ chrome.storage.sync.get({ editorWrapperHeight: false, enabled: true }, (data) =>
   }
 
   setTimeout(() => {
-    console.log('[better-falix] editor-wrapper-height: Script loaded sucsessfully');
+    console.log('[better-falix] editor-wrapper-height: Script loaded successfully');
   }, 10);
 });

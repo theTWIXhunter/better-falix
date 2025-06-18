@@ -35,6 +35,6 @@ chrome.storage.sync.get({ moveLogsNav: false, enabled: true }, (data) => {
   }
 
   setTimeout(() => {
-    console.log('[better-falix] move-logs-nav: Script loaded sucsessfully');
+    console.log('[better-falix] move-logs-nav: Script loaded successfully');
   }, 10);
 });

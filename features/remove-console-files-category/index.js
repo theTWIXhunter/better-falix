@@ -23,6 +23,6 @@ chrome.storage.sync.get({ enabled: true, removeConsoleFilesCategory: false }, (d
   })();
 
   setTimeout(() => {
-    console.log('[better-falix] remove-console-files-category: Script loaded sucsessfully');
+    console.log('[better-falix] remove-console-files-category: Script loaded successfully');
   }, 10);
 });

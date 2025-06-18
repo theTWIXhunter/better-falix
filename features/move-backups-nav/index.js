@@ -28,6 +28,6 @@ chrome.storage.sync.get({ moveBackupsNav: false, enabled: true }, (data) => {
   }
 
   setTimeout(() => {
-    console.log('[better-falix] move-backups-nav: Script loaded sucsessfully');
+    console.log('[better-falix] move-backups-nav: Script loaded successfully');
   }, 10);
 });

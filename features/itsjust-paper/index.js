@@ -23,7 +23,7 @@ chrome.storage.sync.get({ enabled: true, itsjustPaper: false }, (data) => {
     setTimeout(updatePaperOption, 1500);
     setTimeout(updatePaperOption, 3000);
     setTimeout(() => {
-      console.log('[better-falix] itsjust-paper: Script loaded sucsessfully');
+      console.log('[better-falix] itsjust-paper: Script loaded successfully');
     }, 10);
   }
 
