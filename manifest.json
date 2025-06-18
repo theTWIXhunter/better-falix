@@ -80,7 +80,7 @@
       "run_at": "document_idle"
     },
     {
-      "matches": ["https://client.falixnodes.net/server/console"],
+      "matches": ["https://client.falixnodes.net/server/console*"],
       "js": ["features/remove-how-to-connect/index.js"],
       "run_at": "document_idle"
     },
@@ -100,7 +100,7 @@
       "run_at": "document_idle"
     },  
     {
-      "matches": ["https://client.falixnodes.net/*"],
+      "matches": ["https://client.falixnodes.net/server/console*"],
       "js": ["features/replace-support-modal/index.js"],
       "run_at": "document_idle"
     },
@@ -115,8 +115,13 @@
       "run_at": "document_idle"
     },
     {
-      "matches": ["https://client.falixnodes.net/*"],
+      "matches": ["https://client.falixnodes.net/filemanager*"],
       "js": ["features/upload-create-hover/index.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://client.falixnodes.net/server/edit*"],
+      "js": ["features/editor-wrapper-height/index.js"],
       "run_at": "document_idle"
     }
   ]

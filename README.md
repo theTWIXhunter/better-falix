@@ -26,6 +26,8 @@ Replaces the support modal with a cleaner one and adds a copy all button.
 Makes the server name in the navbar clickable and redirect you to the main page.
 - **upload-create-hover:**  
 Makes the Upload and Create buttons show their dropdowns when hovered.
+- **Editor Wrapper Height**
+Sets the file editor height to 600px.
 
 **NAVIGATION**
 - **Server Name Button:** Makes the server name in the navbar (current-server-info) clickable to go to the main page, handy for when using the mobile nav bar.
