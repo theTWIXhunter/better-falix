@@ -14,6 +14,10 @@ chrome.storage.sync.get({ editorWrapperHeight: false, enabled: true }, (data) =>
       el.style.height = '600px';
     });
   }
+    document.querySelectorAll('#text-container-editor').forEach(el => {
+      el.style.height = '100% !important';
+    });
+ 
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', setEditorHeight);
