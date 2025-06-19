@@ -18,7 +18,6 @@ chrome.storage.sync.get(null, data => {
   setToggleState(document.getElementById('enabled'), !!data.enabled);
   document.getElementById('theme').value = data.theme || 'auto';
   setToggleState(document.getElementById('customServerOrder'), !!data.customServerOrder);
-  setToggleState(document.getElementById('customServerOrder_enable'), !!data.customServerOrder_enable);
   document.getElementById('customServerOrder_list').value = data.customServerOrder_list || '';
   setToggleState(document.getElementById('editorWrapperHeight'), !!data.editorWrapperHeight);
   document.getElementById('editorWrapperHeight_value').value = data.editorWrapperHeight_value || 600;
@@ -47,11 +46,6 @@ document.getElementById('customServerOrder').addEventListener('click', function(
   setToggleState(this, state);
   saveSetting('customServerOrder', state);
 });
-document.getElementById('customServerOrder_enable').addEventListener('click', function() {
-  const state = this.getAttribute('aria-pressed') !== 'true';
-  setToggleState(this, state);
-  saveSetting('customServerOrder_enable', state);
-});
 document.getElementById('customServerOrder_list').addEventListener('input', function() {
   saveSetting('customServerOrder_list', this.value);
 });
@@ -79,8 +73,8 @@ document.getElementById('replaceSupportModal').addEventListener('click', functio
 
 // --- Feature logic for reorder and editor height ---
 function applyCustomServerOrder() {
-  chrome.storage.sync.get(['customServerOrder', 'customServerOrder_enable', 'customServerOrder_list'], data => {
-    if (!data.customServerOrder || !data.customServerOrder_enable) return;
+  chrome.storage.sync.get(['customServerOrder', 'customServerOrder_list'], data => {
+    if (!data.customServerOrder) return;
     const orderList = (data.customServerOrder_list || '')
       .split(',')
       .map(x => x.trim())

@@ -1,8 +1,8 @@
 // [better-falix] custom-server-order: Script loading
 console.log('[better-falix] custom-server-order: Script loading');
 
-chrome.storage.sync.get({ customServerOrder: false, customServerOrder_enable: false, customServerOrder_list: '', enabled: true }, (data) => {
-  if (!data.enabled || !data.customServerOrder || !data.customServerOrder_enable) {
+chrome.storage.sync.get({ customServerOrder: false, customServerOrder_list: '', enabled: true }, (data) => {
+  if (!data.enabled || !data.customServerOrder) {
     console.log('[better-falix] custom-server-order: Script disabled');
     return;
   }
