@@ -73,10 +73,26 @@ chrome.storage.sync.get({ customServerOrder: [2046597, 1234567, 7654321], enable
     console.log('[Better-Falix] MutationObserver attached to servers container');
   }
 
-  // Attach MutationObserver on DOMContentLoaded
+  function waitForServersContainer(predefinedOrder) {
+    console.log('[Better-Falix] waitForServersContainer called');
+
+    const checkInterval = setInterval(() => {
+      const serversContainer = document.querySelector('.servers-container');
+      if (serversContainer) {
+        console.log('[Better-Falix] Servers container detected');
+        clearInterval(checkInterval);
+        observeServerContainer(predefinedOrder);
+        reorderServers(predefinedOrder);
+      } else {
+        console.log('[Better-Falix] Waiting for servers container...');
+      }
+    }, 500);
+  }
+
+  // Attach MutationObserver and reorder servers on DOMContentLoaded
   document.addEventListener('DOMContentLoaded', () => {
     console.log('[Better-Falix] DOMContentLoaded event triggered');
-    observeServerContainer(predefinedOrder);
+    waitForServersContainer(predefinedOrder);
   });
 
   console.log('[Better-Falix] custom-server-order: Script loaded successfully');
