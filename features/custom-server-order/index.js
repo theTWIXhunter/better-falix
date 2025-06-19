@@ -1,7 +1,7 @@
 // [better-falix] custom-server-order: Script loading
 console.log('[Better-Falix] custom-server-order: Script loading');
 
-chrome.storage.sync.get({ customServerOrder: true, enabled: true }, (data) => {
+chrome.storage.sync.get({ customServerOrder: [6, 2, 0, 7, 2, 5, 4, 3], enabled: true }, (data) => {
   if (!data.enabled || !data.customServerOrder) {
     console.log('[Better-Falix] custom-server-order: Script disabled');
     return;
@@ -9,20 +9,24 @@ chrome.storage.sync.get({ customServerOrder: true, enabled: true }, (data) => {
   console.log('[Better-Falix] custom-server-order: Script enabled');
 
   // --------- START FEATURE ----------
+  
   function reorderServers(predefinedOrder) {
     const serverContainer = document.querySelector('.servers-container');
-    if (!serverContainer) return;
+    if (!serverContainer) {
+      console.error('[Better-Falix] Server container not found');
+      return;
+    }
 
     // Fetch server data from API
     fetch('/user-servers.php')
       .then(response => response.json())
-      .then(data => {
-        if (!data.success || !data.data.servers) {
+      .then(apiData => {
+        if (!apiData.success || !apiData.data.servers) {
           console.error('[Better-Falix] Failed to fetch server data');
           return;
         }
 
-        const servers = data.data.servers;
+        const servers = apiData.data.servers;
         const serverMap = new Map(servers.map(server => [server.id, server]));
 
         // Create a new order based on predefinedOrder
@@ -36,6 +40,8 @@ chrome.storage.sync.get({ customServerOrder: true, enabled: true }, (data) => {
           const serverRow = document.querySelector(`.server-row[data-server-id="${server.id}"]`);
           if (serverRow) {
             serverContainer.appendChild(serverRow);
+          } else {
+            console.warn(`[Better-Falix] Server row not found for ID: ${server.id}`);
           }
         });
 
@@ -46,12 +52,9 @@ chrome.storage.sync.get({ customServerOrder: true, enabled: true }, (data) => {
       });
   }
 
-  // Predefined order (can be updated dynamically later)
-  const predefinedOrder = [6, 2, 0, 7, 2, 5, 4, 3];
-
   // Reorder servers on DOMContentLoaded
   document.addEventListener('DOMContentLoaded', () => {
-    reorderServers(predefinedOrder);
+    reorderServers(data.customServerOrder);
   });
 
   // --------- END FEATURE ----------
