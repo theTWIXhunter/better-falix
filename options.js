@@ -22,6 +22,10 @@ chrome.storage.sync.get(null, data => {
   setToggleState(document.getElementById('editorWrapperHeight'), !!data.editorWrapperHeight);
   document.getElementById('editorWrapperHeight_value').value = data.editorWrapperHeight_value || 600;
   setToggleState(document.getElementById('navbarHover'), !!data.navbarHover);
+  document.getElementById('navbarHoverZoneWidth').value = data.navbarHoverZoneWidth || 40;
+  setToggleState(document.getElementById('uploadCreateHover'), !!data.uploadCreateHover);
+  document.getElementById('uploadCreateHover_createDelay').value = data.uploadCreateHover_createDelay ?? 500;
+  document.getElementById('uploadCreateHover_uploadDelay').value = data.uploadCreateHover_uploadDelay ?? 0;
   setToggleState(document.getElementById('replaceSupportModal'), !!data.replaceSupportModal);
 });
 
@@ -63,6 +67,20 @@ document.getElementById('navbarHover').addEventListener('click', function() {
   const state = this.getAttribute('aria-pressed') !== 'true';
   setToggleState(this, state);
   saveSetting('navbarHover', state);
+});
+document.getElementById('navbarHoverZoneWidth').addEventListener('input', function() {
+  saveSetting('navbarHoverZoneWidth', this.value);
+});
+document.getElementById('uploadCreateHover').addEventListener('click', function() {
+  const state = this.getAttribute('aria-pressed') !== 'true';
+  setToggleState(this, state);
+  saveSetting('uploadCreateHover', state);
+});
+document.getElementById('uploadCreateHover_createDelay').addEventListener('input', function() {
+  saveSetting('uploadCreateHover_createDelay', this.value);
+});
+document.getElementById('uploadCreateHover_uploadDelay').addEventListener('input', function() {
+  saveSetting('uploadCreateHover_uploadDelay', this.value);
 });
 
 document.getElementById('replaceSupportModal').addEventListener('click', function() {
