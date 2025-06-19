@@ -1,8 +1,8 @@
 // [better-falix] custom-server-order: Script loading
 console.log('[better-falix] custom-server-order: Script loading');
 
-chrome.storage.sync.get({ customServerOrder: false, enabled: true }, (data) => {
-  if (!data.enabled || !data.customServerOrder) {
+chrome.storage.sync.get({ customServerOrder: false, customServerOrder_enable: false, customServerOrder_list: '', enabled: true }, (data) => {
+  if (!data.enabled || !data.customServerOrder || !data.customServerOrder_enable) {
     console.log('[better-falix] custom-server-order: Script disabled');
     return;
   }
@@ -10,19 +10,12 @@ chrome.storage.sync.get({ customServerOrder: false, enabled: true }, (data) => {
 
   //  --------- START FEATURE ----------
 
-  // List of server names in desired order (easy to change)
-  const serverOrder = [
-    '[PROD] Minecraft Bimsem',
-    '[PROD] Modded bimsem',
-    '[PROD] ModBot host',
-    'rodepandaserver',
-    'arne en phineas',
-    '[free test] twixtest1',
-    '[free test] twixtest2',
-    '[free test] twixtest3'
-  ];
-
   function reorderServers() {
+    const orderList = (data.customServerOrder_list || '')
+      .split(',')
+      .map(x => x.trim())
+      .filter(Boolean);
+
     const serversList = document.getElementById('serverslist');
     if (!serversList) return;
 
@@ -46,7 +39,7 @@ chrome.storage.sync.get({ customServerOrder: false, enabled: true }, (data) => {
     serverRows.forEach(row => serversContainer.removeChild(row));
 
     // Re-insert in desired order
-    serverOrder.forEach(name => {
+    orderList.forEach(name => {
       if (nameToRow[name]) {
         serversContainer.appendChild(nameToRow[name]);
       }
@@ -55,7 +48,7 @@ chrome.storage.sync.get({ customServerOrder: false, enabled: true }, (data) => {
     // Append any remaining servers not in the list (keep their original order)
     serverRows.forEach(row => {
       const name = row.querySelector('.server-name')?.textContent.trim();
-      if (name && !serverOrder.includes(name)) {
+      if (name && !orderList.includes(name)) {
         serversContainer.appendChild(row);
       }
     });
@@ -63,19 +56,15 @@ chrome.storage.sync.get({ customServerOrder: false, enabled: true }, (data) => {
 
   // Wait for servers to be loaded (MutationObserver on .servers-container)
   function observeAndReorder() {
+    reorderServers();
+
     const serversList = document.getElementById('serverslist');
     if (!serversList) return;
 
     const serversContainer = serversList.querySelector('.servers-container');
     if (!serversContainer) return;
 
-    // Initial try
-    reorderServers();
-
-    // Observe for changes (servers loaded/changed)
-    const observer = new MutationObserver(() => {
-      reorderServers();
-    });
+    const observer = new MutationObserver(reorderServers);
     observer.observe(serversContainer, { childList: true, subtree: false });
   }
 
