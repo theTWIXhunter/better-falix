@@ -22,7 +22,8 @@ const featureIds = [
   'navbarHover',
   'replaceSupportModal',
   'uploadCreateHover',
-  'editorWrapperHeight'
+  'editorWrapperHeight',
+  'customServerOrder'
 ];
 
 function setFeatureBtnState(btn, enabled) {
@@ -71,7 +72,8 @@ document.addEventListener('DOMContentLoaded', () => {
     navbarHover: false,
     replaceSupportModal: false,
     uploadCreateHover: false,
-    editorWrapperHeight: false
+    editorWrapperHeight: false,
+    customServerOrder: false
   }, (data) => {
     updateToggleBtn(data.enabled);
     updateFeatureButtons(data);

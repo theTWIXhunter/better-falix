@@ -28,6 +28,8 @@ Makes the server name in the navbar clickable and redirect you to the main page.
 Makes the Upload and Create buttons show their dropdowns when hovered.
 - **Editor Wrapper Height**
 Sets the file editor height to 600px.
+- **Custom Server Order**
+Reorder your server list in any way you want.
 
 **NAVIGATION**
 - **Server Name Button:** Makes the server name in the navbar (current-server-info) clickable to go to the main page, handy for when using the mobile nav bar.

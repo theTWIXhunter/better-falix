@@ -123,6 +123,11 @@
       "matches": ["https://client.falixnodes.net/server/edit*"],
       "js": ["features/editor-wrapper-height/index.js"],
       "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://client.falixnodes.net/"],
+      "js": ["features/custom-server-order/index.js"],
+      "run_at": "document_idle"
     }
   ]
 }
