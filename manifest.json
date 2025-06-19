@@ -30,27 +30,27 @@
       "js": ["features/hide-console-tabs/index.js"]
     },
     {
-      "matches": ["https://client.falixnodes.net/*"],
+      "matches": ["https://client.falixnodes.net/server/*"],
       "js": ["features/move-backups-nav/index.js"],
       "run_at": "document_idle"
     },
     {
-      "matches": ["https://client.falixnodes.net/*"],
+      "matches": ["https://client.falixnodes.net/server/*"],
       "js": ["features/move-monitoring-nav/index.js"],
       "run_at": "document_idle"
     },
     {
-      "matches": ["https://client.falixnodes.net/*"],
+      "matches": ["https://client.falixnodes.net/server/*"],
       "js": ["features/move-logs-nav/index.js"],
       "run_at": "document_idle"
     },
     {
-      "matches": ["https://client.falixnodes.net/*"],
+      "matches": ["https://client.falixnodes.net/server/*"],
       "js": ["features/remove-external-start-nav/index.js"],
       "run_at": "document_idle"
     },
     {
-      "matches": ["https://client.falixnodes.net/*"],
+      "matches": ["https://client.falixnodes.net/server/*"],
       "js": ["features/remove-console-files-category/index.js"],
       "run_at": "document_idle"
     },
@@ -60,7 +60,7 @@
       "run_at": "document_idle"
     },
     {
-      "matches": ["https://client.falixnodes.net/*"],
+      "matches": ["https://client.falixnodes.net/server/*"],
       "js": ["features/remove-console-files-category/index.js"],
       "run_at": "document_idle"
     },
@@ -95,7 +95,7 @@
       "run_at": "document_idle"
     },
     {
-      "matches": ["https://client.falixnodes.net/*"],
+      "matches": ["https://client.falixnodes.net/server/*"],
       "js": ["features/server-name-button/index.js"],
       "run_at": "document_idle"
     },  
@@ -115,7 +115,7 @@
       "run_at": "document_idle"
     },
     {
-      "matches": ["https://client.falixnodes.net/filemanager*"],
+      "matches": ["https://client.falixnodes.net/server/filemanager*"],
       "js": ["features/upload-create-hover/index.js"],
       "run_at": "document_idle"
     },
