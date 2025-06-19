@@ -1,7 +1,7 @@
 // [better-falix] custom-server-order: Script loading
 console.log('[Better-Falix] custom-server-order: Script loading');
 
-chrome.storage.sync.get({ customServerOrder: [6, 2, 0, 7, 2, 5, 4, 3], enabled: true }, (data) => {
+chrome.storage.sync.get({ customServerOrder: [2046597, 1234567, 7654321], enabled: true }, (data) => {
   if (!data.enabled || !data.customServerOrder) {
     console.log('[Better-Falix] custom-server-order: Script disabled');
     return;
@@ -9,13 +9,13 @@ chrome.storage.sync.get({ customServerOrder: [6, 2, 0, 7, 2, 5, 4, 3], enabled: 
   console.log('[Better-Falix] custom-server-order: Script enabled');
 
   function reorderServers(predefinedOrder) {
-    const serverContainer = document.querySelector('.servers-container');
-    if (!serverContainer) {
-      console.error('[Better-Falix] Server container not found');
+    const serversContainer = document.querySelector('.servers-container');
+    if (!serversContainer) {
+      console.error('[Better-Falix] Servers container not found');
       return;
     }
 
-    const serverRows = Array.from(serverContainer.querySelectorAll('.server-row'));
+    const serverRows = Array.from(serversContainer.querySelectorAll('.server-row'));
     if (serverRows.length === 0) {
       console.warn('[Better-Falix] No server rows found yet');
       return;
@@ -27,13 +27,13 @@ chrome.storage.sync.get({ customServerOrder: [6, 2, 0, 7, 2, 5, 4, 3], enabled: 
     );
 
     // Clear existing server rows
-    serverContainer.innerHTML = '';
+    serversContainer.innerHTML = '';
 
     // Append servers in the new order
     predefinedOrder.forEach(id => {
       const serverRow = serverMap.get(id);
       if (serverRow) {
-        serverContainer.appendChild(serverRow);
+        serversContainer.appendChild(serverRow);
       } else {
         console.warn(`[Better-Falix] Server row not found for ID: ${id}`);
       }
@@ -43,9 +43,9 @@ chrome.storage.sync.get({ customServerOrder: [6, 2, 0, 7, 2, 5, 4, 3], enabled: 
   }
 
   function observeServerContainer(predefinedOrder) {
-    const serverContainer = document.querySelector('.servers-container');
-    if (!serverContainer) {
-      console.error('[Better-Falix] Server container not found');
+    const serversContainer = document.querySelector('.servers-container');
+    if (!serversContainer) {
+      console.error('[Better-Falix] Servers container not found');
       return;
     }
 
@@ -53,8 +53,8 @@ chrome.storage.sync.get({ customServerOrder: [6, 2, 0, 7, 2, 5, 4, 3], enabled: 
       reorderServers(predefinedOrder);
     });
 
-    observer.observe(serverContainer, { childList: true });
-    console.log('[Better-Falix] MutationObserver attached to server container');
+    observer.observe(serversContainer, { childList: true });
+    console.log('[Better-Falix] MutationObserver attached to servers container');
   }
 
   // Attach MutationObserver on DOMContentLoaded
