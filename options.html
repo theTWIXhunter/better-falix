@@ -175,10 +175,42 @@
     .reset-btn:hover {
       background: #b91c1c;
     }
+    .save-btn {
+      background: #3b82f6;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 10px 28px;
+      font-size: 1.08em;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 18px;
+      margin-top: 8px;
+      margin-right: 10px;
+      transition: background 0.2s;
+      box-shadow: 0 2px 8px rgba(59,130,246,0.08);
+    }
+    .save-btn:hover {
+      background: #2563eb;
+    }
+    .saved-indicator {
+      display: inline-block;
+      color: #10b981;
+      font-size: 1em;
+      margin-left: 12px;
+      opacity: 0;
+      transition: opacity 0.2s;
+      vertical-align: middle;
+    }
+    .saved-indicator.visible {
+      opacity: 1;
+    }
   </style>
 </head>
 <body>
   <div class="container">
+    <button class="save-btn" id="saveBtn" type="button">Save</button>
+    <span class="saved-indicator" id="savedIndicator">Saved!</span>
     <h1>Better Falix Settings</h1>
     <div class="desc">Configure general settings and feature options below.</div>
 
@@ -248,5 +280,25 @@
     <div class="footer">&copy; 2025 the_twix_hunter. All rights reserved.</div>
   </div>
   <script src="options.js"></script>
+  <script>
+    // Show "Saved!" indicator and reload on Save button or Ctrl+S
+    const saveBtn = document.getElementById('saveBtn');
+    const savedIndicator = document.getElementById('savedIndicator');
+    function showSaved() {
+      savedIndicator.classList.add('visible');
+      setTimeout(() => savedIndicator.classList.remove('visible'), 1200);
+    }
+    saveBtn.addEventListener('click', () => {
+      showSaved();
+      setTimeout(() => location.reload(), 600);
+    });
+    window.addEventListener('keydown', e => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+        e.preventDefault();
+        showSaved();
+        setTimeout(() => location.reload(), 600);
+      }
+    });
+  </script>
 </body>
 </html>
