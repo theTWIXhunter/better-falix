@@ -4,11 +4,13 @@ console.log('[Better-Falix] custom-server-order: Script loading');
 chrome.storage.sync.get({ customServerOrder: [2046597, 1234567, 7654321], enabled: true }, (data) => {
   console.log('[Better-Falix] chrome.storage.sync.get result:', data);
 
-  if (!data.enabled || !data.customServerOrder) {
+  if (!data.enabled) {
     console.log('[Better-Falix] custom-server-order: Script disabled');
     return;
   }
-  console.log('[Better-Falix] custom-server-order: Script enabled');
+
+  const predefinedOrder = Array.isArray(data.customServerOrder) ? data.customServerOrder : [2046597, 1234567, 7654321];
+  console.log('[Better-Falix] Using predefinedOrder:', predefinedOrder);
 
   function reorderServers(predefinedOrder) {
     console.log('[Better-Falix] reorderServers called with predefinedOrder:', predefinedOrder);
@@ -74,7 +76,7 @@ chrome.storage.sync.get({ customServerOrder: [2046597, 1234567, 7654321], enable
   // Attach MutationObserver on DOMContentLoaded
   document.addEventListener('DOMContentLoaded', () => {
     console.log('[Better-Falix] DOMContentLoaded event triggered');
-    observeServerContainer(data.customServerOrder);
+    observeServerContainer(predefinedOrder);
   });
 
   console.log('[Better-Falix] custom-server-order: Script loaded successfully');
