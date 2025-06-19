@@ -10,7 +10,7 @@ chrome.storage.sync.get({ customServerOrder: false, enabled: true }, (data) => {
 
   //  --------- START FEATURE ----------
 
-  // List of server names in desired order
+  // List of server names in desired order (easy to change)
   const serverOrder = [
     '[PROD] Minecraft Bimsem',
     '[PROD] Modded bimsem',
@@ -26,12 +26,11 @@ chrome.storage.sync.get({ customServerOrder: false, enabled: true }, (data) => {
     const serversList = document.getElementById('serverslist');
     if (!serversList) return;
 
-    // Find the container that holds the server rows
     const serversContainer = serversList.querySelector('.servers-container');
     if (!serversContainer) return;
 
-    // Get all server-row elements
     const serverRows = Array.from(serversContainer.querySelectorAll('.server-row'));
+    if (!serverRows.length) return;
 
     // Map: server name -> server-row element
     const nameToRow = {};
@@ -62,19 +61,38 @@ chrome.storage.sync.get({ customServerOrder: false, enabled: true }, (data) => {
     });
   }
 
+  // Wait for servers to be loaded (MutationObserver on .servers-container)
   function observeAndReorder() {
-    reorderServers();
-    const observer = new MutationObserver(reorderServers);
     const serversList = document.getElementById('serverslist');
-    if (serversList) {
-      observer.observe(serversList, { childList: true, subtree: true });
+    if (!serversList) return;
+
+    const serversContainer = serversList.querySelector('.servers-container');
+    if (!serversContainer) return;
+
+    // Initial try
+    reorderServers();
+
+    // Observe for changes (servers loaded/changed)
+    const observer = new MutationObserver(() => {
+      reorderServers();
+    });
+    observer.observe(serversContainer, { childList: true, subtree: false });
+  }
+
+  // Wait for DOM and for #serverslist to exist
+  function waitForServersList() {
+    const serversList = document.getElementById('serverslist');
+    if (serversList && serversList.querySelector('.servers-container')) {
+      observeAndReorder();
+    } else {
+      setTimeout(waitForServersList, 200);
     }
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', observeAndReorder);
+    document.addEventListener('DOMContentLoaded', waitForServersList);
   } else {
-    observeAndReorder();
+    waitForServersList();
   }
 
   setTimeout(() => {
