@@ -1,99 +1,83 @@
 // [better-falix] custom-server-order: Script loading
-console.log('[Better-Falix] custom-server-order: Script loading');
+console.log('[better-falix] custom-server-order: Script loading');
 
-chrome.storage.sync.get({ customServerOrder: [2046597, 1234567, 7654321], enabled: true }, (data) => {
-  console.log('[Better-Falix] chrome.storage.sync.get result:', data);
-
-  if (!data.enabled) {
-    console.log('[Better-Falix] custom-server-order: Script disabled');
+chrome.storage.sync.get({ customServerOrder: false, enabled: true }, (data) => {
+  if (!data.enabled || !data.customServerOrder) {
+    console.log('[better-falix] custom-server-order: Script disabled');
     return;
   }
+  console.log('[better-falix] custom-server-order: Script enabled');
 
-  const predefinedOrder = Array.isArray(data.customServerOrder) ? data.customServerOrder : [2046597, 1234567, 7654321];
-  console.log('[Better-Falix] Using predefinedOrder:', predefinedOrder);
+  //  --------- START FEATURE ----------
 
-  function reorderServers(predefinedOrder) {
-    console.log('[Better-Falix] reorderServers called with predefinedOrder:', predefinedOrder);
+  // List of server names in desired order
+  const serverOrder = [
+    '[PROD] Minecraft Bimsem',
+    '[PROD] Modded bimsem',
+    '[PROD] ModBot host',
+    'rodepandaserver',
+    'arne en phineas',
+    '[free test] twixtest1',
+    '[free test] twixtest2',
+    '[free test] twixtest3'
+  ];
 
-    const serversContainer = document.querySelector('.servers-container');
-    if (!serversContainer) {
-      console.error('[Better-Falix] Servers container not found');
-      return;
-    }
-    console.log('[Better-Falix] Servers container found:', serversContainer);
+  function reorderServers() {
+    const serversList = document.getElementById('serverslist');
+    if (!serversList) return;
 
+    // Find the container that holds the server rows
+    const serversContainer = serversList.querySelector('.servers-container');
+    if (!serversContainer) return;
+
+    // Get all server-row elements
     const serverRows = Array.from(serversContainer.querySelectorAll('.server-row'));
-    console.log('[Better-Falix] Found server rows:', serverRows);
 
-    if (serverRows.length === 0) {
-      console.warn('[Better-Falix] No server rows found yet');
-      return;
-    }
-
-    // Map server rows by their data-server-id
-    const serverMap = new Map(
-      serverRows.map(row => [parseInt(row.dataset.serverId, 10), row])
-    );
-    console.log('[Better-Falix] Server map created:', serverMap);
-
-    // Clear existing server rows
-    serversContainer.innerHTML = '';
-    console.log('[Better-Falix] Servers container cleared');
-
-    // Append servers in the new order
-    predefinedOrder.forEach(id => {
-      const serverRow = serverMap.get(id);
-      if (serverRow) {
-        serversContainer.appendChild(serverRow);
-        console.log(`[Better-Falix] Server row appended for ID: ${id}`);
-      } else {
-        console.warn(`[Better-Falix] Server row not found for ID: ${id}`);
+    // Map: server name -> server-row element
+    const nameToRow = {};
+    serverRows.forEach(row => {
+      const nameEl = row.querySelector('.server-name');
+      if (nameEl) {
+        const name = nameEl.textContent.trim();
+        nameToRow[name] = row;
       }
     });
 
-    console.log('[Better-Falix] Servers reordered successfully');
-  }
+    // Remove all server rows from the DOM
+    serverRows.forEach(row => serversContainer.removeChild(row));
 
-  function observeServerContainer(predefinedOrder) {
-    console.log('[Better-Falix] observeServerContainer called with predefinedOrder:', predefinedOrder);
-
-    const serversContainer = document.querySelector('.servers-container');
-    if (!serversContainer) {
-      console.error('[Better-Falix] Servers container not found');
-      return;
-    }
-    console.log('[Better-Falix] Servers container found:', serversContainer);
-
-    const observer = new MutationObserver(() => {
-      console.log('[Better-Falix] MutationObserver triggered');
-      reorderServers(predefinedOrder);
+    // Re-insert in desired order
+    serverOrder.forEach(name => {
+      if (nameToRow[name]) {
+        serversContainer.appendChild(nameToRow[name]);
+      }
     });
 
-    observer.observe(serversContainer, { childList: true });
-    console.log('[Better-Falix] MutationObserver attached to servers container');
-  }
-
-  function waitForServersContainer(predefinedOrder) {
-    console.log('[Better-Falix] waitForServersContainer called');
-
-    const checkInterval = setInterval(() => {
-      const serversContainer = document.querySelector('.servers-container');
-      if (serversContainer) {
-        console.log('[Better-Falix] Servers container detected');
-        clearInterval(checkInterval);
-        observeServerContainer(predefinedOrder);
-        reorderServers(predefinedOrder);
-      } else {
-        console.log('[Better-Falix] Waiting for servers container...');
+    // Append any remaining servers not in the list (keep their original order)
+    serverRows.forEach(row => {
+      const name = row.querySelector('.server-name')?.textContent.trim();
+      if (name && !serverOrder.includes(name)) {
+        serversContainer.appendChild(row);
       }
-    }, 500);
+    });
   }
 
-  // Attach MutationObserver and reorder servers on DOMContentLoaded
-  document.addEventListener('DOMContentLoaded', () => {
-    console.log('[Better-Falix] DOMContentLoaded event triggered');
-    waitForServersContainer(predefinedOrder);
-  });
+  function observeAndReorder() {
+    reorderServers();
+    const observer = new MutationObserver(reorderServers);
+    const serversList = document.getElementById('serverslist');
+    if (serversList) {
+      observer.observe(serversList, { childList: true, subtree: true });
+    }
+  }
 
-  console.log('[Better-Falix] custom-server-order: Script loaded successfully');
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', observeAndReorder);
+  } else {
+    observeAndReorder();
+  }
+
+  setTimeout(() => {
+    console.log('[better-falix] custom-server-order: Script loaded sucsessfully');
+  }, 10);
 });
