@@ -282,22 +282,23 @@
   <script src="options.js"></script>
   <script>
     // Show "Saved!" indicator and reload on Save button or Ctrl+S
-    const saveBtn = document.getElementById('saveBtn');
-    const savedIndicator = document.getElementById('savedIndicator');
-    function showSaved() {
-      savedIndicator.classList.add('visible');
-      setTimeout(() => savedIndicator.classList.remove('visible'), 1200);
-    }
-    saveBtn.addEventListener('click', () => {
-      showSaved();
-      setTimeout(() => location.reload(), 600);
-    });
-    window.addEventListener('keydown', e => {
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+    document.addEventListener('DOMContentLoaded', () => {
+      const saveBtn = document.getElementById('saveBtn');
+      const savedIndicator = document.getElementById('savedIndicator');
+      function showSaved() {
+        savedIndicator.classList.add('visible');
+        setTimeout(() => savedIndicator.classList.remove('visible'), 1200);
+      }
+      saveBtn.addEventListener('click', (e) => {
         e.preventDefault();
         showSaved();
-        setTimeout(() => location.reload(), 600);
-      }
+      });
+      window.addEventListener('keydown', e => {
+        if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'S')) {
+          e.preventDefault();
+          showSaved();
+        }
+      });
     });
   </script>
 </body>
