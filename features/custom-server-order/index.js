@@ -8,8 +8,6 @@ chrome.storage.sync.get({ customServerOrder: [6, 2, 0, 7, 2, 5, 4, 3], enabled: 
   }
   console.log('[Better-Falix] custom-server-order: Script enabled');
 
-  // --------- START FEATURE ----------
-  
   function reorderServers(predefinedOrder) {
     const serverContainer = document.querySelector('.servers-container');
     if (!serverContainer) {
@@ -17,46 +15,52 @@ chrome.storage.sync.get({ customServerOrder: [6, 2, 0, 7, 2, 5, 4, 3], enabled: 
       return;
     }
 
-    // Fetch server data from API
-    fetch('/user-servers.php')
-      .then(response => response.json())
-      .then(apiData => {
-        if (!apiData.success || !apiData.data.servers) {
-          console.error('[Better-Falix] Failed to fetch server data');
-          return;
-        }
+    const serverRows = Array.from(serverContainer.querySelectorAll('.server-row'));
+    if (serverRows.length === 0) {
+      console.warn('[Better-Falix] No server rows found yet');
+      return;
+    }
 
-        const servers = apiData.data.servers;
-        const serverMap = new Map(servers.map(server => [server.id, server]));
+    // Map server rows by their data-server-id
+    const serverMap = new Map(
+      serverRows.map(row => [parseInt(row.dataset.serverId, 10), row])
+    );
 
-        // Create a new order based on predefinedOrder
-        const orderedServers = predefinedOrder.map(id => serverMap.get(id)).filter(Boolean);
+    // Clear existing server rows
+    serverContainer.innerHTML = '';
 
-        // Clear existing server rows
-        serverContainer.innerHTML = '';
+    // Append servers in the new order
+    predefinedOrder.forEach(id => {
+      const serverRow = serverMap.get(id);
+      if (serverRow) {
+        serverContainer.appendChild(serverRow);
+      } else {
+        console.warn(`[Better-Falix] Server row not found for ID: ${id}`);
+      }
+    });
 
-        // Append servers in the new order
-        orderedServers.forEach(server => {
-          const serverRow = document.querySelector(`.server-row[data-server-id="${server.id}"]`);
-          if (serverRow) {
-            serverContainer.appendChild(serverRow);
-          } else {
-            console.warn(`[Better-Falix] Server row not found for ID: ${server.id}`);
-          }
-        });
-
-        console.log('[Better-Falix] Servers reordered successfully');
-      })
-      .catch(error => {
-        console.error('[Better-Falix] Error fetching server data:', error);
-      });
+    console.log('[Better-Falix] Servers reordered successfully');
   }
 
-  // Reorder servers on DOMContentLoaded
+  function observeServerContainer(predefinedOrder) {
+    const serverContainer = document.querySelector('.servers-container');
+    if (!serverContainer) {
+      console.error('[Better-Falix] Server container not found');
+      return;
+    }
+
+    const observer = new MutationObserver(() => {
+      reorderServers(predefinedOrder);
+    });
+
+    observer.observe(serverContainer, { childList: true });
+    console.log('[Better-Falix] MutationObserver attached to server container');
+  }
+
+  // Attach MutationObserver on DOMContentLoaded
   document.addEventListener('DOMContentLoaded', () => {
-    reorderServers(data.customServerOrder);
+    observeServerContainer(data.customServerOrder);
   });
 
-  // --------- END FEATURE ----------
   console.log('[Better-Falix] custom-server-order: Script loaded successfully');
 });
