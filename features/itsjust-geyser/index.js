@@ -18,7 +18,7 @@ chrome.storage.sync.get({ enabled: true, itsJustGeyser: false }, (data) => {
   }
 
   function runWithRetry() {
-    updatePaperOption();
+    updateGeyserOption();
     setTimeout(updateGeyserOption, 500);
     setTimeout(updateGeyserOption, 1500);
     setTimeout(updateGeyserOption, 3000);
