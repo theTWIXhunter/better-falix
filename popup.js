@@ -17,7 +17,7 @@ const featureIds = [
   'removeSftpUpload',
   'removeHowToConnect',
   'removeExitDiscount',
-  'itsjustPaper',
+  'itsJustPaper',
   'itsJustGeyser',
   'serverNameButton',
   'navbarHover',
