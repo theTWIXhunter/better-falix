@@ -80,7 +80,14 @@ chrome.storage.sync.get({ editorFullscreen: false, enabled: true }, (data) => {
         editorWrapper.style.top = '0';
         editorWrapper.style.left = '0';
         editorWrapper.style.width = '100vw';
-        editorWrapper.style.height = '100vh !important';
+        // Remove any inline height set by other features
+        editorWrapper.style.removeProperty('height');
+        // Remove !important height if set by other features
+        editorWrapper.setAttribute('style',
+          editorWrapper.getAttribute('style')
+            .replace(/height\s*:\s*[^;]+;?/gi, '')
+        );
+        // Now force fullscreen height
         editorWrapper.style.setProperty('height', '100vh', 'important');
         editorWrapper.style.zIndex = '99999';
         editorWrapper.style.background = '#181c20';
