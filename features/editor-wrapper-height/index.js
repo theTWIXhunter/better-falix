@@ -57,6 +57,11 @@ window.addEventListener('bf-editor-fullscreen', (e) => {
     // Remove our height override in fullscreen
     document.querySelectorAll('.editor-wrapper').forEach(el => {
       el.style.removeProperty('height');
+      // Also remove any min-height or max-height that could restrict fullscreen
+      el.style.removeProperty('min-height');
+      el.style.removeProperty('max-height');
+      // Force height to 100vh in fullscreen to override default theme
+      el.style.setProperty('height', '100vh', 'important');
     });
   }
 });
