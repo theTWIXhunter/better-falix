@@ -154,17 +154,23 @@ chrome.storage.sync.get({ editorFullscreen: false, enabled: true }, (data) => {
       // If there's a toggle button, ensure it still works
       const toggleBtn = document.getElementById('toggleFileList');
       if (toggleBtn) {
+        // Remove any previous click handlers to avoid stacking
+        toggleBtn.onclick = null;
         toggleBtn.addEventListener('click', () => {
           const explorer = document.getElementById('fileExplorer');
           if (explorer) {
+            // Always toggle between '' and 'none'
             explorer.style.display = (explorer.style.display === 'none' ? '' : 'none');
           }
         });
       }
     }
 
-    // Call this after adding the fullscreen button
-    hideFileExplorerInitially();
+    // Only hide file explorer on initial page load, not on every fullscreen toggle
+    if (!window.__bf_file_explorer_hidden_once) {
+      hideFileExplorerInitially();
+      window.__bf_file_explorer_hidden_once = true;
+    }
   }
 
   function waitForToolbar() {
