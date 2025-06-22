@@ -23,6 +23,7 @@ Better Falix is a browser extension that enhances the Falixnodes client-side exp
 - **Remove SFTP info from upload:** Removes the SFTP info and its divider from the upload button dropdown for a cleaner UI.
 - **upload-create-hover:** Makes the Upload and Create buttons show their dropdowns when hovered.
 - **Editor Wrapper Height:** Sets the file editor height to 600px.
+- **Editor Fullscreen**: Adds a button to the file editor toolbar that allows you to make the editor and toolbar take up the entire browser viewport (not true fullscreen, browser UI remains visible).
 
 **Navigation**
 - **Move "Backups" to Server Settings:** Relocate the "Backups" navigation item to the Server Settings section.
@@ -102,20 +103,6 @@ chrome.storage.sync.get({ FEATURENAME: false, enabled: true }, (data) => {
 
 ```
 [Better-Falix] FEATURENAME: logged message here
-```
-
-   A basic feature logs the following events:
-   - Script loading (at the start of the file)
-   - Script Enabled (after the enabled check)
-   - Script Disabled (when the enabled check fails)
-   - Script loaded sucsessfully (somewher at the end)
-
-## License
-
-MIT
-
----
-This project is not affiliated with Falixnodes.
 ```
 
    A basic feature logs the following events:

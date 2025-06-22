@@ -24,7 +24,8 @@ const featureIds = [
   'replaceSupportModal',
   'uploadCreateHover',
   'editorWrapperHeight',
-  'customServerOrder'
+  'customServerOrder',
+  'editorFullscreen'
 ];
 
 function setFeatureBtnState(btn, enabled) {
@@ -107,7 +108,8 @@ document.addEventListener('DOMContentLoaded', () => {
     replaceSupportModal: false,
     uploadCreateHover: false,
     editorWrapperHeight: false,
-    customServerOrder: false
+    customServerOrder: false,
+    editorFullscreen: false
   }, (data) => {
     updateToggleBtn(data.enabled);
     updateFeatureButtons(data);
