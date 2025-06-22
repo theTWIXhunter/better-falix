@@ -82,7 +82,6 @@ chrome.storage.sync.get({ editorFullscreen: false, enabled: true }, (data) => {
         editorWrapper.style.width = '100vw';
         // Remove any inline height set by other features
         editorWrapper.style.removeProperty('height');
-        // Remove !important height if set by other features
         editorWrapper.setAttribute('style',
           editorWrapper.getAttribute('style')
             .replace(/height\s*:\s*[^;]+;?/gi, '')
@@ -116,6 +115,9 @@ chrome.storage.sync.get({ editorFullscreen: false, enabled: true }, (data) => {
         // Prevent scroll
         document.body.style.overflow = 'hidden';
 
+        // Notify other scripts (like editor-wrapper-height) that fullscreen is active
+        window.dispatchEvent(new CustomEvent('bf-editor-fullscreen', { detail: { fullscreen: true } }));
+
         btn.querySelector('span').textContent = 'Exit Fullscreen';
         isFullscreen = true;
       } else {
@@ -133,6 +135,9 @@ chrome.storage.sync.get({ editorFullscreen: false, enabled: true }, (data) => {
         if (header && typeof prevStyles.header !== 'undefined') {
           header.style.display = prevStyles.header;
         }
+        // Notify other scripts that fullscreen is off
+        window.dispatchEvent(new CustomEvent('bf-editor-fullscreen', { detail: { fullscreen: false } }));
+
         btn.querySelector('span').textContent = 'Fullscreen';
         isFullscreen = false;
       }
