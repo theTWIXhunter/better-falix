@@ -46,6 +46,7 @@ chrome.storage.sync.get({ editorFullscreen: false, enabled: true }, (data) => {
       const editorContainer = document.querySelector('.editor-container');
       const toolbar = document.querySelector('.editor-toolbar.d-flex');
       const breadcrumb = document.querySelector('.editor-breadcrumb');
+      const header = document.querySelector('.editor-header.py-3.px-4');
       if (!editorWrapper || !editorContainer || !toolbar) return;
 
       if (!isFullscreen) {
@@ -55,7 +56,8 @@ chrome.storage.sync.get({ editorFullscreen: false, enabled: true }, (data) => {
           container: editorContainer.style.cssText,
           toolbar: toolbar.style.cssText,
           bodyOverflow: document.body.style.overflow,
-          breadcrumb: breadcrumb ? breadcrumb.style.display : undefined
+          breadcrumb: breadcrumb ? breadcrumb.style.display : undefined,
+          header: header ? header.style.display : undefined
         };
         prevDisplay.clear();
         Array.from(document.body.children).forEach(child => {
@@ -70,8 +72,9 @@ chrome.storage.sync.get({ editorFullscreen: false, enabled: true }, (data) => {
             child.style.display = 'none';
           }
         });
-        // Remove editor-breadcrumb
+        // Remove editor-breadcrumb and editor-header
         if (breadcrumb) breadcrumb.style.display = 'none';
+        if (header) header.style.display = 'none';
 
         // Remove unwanted styles from editor-wrapper
         editorWrapper.style.position = 'fixed';
@@ -119,6 +122,9 @@ chrome.storage.sync.get({ editorFullscreen: false, enabled: true }, (data) => {
         document.body.style.overflow = prevStyles.bodyOverflow || '';
         if (breadcrumb && typeof prevStyles.breadcrumb !== 'undefined') {
           breadcrumb.style.display = prevStyles.breadcrumb;
+        }
+        if (header && typeof prevStyles.header !== 'undefined') {
+          header.style.display = prevStyles.header;
         }
         btn.querySelector('span').textContent = 'Fullscreen';
         isFullscreen = false;
