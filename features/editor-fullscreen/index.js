@@ -39,6 +39,7 @@ chrome.storage.sync.get({ editorFullscreen: false, enabled: true }, (data) => {
     // Fullscreen logic
     let isFullscreen = false;
     let prevStyles = {};
+    let prevDisplay = new Map();
 
     btn.addEventListener('click', () => {
       const editorWrapper = document.querySelector('.editor-wrapper');
@@ -47,17 +48,21 @@ chrome.storage.sync.get({ editorFullscreen: false, enabled: true }, (data) => {
       if (!editorWrapper || !editorContainer || !toolbar) return;
 
       if (!isFullscreen) {
-        // Save previous styles
+        // Save previous styles and display for all body children
         prevStyles = {
           wrapper: editorWrapper.style.cssText,
           container: editorContainer.style.cssText,
           toolbar: toolbar.style.cssText,
           bodyOverflow: document.body.style.overflow,
         };
-        // Hide everything except toolbar and editor-container
+        prevDisplay.clear();
         Array.from(document.body.children).forEach(child => {
+          prevDisplay.set(child, child.style.display);
+          // Only hide siblings of editorWrapper and its descendants
           if (
-            !child.classList.contains('editor-wrapper') &&
+            child !== editorWrapper &&
+            !child.contains(editorWrapper) &&
+            !editorWrapper.contains(child) &&
             !child.classList.contains('modal-backdrop')
           ) {
             child.style.display = 'none';
@@ -90,13 +95,8 @@ chrome.storage.sync.get({ editorFullscreen: false, enabled: true }, (data) => {
         isFullscreen = true;
       } else {
         // Restore everything
-        Array.from(document.body.children).forEach(child => {
-          if (
-            !child.classList.contains('editor-wrapper') &&
-            !child.classList.contains('modal-backdrop')
-          ) {
-            child.style.display = '';
-          }
+        prevDisplay.forEach((display, child) => {
+          child.style.display = display;
         });
         editorWrapper.style.cssText = prevStyles.wrapper || '';
         editorContainer.style.cssText = prevStyles.container || '';
