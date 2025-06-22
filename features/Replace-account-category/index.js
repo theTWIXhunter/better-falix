@@ -148,6 +148,6 @@ chrome.storage.sync.get({ enabled: true, replaceAccountCategory: false }, (data)
   })();
 
   setTimeout(() => {
-    console.log('[better-falix] replace-account-category: Script loaded sucsessfully');
+    console.log('[better-falix] replace-account-category: Script loaded successfully');
   }, 10);
 });

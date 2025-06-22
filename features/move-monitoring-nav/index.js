@@ -28,6 +28,6 @@ chrome.storage.sync.get({ moveMonitoringNav: false, enabled: true }, (data) => {
   }
 
   setTimeout(() => {
-    console.log('[better-falix] move-monitoring-nav: Script loaded sucsessfully');
+    console.log('[better-falix] move-monitoring-nav: Script loaded successfully');
   }, 10);
 });

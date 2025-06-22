@@ -17,11 +17,14 @@ const featureIds = [
   'removeSftpUpload',
   'removeHowToConnect',
   'removeExitDiscount',
-  'itsjustPaper',
+  'itsJustPaper',
+  'itsJustGeyser',
   'serverNameButton',
   'navbarHover',
   'replaceSupportModal',
-  'uploadCreateHover'
+  'uploadCreateHover',
+  'editorWrapperHeight',
+  'customServerOrder'
 ];
 
 function setFeatureBtnState(btn, enabled) {
@@ -30,7 +33,6 @@ function setFeatureBtnState(btn, enabled) {
 }
 
 function setFeaturesListEnabled(enabled) {
-  // Gray out all .feature-list containers
   document.querySelectorAll('.feature-list').forEach(list => {
     if (enabled) {
       list.classList.remove('disabled');
@@ -67,7 +69,6 @@ function setThemesListEnabled(enabled) {
   if (themesList) {
     if (enabled) {
       themesList.classList.remove('disabled');
-      // Also gray out theme cards and their children
       themesList.querySelectorAll('.theme-card, .theme-label, .theme-select-btn, .theme-preview').forEach(el => {
         el.style.pointerEvents = '';
         el.style.filter = '';
@@ -99,11 +100,14 @@ document.addEventListener('DOMContentLoaded', () => {
     removeSftpUpload: false,
     removeHowToConnect: false,
     removeExitDiscount: false,
-    itsjustPaper: false,
+    itsJustPaper: false,
+    itsJustGeyser: false,
     serverNameButton: false,
     navbarHover: false,
     replaceSupportModal: false,
     uploadCreateHover: false,
+    editorWrapperHeight: false,
+    customServerOrder: false
   }, (data) => {
     updateToggleBtn(data.enabled);
     updateFeatureButtons(data);
@@ -158,22 +162,22 @@ document.addEventListener('DOMContentLoaded', () => {
   const sliderIndicator = document.getElementById('slider-indicator');
 
   function activateTab(tab, save = true) {
-      if (tab === 'features') {
-          featuresTab.classList.add('active');
-          themesTab.classList.remove('active');
-          featuresContent.style.display = '';
-          themesContent.style.display = 'none';
-          sliderIndicator.style.left = '0%';
-      } else {
-          themesTab.classList.add('active');
-          featuresTab.classList.remove('active');
-          featuresContent.style.display = 'none';
-          themesContent.style.display = '';
-          sliderIndicator.style.left = '50%';
-      }
-      if (save) {
-        chrome.storage.sync.set({ popupActiveTab: tab });
-      }
+    if (tab === 'features') {
+      featuresTab.classList.add('active');
+      themesTab.classList.remove('active');
+      featuresContent.style.display = '';
+      themesContent.style.display = 'none';
+      sliderIndicator.style.left = '0%';
+    } else {
+      themesTab.classList.add('active');
+      featuresTab.classList.remove('active');
+      featuresContent.style.display = 'none';
+      themesContent.style.display = '';
+      sliderIndicator.style.left = '50%';
+    }
+    if (save) {
+      chrome.storage.sync.set({ popupActiveTab: tab });
+    }
   }
 
   // Restore last active tab (and only activate after storage is loaded)
@@ -184,36 +188,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Always register tab event listeners
   featuresTab.addEventListener('click', function() {
-      activateTab('features');
+    activateTab('features');
   });
 
   themesTab.addEventListener('click', function() {
-      activateTab('themes');
+    activateTab('themes');
   });
 
   // Theme selection logic
   function setActiveTheme(themeName) {
-      // Mark the selected button and card
-      document.querySelectorAll('.theme-select-btn').forEach(btn => {
-          btn.classList.toggle('selected', btn.dataset.theme === themeName);
-          // Also highlight the card for accessibility/visual feedback
-          if (btn.closest('.theme-card')) {
-              btn.closest('.theme-card').classList.toggle('selected', btn.dataset.theme === themeName);
-          }
-      });
-      chrome.storage.sync.set({ activeTheme: themeName });
+    document.querySelectorAll('.theme-select-btn').forEach(btn => {
+      btn.classList.toggle('selected', btn.dataset.theme === themeName);
+      if (btn.closest('.theme-card')) {
+        btn.closest('.theme-card').classList.toggle('selected', btn.dataset.theme === themeName);
+      }
+    });
+    chrome.storage.sync.set({ activeTheme: themeName });
   }
 
-  // Always register theme select button event listeners
   document.querySelectorAll('.theme-select-btn').forEach(btn => {
-      btn.addEventListener('click', function() {
-          setActiveTheme(this.dataset.theme);
-      });
+    btn.addEventListener('click', function() {
+      setActiveTheme(this.dataset.theme);
+    });
   });
 
-  // Load active theme from storage and update UI
   chrome.storage.sync.get(['activeTheme'], function(data) {
-      const activeTheme = data.activeTheme || 'default';
-      setActiveTheme(activeTheme);
+    const activeTheme = data.activeTheme || 'default';
+    setActiveTheme(activeTheme);
   });
 });

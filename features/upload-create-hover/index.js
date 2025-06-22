@@ -1,7 +1,12 @@
 // [better-falix] upload-create-hover: Script loading
 console.log('[better-falix] upload-create-hover: Script loading');
 
-chrome.storage.sync.get({ uploadCreateHover: false, enabled: true }, (data) => {
+chrome.storage.sync.get({
+  uploadCreateHover: false,
+  uploadCreateHover_createDelay: 500,
+  uploadCreateHover_uploadDelay: 0,
+  enabled: true
+}, (data) => {
   if (!data.enabled || !data.uploadCreateHover) {
     console.log('[better-falix] upload-create-hover: Script disabled');
     return;
@@ -9,7 +14,6 @@ chrome.storage.sync.get({ uploadCreateHover: false, enabled: true }, (data) => {
   console.log('[better-falix] upload-create-hover: Script enabled');
 
   //  --------- START FEATURE ----------
-  
   function addHoverDropdown(id, delay = 0) {
     const btn = document.getElementById(id);
     if (!btn) return;
@@ -48,8 +52,8 @@ chrome.storage.sync.get({ uploadCreateHover: false, enabled: true }, (data) => {
   }
 
   function setup() {
-    addHoverDropdown('createDropdown', 500); // 0.5 seconds delay for create
-    addHoverDropdown('uploadDropdown', 0);   // no delay for upload
+    addHoverDropdown('createDropdown', parseInt(data.uploadCreateHover_createDelay, 10) || 0);
+    addHoverDropdown('uploadDropdown', parseInt(data.uploadCreateHover_uploadDelay, 10) || 0);
   }
 
   if (document.readyState === 'loading') {
@@ -59,6 +63,6 @@ chrome.storage.sync.get({ uploadCreateHover: false, enabled: true }, (data) => {
   }
 
   setTimeout(() => {
-    console.log('[better-falix] upload-create-hover: Script loaded sucsessfully');
+    console.log('[better-falix] upload-create-hover: Script loaded successfully');
   }, 10);
 });

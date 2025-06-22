@@ -1,7 +1,7 @@
 // [better-falix] navbarhover: Script loading
 console.log('[Better-Falix] navbarhover: Script loading');
 
-chrome.storage.sync.get({ navbarHover: false, enabled: true }, (data) => {
+chrome.storage.sync.get({ navbarHover: false, navbarHoverZoneWidth: 40, enabled: true }, (data) => {
   if (!data.enabled || !data.navbarHover) {
     console.log('[Better-Falix] navbarhover: Script disabled');
     return;
@@ -19,7 +19,7 @@ chrome.storage.sync.get({ navbarHover: false, enabled: true }, (data) => {
   hoverZone.style.position = 'fixed';
   hoverZone.style.left = '0';
   hoverZone.style.top = '0';
-  hoverZone.style.width = '40px';
+  hoverZone.style.width = (parseInt(data.navbarHoverZoneWidth, 10) || 40) + 'px';
   hoverZone.style.height = '100vh';
   hoverZone.style.zIndex = '9999';
   hoverZone.style.background = 'transparent';

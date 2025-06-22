@@ -27,6 +27,6 @@ chrome.storage.sync.get({ enabled: true, removeExitDiscount: false }, (data) => 
   }
 
   setTimeout(() => {
-    console.log('[better-falix] remove-exit-discount: Script loaded sucsessfully');
+    console.log('[better-falix] remove-exit-discount: Script loaded successfully');
   }, 10);
 });

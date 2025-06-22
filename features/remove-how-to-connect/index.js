@@ -97,6 +97,6 @@ chrome.storage.sync.get({ enabled: true, removeHowToConnect: false }, (data) => 
   }
 
   setTimeout(() => {
-    console.log('[better-falix] remove-how-to-connect: Script loaded sucsessfully');
+    console.log('[better-falix] remove-how-to-connect: Script loaded successfully');
   }, 10);
 });

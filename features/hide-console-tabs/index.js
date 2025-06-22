@@ -20,6 +20,6 @@ chrome.storage.sync.get({ hideConsoleTabs: false, enabled: true }, (data) => {
 
   // [better-falix] hide-console-tabs: Script loaded sucsessfully
   setTimeout(() => {
-    console.log('[better-falix] hide-console-tabs: Script loaded sucsessfully');
+    console.log('[better-falix] hide-console-tabs: Script loaded successfully');
   }, 10);
 });

@@ -1,0 +1,52 @@
+// [better-falix] editor-wrapper-height: Script loading
+console.log('[better-falix] editor-wrapper-height: Script loading');
+
+chrome.storage.sync.get({ editorWrapperHeight: false, editorWrapperHeight_value: 600, enabled: true }, (data) => {
+  if (!data.enabled || !data.editorWrapperHeight) {
+    console.log('[better-falix] editor-wrapper-height: Script disabled');
+    return;
+  }
+  console.log('[better-falix] editor-wrapper-height: Script enabled');
+
+  //  --------- START FEATURE ----------
+  function setEditorHeight() {
+    const height = parseInt(data.editorWrapperHeight_value, 10) || 600;
+    document.querySelectorAll('.editor-wrapper').forEach(el => {
+      el.style.height = height + 'px';
+      // Try to trigger a resize event for editors inside
+      // Monaco editor uses .monaco-editor, Ace uses .ace_editor
+      const monaco = el.querySelector('.monaco-editor');
+      if (monaco && monaco.layout) {
+        monaco.layout();
+      }
+      // Force a resize event for any textarea or contenteditable
+      el.querySelectorAll('textarea, [contenteditable="true"]').forEach(input => {
+        input.style.height = '100%';
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+      });
+    });
+    // Optionally, also set #text-container-editor if needed
+    document.querySelectorAll('#text-container-editor').forEach(el => {
+      el.style.height = '100%';
+    });
+
+    // Dispatch a window resize event to force editors to recalculate layout
+    window.dispatchEvent(new Event('resize'));
+  }
+
+  function observeAndApplyEditorHeight() {
+    setEditorHeight();
+    const observer = new MutationObserver(setEditorHeight);
+    observer.observe(document.body, { childList: true, subtree: true });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', observeAndApplyEditorHeight);
+  } else {
+    observeAndApplyEditorHeight();
+  }
+
+  setTimeout(() => {
+    console.log('[better-falix] editor-wrapper-height: Script loaded successfully');
+  }, 10);
+});

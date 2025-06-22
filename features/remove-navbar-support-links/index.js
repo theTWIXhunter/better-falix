@@ -20,6 +20,6 @@ chrome.storage.sync.get({ enabled: true, removeNavbarSupportLinks: false }, (dat
   observer.observe(document.body, { childList: true, subtree: true });
 
   setTimeout(() => {
-    console.log('[better-falix] remove-navbar-support-links: Script loaded sucsessfully');
+    console.log('[better-falix] remove-navbar-support-links: Script loaded successfully');
   }, 10);
 });

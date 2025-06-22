@@ -30,7 +30,7 @@
       max-width: 520px;
     }
     #toggle {
-      width: 100%;
+      width: calc(100% - 50px);
       padding: 18px 0;
       font-size: 1.2em;
       margin-bottom: 18px;
@@ -63,7 +63,6 @@
       border-left: 3px solid var(--falix-accent);
       padding-left: 8px;
     }
-    .features-list,
     .feature-list {
       background: var(--falix-panel);
       border-radius: 8px;
@@ -152,39 +151,50 @@
       position: absolute;
       left: 0;
       top: 120%;
-      background: #23272b;
+      background: #0d0e10;
       color: #fff;
       padding: 7px 12px;
       border-radius: 6px;
       font-size: 0.97em;
       white-space: pre-line;
       z-index: 1000;
-      box-shadow: 0 2px 8px 0 rgba(0,0,0,0.18);
+      box-shadow: 0 2px 8px 0 rgba(35, 52, 66, 0.251);
       min-width: 180px;
       max-width: 320px;
       pointer-events: none;
     }
-    /* Slider styles */
-    #popup-slider {
-      display: flex;
-      justify-content: center;
-      margin: 10px 0;
-    }
-    .popup-tab {
-      flex: 1;
-      padding: 10px;
-      font-size: 1em;
-      color: var(--falix-muted);
-      background: var(--falix-panel);
+    /* Settings link styles */
+    .settings-link {
+      position: absolute;
+      top: 30px;
+      right: 14px;
+      background: none;
       border: none;
-      border-radius: 8px 8px 0 0;
       cursor: pointer;
-      transition: background 0.2s, color 0.2s;
+      padding: 0;
+      margin: 0;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0.85;
+      transition: opacity 0.15s;
     }
-    .popup-tab.active {
-      color: #fff;
-      background: var(--falix-accent);
+    .settings-link:hover {
+      opacity: 1;
     }
+    .settings-link img {
+      width: 32px;
+      height: 32px;
+      display: block;
+      filter: grayscale(0.2) brightness(1.2);
+      transition: filter 0.2s;
+    }
+    .settings-link:hover img {
+      filter: grayscale(0) brightness(1.5) drop-shadow(0 0 2px #3b82f6);
+    }
+    /* Slider styles */
     .slider-tabs {
       display: flex;
       position: relative;
@@ -285,7 +295,6 @@
       color: #ffffffc7;
       font-weight: 500;
       margin-bottom: 8px;
-      
     }
     .theme-select-btn {
       width: 22px;
@@ -334,67 +343,93 @@
       filter: grayscale(0.7);
     }
     .features-list.disabled .category {
-      /* Also gray out headers */
       color: #b0b8c1 !important;
       border-left-color: #b0b8c1 !important;
     }
   </style>
 </head>
 <body>
-  <!-- Enable extension button -->
-  <div id="popup-container">
-    <button id="toggle" data-tooltip="Toggle to enable or disable all extension features.">Enable Extension</button>
+    <!-- Settings icon button -->
+    <button class="settings-link" id="openSettings" title="Open Settings" aria-label="Open Settings">
+      <img src="assets/settings.png" alt="Settings">
+    </button>
+    <div id="popup-container">
+      <button id="toggle" data-tooltip="Toggle to enable or disable all extension features.">Enable Extension</button>
 
+      <!-- Slider Tabs -->
+      <div class="slider-tabs">
+        <div class="slider-indicator" id="slider-indicator"></div>
+        <button class="slider-tab-btn active" id="features-tab" type="button">Features</button>
+        <button class="slider-tab-btn" id="themes-tab" type="button">Themes</button>
+      </div>
 
-    <!-- Slider Tabs -->
-    <div class="slider-tabs">
-      <div class="slider-indicator" id="slider-indicator"></div>
-      <button class="slider-tab-btn active" id="features-tab" type="button">Features</button>
-      <button class="slider-tab-btn" id="themes-tab" type="button">Themes</button>
-    </div>
-
-    <!------FEATURES------>
-
-    <div id="features-content">
+      <!-- FEATURES TAB CONTENT -->
+      <div id="features-content">
         <!-- General Features -->
         <div class="category">General</div>
         <div class="feature-list">
           <div class="feature-row">
-            <span class="feature-label" data-tooltip="Optionally hide unnecessary console tabs for a cleaner interface.">Hide Console Tabs</span>
-            <button class="feature-btn" id="hideConsoleTabs" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+            <span class="feature-label" data-tooltip="Reorder your server list in any way you want. (See settings)">Custom Server Order</span>
+            <button class="feature-btn" id="customServerOrder" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+          </div>
+          <div class="feature-row">
+            <span class="feature-label" data-tooltip="Opens and closes the navbar when you hover on/off it.">Navbar Hover</span>
+            <button class="feature-btn" id="navbarHover" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
           </div>
           <div class="feature-row">
             <span class="feature-label" data-tooltip="Hides the sidebar 'Account' category and adds a custom popup menu to the profile icon with quick links to Profile Settings and Logout.">Replace Account Category</span>
             <button class="feature-btn" id="replaceAccountCategory" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
           </div>
           <div class="feature-row">
-            <span class="feature-label" data-tooltip="Removes the SFTP info and its divider from the upload button dropdown for a cleaner UI.">Remove SFTP info from upload</span>
-            <button class="feature-btn" id="removeSftpUpload" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
-          </div>
-          <div class="feature-row">
-            <span class="feature-label" data-tooltip="Removes all 'How to connect' steps, DNS verification sections, and the 'Server Name' row from the connect button for a cleaner look.">Remove How To Connect</span>
-            <button class="feature-btn" id="removeHowToConnect" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+            <span class="feature-label" data-tooltip="Makes the server name in the navbar clickable and redirect you to the main page.">Server Name Button</span>
+            <button class="feature-btn" id="serverNameButton" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
           </div>
           <div class="feature-row">
             <span class="feature-label" data-tooltip="Removes the most annoying popup ever (the exit discount modal and its backdrop) from falixnodes.net.">Remove Exit-Discount</span>
             <button class="feature-btn" id="removeExitDiscount" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
           </div>
           <div class="feature-row">
-            <span class="feature-label" data-tooltip="Renames 'Craftbukkit / Spigot / PaperSpigot' to 'Paper' in the server type dropdown for clarity.">it's just paper</span>
-            <button class="feature-btn" id="itsjustPaper" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
-          </div>    
+            <span class="feature-label" data-tooltip="Renames 'Craftbukkit / Spigot / PaperSpigot' to 'Paper' in the server type dropdown for clarity.">it's just Paper</span>
+            <button class="feature-btn" id="itsJustPaper" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+          </div>
+            <div class="feature-row">
+            <span class="feature-label" data-tooltip="Renames 'Java + Bedrock Support (Geyser)' in the server type dropdown for clarity.">it's just Geyser</span>
+            <button class="feature-btn" id="itsJustGeyser" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+          </div>
+        </div>
+
+        <!-- Console Features -->
+        <div class="category">Console</div>
+        <div class="feature-list">
           <div class="feature-row">
-            <span class="feature-label" data-tooltip="Opens and closes the navbar when you hover on/off it.">Navbar Hover</span>
-            <button class="feature-btn" id="navbarHover" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
-          </div>   
+            <span class="feature-label" data-tooltip="Optionally hide unnecessary console tabs for a cleaner interface.">Hide Console Tabs</span>
+            <button class="feature-btn" id="hideConsoleTabs" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+          </div>
           <div class="feature-row">
             <span class="feature-label" data-tooltip="Replaces the support modal with a cleaner one and adds a copy all button.">replace Support Modal</span>
             <button class="feature-btn" id="replaceSupportModal" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
-          </div>   
+          </div>
           <div class="feature-row">
-            <span class="feature-label" data-tooltip="Makes the server name in the navbar clickable and redirect you to the main page.">Server Name Button</span>
-            <button class="feature-btn" id="serverNameButton" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
-          </div>  
+            <span class="feature-label" data-tooltip="Removes all 'How to connect' steps, DNS verification sections, and the 'Server Name' row from the connect button for a cleaner look.">Remove How To Connect</span>
+            <button class="feature-btn" id="removeHowToConnect" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+          </div>
+        </div>
+
+        <!-- Filemanager Features -->
+        <div class="category">Filemanager</div>
+        <div class="feature-list">
+          <div class="feature-row">
+            <span class="feature-label" data-tooltip="Removes the SFTP info and its divider from the upload button dropdown for a cleaner UI.">Remove SFTP info from upload</span>
+            <button class="feature-btn" id="removeSftpUpload" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+          </div>
+          <div class="feature-row">
+            <span class="feature-label" data-tooltip="Makes the Upload and Create buttons show their dropdowns when hovered.">Upload/Create Hover</span>
+            <button class="feature-btn" id="uploadCreateHover" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+          </div>
+          <div class="feature-row">
+            <span class="feature-label" data-tooltip="Makes the file editor 600px Height">Editor Wrapper Height</span>
+            <button class="feature-btn" id="editorWrapperHeight" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+          </div>
         </div>
 
         <!-- Navigation Features -->
@@ -424,50 +459,45 @@
             <span class="feature-label" data-tooltip="Remove 'Console' and 'Files' categories (keep items).">Remove "Console" and "Files" categories</span>
             <button class="feature-btn" id="removeConsoleFilesCategory" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
           </div>
-          <div class="feature-row">
-            <span class="feature-label" data-tooltip="Makes the Upload and Create buttons show their dropdowns when hovered.">Upload/Create Hover</span>
-            <button class="feature-btn" id="uploadCreateHover" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
-         </div>
         </div>
       </div>
 
+      <!-- THEMES TAB CONTENT -->
+      <div id="themes-content" style="display:none;">
+        <div style="max-width:480px ; background:#fff3cd; color:#856404; border:1px solid #ffeeba; border-radius:8px; padding:12px 16px; margin-bottom:18px; font-size:0.98em;">
+          <b>Warning:</b> Themes are still under construction. We are not sure if all themes already work site-wide.<br>
+          If you want to contribute to these themes, please do so on <a href="https://github.com/theTWIXhunter/better-falix" target="_blank" style="color:#7c3aed;text-decoration:underline;">github</a>.
+        </div>
+        <div class="themes-list">
+          <div class="themes-row">
+            <div class="theme-card" data-theme="default">
+              <img src="themes/default/icon.png" alt="Default Theme" class="theme-preview">
+              <div class="theme-label">Default</div>
+              <button class="theme-select-btn" data-theme="default"></button>
+            </div>
+            <div class="theme-card" data-theme="light-mode">
+              <img src="themes/light-mode/icon.png" alt="Light Mode" class="theme-preview">
+              <div class="theme-label">Light Mode</div>
+              <button class="theme-select-btn" data-theme="light-mode"></button>
+            </div>
+          </div>
+          <div class="themes-row" style="justify-content: flex-start;">
+            <div style="width:170px;"></div>
+            <div class="theme-card" data-theme="purple-mode">
+              <img src="themes/purple-mode/icon.png" alt="Purple Mode" class="theme-preview">
+              <div class="theme-label">Purple Mode</div>
+              <button class="theme-select-btn" data-theme="purple-mode"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Footer -->
+      <br>
+      <div class="footer">&copy; 2025 the_twix_hunter. All rights reserved. <br>
+        <a href="https://github.com/theTWIXhunter/better-falix/" target="_blank"> view on github </a> - 
+        <a href="https://discord.com/users/1244004992046596232" target="_blank"> contact me on discord </a>
+      </div>
     </div>
-
-    <!------THEMES------>
-
-    <div id="themes-content" style="display:none;">
-      <div style="max-width:480px ; background:#fff3cd; color:#856404; border:1px solid #ffeeba; border-radius:8px; padding:12px 16px; margin-bottom:18px; font-size:0.98em;">
-        <b>Warning:</b> Themes are still under construction. We are not sure if all themes already work site-wide.<br>
-        If you want to contribute to these themes, please do so on <a href="https://github.com/theTWIXhunter/better-falix" target="_blank" style="color:#7c3aed;text-decoration:underline;">github</a>.
-      </div>
-      <div class="themes-list">
-        <div class="themes-row">
-          <div class="theme-card" data-theme="default">
-            <img src="themes/default/icon.png" alt="Default Theme" class="theme-preview">
-            <div class="theme-label">Default</div>
-            <button class="theme-select-btn" data-theme="default"></button>
-          </div>
-          <div class="theme-card" data-theme="light-mode">
-            <img src="themes/light-mode/icon.png" alt="Light Mode" class="theme-preview">
-            <div class="theme-label">Light Mode</div>
-            <button class="theme-select-btn" data-theme="light-mode"></button>
-          </div>
-        </div>
-        <div class="themes-row" style="justify-content: flex-start;">
-          <div style="width:170px;"></div>
-          <div class="theme-card" data-theme="purple-mode">
-            <img src="themes/purple-mode/icon.png" alt="Purple Mode" class="theme-preview">
-            <div class="theme-label">Purple Mode</div>
-            <button class="theme-select-btn" data-theme="purple-mode"></button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Footer -->
-     <br>
-    <div class="footer">&copy; 2025 the_twix_hunter. All rights reserved. <br> <a href="https://github.com/theTWIXhunter/better-falix/" target="_blank"> view on github </a> - <a href="https://discord.com/users/1244004992046596232" target="_blank"> contact me on discord </a>  </div>
-    
-  </div>
-  <script src="popup.js"></script>
-</body>
+    <script src="popup.js"></script>
+  </body>
 </html>
