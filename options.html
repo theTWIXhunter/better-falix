@@ -188,14 +188,6 @@
       <button class="feature-toggle" id="enabled" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
     </div>
     <div class="setting-row">
-      <span class="setting-label">Theme</span>
-      <select class="setting-input" id="theme">
-        <option value="auto">Auto</option>
-        <option value="dark">Dark</option>
-        <option value="light">Light</option>
-      </select>
-    </div>
-    <div class="setting-row">
       <span class="setting-label">Reset All Settings</span>
       <button class="reset-btn" id="resetAll">Reset</button>
     </div>
@@ -208,7 +200,7 @@
         <span class="feature-title">Custom Server Order</span>
         <button class="feature-toggle" id="customServerOrder" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
       </div>
-      <div class="feature-desc">Reorder your server list to your preferred order.</div>
+      <div class="feature-desc">Reorder your server list to your preferred order. <br> for example: "Servername1, Servername2, ServerName4" <br> (caps sensitive)</div>
       <div class="setting-row">
         <span class="setting-label">Order (comma separated)</span>
         <input class="setting-input" id="customServerOrder_list" type="text" value="">
@@ -220,7 +212,7 @@
         <span class="feature-title">Editor Wrapper Height</span>
         <button class="feature-toggle" id="editorWrapperHeight" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
       </div>
-      <div class="feature-desc">Sets the editor-wrapper height to 600px.</div>
+      <div class="feature-desc">Sets the editor-wrapper height (normal: 400, plugin default: 600).</div>
       <div class="setting-row">
         <span class="setting-label">Height (px)</span>
         <input class="setting-input" id="editorWrapperHeight_value" type="number" min="100" max="2000" value="600">
@@ -232,7 +224,7 @@
         <span class="feature-title">Navbar Hover</span>
         <button class="feature-toggle" id="navbarHover" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
       </div>
-      <div class="feature-desc">Opens and closes the navbar when you hover on/off it.</div>
+      <div class="feature-desc">Change the width of the detection zone to control how far your mouse needs to be (default: 40).</div>
       <div class="setting-row">
         <span class="setting-label">Hover Zone Width (px)</span>
         <input class="setting-input" id="navbarHoverZoneWidth" type="number" min="1" max="200" value="40">
@@ -244,7 +236,7 @@
         <span class="feature-title">Upload/Create Hover</span>
         <button class="feature-toggle" id="uploadCreateHover" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
       </div>
-      <div class="feature-desc">Makes the Upload and Create buttons show their dropdowns when hovered.</div>
+      <div class="feature-desc">Change the delays before the buttons open.</div>
       <div class="setting-row">
         <span class="setting-label">Create Delay (ms)</span>
         <input class="setting-input" id="uploadCreateHover_createDelay" type="number" min="0" max="5000" value="500">
@@ -255,17 +247,12 @@
       </div>
     </div>
 
-    <div class="feature-block">
-      <div class="feature-header">
-        <span class="feature-title">Replace Support Modal</span>
-        <button class="feature-toggle" id="replaceSupportModal" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
-      </div>
-      <div class="feature-desc">Replaces the support modal with a cleaner one and adds a copy all button.</div>
-    </div>
-
     <!-- Add more feature-blocks as needed -->
 
-    <div class="footer">&copy; 2025 the_twix_hunter. All rights reserved.</div>
+    <div class="footer">&copy; 2025 the_twix_hunter. All rights reserved. <br>
+                        This extension is not affiliated with FalixNodes. <br>
+                        <a href="https://github.com/thetwixhunter/better-falix" target="_blank" style="color: #3b82f6; text-decoration: none;">GitHub Repository</a> - 
+                        <a href="https://discord.com/users/1244004992046596232" target="_blank" style="color: #3b82f6; text-decoration: none;">Contact me on discord</a></div>
   </div>
   <script src="options.js"></script>
 </body>
