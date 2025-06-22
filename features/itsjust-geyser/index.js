@@ -11,7 +11,7 @@ chrome.storage.sync.get({ enabled: true, itsJustGeyser: false }, (data) => {
   //  --------- START FEATURE ----------
 
   function updateGeyserOption() {
-    const options = document.querySelectorAll('option[value="Java + Bedrock Support (Geyser)"]');
+    const options = document.querySelectorAll('option[value="geyser"]');
     options.forEach(opt => {
       opt.textContent = "Geyser";
     });
