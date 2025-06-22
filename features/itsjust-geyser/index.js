@@ -1,29 +1,29 @@
-// [better-falix] itsjust-geyser: Script loading
-console.log('[better-falix] itsjust-geyser: Script loading');
+// [better-falix] itsjust-Geyser: Script loading
+console.log('[better-falix] itsjust-Geyser: Script loading');
 
 chrome.storage.sync.get({ enabled: true, itsJustGeyser: false }, (data) => {
   if (!data.enabled || !data.itsJustGeyser) {
-    console.log('[better-falix] itsjust-geyser: Script disabled');
+    console.log('[better-falix] itsjust-Geyser: Script disabled');
     return;
   }
-  console.log('[better-falix] itsjust-geyser: Script enabled');
+  console.log('[better-falix] itsjust-Geyser: Script enabled');
 
   //  --------- START FEATURE ----------
 
-  function updatePaperOption() {
+  function updateGeyserOption() {
     const options = document.querySelectorAll('option[value="Java + Bedrock Support (Geyser)"]');
     options.forEach(opt => {
-      opt.textContent = "geyser";
+      opt.textContent = "Geyser";
     });
   }
 
   function runWithRetry() {
     updatePaperOption();
-    setTimeout(updatePaperOption, 500);
-    setTimeout(updatePaperOption, 1500);
-    setTimeout(updatePaperOption, 3000);
+    setTimeout(updateGeyserOption, 500);
+    setTimeout(updateGeyserOption, 1500);
+    setTimeout(updateGeyserOption, 3000);
     setTimeout(() => {
-      console.log('[better-falix] itsjust-geyser: Script loaded successfully');
+      console.log('[better-falix] itsjust-Geyser: Script loaded successfully');
     }, 10);
   }
 
