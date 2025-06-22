@@ -45,6 +45,7 @@ chrome.storage.sync.get({ editorFullscreen: false, enabled: true }, (data) => {
       const editorWrapper = document.querySelector('.editor-wrapper');
       const editorContainer = document.querySelector('.editor-container');
       const toolbar = document.querySelector('.editor-toolbar.d-flex');
+      const breadcrumb = document.querySelector('.editor-breadcrumb');
       if (!editorWrapper || !editorContainer || !toolbar) return;
 
       if (!isFullscreen) {
@@ -54,6 +55,7 @@ chrome.storage.sync.get({ editorFullscreen: false, enabled: true }, (data) => {
           container: editorContainer.style.cssText,
           toolbar: toolbar.style.cssText,
           bodyOverflow: document.body.style.overflow,
+          breadcrumb: breadcrumb ? breadcrumb.style.display : undefined
         };
         prevDisplay.clear();
         Array.from(document.body.children).forEach(child => {
@@ -68,7 +70,10 @@ chrome.storage.sync.get({ editorFullscreen: false, enabled: true }, (data) => {
             child.style.display = 'none';
           }
         });
-        // Make editor-wrapper fill viewport
+        // Remove editor-breadcrumb
+        if (breadcrumb) breadcrumb.style.display = 'none';
+
+        // Remove unwanted styles from editor-wrapper
         editorWrapper.style.position = 'fixed';
         editorWrapper.style.top = '0';
         editorWrapper.style.left = '0';
@@ -78,16 +83,26 @@ chrome.storage.sync.get({ editorFullscreen: false, enabled: true }, (data) => {
         editorWrapper.style.background = '#181c20';
         editorWrapper.style.margin = '0';
         editorWrapper.style.padding = '0';
+        editorWrapper.style.border = 'none';
+        editorWrapper.style.borderRadius = '0';
+        editorWrapper.style.overflow = 'unset';
+        editorWrapper.style.boxShadow = 'none';
+        editorWrapper.style.backgroundImage = 'none';
+        editorWrapper.style.background = '#181c20';
+
         // Make editor-container fill
         editorContainer.style.height = 'calc(100vh - 56px)';
         editorContainer.style.width = '100vw';
         editorContainer.style.background = '#141920';
         editorContainer.style.margin = '0';
         editorContainer.style.padding = '0';
-        // Toolbar full width
+
+        // Toolbar full width, transparent background
         toolbar.style.width = '100vw';
         toolbar.style.position = 'relative';
         toolbar.style.zIndex = '100000';
+        toolbar.style.background = 'transparent';
+
         // Prevent scroll
         document.body.style.overflow = 'hidden';
 
@@ -102,6 +117,9 @@ chrome.storage.sync.get({ editorFullscreen: false, enabled: true }, (data) => {
         editorContainer.style.cssText = prevStyles.container || '';
         toolbar.style.cssText = prevStyles.toolbar || '';
         document.body.style.overflow = prevStyles.bodyOverflow || '';
+        if (breadcrumb && typeof prevStyles.breadcrumb !== 'undefined') {
+          breadcrumb.style.display = prevStyles.breadcrumb;
+        }
         btn.querySelector('span').textContent = 'Fullscreen';
         isFullscreen = false;
       }
