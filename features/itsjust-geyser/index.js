@@ -2,7 +2,7 @@
 console.log('[better-falix] itsjust-geyser: Script loading');
 
 chrome.storage.sync.get({ enabled: true, itsjustGeyser: false }, (data) => {
-  if (!data.enabled || !data.itsjustgeyserr) {
+  if (!data.enabled || !data.itsjustgeyser) {
     console.log('[better-falix] itsjust-geyser: Script disabled');
     return;
   }
