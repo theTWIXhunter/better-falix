@@ -28,7 +28,7 @@
       background: var(--falix-bg);
     }
     #toggle {
-      width: 100%;
+	    width: calc(100% - 50px);	
       padding: 18px 0;
       font-size: 1.2em;
       margin-bottom: 18px;
@@ -139,9 +139,65 @@
       opacity: 0.5;
       cursor: not-allowed;
     }
+    /* Tooltip styles */
+    .feature-label[data-tooltip] {
+      position: relative;
+      cursor: help;
+    }
+    .feature-label[data-tooltip]:hover::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      left: 0;
+      top: 120%;
+      background: #0d0e10;
+      color: #fff;
+      padding: 7px 12px;
+      border-radius: 6px;
+      font-size: 0.97em;
+      white-space: pre-line;
+      z-index: 1000;
+      box-shadow: 0 2px 8px 0 rgba(35, 52, 66, 0.251);
+      min-width: 180px;
+      max-width: 320px;
+      pointer-events: none;
+    }
+    .settings-link {
+      position: absolute;
+      top: 35px;
+      right: 14px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      margin: 0;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0.85;
+      transition: opacity 0.15s;
+    }
+    .settings-link:hover {
+      opacity: 1;
+    }
+    .settings-link img {
+      width: 32px;
+      height: 32px;
+      display: block;
+      filter: grayscale(0.2) brightness(1.2);
+      transition: filter 0.2s;
+    }
+    .settings-link:hover img {
+      filter: grayscale(0) brightness(1.5) drop-shadow(0 0 2px #3b82f6);
+    }
   </style>
 </head>
 <body>
+  <!-- Settings icon button -->
+  <button class="settings-link" id="openSettings" title="Open Settings" aria-label="Open Settings">
+    <img src="assets/settings.png" alt="Settings">
+  </button>
   <!-- Enable extension button -->
   <div id="popup-container">
     <button id="toggle">Enable Extensions</button>
@@ -152,7 +208,7 @@
     <div class="category">General</div>
     <div class="feature-list">
       <div class="feature-row">
-        <span class="feature-label" data-tooltip="Reorder your server list in any way you want.">Custom Server Order</span>
+        <span class="feature-label" data-tooltip="Reorder your server list in any way you want. (See settings)">Custom Server Order</span>
         <button class="feature-btn" id="customServerOrder" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
       </div>
       <div class="feature-row">
@@ -247,29 +303,15 @@
     <div class="footer">&copy; 2025 the_twix_hunter. All rights reserved.</div>
   </div>
   <script src="popup.js"></script>
-  <style>
-    /* Tooltip styles */
-    .feature-label[data-tooltip] {
-      position: relative;
-      cursor: help;
-    }
-    .feature-label[data-tooltip]:hover::after {
-      content: attr(data-tooltip);
-      position: absolute;
-      left: 0;
-      top: 120%;
-      background: #23272b;
-      color: #fff;
-      padding: 7px 12px;
-      border-radius: 6px;
-      font-size: 0.97em;
-      white-space: pre-line;
-      z-index: 1000;
-      box-shadow: 0 2px 8px 0 rgba(0,0,0,0.18);
-      min-width: 180px;
-      max-width: 320px;
-      pointer-events: none;
-    }
-  </style>
+  <script>
+    document.getElementById('openSettings').addEventListener('click', function() {
+      if (chrome && chrome.runtime && chrome.runtime.openOptionsPage) {
+        chrome.runtime.openOptionsPage();
+      } else {
+        window.open('options.html', '_blank');
+      }
+    });
+  </script>
 </body>
+</html>
 </html>
