@@ -62,7 +62,6 @@ chrome.storage.sync.get({ editorFullscreen: false, enabled: true }, (data) => {
         prevDisplay.clear();
         Array.from(document.body.children).forEach(child => {
           prevDisplay.set(child, child.style.display);
-          // Only hide siblings of editorWrapper and its descendants
           if (
             child !== editorWrapper &&
             !child.contains(editorWrapper) &&
@@ -76,12 +75,13 @@ chrome.storage.sync.get({ editorFullscreen: false, enabled: true }, (data) => {
         if (breadcrumb) breadcrumb.style.display = 'none';
         if (header) header.style.display = 'none';
 
-        // Remove unwanted styles from editor-wrapper
+        // Remove unwanted styles from editor-wrapper and override height
         editorWrapper.style.position = 'fixed';
         editorWrapper.style.top = '0';
         editorWrapper.style.left = '0';
         editorWrapper.style.width = '100vw';
-        editorWrapper.style.height = '100vh';
+        editorWrapper.style.height = '100vh !important';
+        editorWrapper.style.setProperty('height', '100vh', 'important');
         editorWrapper.style.zIndex = '99999';
         editorWrapper.style.background = '#181c20';
         editorWrapper.style.margin = '0';
