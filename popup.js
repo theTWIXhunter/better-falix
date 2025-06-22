@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
     removeSftpUpload: false,
     removeHowToConnect: false,
     removeExitDiscount: false,
-    itsjustPaper: false,
+    itsJustPaper: false,
     itsJustGeyser: false,
     serverNameButton: false,
     navbarHover: false,
