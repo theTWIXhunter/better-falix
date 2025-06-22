@@ -1,4 +1,3 @@
-
 // [better-falix] editor-fullscreen: Script loading
 console.log('[better-falix] editor-fullscreen: Script loading');
 
@@ -145,27 +144,6 @@ chrome.storage.sync.get({ editorFullscreen: false, enabled: true }, (data) => {
       // Trigger resize for editors
       window.dispatchEvent(new Event('resize'));
     });
-
-    // Hide file explorer by default, but keep toggle working
-    function hideFileExplorerInitially() {
-      const fileExplorer = document.getElementById('fileExplorer');
-      if (fileExplorer && fileExplorer.style.display !== 'none') {
-        fileExplorer.style.display = 'none';
-      }
-      // If there's a toggle button, ensure it still works
-      const toggleBtn = document.getElementById('toggleFileList');
-      if (toggleBtn) {
-        toggleBtn.addEventListener('click', () => {
-          const explorer = document.getElementById('fileExplorer');
-          if (explorer) {
-            explorer.style.display = (explorer.style.display === 'none' ? '' : 'none');
-          }
-        });
-      }
-    }
-
-    // Call this after adding the fullscreen button
-    hideFileExplorerInitially();
   }
 
   function waitForToolbar() {
