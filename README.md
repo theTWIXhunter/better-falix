@@ -13,6 +13,7 @@ Better Falix is a browser extension that enhances the Falixnodes client-side exp
 - **Remove-exit-discount:** Removes the most annoying popup ever (the exit discount modal and its backdrop) from falixnodes.net.
 - **it's just Paper:** Renames "Craftbukkit / Spigot / PaperSpigot" to "Paper" in the server type dropdown for clarity.
 - **it's just Geyser:** Renames "Java + Bedrock Support (Geyser)" to "geyser" in the server type dropdown for clarity.
+- **Remove Server search bar:** Removes the Server Search bar from the main page.
 
 **Console**
 - **Hide Console Tabs:** Optionally hide unnecessary console tabs for a cleaner interface.
