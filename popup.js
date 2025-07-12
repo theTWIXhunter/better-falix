@@ -25,7 +25,8 @@ const featureIds = [
   'uploadCreateHover',
   'editorWrapperHeight',
   'customServerOrder',
-  'editorFullscreen'
+  'editorFullscreen',
+  'removeServerSearch'
 ];
 
 function setFeatureBtnState(btn, enabled) {
@@ -109,7 +110,8 @@ document.addEventListener('DOMContentLoaded', () => {
     uploadCreateHover: false,
     editorWrapperHeight: false,
     customServerOrder: false,
-    editorFullscreen: false
+    editorFullscreen: false,
+    removeServerSearch: false
   }, (data) => {
     updateToggleBtn(data.enabled);
     updateFeatureButtons(data);
