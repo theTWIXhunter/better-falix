@@ -141,7 +141,7 @@
     },
     {
       "matches": ["https://client.falixnodes.net*"],
-      "js": ["features/Remove-server-search/index.js"],
+      "js": ["features/remove-server-search/index.js"],
       "run_at": "document_idle"
     }
   ]
