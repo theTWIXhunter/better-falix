@@ -17,6 +17,6 @@ chrome.storage.sync.get({ enabled: true, removeServerSearch: false }, (data) => 
   remove();
 
   setTimeout(() => {
-    console.log('[better-falix] remove-navbar-support-links: Script loaded successfully');
+    console.log('[better-falix] remove-server-search: Script loaded successfully');
   }, 10);
 });
