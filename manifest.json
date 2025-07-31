@@ -140,7 +140,7 @@
       "run_at": "document_idle"
     },
     {
-      "matches": ["https://client.falixnodes.net"],
+      "matches": ["https://client.falixnodes.net/"],
       "js": ["features/remove-server-search/index.js"],
       "run_at": "document_idle"
     }
