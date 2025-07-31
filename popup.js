@@ -2,6 +2,12 @@ document.addEventListener('DOMContentLoaded', () => {
   console.log('popup.js loaded');
   // Optional: visually confirm by changing the popup background
   document.body.style.border = '3px solid #0078d7';
+  
+  // Handle settings page opening
+  document.getElementById('openSettings').addEventListener('click', function(e) {
+    e.preventDefault();
+    chrome.tabs.create({ url: chrome.runtime.getURL('options.html') });
+  });
 });
 
 const toggleBtn = document.getElementById('toggle');
