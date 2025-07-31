@@ -80,6 +80,21 @@ chrome.storage.sync.get({ editorFullscreen: false, enabled: true }, (data) => {
             child.style.display = 'none';
           }
         });
+
+        // Ensure custom-alert-container has proper z-index in fullscreen
+        const alertContainer = document.getElementById('custom-alert-container');
+        if (alertContainer) {
+          alertContainer.style.setProperty('z-index', '100001', 'important');
+          alertContainer.style.setProperty('position', 'fixed', 'important');
+          alertContainer.style.setProperty('top', '20px', 'important');
+          alertContainer.style.setProperty('right', '20px', 'important');
+          alertContainer.style.setProperty('left', 'auto', 'important');
+          alertContainer.style.setProperty('bottom', 'auto', 'important');
+          alertContainer.style.setProperty('width', 'auto', 'important');
+          alertContainer.style.setProperty('height', 'auto', 'important');
+          alertContainer.style.setProperty('max-width', '400px', 'important');
+        }
+
         // Remove editor-breadcrumb and editor-header
         if (breadcrumb) breadcrumb.style.display = 'none';
         if (header) header.style.display = 'none';
@@ -134,6 +149,21 @@ chrome.storage.sync.get({ editorFullscreen: false, enabled: true }, (data) => {
         prevDisplay.forEach((display, child) => {
           child.style.display = display;
         });
+        
+        // Reset alert container positioning
+        const alertContainer = document.getElementById('custom-alert-container');
+        if (alertContainer) {
+          alertContainer.style.removeProperty('z-index');
+          alertContainer.style.removeProperty('position');
+          alertContainer.style.removeProperty('top');
+          alertContainer.style.removeProperty('right');
+          alertContainer.style.removeProperty('left');
+          alertContainer.style.removeProperty('bottom');
+          alertContainer.style.removeProperty('width');
+          alertContainer.style.removeProperty('height');
+          alertContainer.style.removeProperty('max-width');
+        }
+        
         editorWrapper.style.cssText = prevStyles.wrapper || '';
         editorContainer.style.cssText = prevStyles.container || '';
         toolbar.style.cssText = prevStyles.toolbar || '';
