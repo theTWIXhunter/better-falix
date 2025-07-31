@@ -85,7 +85,51 @@ const exportSettingsBtn = document.getElementById('exportSettings');
 if (exportSettingsBtn) {
   exportSettingsBtn.addEventListener('click', function() {
     chrome.storage.sync.get(null, (data) => {
-      const settingsJson = JSON.stringify(data, null, 2);
+      // Get current values from the UI to ensure we save the latest state
+      const currentSettings = {
+        ...data,
+        // General settings
+        enabled: document.getElementById('enabled')?.getAttribute('aria-pressed') === 'true',
+        theme: document.getElementById('theme')?.value || 'auto',
+        
+        // Feature settings with values
+        customServerOrder: document.getElementById('customServerOrder')?.getAttribute('aria-pressed') === 'true',
+        customServerOrder_list: document.getElementById('customServerOrder_list')?.value || '',
+        
+        editorWrapperHeight: document.getElementById('editorWrapperHeight')?.getAttribute('aria-pressed') === 'true',
+        editorWrapperHeight_value: parseInt(document.getElementById('editorWrapperHeight_value')?.value) || 600,
+        
+        navbarHover: document.getElementById('navbarHover')?.getAttribute('aria-pressed') === 'true',
+        navbarHoverZoneWidth: parseInt(document.getElementById('navbarHoverZoneWidth')?.value) || 40,
+        
+        uploadCreateHover: document.getElementById('uploadCreateHover')?.getAttribute('aria-pressed') === 'true',
+        uploadCreateHover_createDelay: parseInt(document.getElementById('uploadCreateHover_createDelay')?.value) || 500,
+        uploadCreateHover_uploadDelay: parseInt(document.getElementById('uploadCreateHover_uploadDelay')?.value) || 0,
+        
+        replaceSupportModal: document.getElementById('replaceSupportModal')?.getAttribute('aria-pressed') === 'true',
+        
+        // Include all existing data that might not be in the UI
+        activeTheme: data.activeTheme || 'default',
+        hideConsoleTabs: data.hideConsoleTabs || false,
+        itsJustGeyser: data.itsJustGeyser || false,
+        itsJustPaper: data.itsJustPaper || false,
+        moveBackupsNav: data.moveBackupsNav || false,
+        moveLogsNav: data.moveLogsNav || false,
+        moveMonitoringNav: data.moveMonitoringNav || false,
+        removeConsoleFilesCategory: data.removeConsoleFilesCategory || false,
+        removeExitDiscount: data.removeExitDiscount || false,
+        removeExternalStartNav: data.removeExternalStartNav || false,
+        removeHowToConnect: data.removeHowToConnect || false,
+        removeNavbarSupportLinks: data.removeNavbarSupportLinks || false,
+        removeServerSearch: data.removeServerSearch || false,
+        removeSftpUpload: data.removeSftpUpload || false,
+        replaceAccountCategory: data.replaceAccountCategory || false,
+        serverNameButton: data.serverNameButton || false,
+        editorFullscreen: data.editorFullscreen || false,
+        popupActiveTab: data.popupActiveTab || 'features'
+      };
+      
+      const settingsJson = JSON.stringify(currentSettings, null, 2);
       const blob = new Blob([settingsJson], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
