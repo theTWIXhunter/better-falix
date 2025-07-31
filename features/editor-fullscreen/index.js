@@ -67,7 +67,13 @@ chrome.storage.sync.get({ editorFullscreen: false, enabled: true }, (data) => {
             !child.contains(editorWrapper) &&
             !editorWrapper.contains(child) &&
             !child.classList.contains('modal-backdrop') &&
-            child.id !== 'custom-alert-container'
+            child.id !== 'custom-alert-container' &&
+            !child.classList.contains('toast') &&
+            !child.classList.contains('toast-container') &&
+            !child.classList.contains('alert') &&
+            !child.classList.contains('notification') &&
+            !child.classList.contains('swal2-container') &&
+            !child.classList.contains('swal-overlay')
           ) {
             child.style.display = 'none';
           }
