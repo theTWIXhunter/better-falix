@@ -11,7 +11,7 @@ chrome.storage.sync.get({ enabled: true, removeServerSearch: false }, (data) => 
   //  --------- START FEATURE ----------
 
   const remove = () => {
-    const el = document.querySelector('.server-search-container mb-4');
+    const el = document.querySelector('.server-search-container.mb-4');
     if (el) el.remove();
   };
   remove();
