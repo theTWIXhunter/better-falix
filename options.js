@@ -3,6 +3,7 @@ console.log('[better-falix] options: Script loading');
 
 // Proof of concept: feature toggles and settings
 function setToggleState(btn, state) {
+  if (!btn) return;
   btn.setAttribute('aria-pressed', state ? 'true' : 'false');
   btn.classList.toggle('on', state);
 }
@@ -15,79 +16,150 @@ function saveSetting(key, value) {
 
 // Load settings and update UI
 chrome.storage.sync.get(null, data => {
-  setToggleState(document.getElementById('enabled'), !!data.enabled);
-  document.getElementById('theme').value = data.theme || 'auto';
-  setToggleState(document.getElementById('customServerOrder'), !!data.customServerOrder);
-  document.getElementById('customServerOrder_list').value = data.customServerOrder_list || '';
-  setToggleState(document.getElementById('editorWrapperHeight'), !!data.editorWrapperHeight);
-  document.getElementById('editorWrapperHeight_value').value = data.editorWrapperHeight_value || 600;
-  setToggleState(document.getElementById('navbarHover'), !!data.navbarHover);
-  document.getElementById('navbarHoverZoneWidth').value = data.navbarHoverZoneWidth || 40;
-  setToggleState(document.getElementById('uploadCreateHover'), !!data.uploadCreateHover);
-  document.getElementById('uploadCreateHover_createDelay').value = data.uploadCreateHover_createDelay ?? 500;
-  document.getElementById('uploadCreateHover_uploadDelay').value = data.uploadCreateHover_uploadDelay ?? 0;
-  setToggleState(document.getElementById('replaceSupportModal'), !!data.replaceSupportModal);
+  // Only set toggle states for elements that exist
+  const enabledToggle = document.getElementById('enabled');
+  if (enabledToggle) setToggleState(enabledToggle, !!data.enabled);
+  
+  const themeSelect = document.getElementById('theme');
+  if (themeSelect) themeSelect.value = data.theme || 'auto';
+  
+  const customServerOrderToggle = document.getElementById('customServerOrder');
+  if (customServerOrderToggle) setToggleState(customServerOrderToggle, !!data.customServerOrder);
+  
+  const customServerOrderList = document.getElementById('customServerOrder_list');
+  if (customServerOrderList) customServerOrderList.value = data.customServerOrder_list || '';
+  
+  const editorWrapperHeightToggle = document.getElementById('editorWrapperHeight');
+  if (editorWrapperHeightToggle) setToggleState(editorWrapperHeightToggle, !!data.editorWrapperHeight);
+  
+  const editorWrapperHeightValue = document.getElementById('editorWrapperHeight_value');
+  if (editorWrapperHeightValue) editorWrapperHeightValue.value = data.editorWrapperHeight_value || 600;
+  
+  const navbarHoverToggle = document.getElementById('navbarHover');
+  if (navbarHoverToggle) setToggleState(navbarHoverToggle, !!data.navbarHover);
+  
+  const navbarHoverZoneWidth = document.getElementById('navbarHoverZoneWidth');
+  if (navbarHoverZoneWidth) navbarHoverZoneWidth.value = data.navbarHoverZoneWidth || 40;
+  
+  const uploadCreateHoverToggle = document.getElementById('uploadCreateHover');
+  if (uploadCreateHoverToggle) setToggleState(uploadCreateHoverToggle, !!data.uploadCreateHover);
+  
+  const uploadCreateHoverCreateDelay = document.getElementById('uploadCreateHover_createDelay');
+  if (uploadCreateHoverCreateDelay) uploadCreateHoverCreateDelay.value = data.uploadCreateHover_createDelay ?? 500;
+  
+  const uploadCreateHoverUploadDelay = document.getElementById('uploadCreateHover_uploadDelay');
+  if (uploadCreateHoverUploadDelay) uploadCreateHoverUploadDelay.value = data.uploadCreateHover_uploadDelay ?? 0;
+  
+  const replaceSupportModalToggle = document.getElementById('replaceSupportModal');
+  if (replaceSupportModalToggle) setToggleState(replaceSupportModalToggle, !!data.replaceSupportModal);
 });
 
-// General toggles
-document.getElementById('enabled').addEventListener('click', function() {
-  const state = this.getAttribute('aria-pressed') !== 'true';
-  setToggleState(this, state);
-  saveSetting('enabled', state);
-});
-document.getElementById('theme').addEventListener('change', function() {
-  saveSetting('theme', this.value);
-});
-document.getElementById('resetAll').addEventListener('click', function() {
-  if (confirm('Reset all settings to default?')) {
-    chrome.storage.sync.clear(() => window.location.reload());
-  }
-});
+// General toggles - only add listeners if elements exist
+const enabledToggle = document.getElementById('enabled');
+if (enabledToggle) {
+  enabledToggle.addEventListener('click', function() {
+    const state = this.getAttribute('aria-pressed') !== 'true';
+    setToggleState(this, state);
+    saveSetting('enabled', state);
+  });
+}
 
-// Feature toggles and settings
-document.getElementById('customServerOrder').addEventListener('click', function() {
-  const state = this.getAttribute('aria-pressed') !== 'true';
-  setToggleState(this, state);
-  saveSetting('customServerOrder', state);
-});
-document.getElementById('customServerOrder_list').addEventListener('input', function() {
-  saveSetting('customServerOrder_list', this.value);
-});
+const themeSelect = document.getElementById('theme');
+if (themeSelect) {
+  themeSelect.addEventListener('change', function() {
+    saveSetting('theme', this.value);
+  });
+}
 
-document.getElementById('editorWrapperHeight').addEventListener('click', function() {
-  const state = this.getAttribute('aria-pressed') !== 'true';
-  setToggleState(this, state);
-  saveSetting('editorWrapperHeight', state);
-});
-document.getElementById('editorWrapperHeight_value').addEventListener('input', function() {
-  saveSetting('editorWrapperHeight_value', this.value);
-});
+const resetAllBtn = document.getElementById('resetAll');
+if (resetAllBtn) {
+  resetAllBtn.addEventListener('click', function() {
+    if (confirm('Reset all settings to default?')) {
+      chrome.storage.sync.clear(() => window.location.reload());
+    }
+  });
+}
 
-document.getElementById('navbarHover').addEventListener('click', function() {
-  const state = this.getAttribute('aria-pressed') !== 'true';
-  setToggleState(this, state);
-  saveSetting('navbarHover', state);
-});
-document.getElementById('navbarHoverZoneWidth').addEventListener('input', function() {
-  saveSetting('navbarHoverZoneWidth', this.value);
-});
-document.getElementById('uploadCreateHover').addEventListener('click', function() {
-  const state = this.getAttribute('aria-pressed') !== 'true';
-  setToggleState(this, state);
-  saveSetting('uploadCreateHover', state);
-});
-document.getElementById('uploadCreateHover_createDelay').addEventListener('input', function() {
-  saveSetting('uploadCreateHover_createDelay', this.value);
-});
-document.getElementById('uploadCreateHover_uploadDelay').addEventListener('input', function() {
-  saveSetting('uploadCreateHover_uploadDelay', this.value);
-});
+// Feature toggles and settings - only add listeners if elements exist
+const customServerOrderToggle = document.getElementById('customServerOrder');
+if (customServerOrderToggle) {
+  customServerOrderToggle.addEventListener('click', function() {
+    const state = this.getAttribute('aria-pressed') !== 'true';
+    setToggleState(this, state);
+    saveSetting('customServerOrder', state);
+  });
+}
 
-document.getElementById('replaceSupportModal').addEventListener('click', function() {
-  const state = this.getAttribute('aria-pressed') !== 'true';
-  setToggleState(this, state);
-  saveSetting('replaceSupportModal', state);
-});
+const customServerOrderList = document.getElementById('customServerOrder_list');
+if (customServerOrderList) {
+  customServerOrderList.addEventListener('input', function() {
+    saveSetting('customServerOrder_list', this.value);
+  });
+}
+
+const editorWrapperHeightToggle = document.getElementById('editorWrapperHeight');
+if (editorWrapperHeightToggle) {
+  editorWrapperHeightToggle.addEventListener('click', function() {
+    const state = this.getAttribute('aria-pressed') !== 'true';
+    setToggleState(this, state);
+    saveSetting('editorWrapperHeight', state);
+  });
+}
+
+const editorWrapperHeightValue = document.getElementById('editorWrapperHeight_value');
+if (editorWrapperHeightValue) {
+  editorWrapperHeightValue.addEventListener('input', function() {
+    saveSetting('editorWrapperHeight_value', this.value);
+  });
+}
+
+const navbarHoverToggle = document.getElementById('navbarHover');
+if (navbarHoverToggle) {
+  navbarHoverToggle.addEventListener('click', function() {
+    const state = this.getAttribute('aria-pressed') !== 'true';
+    setToggleState(this, state);
+    saveSetting('navbarHover', state);
+  });
+}
+
+const navbarHoverZoneWidth = document.getElementById('navbarHoverZoneWidth');
+if (navbarHoverZoneWidth) {
+  navbarHoverZoneWidth.addEventListener('input', function() {
+    saveSetting('navbarHoverZoneWidth', this.value);
+  });
+}
+
+const uploadCreateHoverToggle = document.getElementById('uploadCreateHover');
+if (uploadCreateHoverToggle) {
+  uploadCreateHoverToggle.addEventListener('click', function() {
+    const state = this.getAttribute('aria-pressed') !== 'true';
+    setToggleState(this, state);
+    saveSetting('uploadCreateHover', state);
+  });
+}
+
+const uploadCreateHoverCreateDelay = document.getElementById('uploadCreateHover_createDelay');
+if (uploadCreateHoverCreateDelay) {
+  uploadCreateHoverCreateDelay.addEventListener('input', function() {
+    saveSetting('uploadCreateHover_createDelay', this.value);
+  });
+}
+
+const uploadCreateHoverUploadDelay = document.getElementById('uploadCreateHover_uploadDelay');
+if (uploadCreateHoverUploadDelay) {
+  uploadCreateHoverUploadDelay.addEventListener('input', function() {
+    saveSetting('uploadCreateHover_uploadDelay', this.value);
+  });
+}
+
+const replaceSupportModalToggle = document.getElementById('replaceSupportModal');
+if (replaceSupportModalToggle) {
+  replaceSupportModalToggle.addEventListener('click', function() {
+    const state = this.getAttribute('aria-pressed') !== 'true';
+    setToggleState(this, state);
+    saveSetting('replaceSupportModal', state);
+  });
+}
 
 // --- Feature logic for reorder and editor height ---
 function applyCustomServerOrder() {
