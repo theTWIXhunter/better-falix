@@ -184,12 +184,17 @@
 
     <div class="section-title">General Settings</div>
     <div class="setting-row">
-      <span class="setting-label">Enable All Features</span>
-      <button class="feature-toggle" id="enabled" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
-    </div>
-    <div class="setting-row">
       <span class="setting-label">Reset All Settings</span>
       <button class="reset-btn" id="resetAll">Reset</button>
+    </div>
+    <div class="setting-row">
+      <span class="setting-label">Export Settings</span>
+      <button class="reset-btn" id="exportSettings" style="background: #059669; margin-left: 0;">Export</button>
+    </div>
+    <div class="setting-row">
+      <span class="setting-label">Import Settings</span>
+      <input type="file" id="importFileInput" accept=".json" style="display: none;">
+      <button class="reset-btn" id="importSettings" style="background: #7c3aed; margin-left: 0;">Import</button>
     </div>
 
     <div class="section-title">Features</div>

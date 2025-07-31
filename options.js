@@ -80,6 +80,86 @@ if (resetAllBtn) {
   });
 }
 
+// Export settings
+const exportSettingsBtn = document.getElementById('exportSettings');
+if (exportSettingsBtn) {
+  exportSettingsBtn.addEventListener('click', function() {
+    chrome.storage.sync.get(null, (data) => {
+      // Save current UI values to storage first, then export everything
+      const uiSettings = {
+        // General settings
+        enabled: document.getElementById('enabled')?.getAttribute('aria-pressed') === 'true',
+        theme: document.getElementById('theme')?.value || 'auto',
+        
+        // Feature settings with values
+        customServerOrder: document.getElementById('customServerOrder')?.getAttribute('aria-pressed') === 'true',
+        customServerOrder_list: document.getElementById('customServerOrder_list')?.value || '',
+        
+        editorWrapperHeight: document.getElementById('editorWrapperHeight')?.getAttribute('aria-pressed') === 'true',
+        editorWrapperHeight_value: parseInt(document.getElementById('editorWrapperHeight_value')?.value) || 600,
+        
+        navbarHover: document.getElementById('navbarHover')?.getAttribute('aria-pressed') === 'true',
+        navbarHoverZoneWidth: parseInt(document.getElementById('navbarHoverZoneWidth')?.value) || 40,
+        
+        uploadCreateHover: document.getElementById('uploadCreateHover')?.getAttribute('aria-pressed') === 'true',
+        uploadCreateHover_createDelay: parseInt(document.getElementById('uploadCreateHover_createDelay')?.value) || 500,
+        uploadCreateHover_uploadDelay: parseInt(document.getElementById('uploadCreateHover_uploadDelay')?.value) || 0,
+        
+        replaceSupportModal: document.getElementById('replaceSupportModal')?.getAttribute('aria-pressed') === 'true'
+      };
+
+      // Save current UI values to storage first
+      chrome.storage.sync.set(uiSettings, () => {
+        // Then get ALL storage data and export it
+        chrome.storage.sync.get(null, (allData) => {
+          const settingsJson = JSON.stringify(allData, null, 2);
+          const blob = new Blob([settingsJson], { type: 'application/json' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'better-falix-settings.json';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+        });
+      });
+    });
+  });
+}
+
+// Import settings
+const importSettingsBtn = document.getElementById('importSettings');
+const importFileInput = document.getElementById('importFileInput');
+if (importSettingsBtn && importFileInput) {
+  importSettingsBtn.addEventListener('click', function() {
+    importFileInput.click();
+  });
+
+  importFileInput.addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      try {
+        const settings = JSON.parse(e.target.result);
+        if (confirm('Import these settings? This will overwrite your current settings.')) {
+          chrome.storage.sync.clear(() => {
+            chrome.storage.sync.set(settings, () => {
+              alert('Settings imported successfully!');
+              window.location.reload();
+            });
+          });
+        }
+      } catch (error) {
+        alert('Error: Invalid settings file format.');
+      }
+    };
+    reader.readAsText(file);
+  });
+}
+
 // Feature toggles and settings - only add listeners if elements exist
 const customServerOrderToggle = document.getElementById('customServerOrder');
 if (customServerOrderToggle) {
@@ -220,6 +300,18 @@ function applyEditorWrapperHeight() {
     });
   });
 }
+
+function observeAndApplyEditorHeight() {
+  applyEditorWrapperHeight();
+  const observer = new MutationObserver(applyEditorWrapperHeight);
+  observer.observe(document.body, { childList: true, subtree: true });
+}
+
+// --- Run feature logic on DOMContentLoaded ---
+document.addEventListener('DOMContentLoaded', () => {
+  waitForServersList();
+  observeAndApplyEditorHeight();
+});
 
 function observeAndApplyEditorHeight() {
   applyEditorWrapperHeight();
