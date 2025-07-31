@@ -5,8 +5,10 @@ let isEditorFullscreen = false;
 
 function setEditorHeight() {
   // Only set height if not in fullscreen mode
-  if (isEditorFullscreen) return;
-  
+  if (isEditorFullscreen) {
+    return
+  };
+
   // Check if chrome.storage is available to avoid context invalidation error
   if (!chrome || !chrome.storage || !chrome.storage.sync) {
     console.log('[better-falix] editor-wrapper-height: Extension context invalidated, skipping');
