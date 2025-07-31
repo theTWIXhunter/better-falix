@@ -66,7 +66,8 @@ chrome.storage.sync.get({ editorFullscreen: false, enabled: true }, (data) => {
             child !== editorWrapper &&
             !child.contains(editorWrapper) &&
             !editorWrapper.contains(child) &&
-            !child.classList.contains('modal-backdrop')
+            !child.classList.contains('modal-backdrop') &&
+            child.id !== 'custom-alert-container'
           ) {
             child.style.display = 'none';
           }
