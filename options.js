@@ -85,9 +85,8 @@ const exportSettingsBtn = document.getElementById('exportSettings');
 if (exportSettingsBtn) {
   exportSettingsBtn.addEventListener('click', function() {
     chrome.storage.sync.get(null, (data) => {
-      // Get current values from the UI to ensure we save the latest state
-      const currentSettings = {
-        ...data,
+      // Save current UI values to storage first, then export everything
+      const uiSettings = {
         // General settings
         enabled: document.getElementById('enabled')?.getAttribute('aria-pressed') === 'true',
         theme: document.getElementById('theme')?.value || 'auto',
@@ -106,39 +105,25 @@ if (exportSettingsBtn) {
         uploadCreateHover_createDelay: parseInt(document.getElementById('uploadCreateHover_createDelay')?.value) || 500,
         uploadCreateHover_uploadDelay: parseInt(document.getElementById('uploadCreateHover_uploadDelay')?.value) || 0,
         
-        replaceSupportModal: document.getElementById('replaceSupportModal')?.getAttribute('aria-pressed') === 'true',
-        
-        // Include all existing data that might not be in the UI
-        activeTheme: data.activeTheme || 'default',
-        hideConsoleTabs: data.hideConsoleTabs || false,
-        itsJustGeyser: data.itsJustGeyser || false,
-        itsJustPaper: data.itsJustPaper || false,
-        moveBackupsNav: data.moveBackupsNav || false,
-        moveLogsNav: data.moveLogsNav || false,
-        moveMonitoringNav: data.moveMonitoringNav || false,
-        removeConsoleFilesCategory: data.removeConsoleFilesCategory || false,
-        removeExitDiscount: data.removeExitDiscount || false,
-        removeExternalStartNav: data.removeExternalStartNav || false,
-        removeHowToConnect: data.removeHowToConnect || false,
-        removeNavbarSupportLinks: data.removeNavbarSupportLinks || false,
-        removeServerSearch: data.removeServerSearch || false,
-        removeSftpUpload: data.removeSftpUpload || false,
-        replaceAccountCategory: data.replaceAccountCategory || false,
-        serverNameButton: data.serverNameButton || false,
-        editorFullscreen: data.editorFullscreen || false,
-        popupActiveTab: data.popupActiveTab || 'features'
+        replaceSupportModal: document.getElementById('replaceSupportModal')?.getAttribute('aria-pressed') === 'true'
       };
-      
-      const settingsJson = JSON.stringify(currentSettings, null, 2);
-      const blob = new Blob([settingsJson], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'better-falix-settings.json';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+
+      // Save current UI values to storage first
+      chrome.storage.sync.set(uiSettings, () => {
+        // Then get ALL storage data and export it
+        chrome.storage.sync.get(null, (allData) => {
+          const settingsJson = JSON.stringify(allData, null, 2);
+          const blob = new Blob([settingsJson], { type: 'application/json' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'better-falix-settings.json';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+        });
+      });
     });
   });
 }
@@ -315,6 +300,18 @@ function applyEditorWrapperHeight() {
     });
   });
 }
+
+function observeAndApplyEditorHeight() {
+  applyEditorWrapperHeight();
+  const observer = new MutationObserver(applyEditorWrapperHeight);
+  observer.observe(document.body, { childList: true, subtree: true });
+}
+
+// --- Run feature logic on DOMContentLoaded ---
+document.addEventListener('DOMContentLoaded', () => {
+  waitForServersList();
+  observeAndApplyEditorHeight();
+});
 
 function observeAndApplyEditorHeight() {
   applyEditorWrapperHeight();
