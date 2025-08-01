@@ -111,7 +111,7 @@ chrome.storage.sync.get({ FEATURENAME: false, enabled: true }, (data) => {
    - Script loading (at the start of the file)
    - Script Enabled (after the enabled check)
    - Script Disabled (when the enabled check fails)
-   - Script loaded sucsessfully (somewher at the end)
+   - Script loaded successfully (somewhere at the end)
 
 ## License
 

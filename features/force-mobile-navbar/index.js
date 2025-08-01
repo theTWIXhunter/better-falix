@@ -12,45 +12,48 @@ chrome.storage.sync.get({ forcemobilenavbar: false, enabled: true }, (data) => {
 
   console.log('[better-falix] Force-mobile-navbar: Starting mobile detection override');
   
-  // Function to trick the site into thinking it's mobile
-  function trickSiteIntoMobileMode() {
-    console.log('[better-falix] Force-mobile-navbar: Executing mobile detection override');
+  // Apply mobile detection override IMMEDIATELY before any other scripts run
+  console.log('[better-falix] Force-mobile-navbar: Applying immediate mobile detection override');
+  
+  // Override window.innerWidth to always report mobile size for navbar logic
+  console.log('[better-falix] Force-mobile-navbar: Original window.innerWidth:', window.innerWidth);
+  
+  // Store the original descriptor
+  const originalDescriptor = Object.getOwnPropertyDescriptor(Window.prototype, 'innerWidth') || 
+                           Object.getOwnPropertyDescriptor(window, 'innerWidth');
+  
+  console.log('[better-falix] Force-mobile-navbar: Original descriptor found:', !!originalDescriptor);
+  
+  // Override innerWidth to return mobile size (under 1200px threshold)
+  Object.defineProperty(window, 'innerWidth', {
+    get: function() {
+      console.log('[better-falix] Force-mobile-navbar: innerWidth accessed, returning mobile size');
+      return 1199; // Just under the 1200px threshold for mobile
+    },
+    configurable: true
+  });
+  
+  console.log('[better-falix] Force-mobile-navbar: window.innerWidth override applied');
+  console.log('[better-falix] Force-mobile-navbar: New window.innerWidth:', window.innerWidth);
+  
+  // Also override screen.width for extra safety
+  if (window.screen && window.screen.width) {
+    console.log('[better-falix] Force-mobile-navbar: Original screen.width:', window.screen.width);
     
-    // Override window.innerWidth to always report mobile size for navbar logic
-    console.log('[better-falix] Force-mobile-navbar: Original window.innerWidth:', window.innerWidth);
-    
-    // Store the original descriptor
-    const originalDescriptor = Object.getOwnPropertyDescriptor(Window.prototype, 'innerWidth') || 
-                             Object.getOwnPropertyDescriptor(window, 'innerWidth');
-    
-    console.log('[better-falix] Force-mobile-navbar: Original descriptor found:', !!originalDescriptor);
-    
-    // Override innerWidth to return mobile size (under 1200px threshold)
-    Object.defineProperty(window, 'innerWidth', {
+    Object.defineProperty(window.screen, 'width', {
       get: function() {
-        console.log('[better-falix] Force-mobile-navbar: innerWidth accessed, returning mobile size');
-        return 1199; // Just under the 1200px threshold for mobile
+        console.log('[better-falix] Force-mobile-navbar: screen.width accessed, returning mobile size');
+        return 1199;
       },
       configurable: true
     });
     
-    console.log('[better-falix] Force-mobile-navbar: window.innerWidth override applied');
-    console.log('[better-falix] Force-mobile-navbar: New window.innerWidth:', window.innerWidth);
-    
-    // Also override screen.width for extra safety
-    if (window.screen && window.screen.width) {
-      console.log('[better-falix] Force-mobile-navbar: Original screen.width:', window.screen.width);
-      
-      Object.defineProperty(window.screen, 'width', {
-        get: function() {
-          console.log('[better-falix] Force-mobile-navbar: screen.width accessed, returning mobile size');
-          return 1199;
-        },
-        configurable: true
-      });
-      
-      console.log('[better-falix] Force-mobile-navbar: screen.width override applied');
-    }
+    console.log('[better-falix] Force-mobile-navbar: screen.width override applied');
+  }
+  
+  // Function to trick the site into thinking it's mobile
+  function trickSiteIntoMobileMode() {
+    console.log('[better-falix] Force-mobile-navbar: Executing mobile detection override');
     
     // Force mobile navbar CSS to ensure proper styling
     console.log('[better-falix] Force-mobile-navbar: Injecting mobile navbar CSS');
@@ -129,20 +132,51 @@ chrome.storage.sync.get({ forcemobilenavbar: false, enabled: true }, (data) => {
       #mainSidebar.keep-visible {
         transform: translateX(0) !important;
       }
+      
+      /* Force show navbar when hovering left edge */
+      .show-navbar-trigger {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 20px !important;
+        height: 100vh !important;
+        z-index: 1051 !important;
+        background: transparent !important;
+        pointer-events: auto !important;
+      }
     `;
     
     document.head.appendChild(style);
     console.log('[better-falix] Force-mobile-navbar: Mobile navbar CSS injected');
     
+    // Create a trigger area to show navbar
+    console.log('[better-falix] Force-mobile-navbar: Creating navbar trigger area');
+    const triggerArea = document.createElement('div');
+    triggerArea.className = 'show-navbar-trigger';
+    triggerArea.title = 'Hover to show navbar';
+    document.body.appendChild(triggerArea);
+    
+    // Add hover listener to trigger area
+    triggerArea.addEventListener('mouseenter', () => {
+      console.log('[better-falix] Force-mobile-navbar: Trigger area hovered, showing navbar');
+      const sidebar = document.getElementById('mainSidebar');
+      if (sidebar) {
+        sidebar.classList.add('show');
+        console.log('[better-falix] Force-mobile-navbar: Navbar shown via trigger');
+      }
+    });
+    
+    console.log('[better-falix] Force-mobile-navbar: Trigger area created');
+    
     // Wait for the NavbarManager to initialize, then enhance it
     console.log('[better-falix] Force-mobile-navbar: Waiting for navbar initialization');
     const checkForNavbarManager = () => {
       const sidebar = document.getElementById('mainSidebar');
-      if (sidebar && sidebar.classList.contains('initialized')) {
-        console.log('[better-falix] Force-mobile-navbar: Navbar initialized, enhancing with auto-hide');
+      if (sidebar) {
+        console.log('[better-falix] Force-mobile-navbar: Sidebar found, enhancing with auto-hide');
         enhanceMobileNavbar(sidebar);
       } else {
-        console.log('[better-falix] Force-mobile-navbar: Navbar not ready, retrying...');
+        console.log('[better-falix] Force-mobile-navbar: Sidebar not ready, retrying...');
         setTimeout(checkForNavbarManager, 100);
       }
     };
@@ -202,15 +236,6 @@ chrome.storage.sync.get({ forcemobilenavbar: false, enabled: true }, (data) => {
       startAutoHideTimer();
     });
     
-    // Show navbar when hovering near left edge of screen
-    document.addEventListener('mousemove', (e) => {
-      if (e.clientX <= 10 && !sidebar.classList.contains('show')) {
-        console.log('[better-falix] Force-mobile-navbar: Mouse near left edge, showing navbar');
-        sidebar.classList.add('show');
-        startAutoHideTimer();
-      }
-    });
-    
     // Handle topNavToggle button (mobile menu button)
     const topNavToggle = document.getElementById('topNavbarToggle');
     if (topNavToggle) {
@@ -225,10 +250,9 @@ chrome.storage.sync.get({ forcemobilenavbar: false, enabled: true }, (data) => {
       });
     }
     
-    // Start initial auto-hide timer if sidebar is showing
-    if (sidebar.classList.contains('show')) {
-      startAutoHideTimer();
-    }
+    // Start with navbar hidden initially
+    console.log('[better-falix] Force-mobile-navbar: Starting with navbar hidden');
+    sidebar.classList.remove('show');
     
     console.log('[better-falix] Force-mobile-navbar: Mobile navbar enhancement complete');
   }
