@@ -32,7 +32,8 @@ const featureIds = [
   'editorWrapperHeight',
   'customServerOrder',
   'editorFullscreen',
-  'removeServerSearch'
+  'removeServerSearch',
+  'forcemobilenavbar'
 ];
 
 function setFeatureBtnState(btn, enabled) {
@@ -117,7 +118,8 @@ document.addEventListener('DOMContentLoaded', () => {
     editorWrapperHeight: false,
     customServerOrder: false,
     editorFullscreen: false,
-    removeServerSearch: false
+    removeServerSearch: false,
+    forcemobilenavbar: false
   }, (data) => {
     updateToggleBtn(data.enabled);
     updateFeatureButtons(data);
