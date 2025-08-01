@@ -191,41 +191,40 @@ chrome.storage.sync.get({ forcemobilenavbar: false, enabled: true }, (data) => {
   function enhanceMobileNavbar(sidebar) {
     console.log('[better-falix] Force-mobile-navbar: Enhancing mobile navbar with auto-hide');
     
-    // Add auto-hide class
-    sidebar.classList.add('auto-hide');
-    
     let hideTimeout;
-    let isInteracting = false;
     
     // Auto-hide timer function
     function startAutoHideTimer() {
       console.log('[better-falix] Force-mobile-navbar: Starting auto-hide timer');
       clearTimeout(hideTimeout);
       hideTimeout = setTimeout(() => {
-        if (!isInteracting && sidebar.classList.contains('show')) {
+        if (sidebar.classList.contains('show')) {
           console.log('[better-falix] Force-mobile-navbar: Auto-hiding navbar');
-          sidebar.classList.remove('show', 'keep-visible');
-          // Also hide the overlay if it exists
-          const overlay = document.querySelector('.navbar-overlay');
-          if (overlay) overlay.classList.remove('show');
+          sidebar.classList.remove('show');
+          // Update hamburger icon if it exists
+          const topNavToggle = document.getElementById('topNavbarToggle');
+          if (topNavToggle) {
+            const icon = topNavToggle.querySelector('i');
+            if (icon) {
+              icon.className = 'fa-solid fa-bars';
+            }
+          }
         }
       }, 3000); // Hide after 3 seconds
     }
     
-    // Mouse enter - show and stop auto-hide
+    // Reset timer when hovering navbar
     sidebar.addEventListener('mouseenter', () => {
-      console.log('[better-falix] Force-mobile-navbar: Mouse entered navbar');
-      isInteracting = true;
-      sidebar.classList.add('show', 'keep-visible');
+      console.log('[better-falix] Force-mobile-navbar: Mouse entered navbar - pausing auto-hide');
       clearTimeout(hideTimeout);
     });
     
-    // Mouse leave - start auto-hide timer
+    // Start timer when leaving navbar
     sidebar.addEventListener('mouseleave', () => {
-      console.log('[better-falix] Force-mobile-navbar: Mouse left navbar');
-      isInteracting = false;
-      sidebar.classList.remove('keep-visible');
-      startAutoHideTimer();
+      console.log('[better-falix] Force-mobile-navbar: Mouse left navbar - resuming auto-hide');
+      if (sidebar.classList.contains('show')) {
+        startAutoHideTimer();
+      }
     });
     
     // Click inside navbar - reset auto-hide timer
@@ -239,14 +238,14 @@ chrome.storage.sync.get({ forcemobilenavbar: false, enabled: true }, (data) => {
     // Handle topNavToggle button (mobile menu button)
     const topNavToggle = document.getElementById('topNavbarToggle');
     if (topNavToggle) {
-      console.log('[better-falix] Force-mobile-navbar: Enhancing mobile toggle button');
-      
-      // Override the existing click handler
-      topNavToggle.addEventListener('click', (e) => {
-        console.log('[better-falix] Force-mobile-navbar: Mobile toggle clicked');
-        if (sidebar.classList.contains('show')) {
-          startAutoHideTimer();
-        }
+      console.log('[better-falix] Force-mobile-navbar: Adding auto-hide to hamburger button');
+      topNavToggle.addEventListener('click', () => {
+        setTimeout(() => {
+          if (sidebar.classList.contains('show')) {
+            console.log('[better-falix] Force-mobile-navbar: Navbar shown via hamburger - starting auto-hide timer');
+            startAutoHideTimer();
+          }
+        }, 100);
       });
     }
     
