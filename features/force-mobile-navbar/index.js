@@ -27,6 +27,10 @@ chrome.storage.sync.get({ forcemobilenavbar: false, enabled: true }, (data) => {
     
     console.log('[better-falix] Force-mobile-navbar: Current sidebar classes:', sidebar.className);
     
+    // Override desktop navbar behavior first
+    console.log('[better-falix] Force-mobile-navbar: Overriding desktop navbar behavior');
+    overrideDesktopNavbar();
+    
     // Add mobile-specific classes to force mobile behavior
     console.log('[better-falix] Force-mobile-navbar: Adding mobile-force class');
     sidebar.classList.add('mobile-force');
@@ -37,6 +41,7 @@ chrome.storage.sync.get({ forcemobilenavbar: false, enabled: true }, (data) => {
     style.id = 'force-mobile-navbar-styles';
     style.textContent = `
       /* Force mobile navbar behavior - Better Falix Extension */
+      /* Override all desktop navbar collapse behavior */
       #mainSidebar.mobile-force {
         /* Force mobile navbar width and behavior */
         width: 280px !important;
@@ -56,6 +61,61 @@ chrome.storage.sync.get({ forcemobilenavbar: false, enabled: true }, (data) => {
         
         /* Enable auto-hide behavior on mobile */
         transition: transform 0.3s ease-in-out !important;
+        
+        /* Override desktop collapse behavior completely */
+        transform: translateX(0) !important;
+      }
+      
+      /* Force mobile navbar to show all text and icons in normal state */
+      #mainSidebar.mobile-force .navbar-brand img {
+        height: 28px !important; /* Original size, not collapsed size */
+      }
+      
+      #mainSidebar.mobile-force .nav-category span,
+      #mainSidebar.mobile-force .nav-category .toggle-icon,
+      #mainSidebar.mobile-force .nav-link span,
+      #mainSidebar.mobile-force .external-link span {
+        display: inline !important; /* Show all text */
+      }
+      
+      #mainSidebar.mobile-force .nav-category .category-icon {
+        display: inline !important; /* Show icons normally */
+      }
+      
+      #mainSidebar.mobile-force .current-server-name {
+        display: block !important; /* Show server name */
+      }
+      
+      /* Override any desktop collapsed state styling */
+      #mainSidebar.mobile-force .nav-category {
+        padding: 1rem !important; /* Full padding, not collapsed */
+        justify-content: space-between !important; /* Normal layout */
+        margin: 0 !important; /* Reset margins */
+      }
+      
+      #mainSidebar.mobile-force .nav-link {
+        justify-content: flex-start !important; /* Normal alignment */
+        padding: 0.75rem 1rem 0.75rem 2rem !important; /* Full padding */
+        margin: 0 !important; /* Reset margins */
+      }
+      
+      #mainSidebar.mobile-force .nav-link svg {
+        margin-right: 0.75rem !important; /* Normal icon spacing */
+      }
+      
+      #mainSidebar.mobile-force .external-link {
+        width: auto !important; /* Not collapsed circular button */
+        height: auto !important;
+        border-radius: 4px !important; /* Normal border radius */
+        margin: 0 !important;
+        padding: 0.75rem 1rem !important; /* Normal padding */
+        justify-content: flex-start !important;
+      }
+      
+      #mainSidebar.mobile-force .current-server-info {
+        padding: 1rem !important; /* Full padding */
+        margin: 1rem !important; /* Normal margins */
+        justify-content: flex-start !important; /* Normal alignment */
       }
       
       /* Force mobile navbar content styling */
@@ -98,14 +158,12 @@ chrome.storage.sync.get({ forcemobilenavbar: false, enabled: true }, (data) => {
       
       #mainSidebar.mobile-force .nav-category {
         width: 100% !important;
-        padding: 1rem !important;
         background: none !important;
         border: none !important;
         color: var(--text-color, #fff) !important;
         text-align: left !important;
         display: flex !important;
         align-items: center !important;
-        justify-content: space-between !important;
         font-weight: 600 !important;
         text-transform: uppercase !important;
         font-size: 0.75rem !important;
@@ -120,7 +178,6 @@ chrome.storage.sync.get({ forcemobilenavbar: false, enabled: true }, (data) => {
       
       /* Force mobile navigation items styling */
       #mainSidebar.mobile-force .navbar-nav .nav-item .nav-link {
-        padding: 0.75rem 1rem 0.75rem 2rem !important;
         color: var(--text-color, #fff) !important;
         text-decoration: none !important;
         display: flex !important;
@@ -141,7 +198,6 @@ chrome.storage.sync.get({ forcemobilenavbar: false, enabled: true }, (data) => {
       }
       
       #mainSidebar.mobile-force .navbar-nav .nav-item .nav-link svg {
-        margin-right: 0.75rem !important;
         width: 1rem !important;
         height: 1rem !important;
         flex-shrink: 0 !important;
@@ -173,7 +229,6 @@ chrome.storage.sync.get({ forcemobilenavbar: false, enabled: true }, (data) => {
       
       /* Force mobile current server info styling */
       #mainSidebar.mobile-force .current-server-info {
-        padding: 1rem !important;
         margin-bottom: 1rem !important;
         background-color: var(--server-bg, rgba(0,123,255,0.1)) !important;
         border-radius: 8px !important;
@@ -187,13 +242,13 @@ chrome.storage.sync.get({ forcemobilenavbar: false, enabled: true }, (data) => {
         font-size: 0.9rem !important;
       }
       
-      /* Auto-hide behavior - collapsed state */
-      #mainSidebar.mobile-force.collapsed {
+      /* Mobile collapsed state - completely hidden like mobile */
+      #mainSidebar.mobile-force.mobile-collapsed {
         transform: translateX(-100%) !important;
       }
       
-      /* Show sidebar when hovering over left edge */
-      #mainSidebar.mobile-force.collapsed:hover {
+      /* Show sidebar when hovering over left edge while collapsed */
+      #mainSidebar.mobile-force.mobile-collapsed:hover {
         transform: translateX(0) !important;
       }
       
@@ -221,6 +276,11 @@ chrome.storage.sync.get({ forcemobilenavbar: false, enabled: true }, (data) => {
         padding-left: 0 !important;
       }
       
+      /* Main content adjustment - no left margin since navbar is overlay */
+      body.mobile-navbar-forced .content {
+        margin-left: 0 !important;
+      }
+      
       /* Responsive behavior - hide on very small screens */
       @media (max-width: 768px) {
         #mainSidebar.mobile-force {
@@ -230,6 +290,11 @@ chrome.storage.sync.get({ forcemobilenavbar: false, enabled: true }, (data) => {
         #mainSidebar.mobile-force.show {
           transform: translateX(0) !important;
         }
+      }
+      
+      /* Force override any conflicting styles */
+      #mainSidebar.mobile-force * {
+        box-sizing: border-box !important;
       }
     `;
     
@@ -256,6 +321,87 @@ chrome.storage.sync.get({ forcemobilenavbar: false, enabled: true }, (data) => {
     return true;
   }
   
+  // Function to override desktop navbar behavior and localStorage
+  function overrideDesktopNavbar() {
+    console.log('[better-falix] Force-mobile-navbar: Overriding desktop navbar behavior');
+    
+    // Remove any existing navbar state cache styles
+    const existingCache = document.getElementById('navbar-state-cache');
+    if (existingCache) {
+      console.log('[better-falix] Force-mobile-navbar: Removing existing navbar state cache');
+      existingCache.remove();
+    }
+    
+    // Override localStorage to prevent desktop collapse behavior
+    console.log('[better-falix] Force-mobile-navbar: Overriding localStorage for navbar state');
+    const originalSetItem = localStorage.setItem;
+    const originalGetItem = localStorage.getItem;
+    
+    // Intercept localStorage calls for sidebar state
+    localStorage.setItem = function(key, value) {
+      if (key === 'sidebarCollapsed') {
+        console.log('[better-falix] Force-mobile-navbar: Intercepted sidebarCollapsed localStorage.setItem, ignoring');
+        return; // Don't save desktop collapse state
+      }
+      return originalSetItem.call(this, key, value);
+    };
+    
+    localStorage.getItem = function(key) {
+      if (key === 'sidebarCollapsed') {
+        console.log('[better-falix] Force-mobile-navbar: Intercepted sidebarCollapsed localStorage.getItem, returning false');
+        return 'false'; // Always return false to prevent desktop collapse
+      }
+      return originalGetItem.call(this, key);
+    };
+    
+    // Clear any existing collapsed state
+    console.log('[better-falix] Force-mobile-navbar: Clearing existing sidebarCollapsed from localStorage');
+    originalSetItem.call(localStorage, 'sidebarCollapsed', 'false');
+    
+    // Find and neutralize any desktop navbar initialization scripts
+    console.log('[better-falix] Force-mobile-navbar: Looking for desktop navbar scripts to override');
+    const scripts = document.querySelectorAll('script');
+    scripts.forEach((script, index) => {
+      if (script.innerHTML.includes('sidebarCollapsed') || script.innerHTML.includes('navbar-state-cache')) {
+        console.log(`[better-falix] Force-mobile-navbar: Found navbar script ${index}, disabling it`);
+        // Don't remove the script, but mark it as processed
+        script.setAttribute('data-mobile-navbar-processed', 'true');
+      }
+    });
+    
+    // Override any window resize handlers that might affect navbar
+    console.log('[better-falix] Force-mobile-navbar: Setting up window resize override');
+    const originalAddEventListener = window.addEventListener;
+    window.addEventListener = function(type, listener, options) {
+      if (type === 'resize') {
+        console.log('[better-falix] Force-mobile-navbar: Intercepting resize event listener');
+        // Wrap the original listener to prevent navbar layout changes
+        const wrappedListener = function(event) {
+          console.log('[better-falix] Force-mobile-navbar: Resize event fired, maintaining mobile navbar');
+          // Call original listener but immediately restore mobile navbar
+          try {
+            listener.call(this, event);
+          } catch (e) {
+            console.warn('[better-falix] Force-mobile-navbar: Error in original resize listener:', e);
+          }
+          // Restore mobile navbar after any resize handling
+          setTimeout(() => {
+            const sidebar = document.getElementById('mainSidebar');
+            if (sidebar && sidebar.classList.contains('mobile-force')) {
+              console.log('[better-falix] Force-mobile-navbar: Restoring mobile navbar after resize');
+              sidebar.classList.remove('mobile-collapsed'); // Remove any mobile collapse
+              sidebar.style.width = '280px'; // Force mobile width
+            }
+          }, 10);
+        };
+        return originalAddEventListener.call(this, type, wrappedListener, options);
+      }
+      return originalAddEventListener.call(this, type, listener, options);
+    };
+    
+    console.log('[better-falix] Force-mobile-navbar: Desktop navbar override complete');
+  }
+  
   // Function to setup auto-hide behavior
   function setupAutoHideBehavior(sidebar) {
     console.log('[better-falix] Force-mobile-navbar: Setting up auto-hide behavior');
@@ -270,7 +416,7 @@ chrome.storage.sync.get({ forcemobilenavbar: false, enabled: true }, (data) => {
       hideTimeout = setTimeout(() => {
         if (!isHovering) {
           console.log('[better-falix] Force-mobile-navbar: Auto-hiding navbar due to inactivity');
-          sidebar.classList.add('collapsed');
+          sidebar.classList.add('mobile-collapsed');
         }
       }, 3000); // Hide after 3 seconds of inactivity
     }
@@ -279,7 +425,7 @@ chrome.storage.sync.get({ forcemobilenavbar: false, enabled: true }, (data) => {
     sidebar.addEventListener('mouseenter', () => {
       console.log('[better-falix] Force-mobile-navbar: Mouse entered navbar - showing');
       isHovering = true;
-      sidebar.classList.remove('collapsed');
+      sidebar.classList.remove('mobile-collapsed');
       clearTimeout(hideTimeout);
     });
     
@@ -293,7 +439,7 @@ chrome.storage.sync.get({ forcemobilenavbar: false, enabled: true }, (data) => {
     // Show navbar when clicking anywhere in the navbar area
     sidebar.addEventListener('click', (e) => {
       console.log('[better-falix] Force-mobile-navbar: Navbar clicked - showing and resetting timer');
-      sidebar.classList.remove('collapsed');
+      sidebar.classList.remove('mobile-collapsed');
       clearTimeout(hideTimeout);
       startHideTimer();
     });
@@ -321,12 +467,12 @@ chrome.storage.sync.get({ forcemobilenavbar: false, enabled: true }, (data) => {
         e.preventDefault();
         e.stopPropagation();
         
-        if (sidebar.classList.contains('collapsed')) {
+        if (sidebar.classList.contains('mobile-collapsed')) {
           console.log('[better-falix] Force-mobile-navbar: Showing navbar via toggle');
-          sidebar.classList.remove('collapsed');
+          sidebar.classList.remove('mobile-collapsed');
         } else {
           console.log('[better-falix] Force-mobile-navbar: Hiding navbar via toggle');
-          sidebar.classList.add('collapsed');
+          sidebar.classList.add('mobile-collapsed');
         }
       });
       
@@ -353,8 +499,8 @@ chrome.storage.sync.get({ forcemobilenavbar: false, enabled: true }, (data) => {
     
     // Show overlay when sidebar is visible on mobile
     function updateOverlay() {
-      const isCollapsed = sidebar.classList.contains('collapsed');
-      console.log('[better-falix] Force-mobile-navbar: Updating overlay - collapsed:', isCollapsed);
+      const isCollapsed = sidebar.classList.contains('mobile-collapsed');
+      console.log('[better-falix] Force-mobile-navbar: Updating overlay - mobile-collapsed:', isCollapsed);
       
       if (window.innerWidth <= 768) {
         if (!isCollapsed) {
@@ -373,7 +519,7 @@ chrome.storage.sync.get({ forcemobilenavbar: false, enabled: true }, (data) => {
     // Click overlay to hide sidebar
     overlay.addEventListener('click', () => {
       console.log('[better-falix] Force-mobile-navbar: Overlay clicked - hiding navbar');
-      sidebar.classList.add('collapsed');
+      sidebar.classList.add('mobile-collapsed');
       updateOverlay();
     });
     
