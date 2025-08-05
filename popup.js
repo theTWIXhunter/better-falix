@@ -229,10 +229,139 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Archived features button
   const showArchivedBtn = document.getElementById('showArchivedFeatures');
+  const archivedSection = document.getElementById('archivedFeaturesSection');
+  const archivedList = document.getElementById('archivedFeaturesList');
+  let archivedVisible = false;
+
   showArchivedBtn.addEventListener('click', () => {
-      // For now, redirect to options page
-      chrome.runtime.openOptionsPage();
+      archivedVisible = !archivedVisible;
+      
+      if (archivedVisible) {
+          archivedSection.style.display = 'block';
+          showArchivedBtn.textContent = 'Hide Archived Features';
+          populateArchivedFeatures();
+      } else {
+          archivedSection.style.display = 'none';
+          showArchivedBtn.textContent = getArchivedButtonText();
+      }
   });
+
+  // Feature names mapping for better display
+  const featureNames = {
+      customServerOrder: 'Custom Server Order',
+      legacyEditorFullscreen: 'Legacy Editor Fullscreen',
+      hideConsoleTabs: 'Hide Console Tabs',
+      replaceAccountCategory: 'Replace Account Category',
+      moveBackupsNav: 'Move "Backups" to Server Settings',
+      moveMonitoringNav: 'Move "Monitoring" to Advanced',
+      moveLogsNav: 'Move "Logs" to Advanced',
+      removeExternalStartNav: 'Remove "Remote Startup" nav item',
+      removeNavbarSupportLinks: 'Remove Navbar Support Links',
+      removeConsoleFilesCategory: 'Remove "Console" and "Files" categories',
+      removeSftpUpload: 'Remove SFTP info from upload',
+      removeHowToConnect: 'Remove How To Connect',
+      removeExitDiscount: 'Remove Exit-Discount',
+      itsJustPaper: "it's just Paper",
+      itsJustGeyser: "it's just Geyser",
+      serverNameButton: 'Server Name Button',
+      navbarHover: 'Navbar Hover',
+      replaceSupportModal: 'replace Support Modal',
+      uploadCreateHover: 'Upload/Create Hover',
+      editorWrapperHeight: 'Editor Wrapper Height',
+      editorFullscreen: 'Editor Fullscreen',
+      removeServerSearch: 'Remove Server search bar'
+  };
+
+  // Feature tooltips mapping
+  const featureTooltips = {
+      customServerOrder: 'Reorder your server list in any way you want. (See settings)',
+      legacyEditorFullscreen: 'Legacy fullscreen editor implementation.',
+      hideConsoleTabs: 'Optionally hide unnecessary console tabs for a cleaner interface.',
+      replaceAccountCategory: 'Hides the sidebar \'Account\' category and adds a custom popup menu to the profile icon with quick links to Profile Settings and Logout.',
+      moveBackupsNav: 'Relocate the \'Backups\' navigation item to the Server Settings section.',
+      moveMonitoringNav: 'Move the \'Monitoring\' navigation item to the Advanced section.',
+      moveLogsNav: 'Move the \'Logs\' navigation item to the Advanced section.',
+      removeExternalStartNav: 'Hide the \'Remote Startup\' navigation item from the sidebar.',
+      removeNavbarSupportLinks: 'Optionally remove support-related links from the navbar.',
+      removeConsoleFilesCategory: 'Remove \'Console\' and \'Files\' categories (keep items).',
+      removeSftpUpload: 'Removes the SFTP info and its divider from the upload button dropdown for a cleaner UI.',
+      removeHowToConnect: 'Removes all \'How to connect\' steps, DNS verification sections, and the \'Server Name\' row from the connect button for a cleaner look.',
+      removeExitDiscount: 'Removes the most annoying popup ever (the exit discount modal and its backdrop) from falixnodes.net.',
+      itsJustPaper: 'Renames \'Craftbukkit / Spigot / PaperSpigot\' to \'Paper\' in the server type dropdown for clarity.',
+      itsJustGeyser: 'Renames \'Java + Bedrock Support (Geyser)\' in the server type dropdown for clarity.',
+      serverNameButton: 'Makes the server name in the navbar clickable and redirect you to the main page.',
+      navbarHover: 'Opens and closes the navbar when you hover on/off it.',
+      replaceSupportModal: 'Replaces the support modal with a cleaner one and adds a copy all button.',
+      uploadCreateHover: 'Makes the Upload and Create buttons show their dropdowns when hovered.',
+      editorWrapperHeight: 'Makes the file editor 600px Height',
+      editorFullscreen: 'Adds a fullscreen button to the file editor.',
+      removeServerSearch: 'Remove the Server Search bar from the main page.'
+  };
+
+  function populateArchivedFeatures() {
+      chrome.storage.sync.get(null, (data) => {
+          archivedList.innerHTML = '';
+          
+          Object.keys(features).forEach(featureKey => {
+              // Check if feature is disabled (archived)
+              if (!data[featureKey] && features[featureKey]) {
+                  const featureRow = document.createElement('div');
+                  featureRow.className = 'feature-row';
+                  
+                  const featureName = featureNames[featureKey] || featureKey;
+                  const featureTooltip = featureTooltips[featureKey] || '';
+                  
+                  featureRow.innerHTML = `
+                      <span class="feature-label" data-tooltip="${featureTooltip}">${featureName}</span>
+                      <button class="feature-btn" id="archived-${featureKey}" aria-pressed="false" tabindex="0">
+                          <span class="dot"></span>
+                      </button>
+                  `;
+                  
+                  archivedList.appendChild(featureRow);
+                  
+                  // Add event listener to the toggle button
+                  const toggleBtn = featureRow.querySelector('.feature-btn');
+                  toggleBtn.addEventListener('click', () => {
+                      // Enable the feature
+                      chrome.storage.sync.set({ [featureKey]: true }, () => {
+                          // Remove from archived list
+                          featureRow.remove();
+                          
+                          // Update the main feature toggle
+                          const mainToggle = document.getElementById(featureKey);
+                          if (mainToggle) {
+                              mainToggle.setAttribute('aria-pressed', 'true');
+                              mainToggle.classList.add('on');
+                          }
+                          
+                          // Update button text
+                          updateArchivedButtonText();
+                          
+                          // Hide section if no more archived features
+                          if (archivedList.children.length === 0) {
+                              archivedVisible = false;
+                              archivedSection.style.display = 'none';
+                              showArchivedBtn.textContent = getArchivedButtonText();
+                          }
+                      });
+                  });
+              }
+          });
+          
+          // If no archived features, hide the section
+          if (archivedList.children.length === 0) {
+              archivedVisible = false;
+              archivedSection.style.display = 'none';
+              showArchivedBtn.textContent = 'No Archived Features';
+          }
+      });
+  }
+
+  function getArchivedButtonText() {
+      // This will be updated by updateArchivedButtonText
+      return showArchivedBtn.textContent;
+  }
 
   // Update text when features are toggled
   function updateArchivedButtonText() {
@@ -245,10 +374,19 @@ document.addEventListener('DOMContentLoaded', () => {
           });
           
           if (disabledCount > 0) {
-              showArchivedBtn.textContent = `Show Archived Features (${disabledCount})`;
+              if (!archivedVisible) {
+                  showArchivedBtn.textContent = `Show Archived Features (${disabledCount})`;
+              }
               showArchivedBtn.style.display = 'block';
           } else {
-              showArchivedBtn.style.display = 'none';
+              showArchivedBtn.textContent = 'No Archived Features';
+              showArchivedBtn.style.display = 'block';
+              // Hide archived section if it's visible and there are no archived features
+              if (archivedVisible) {
+                  archivedVisible = false;
+                  archivedSection.style.display = 'none';
+                  showArchivedBtn.textContent = 'No Archived Features';
+              }
           }
       });
   }
