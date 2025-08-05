@@ -96,7 +96,7 @@
     },
     {
       "matches": ["https://client.falixnodes.net/server/*"],
-      "js": ["features/server-name-button/index.js"],
+      "js": ["features/legacy-server-name-button/index.js"],
       "run_at": "document_idle"
     },  
     {
