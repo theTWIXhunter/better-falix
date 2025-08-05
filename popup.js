@@ -226,4 +226,40 @@ document.addEventListener('DOMContentLoaded', () => {
     const activeTheme = data.activeTheme || 'default';
     setActiveTheme(activeTheme);
   });
+
+  // Archived features button
+  const showArchivedBtn = document.getElementById('showArchivedFeatures');
+  showArchivedBtn.addEventListener('click', () => {
+      // For now, redirect to options page
+      chrome.runtime.openOptionsPage();
+  });
+
+  // Update text when features are toggled
+  function updateArchivedButtonText() {
+      chrome.storage.sync.get(null, (data) => {
+          let disabledCount = 0;
+          Object.keys(features).forEach(featureKey => {
+              if (!data[featureKey] && features[featureKey]) {
+                  disabledCount++;
+              }
+          });
+          
+          if (disabledCount > 0) {
+              showArchivedBtn.textContent = `Show Archived Features (${disabledCount})`;
+              showArchivedBtn.style.display = 'block';
+          } else {
+              showArchivedBtn.style.display = 'none';
+          }
+      });
+  }
+
+  // Call update function when toggles change
+  updateArchivedButtonText();
+  
+  // Update archived button when any toggle is changed
+  document.addEventListener('change', (e) => {
+      if (e.target.classList.contains('form-check-input')) {
+          setTimeout(updateArchivedButtonText, 100);
+      }
+  });
 });
