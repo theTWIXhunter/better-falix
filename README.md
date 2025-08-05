@@ -9,7 +9,6 @@ Better Falix is a browser extension that enhances the Falixnodes client-side exp
 - **Custom Server Order:** Reorder your server list in any way you want.
 - **Navbar Hover:** Opens and closes the navbar when you hover on/off it.
 - **Replace Account Category:** Hides the sidebar "Account" category and adds a custom popup menu to the profile icon with quick links to Profile Settings and Logout.
-- **Server Name Button:** Makes the server name in the navbar clickable and redirect you to the main page (added to falix itself, will be removed soon).
 - **Remove-exit-discount:** Removes the most annoying popup ever (the exit discount modal and its backdrop) from falixnodes.net.
 - **it's just Paper:** Renames "Craftbukkit / Spigot / PaperSpigot" to "Paper" in the server type dropdown for clarity.
 - **it's just Geyser:** Renames "Java + Bedrock Support (Geyser)" to "geyser" in the server type dropdown for clarity.
@@ -24,7 +23,7 @@ Better Falix is a browser extension that enhances the Falixnodes client-side exp
 - **Remove SFTP info from upload:** Removes the SFTP info and its divider from the upload button dropdown for a cleaner UI.
 - **upload-create-hover:** Makes the Upload and Create buttons show their dropdowns when hovered.
 - **Editor Wrapper Height:** Sets the file editor height to 600px (new height can be configured in the config).
-- **Editor Fullscreen**: Adds a button to the file editor toolbar that allows you to make the editor and toolbar take up the entire browser window (added to falix itself, will be removed soon).
+
 
 **Navigation**
 - **Move "Backups" to Server Settings:** Relocate the "Backups" navigation item to the Server Settings section.
@@ -32,6 +31,13 @@ Better Falix is a browser extension that enhances the Falixnodes client-side exp
 - **Move "Logs" to Advanced:** Move the "Logs" navigation item to the Advanced section.
 - **Remove "Remote Startup" Nav Item:** Hide the "Remote Startup" navigation item from the sidebar.
 - **Remove Navbar Support Links:** Optionally remove support-related links from the navbar.
+
+**Archived features**
+Warning: These features are archived, this is either because they are replaced or because they got implemented into the native page.
+Enabling these features might cause issues or incompatibilities with other plugins or native features.
+
+- **Editor Fullscreen**: Adds a button to the file editor toolbar that allows you to make the editor and toolbar take up the entire browser window (added to falix itself).
+- **Server Name Button:** Makes the server name in the navbar clickable and redirect you to the main page (added to falix itself, will be removed soon).
 
 ## Usage
 
