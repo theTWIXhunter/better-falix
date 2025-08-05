@@ -24,6 +24,7 @@ Better Falix is a browser extension that enhances the Falixnodes client-side exp
 - **Remove SFTP info from upload:** Removes the SFTP info and its divider from the upload button dropdown for a cleaner UI.
 - **upload-create-hover:** Makes the Upload and Create buttons show their dropdowns when hovered.
 - **Editor Wrapper Height:** Sets the file editor height to 600px.
+- **Editor Fullscreen**: Adds a button to the file editor toolbar that allows you to make the editor and toolbar take up the entire browser viewport (not true fullscreen, browser UI remains visible).
 
 **Navigation**
 - **Move "Backups" to Server Settings:** Relocate the "Backups" navigation item to the Server Settings section.
@@ -31,12 +32,6 @@ Better Falix is a browser extension that enhances the Falixnodes client-side exp
 - **Move "Logs" to Advanced:** Move the "Logs" navigation item to the Advanced section.
 - **Remove "Remote Startup" Nav Item:** Hide the "Remote Startup" navigation item from the sidebar.
 - **Remove Navbar Support Links:** Optionally remove support-related links from the navbar.
-
-
-**LEGACY**
-the following features have been replaced or implemented into the native page but are still included for 
-
-- **legacy-editor-fullscreen:** (implemented to falix) Adds a button to the file editor toolbar that allows you to make the editor and toolbar take up the entire browser viewport (not true fullscreen, browser UI remains visible for better navigation).
 
 ## Usage
 

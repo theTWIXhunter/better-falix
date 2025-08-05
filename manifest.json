@@ -126,7 +126,7 @@
     },
     {
       "matches": ["https://client.falixnodes.net/server/edit*"],
-      "js": ["features/legacy-editor-fullscreen/index.js"],
+      "js": ["features/editor-fullscreen/index.js"],
       "run_at": "document_idle"
     },
     {
