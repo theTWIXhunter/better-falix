@@ -39,7 +39,7 @@ chrome.storage.sync.get(null, data => {
   if (navbarHoverToggle) setToggleState(navbarHoverToggle, !!data.navbarHover);
   
   const navbarHoverZoneWidth = document.getElementById('navbarHoverZoneWidth');
-  if (navbarHoverZoneWidth) navbarHoverZoneWidth.value = data.navbarHoverZoneWidth || 40;
+  if (navbarHoverZoneWidth) navbarHoverZoneWidth.value = data.navbarHoverZoneWidth || 30;
   
   const uploadCreateHoverToggle = document.getElementById('uploadCreateHover');
   if (uploadCreateHoverToggle) setToggleState(uploadCreateHoverToggle, !!data.uploadCreateHover);
