@@ -226,4 +226,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const activeTheme = data.activeTheme || 'default';
     setActiveTheme(activeTheme);
   });
+
+  // Archived features toggle logic
+  const toggleArchivedBtn = document.getElementById('toggleArchivedFeatures');
+  const archivedSection = document.getElementById('archivedFeaturesSection');
+  
+  toggleArchivedBtn.addEventListener('click', function() {
+    const isHidden = archivedSection.style.display === 'none';
+    archivedSection.style.display = isHidden ? 'block' : 'none';
+    toggleArchivedBtn.textContent = isHidden ? 'Hide Archived Features' : 'Show Archived Features';
+  });
 });

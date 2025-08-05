@@ -1,12 +1,12 @@
-// [better-falix] editor-fullscreen: Script loading
-console.log('[better-falix] editor-fullscreen: Script loading');
+// [better-falix] LEGACY-editor-fullscreen: Script loading
+console.log('[better-falix] LEGACY-editor-fullscreen: Script loading');
 
 chrome.storage.sync.get({ editorFullscreen: false, enabled: true }, (data) => {
-  if (!data.enabled) {
-    console.log('[better-falix] editor-fullscreen: Script disabled');
+  if (!data.enabled || !data.editorFullscreen) {
+    console.log('[better-falix] LEGACY-editor-fullscreen: Script disabled');
     return;
   }
-  console.log('[better-falix] editor-fullscreen: Script enabled');
+  console.log('[better-falix] LEGACY-editor-fullscreen: Script enabled');
 
   function addFullscreenButton() {
     // Find the toolbar
@@ -201,6 +201,6 @@ chrome.storage.sync.get({ editorFullscreen: false, enabled: true }, (data) => {
   }
 
   setTimeout(() => {
-    console.log('[better-falix] editor-fullscreen: Script loaded successfully');
+    console.log('[better-falix] LEGACY-editor-fullscreen: Script loaded successfully');
   }, 10);
 });

@@ -382,10 +382,6 @@
             <button class="feature-btn" id="replaceAccountCategory" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
           </div>
           <div class="feature-row">
-            <span class="feature-label" data-tooltip="Makes the server name in the navbar clickable and redirect you to the main page.">Server Name Button</span>
-            <button class="feature-btn" id="serverNameButton" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
-          </div>
-          <div class="feature-row">
             <span class="feature-label" data-tooltip="Removes the most annoying popup ever (the exit discount modal and its backdrop) from falixnodes.net.">Remove Exit-Discount</span>
             <button class="feature-btn" id="removeExitDiscount" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
           </div>
@@ -435,10 +431,6 @@
             <span class="feature-label" data-tooltip="Makes the file editor 600px Height">Editor Wrapper Height</span>
             <button class="feature-btn" id="editorWrapperHeight" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
           </div>
-          <div class="feature-row">
-            <span class="feature-label" data-tooltip="Adds a fullscreen button to the file editor.">Editor Fullscreen</span>
-            <button class="feature-btn" id="editorFullscreen" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
-          </div>
         </div>
 
         <!-- Navigation Features -->
@@ -467,6 +459,31 @@
           <div class="feature-row">
             <span class="feature-label" data-tooltip="Remove 'Console' and 'Files' categories (keep items).">Remove "Console" and "Files" categories</span>
             <button class="feature-btn" id="removeConsoleFilesCategory" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+          </div>
+        </div>
+
+        <!-- Toggle button for archived features -->
+        <div style="text-align: center; margin: 16px 0;">
+          <button id="toggleArchivedFeatures" style="background: var(--falix-panel); color: var(--falix-muted); border: 1px solid var(--falix-border); border-radius: 6px; padding: 8px 16px; cursor: pointer; font-size: 0.9em; transition: all 0.2s;">
+            Show Archived Features
+          </button>
+        </div>
+
+        <!-- Archived Features (hidden by default) -->
+        <div id="archivedFeaturesSection" style="display: none;">
+          <div class="category">Archived Features</div>
+        <div style="max-width:480px ; background:#fff3cd; color:#856404; border:1px solid #ffeeba; border-radius:8px; padding:12px 16px; margin-bottom:18px; font-size:0.98em;">
+          <b>Warning:</b> These features are archived, this is either because they are replaced or because they got implemented into the native page. <br> Enabling these features might cause issues or incompatibilities with other plugins or native features.
+        </div>
+          <div class="feature-list">
+              <div class="feature-row">
+                <span class="feature-label" data-tooltip="Adds a fullscreen button to the file editor.">Editor Fullscreen</span>
+                <button class="feature-btn" id="editorFullscreen" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+              </div>
+               <div class="feature-row">
+                <span class="feature-label" data-tooltip="Makes the server name in the navbar clickable and redirect you to the main page.">Server Name Button</span>
+                <button class="feature-btn" id="serverNameButton" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+              </div>
           </div>
         </div>
       </div>
