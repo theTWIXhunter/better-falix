@@ -35,6 +35,12 @@ const featureIds = [
   'removeServerSearch'
 ];
 
+// Create features object for archived features functionality
+const features = {};
+featureIds.forEach(id => {
+  features[id] = true; // All features exist
+});
+
 function setFeatureBtnState(btn, enabled) {
   btn.setAttribute('aria-pressed', enabled ? 'true' : 'false');
   btn.classList.toggle('on', enabled);
