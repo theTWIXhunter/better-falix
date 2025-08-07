@@ -74,8 +74,18 @@ chrome.storage.sync.get({ fileHistory: false, enabled: true }, (data) => {
     const method = this._method;
     const url = this._url;
 
+    // Debug all requests (temporarily)
+    if (url && url.includes('ajax')) {
+      console.log(`[better-falix] file-history: DEBUG - All AJAX request: ${method} ${url}`);
+      console.log('[better-falix] file-history: DEBUG - Request data type:', data ? data.constructor.name : 'null');
+      if (data) {
+        console.log('[better-falix] file-history: DEBUG - Raw data:', data);
+      }
+    }
+
     // Monitor file operations
-    if (url && url.includes('/server/ajax/files/')) {
+    if (url && (url.includes('/server/ajax/files/') || url.includes('falixnodes.net/server/ajax/files/'))) {
+      console.log(`[better-falix] file-history: Monitoring request to ${url}`);
       const originalOnLoad = xhr.onload;
       
       xhr.onload = function() {
@@ -91,18 +101,34 @@ chrome.storage.sync.get({ fileHistory: false, enabled: true }, (data) => {
                 const params = new URLSearchParams(data);
                 requestData = Object.fromEntries(params.entries());
               }
+            } else if (data instanceof FormData) {
+              // Handle FormData
+              requestData = Object.fromEntries(data.entries());
+            } else if (data instanceof URLSearchParams) {
+              // Handle URLSearchParams
+              requestData = Object.fromEntries(data.entries());
             }
           }
 
+          // Debug logging
+          console.log(`[better-falix] file-history: Intercepted ${method} request to ${url}`);
+          console.log('[better-falix] file-history: Request data:', requestData);
+
           // Log different file operations based on endpoint
-          if (url.includes('/move') && method === 'POST') {
+          if (url.includes('/server/ajax/files/move') && method === 'POST') {
+            console.log('[better-falix] file-history: Detected move/rename operation');
             logMoveOrRenameAction(requestData);
-          } else if (url.includes('/delete') && method === 'POST') {
+          } else if (url.includes('/server/ajax/files/delete') && method === 'POST') {
+            console.log('[better-falix] file-history: Detected delete operation');
             logDeleteAction(requestData);
-          } else if (url.includes('/create') && method === 'POST') {
+          } else if (url.includes('/server/ajax/files/create') && method === 'POST') {
+            console.log('[better-falix] file-history: Detected create operation');
             logCreateAction(requestData);
-          } else if (url.includes('/copy') && method === 'POST') {
+          } else if (url.includes('/server/ajax/files/copy') && method === 'POST') {
+            console.log('[better-falix] file-history: Detected copy operation');
             logCopyAction(requestData);
+          } else if (url.includes('/server/ajax/files/')) {
+            console.log('[better-falix] file-history: Unknown file operation:', url);
           }
         } catch (error) {
           console.error('[better-falix] file-history: Error processing request:', error);
