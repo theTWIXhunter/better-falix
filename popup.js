@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 const toggleBtn = document.getElementById('toggle');
 const featureIds = [
+  'fileHistory',
   'hideConsoleTabs',
   'replaceAccountCategory',
   'moveBackupsNav',
@@ -97,6 +98,7 @@ function setThemesListEnabled(enabled) {
 document.addEventListener('DOMContentLoaded', () => {
   chrome.storage.sync.get({
     enabled: false,
+    fileHistory: false,
     hideConsoleTabs: false,
     replaceAccountCategory: false,
     moveBackupsNav: false,
