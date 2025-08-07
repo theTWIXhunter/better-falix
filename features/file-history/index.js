@@ -76,7 +76,7 @@ chrome.storage.sync.get({ fileHistory: false, enabled: true }, (data) => {
 
     // Debug all requests (temporarily)
     if (url && url.includes('ajax')) {
-      console.log(`[better-falix] file-history: DEBUG - All AJAX request: ${method} ${url}`);
+      console.log(`[better-falix] file-history: DEBUG - XHR request: ${method} ${url}`);
       console.log('[better-falix] file-history: DEBUG - Request data type:', data ? data.constructor.name : 'null');
       if (data) {
         console.log('[better-falix] file-history: DEBUG - Raw data:', data);
@@ -85,7 +85,7 @@ chrome.storage.sync.get({ fileHistory: false, enabled: true }, (data) => {
 
     // Monitor file operations
     if (url && (url.includes('/server/ajax/files/') || url.includes('falixnodes.net/server/ajax/files/'))) {
-      console.log(`[better-falix] file-history: Monitoring request to ${url}`);
+      console.log(`[better-falix] file-history: Monitoring XHR request to ${url}`);
       const originalOnLoad = xhr.onload;
       
       xhr.onload = function() {
@@ -114,24 +114,9 @@ chrome.storage.sync.get({ fileHistory: false, enabled: true }, (data) => {
           console.log(`[better-falix] file-history: Intercepted ${method} request to ${url}`);
           console.log('[better-falix] file-history: Request data:', requestData);
 
-          // Log different file operations based on endpoint
-          if (url.includes('/server/ajax/files/move') && method === 'POST') {
-            console.log('[better-falix] file-history: Detected move/rename operation');
-            logMoveOrRenameAction(requestData);
-          } else if (url.includes('/server/ajax/files/delete') && method === 'POST') {
-            console.log('[better-falix] file-history: Detected delete operation');
-            logDeleteAction(requestData);
-          } else if (url.includes('/server/ajax/files/create') && method === 'POST') {
-            console.log('[better-falix] file-history: Detected create operation');
-            logCreateAction(requestData);
-          } else if (url.includes('/server/ajax/files/copy') && method === 'POST') {
-            console.log('[better-falix] file-history: Detected copy operation');
-            logCopyAction(requestData);
-          } else if (url.includes('/server/ajax/files/')) {
-            console.log('[better-falix] file-history: Unknown file operation:', url);
-          }
+          processFileOperation(url, method, requestData);
         } catch (error) {
-          console.error('[better-falix] file-history: Error processing request:', error);
+          console.error('[better-falix] file-history: Error processing XHR request:', error);
         }
 
         // Call original onload if it exists
@@ -143,6 +128,85 @@ chrome.storage.sync.get({ fileHistory: false, enabled: true }, (data) => {
 
     return originalXHRSend.apply(this, arguments);
   };
+
+  // Intercept Fetch API to monitor file operations
+  const originalFetch = window.fetch;
+  window.fetch = function(input, init = {}) {
+    const url = typeof input === 'string' ? input : input.url;
+    const method = init.method || 'GET';
+
+    // Debug all fetch requests
+    if (url && (url.includes('ajax') || url.includes('api'))) {
+      console.log(`[better-falix] file-history: DEBUG - Fetch request: ${method} ${url}`);
+      if (init.body) {
+        console.log('[better-falix] file-history: DEBUG - Fetch body type:', init.body.constructor.name);
+        console.log('[better-falix] file-history: DEBUG - Fetch body:', init.body);
+      }
+    }
+
+    // Monitor file operations
+    if (url && (url.includes('/server/ajax/files/') || url.includes('falixnodes.net/server/ajax/files/') || url.includes('/api/server/') || url.includes('/api/files/'))) {
+      console.log(`[better-falix] file-history: Monitoring Fetch request to ${url}`);
+      
+      return originalFetch.apply(this, arguments).then(response => {
+        // Clone response to read it without consuming the original
+        const responseClone = response.clone();
+        
+        try {
+          // Parse request data
+          let requestData = {};
+          if (init.body) {
+            if (typeof init.body === 'string') {
+              try {
+                requestData = JSON.parse(init.body);
+              } catch (e) {
+                const params = new URLSearchParams(init.body);
+                requestData = Object.fromEntries(params.entries());
+              }
+            } else if (init.body instanceof FormData) {
+              requestData = Object.fromEntries(init.body.entries());
+            } else if (init.body instanceof URLSearchParams) {
+              requestData = Object.fromEntries(init.body.entries());
+            }
+          }
+
+          console.log(`[better-falix] file-history: Intercepted Fetch ${method} request to ${url}`);
+          console.log('[better-falix] file-history: Fetch request data:', requestData);
+
+          processFileOperation(url, method, requestData);
+        } catch (error) {
+          console.error('[better-falix] file-history: Error processing Fetch request:', error);
+        }
+
+        return response;
+      });
+    }
+
+    return originalFetch.apply(this, arguments);
+  };
+
+  // Common function to process file operations
+  function processFileOperation(url, method, requestData) {
+    // Log different file operations based on endpoint
+    if ((url.includes('/move') || url.includes('/rename')) && method === 'POST') {
+      console.log('[better-falix] file-history: Detected move/rename operation');
+      logMoveOrRenameAction(requestData);
+    } else if (url.includes('/delete') && method === 'POST') {
+      console.log('[better-falix] file-history: Detected delete operation');
+      logDeleteAction(requestData);
+    } else if (url.includes('/create') && method === 'POST') {
+      console.log('[better-falix] file-history: Detected create operation');
+      logCreateAction(requestData);
+    } else if (url.includes('/copy') && method === 'POST') {
+      console.log('[better-falix] file-history: Detected copy operation');
+      logCopyAction(requestData);
+    } else if (url.includes('/upload') && method === 'POST') {
+      console.log('[better-falix] file-history: Detected upload operation');
+      logCreateAction(requestData);
+    } else {
+      console.log('[better-falix] file-history: Unknown file operation:', url, method);
+    }
+  }
 
   // Log move or rename action
   function logMoveOrRenameAction(requestData) {
@@ -242,10 +306,74 @@ chrome.storage.sync.get({ fileHistory: false, enabled: true }, (data) => {
       historyIndex = -1;
       console.log('[better-falix] file-history: History cleared');
     },
-    logAction: addActionToHistory
+    logAction: addActionToHistory,
+    testNetworkInterception: () => {
+      console.log('[better-falix] file-history: Testing network interception...');
+      fetch('/test-endpoint', { method: 'POST', body: 'test' }).catch(() => {});
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', '/test-endpoint');
+      xhr.send('test');
+    }
   };
+
+  // Add DOM mutation observer to watch for file list changes
+  function initDOMObserver() {
+    const targetNode = document.body;
+    const config = { attributes: false, childList: true, subtree: true };
+
+    const callback = function(mutationsList, observer) {
+      for (let mutation of mutationsList) {
+        if (mutation.type === 'childList') {
+          // Check for file list updates or notifications
+          mutation.addedNodes.forEach(node => {
+            if (node.nodeType === Node.ELEMENT_NODE) {
+              // Look for success notifications or file list updates
+              if (node.textContent && (
+                node.textContent.includes('File renamed') ||
+                node.textContent.includes('File moved') ||
+                node.textContent.includes('File deleted') ||
+                node.textContent.includes('successfully')
+              )) {
+                console.log('[better-falix] file-history: DOM change detected:', node.textContent);
+              }
+            }
+          });
+        }
+      }
+    };
+
+    const observer = new MutationObserver(callback);
+    observer.observe(targetNode, config);
+    console.log('[better-falix] file-history: DOM observer initialized');
+  }
+
+  // Initialize DOM observer after a delay to ensure page is loaded
+  setTimeout(initDOMObserver, 2000);
+
+  // Add a comprehensive network debugging function
+  function debugAllNetworkRequests() {
+    console.log('[better-falix] file-history: Starting comprehensive network debugging...');
+    
+    // Monitor all network activity
+    const originalSend = XMLHttpRequest.prototype.send;
+    XMLHttpRequest.prototype.send = function() {
+      console.log('[better-falix] file-history: XHR SEND:', this._method, this._url);
+      return originalSend.apply(this, arguments);
+    };
+
+    const originalFetch = window.fetch;
+    window.fetch = function() {
+      console.log('[better-falix] file-history: FETCH:', arguments[0], arguments[1]);
+      return originalFetch.apply(this, arguments);
+    };
+  }
+
+  // Start comprehensive debugging
+  debugAllNetworkRequests();
 
   console.log('[better-falix] file-history: Action logging system initialized');
   console.log('[better-falix] file-history: Use window.fileHistoryDebug to access debug functions');
+  console.log('[better-falix] file-history: Current URL:', window.location.href);
+  console.log('[better-falix] file-history: Server UUID:', getServerUUID());
 
 },)
