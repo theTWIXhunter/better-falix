@@ -340,8 +340,62 @@ chrome.storage.sync.get({ fileHistory: false, enabled: true }, (data) => {
     console.log('[better-falix] file-history: DOM observer initialized');
   }
 
+  // Monitor form submissions for file operations
+  function initFormMonitoring() {
+    console.log('[better-falix] file-history: Initializing form monitoring...');
+    
+    // Monitor all form submissions
+    document.addEventListener('submit', function(event) {
+      const form = event.target;
+      const action = form.action;
+      const method = form.method;
+      
+      console.log(`[better-falix] file-history: Form submitted: ${method.toUpperCase()} ${action}`);
+      
+      // Check if it's a file operation form
+      if (action && (action.includes('ajax/files/') || action.includes('/files/'))) {
+        console.log('[better-falix] file-history: File operation form detected!');
+        
+        // Extract form data
+        const formData = new FormData(form);
+        const requestData = Object.fromEntries(formData.entries());
+        
+        console.log('[better-falix] file-history: Form data:', requestData);
+        
+        // Process the file operation
+        processFileOperation(action, method.toUpperCase(), requestData);
+      }
+    }, true); // Use capture phase to catch it early
+    
+    // Also monitor for forms that might be submitted via JavaScript
+    const originalSubmit = HTMLFormElement.prototype.submit;
+    HTMLFormElement.prototype.submit = function() {
+      const action = this.action;
+      const method = this.method;
+      
+      console.log(`[better-falix] file-history: JavaScript form submit: ${method.toUpperCase()} ${action}`);
+      
+      if (action && (action.includes('ajax/files/') || action.includes('/files/'))) {
+        console.log('[better-falix] file-history: File operation form (JS) detected!');
+        
+        const formData = new FormData(this);
+        const requestData = Object.fromEntries(formData.entries());
+        
+        console.log('[better-falix] file-history: Form data (JS):', requestData);
+        processFileOperation(action, method.toUpperCase(), requestData);
+      }
+      
+      return originalSubmit.apply(this, arguments);
+    };
+    
+    console.log('[better-falix] file-history: Form monitoring initialized');
+  }
+
   // Initialize DOM observer after a delay to ensure page is loaded
   setTimeout(initDOMObserver, 2000);
+  
+  // Initialize form monitoring immediately
+  initFormMonitoring();
 
   console.log('[better-falix] file-history: Action logging system initialized');
   console.log('[better-falix] file-history: Use window.fileHistoryDebug to access debug functions');
