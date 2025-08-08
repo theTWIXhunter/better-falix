@@ -32,6 +32,9 @@ Better Falix is a browser extension that enhances the Falixnodes client-side exp
 - **Remove "Remote Startup" Nav Item:** Hide the "Remote Startup" navigation item from the sidebar.
 - **Remove Navbar Support Links:** Optionally remove support-related links from the navbar.
 
+**Shared Logs**
+- **Remove logs container:** Removes the scrollable container around the shared logs box.
+
 **Archived features**
 Warning: These features are archived, this is either because they are replaced or because they got implemented into the native page.
 Enabling these features might cause issues or incompatibilities with other plugins or native features.
