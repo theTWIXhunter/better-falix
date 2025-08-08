@@ -74,17 +74,14 @@ chrome.storage.sync.get({ fileHistory: false, enabled: true }, (data) => {
     const method = this._method;
     const url = this._url;
 
-    // Debug all requests (temporarily)
-    if (url && url.includes('ajax')) {
-      console.log(`[better-falix] file-history: DEBUG - XHR request: ${method} ${url}`);
-      console.log('[better-falix] file-history: DEBUG - Request data type:', data ? data.constructor.name : 'null');
-      if (data) {
-        console.log('[better-falix] file-history: DEBUG - Raw data:', data);
-      }
+    // Log ALL XHR requests for debugging
+    console.log(`[better-falix] file-history: XHR SEND: ${method} ${url}`);
+    if (data) {
+      console.log('[better-falix] file-history: XHR Data:', data);
     }
 
     // Monitor file operations
-    if (url && (url.includes('/server/ajax/files/') || url.includes('falixnodes.net/server/ajax/files/'))) {
+    if (url && (url.includes('/server/ajax/files/') || url.includes('falixnodes.net/server/ajax/files/') || url.includes('/ajax/files/') || url.includes('/api/files/') || url.includes('/api/server/'))) {
       console.log(`[better-falix] file-history: Monitoring XHR request to ${url}`);
       const originalOnLoad = xhr.onload;
       
@@ -110,9 +107,8 @@ chrome.storage.sync.get({ fileHistory: false, enabled: true }, (data) => {
             }
           }
 
-          // Debug logging
-          console.log(`[better-falix] file-history: Intercepted ${method} request to ${url}`);
-          console.log('[better-falix] file-history: Request data:', requestData);
+          console.log(`[better-falix] file-history: Intercepted XHR ${method} request to ${url}`);
+          console.log('[better-falix] file-history: XHR Request data:', requestData);
 
           processFileOperation(url, method, requestData);
         } catch (error) {
@@ -135,17 +131,14 @@ chrome.storage.sync.get({ fileHistory: false, enabled: true }, (data) => {
     const url = typeof input === 'string' ? input : input.url;
     const method = init.method || 'GET';
 
-    // Debug all fetch requests
-    if (url && (url.includes('ajax') || url.includes('api'))) {
-      console.log(`[better-falix] file-history: DEBUG - Fetch request: ${method} ${url}`);
-      if (init.body) {
-        console.log('[better-falix] file-history: DEBUG - Fetch body type:', init.body.constructor.name);
-        console.log('[better-falix] file-history: DEBUG - Fetch body:', init.body);
-      }
+    // Log ALL fetch requests for debugging
+    console.log(`[better-falix] file-history: FETCH: ${method} ${url}`);
+    if (init.body) {
+      console.log('[better-falix] file-history: Fetch Body:', init.body);
     }
 
     // Monitor file operations
-    if (url && (url.includes('/server/ajax/files/') || url.includes('falixnodes.net/server/ajax/files/') || url.includes('/api/server/') || url.includes('/api/files/'))) {
+    if (url && (url.includes('/server/ajax/files/') || url.includes('falixnodes.net/server/ajax/files/') || url.includes('/ajax/files/') || url.includes('/api/files/') || url.includes('/api/server/'))) {
       console.log(`[better-falix] file-history: Monitoring Fetch request to ${url}`);
       
       return originalFetch.apply(this, arguments).then(response => {
@@ -350,30 +343,33 @@ chrome.storage.sync.get({ fileHistory: false, enabled: true }, (data) => {
   // Initialize DOM observer after a delay to ensure page is loaded
   setTimeout(initDOMObserver, 2000);
 
-  // Add a comprehensive network debugging function
-  function debugAllNetworkRequests() {
-    console.log('[better-falix] file-history: Starting comprehensive network debugging...');
-    
-    // Monitor all network activity
-    const originalSend = XMLHttpRequest.prototype.send;
-    XMLHttpRequest.prototype.send = function() {
-      console.log('[better-falix] file-history: XHR SEND:', this._method, this._url);
-      return originalSend.apply(this, arguments);
-    };
-
-    const originalFetch = window.fetch;
-    window.fetch = function() {
-      console.log('[better-falix] file-history: FETCH:', arguments[0], arguments[1]);
-      return originalFetch.apply(this, arguments);
-    };
-  }
-
-  // Start comprehensive debugging
-  debugAllNetworkRequests();
-
   console.log('[better-falix] file-history: Action logging system initialized');
   console.log('[better-falix] file-history: Use window.fileHistoryDebug to access debug functions');
   console.log('[better-falix] file-history: Current URL:', window.location.href);
   console.log('[better-falix] file-history: Server UUID:', getServerUUID());
+  console.log('[better-falix] file-history: Starting network monitoring...');
+
+  // Test the interception immediately
+  setTimeout(() => {
+    console.log('[better-falix] file-history: Testing network interception...');
+    
+    // Test XHR
+    try {
+      const testXHR = new XMLHttpRequest();
+      testXHR.open('POST', '/test-xhr-endpoint');
+      testXHR.send('test');
+    } catch (e) {
+      console.log('[better-falix] file-history: XHR test error (expected):', e.message);
+    }
+
+    // Test Fetch
+    try {
+      fetch('/test-fetch-endpoint', { method: 'POST', body: 'test' }).catch(() => {
+        console.log('[better-falix] file-history: Fetch test completed (error expected)');
+      });
+    } catch (e) {
+      console.log('[better-falix] file-history: Fetch test error (expected):', e.message);
+    }
+  }, 1000);
 
 },)
