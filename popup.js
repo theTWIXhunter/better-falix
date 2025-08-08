@@ -33,7 +33,8 @@ const featureIds = [
   'customServerOrder',
   'editorFullscreen',
   'removeServerSearch',
-  'removeLogsContainer'
+  'removeLogsContainer',
+  'redactedContentSubtle'
 ];
 
 function setFeatureBtnState(btn, enabled) {
@@ -119,7 +120,8 @@ document.addEventListener('DOMContentLoaded', () => {
     customServerOrder: false,
     editorFullscreen: false,
     removeServerSearch: false,
-    removeLogsContainer: false
+    removeLogsContainer: false,
+    redactedContentSubtle: false
 
   }, (data) => {
     updateToggleBtn(data.enabled);

@@ -34,6 +34,7 @@ Better Falix is a browser extension that enhances the Falixnodes client-side exp
 
 **Shared Logs**
 - **Remove logs container:** Removes the scrollable container around the shared logs box.
+- **Subtle Redacted Content:** Make redacted content less eye-catching with subtle gray styling.
 
 **Archived features**
 Warning: These features are archived, this is either because they are replaced or because they got implemented into the native page.
