@@ -79,11 +79,15 @@ chrome.storage.sync.get({ collapsibleLogAnalysis: false, enabled: true }, (data)
         analysisContent.style.display = 'block';
         collapseBtn.style.transform = 'rotate(0deg)';
         collapseBtn.setAttribute('aria-label', 'Collapse Log Analysis');
+        // Restore margin-bottom when expanded
+        analysisHeader.style.marginBottom = '';
       } else {
         // Collapse
         analysisContent.style.display = 'none';
         collapseBtn.style.transform = 'rotate(-90deg)';
         collapseBtn.setAttribute('aria-label', 'Expand Log Analysis');
+        // Remove margin-bottom when collapsed
+        analysisHeader.style.marginBottom = '0px';
       }
     });
 
