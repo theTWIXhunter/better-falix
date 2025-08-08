@@ -1,6 +1,15 @@
 // [better-falix] editor-wrapper-height: Script loading
 console.log('[better-falix] editor-wrapper-height: Script loading');
 
+chrome.storage.sync.get({ editorWrapperHeight: false, enabled: true }, (data) => {
+  if (!data.enabled || !data.editorWrapperHeight) {
+    console.log('[better-falix] editor-wrapper-height: Script disabled');
+    return;
+  }
+  console.log('[better-falix] editor-wrapper-height: Script enabled');
+
+  //  --------- START FEATURE ----------
+
 let isEditorFullscreen = false;
 
 function setEditorHeight() {
@@ -26,7 +35,7 @@ function setEditorHeight() {
       if (monaco && monaco.layout) {
         monaco.layout();
       }
-      // Force a resize event for any textarea or contenteditable
+      // Force a resize event for any textarea or content editable
       el.querySelectorAll('textarea, [contenteditable="true"]').forEach(input => {
         input.style.height = '100%';
         input.dispatchEvent(new Event('input', { bubbles: true }));
@@ -75,3 +84,5 @@ if (document.readyState === 'loading') {
 setTimeout(() => {
   console.log('[better-falix] editor-wrapper-height: Script loaded successfully');
 }, 10);
+
+});

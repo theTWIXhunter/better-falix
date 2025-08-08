@@ -32,7 +32,10 @@ const featureIds = [
   'editorWrapperHeight',
   'customServerOrder',
   'editorFullscreen',
-  'removeServerSearch'
+  'removeServerSearch',
+  'removeLogsContainer',
+  'redactedContentSubtle',
+  'collapsibleLogAnalysis'
 ];
 
 function setFeatureBtnState(btn, enabled) {
@@ -117,7 +120,11 @@ document.addEventListener('DOMContentLoaded', () => {
     editorWrapperHeight: false,
     customServerOrder: false,
     editorFullscreen: false,
-    removeServerSearch: false
+    removeServerSearch: false,
+    removeLogsContainer: false,
+    redactedContentSubtle: false,
+    collapsibleLogAnalysis: false
+
   }, (data) => {
     updateToggleBtn(data.enabled);
     updateFeatureButtons(data);
