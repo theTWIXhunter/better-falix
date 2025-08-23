@@ -1,7 +1,7 @@
 // [better-falix] collapsible-log-analysis: Script loading
 console.log('[better-falix] collapsible-log-analysis: Script loading');
 
-chrome.storage.sync.get({ collapsibleLogAnalysis: false, enabled: true }, (data) => {
+chrome.storage.sync.get({ collapsibleLogAnalysis: false, collapsibleLogAnalysis_autoCollapse: true, enabled: true }, (data) => {
   if (!data.enabled || !data.collapsibleLogAnalysis) {
     console.log('[better-falix] collapsible-log-analysis: Script disabled');
     return;
@@ -93,6 +93,18 @@ chrome.storage.sync.get({ collapsibleLogAnalysis: false, enabled: true }, (data)
 
     // Insert the button at the end of the header
     analysisHeader.appendChild(collapseBtn);
+    
+    // Auto-collapse if the setting is enabled
+    if (data.collapsibleLogAnalysis_autoCollapse) {
+      const analysisContent = analysisSection.querySelector('#analysis-content');
+      if (analysisContent) {
+        analysisContent.style.display = 'none';
+        collapseBtn.style.transform = 'rotate(-90deg)';
+        collapseBtn.setAttribute('aria-label', 'Expand Log Analysis');
+        analysisHeader.style.marginBottom = '0px';
+        console.log('[better-falix] collapsible-log-analysis: Auto-collapsed log analysis');
+      }
+    }
     
     console.log('[better-falix] collapsible-log-analysis: Collapse button added to Log Analysis');
   }

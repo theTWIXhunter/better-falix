@@ -23,6 +23,7 @@ Better Falix is a browser extension that enhances the Falixnodes client-side exp
 - **Remove SFTP info from upload:** Removes the SFTP info and its divider from the upload button dropdown for a cleaner UI.
 - **upload-create-hover:** Makes the Upload and Create buttons show their dropdowns when hovered.
 - **Editor Wrapper Height:** Sets the file editor height to 600px (new height can be configured in the config).
+- **Better Editor Fullscreen:** Hide editor header and breadcrumb when using built-in fullscreen mode.
 
 
 **Navigation**
@@ -36,8 +37,10 @@ Better Falix is a browser extension that enhances the Falixnodes client-side exp
 - **Remove logs container:** Removes the scrollable container around the shared logs box.
 - **Subtle Redacted Content:** Make redacted content less eye-catching with subtle gray styling.
 - **Collapsible Log Analysis:** Add a collapse/expand button to the Log Analysis section.
+- **Colored Log Messages:** Color warning log messages gold and error log messages red.
 
 **Archived features**
+
 Warning: These features are archived, this is either because they are replaced or because they got implemented into the native page.
 Enabling these features might cause issues or incompatibilities with other plugins or native features.
 

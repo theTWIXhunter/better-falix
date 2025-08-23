@@ -52,6 +52,12 @@ chrome.storage.sync.get(null, data => {
   
   const replaceSupportModalToggle = document.getElementById('replaceSupportModal');
   if (replaceSupportModalToggle) setToggleState(replaceSupportModalToggle, !!data.replaceSupportModal);
+  
+  const collapsibleLogAnalysisToggle = document.getElementById('collapsibleLogAnalysis');
+  if (collapsibleLogAnalysisToggle) setToggleState(collapsibleLogAnalysisToggle, !!data.collapsibleLogAnalysis);
+  
+  const collapsibleLogAnalysisAutoCollapse = document.getElementById('collapsibleLogAnalysis_autoCollapse');
+  if (collapsibleLogAnalysisAutoCollapse) setToggleState(collapsibleLogAnalysisAutoCollapse, data.collapsibleLogAnalysis_autoCollapse !== undefined ? !!data.collapsibleLogAnalysis_autoCollapse : true);
 });
 
 // General toggles - only add listeners if elements exist
@@ -105,7 +111,10 @@ if (exportSettingsBtn) {
         uploadCreateHover_createDelay: parseInt(document.getElementById('uploadCreateHover_createDelay')?.value) || 500,
         uploadCreateHover_uploadDelay: parseInt(document.getElementById('uploadCreateHover_uploadDelay')?.value) || 0,
         
-        replaceSupportModal: document.getElementById('replaceSupportModal')?.getAttribute('aria-pressed') === 'true'
+        replaceSupportModal: document.getElementById('replaceSupportModal')?.getAttribute('aria-pressed') === 'true',
+        
+        collapsibleLogAnalysis: document.getElementById('collapsibleLogAnalysis')?.getAttribute('aria-pressed') === 'true',
+        collapsibleLogAnalysis_autoCollapse: document.getElementById('collapsibleLogAnalysis_autoCollapse')?.getAttribute('aria-pressed') === 'true'
       };
 
       // Save current UI values to storage first
@@ -238,6 +247,24 @@ if (replaceSupportModalToggle) {
     const state = this.getAttribute('aria-pressed') !== 'true';
     setToggleState(this, state);
     saveSetting('replaceSupportModal', state);
+  });
+}
+
+const collapsibleLogAnalysisToggle = document.getElementById('collapsibleLogAnalysis');
+if (collapsibleLogAnalysisToggle) {
+  collapsibleLogAnalysisToggle.addEventListener('click', function() {
+    const state = this.getAttribute('aria-pressed') !== 'true';
+    setToggleState(this, state);
+    saveSetting('collapsibleLogAnalysis', state);
+  });
+}
+
+const collapsibleLogAnalysisAutoCollapse = document.getElementById('collapsibleLogAnalysis_autoCollapse');
+if (collapsibleLogAnalysisAutoCollapse) {
+  collapsibleLogAnalysisAutoCollapse.addEventListener('click', function() {
+    const state = this.getAttribute('aria-pressed') !== 'true';
+    setToggleState(this, state);
+    saveSetting('collapsibleLogAnalysis_autoCollapse', state);
   });
 }
 
