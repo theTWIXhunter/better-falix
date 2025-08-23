@@ -1,7 +1,7 @@
 // [better-falix] collapsible-log-analysis: Script loading
 console.log('[better-falix] collapsible-log-analysis: Script loading');
 
-chrome.storage.sync.get({ collapsibleLogAnalysis: false, collapsibleLogAnalysis_autoCollapse: false, enabled: true }, (data) => {
+chrome.storage.sync.get({ collapsibleLogAnalysis: false, collapsibleLogAnalysis_autoCollapse: true, enabled: true }, (data) => {
   if (!data.enabled || !data.collapsibleLogAnalysis) {
     console.log('[better-falix] collapsible-log-analysis: Script disabled');
     return;

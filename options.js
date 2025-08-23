@@ -57,7 +57,7 @@ chrome.storage.sync.get(null, data => {
   if (collapsibleLogAnalysisToggle) setToggleState(collapsibleLogAnalysisToggle, !!data.collapsibleLogAnalysis);
   
   const collapsibleLogAnalysisAutoCollapse = document.getElementById('collapsibleLogAnalysis_autoCollapse');
-  if (collapsibleLogAnalysisAutoCollapse) setToggleState(collapsibleLogAnalysisAutoCollapse, !!data.collapsibleLogAnalysis_autoCollapse);
+  if (collapsibleLogAnalysisAutoCollapse) setToggleState(collapsibleLogAnalysisAutoCollapse, data.collapsibleLogAnalysis_autoCollapse !== undefined ? !!data.collapsibleLogAnalysis_autoCollapse : true);
 });
 
 // General toggles - only add listeners if elements exist
