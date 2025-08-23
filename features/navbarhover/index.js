@@ -81,7 +81,6 @@ chrome.storage.sync.get({ navbarHover: false, navbarHoverZoneWidth: 30, enabled:
 
   // Find and extend hover zone to include navbar toggle buttons
   function extendHoverZoneToToggleButtons() {
-    // Common selectors for navbar toggle buttons
     const toggleSelectors = [
       '.top-navbar-toggler',
       '#topNavbarToggle',
