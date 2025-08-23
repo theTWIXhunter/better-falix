@@ -35,7 +35,8 @@ const featureIds = [
   'removeServerSearch',
   'removeLogsContainer',
   'redactedContentSubtle',
-  'collapsibleLogAnalysis'
+  'collapsibleLogAnalysis',
+  'betterEditorFullscreen'
 ];
 
 function setFeatureBtnState(btn, enabled) {
@@ -123,7 +124,8 @@ document.addEventListener('DOMContentLoaded', () => {
     removeServerSearch: false,
     removeLogsContainer: false,
     redactedContentSubtle: false,
-    collapsibleLogAnalysis: false
+    collapsibleLogAnalysis: false,
+    betterEditorFullscreen: false
 
   }, (data) => {
     updateToggleBtn(data.enabled);

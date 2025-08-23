@@ -158,6 +158,11 @@
       "matches": ["https://client.falixnodes.net/shared-logs/*"],
       "js": ["features/collapsible-log-analysis/index.js"],
       "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://client.falixnodes.net/server/edit*"],
+      "js": ["features/better-editor-fullscreen/index.js"],
+      "run_at": "document_idle"
     }
   ]
 }
