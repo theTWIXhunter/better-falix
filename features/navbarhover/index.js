@@ -79,6 +79,38 @@ chrome.storage.sync.get({ navbarHover: false, navbarHoverZoneWidth: 30, enabled:
     }
   }
 
+  // Find and extend hover zone to include navbar toggle buttons
+  function extendHoverZoneToToggleButtons() {
+    // Common selectors for navbar toggle buttons
+    const toggleSelectors = [
+      '.top-navbar-toggler',
+      '#topNavbarToggle',
+    ];
+    
+    toggleSelectors.forEach(selector => {
+      const toggleBtn = document.querySelector(selector);
+      if (toggleBtn) {
+        // Make the toggle button part of the hover zone functionality
+        toggleBtn.addEventListener('mouseenter', () => {
+          if (closeTimeout) clearTimeout(closeTimeout);
+        });
+        
+        // When toggle button is clicked, track if it opened/closed the nav
+        toggleBtn.addEventListener('click', () => {
+          setTimeout(() => {
+            const sidebar = getSidebar();
+            if (!sidebar) return;
+            
+            // Reset our tracking since user manually toggled
+            navOpenedByFeature = false;
+          }, 100);
+        });
+        
+        console.log('[Better-Falix] navbarhover: Found and integrated toggle button:', selector);
+      }
+    });
+  }
+
   hoverZone.addEventListener('mouseenter', () => {
     openSidebar();
     if (closeTimeout) clearTimeout(closeTimeout);
@@ -99,11 +131,11 @@ chrome.storage.sync.get({ navbarHover: false, navbarHoverZoneWidth: 30, enabled:
   function attachSidebarListeners() {
     const sidebar = getSidebar();
     if (!sidebar) return;
-    // Remove previous listeners if any (by cloning)
-    const newSidebar = sidebar.cloneNode(true);
-    sidebar.parentNode.replaceChild(newSidebar, sidebar);
-
-    newSidebar.addEventListener('mouseleave', () => {
+    
+    // Don't clone and replace - just add our listeners directly
+    // This preserves the original event listeners including the toggle button functionality
+    
+    sidebar.addEventListener('mouseleave', () => {
       closeTimeout = setTimeout(() => {
         // If mouse is not over hoverZone, close
         if (!hoverZone.matches(':hover')) {
@@ -111,14 +143,26 @@ chrome.storage.sync.get({ navbarHover: false, navbarHoverZoneWidth: 30, enabled:
         }
       }, 300);
     });
-    newSidebar.addEventListener('mouseenter', () => {
+    
+    sidebar.addEventListener('mouseenter', () => {
       if (closeTimeout) clearTimeout(closeTimeout);
     });
   }
 
   // Attach listeners now and on DOMContentLoaded in case sidebar is loaded later
   attachSidebarListeners();
-  document.addEventListener('DOMContentLoaded', attachSidebarListeners);
+  extendHoverZoneToToggleButtons();
+  
+  document.addEventListener('DOMContentLoaded', () => {
+    attachSidebarListeners();
+    extendHoverZoneToToggleButtons();
+  });
+
+  // Also run after a short delay to catch dynamically loaded content
+  setTimeout(() => {
+    attachSidebarListeners();
+    extendHoverZoneToToggleButtons();
+  }, 1000);
 
   // Clean up on page unload
   window.addEventListener('beforeunload', () => {
