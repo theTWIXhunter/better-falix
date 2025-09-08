@@ -37,7 +37,8 @@ const featureIds = [
   'redactedContentSubtle',
   'collapsibleLogAnalysis',
   'betterEditorFullscreen',
-  'coloredLogMessages'
+  'coloredLogMessages',
+  'autoCollapseLogAnalysis'
 ];
 
 function setFeatureBtnState(btn, enabled) {
@@ -127,7 +128,8 @@ document.addEventListener('DOMContentLoaded', () => {
     redactedContentSubtle: false,
     collapsibleLogAnalysis: false,
     betterEditorFullscreen: false,
-    coloredLogMessages: false
+    coloredLogMessages: false,
+    autoCollapseLogAnalysis: false
 
   }, (data) => {
     updateToggleBtn(data.enabled);
