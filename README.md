@@ -36,7 +36,6 @@ Better Falix is a browser extension that enhances the Falixnodes client-side exp
 **Shared Logs**
 - **Remove logs container:** Removes the scrollable container around the shared logs box.
 - **Subtle Redacted Content:** Make redacted content less eye-catching with subtle gray styling.
-- **Collapsible Log Analysis:** Add a collapse/expand button to the Log Analysis section.
 - **Colored Log Messages:** Color warning log messages gold and error log messages red.
 
 **Archived features**
@@ -45,7 +44,8 @@ Warning: These features are archived, this is either because they are replaced o
 Enabling these features might cause issues or incompatibilities with other plugins or native features.
 
 - **Editor Fullscreen**: Adds a button to the file editor toolbar that allows you to make the editor and toolbar take up the entire browser window (added to falix itself).
-- **Server Name Button:** Makes the server name in the navbar clickable and redirect you to the main page (added to falix itself, will be removed soon).
+- **Server Name Button:** Makes the server name in the navbar clickable and redirect you to the main page (added to falix itself).
+- **Collapsible Log Analysis:** Add a collapse/expand button to the Log Analysis section (added to falix itself).
 
 ## Usage
 

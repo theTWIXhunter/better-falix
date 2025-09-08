@@ -156,7 +156,7 @@
     },
     {
       "matches": ["https://client.falixnodes.net/shared-logs/*"],
-      "js": ["features/collapsible-log-analysis/index.js"],
+      "js": ["features/legacy-collapsible-log-analysis/index.js"],
       "run_at": "document_idle"
     },
     {

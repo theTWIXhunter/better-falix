@@ -1,12 +1,12 @@
 // [better-falix] collapsible-log-analysis: Script loading
-console.log('[better-falix] collapsible-log-analysis: Script loading');
+console.log('[better-falix] legacy-collapsible-log-analysis: Script loading');
 
-chrome.storage.sync.get({ collapsibleLogAnalysis: false, collapsibleLogAnalysis_autoCollapse: true, enabled: true }, (data) => {
+chrome.storage.sync.get({ collapsibleLogAnalysis: false, enabled: true }, (data) => {
   if (!data.enabled || !data.collapsibleLogAnalysis) {
-    console.log('[better-falix] collapsible-log-analysis: Script disabled');
+    console.log('[better-falix] legacy-collapsible-log-analysis: Script disabled');
     return;
   }
-  console.log('[better-falix] collapsible-log-analysis: Script enabled');
+  console.log('[better-falix] legacy-collapsible-log-analysis: Script enabled');
 
   //  --------- START FEATURE ----------
 
@@ -94,6 +94,8 @@ chrome.storage.sync.get({ collapsibleLogAnalysis: false, collapsibleLogAnalysis_
     // Insert the button at the end of the header
     analysisHeader.appendChild(collapseBtn);
     
+
+   /*  --- Commented out auto-collapse feature, variable doesn't exists (conficts with new feature) ---
     // Auto-collapse if the setting is enabled
     if (data.collapsibleLogAnalysis_autoCollapse) {
       const analysisContent = analysisSection.querySelector('#analysis-content');
@@ -105,8 +107,9 @@ chrome.storage.sync.get({ collapsibleLogAnalysis: false, collapsibleLogAnalysis_
         console.log('[better-falix] collapsible-log-analysis: Auto-collapsed log analysis');
       }
     }
+    */
     
-    console.log('[better-falix] collapsible-log-analysis: Collapse button added to Log Analysis');
+    console.log('[better-falix] legacy-collapsible-log-analysis: Collapse button added to Log Analysis');
   }
 
   // Run immediately
@@ -120,6 +123,6 @@ chrome.storage.sync.get({ collapsibleLogAnalysis: false, collapsibleLogAnalysis_
   observer.observe(document.body, { childList: true, subtree: true });
 
   setTimeout(() => {
-    console.log('[better-falix] collapsible-log-analysis: Script loaded successfully');
+    console.log('[better-falix] legacy-collapsible-log-analysis: Script loaded successfully');
   }, 10);
 });
