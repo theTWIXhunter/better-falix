@@ -43,18 +43,20 @@ chrome.storage.sync.get({ autoCollapseLogAnalysis: false, enabled: true }, (data
   function waitForCollapseButton() {
     const collapseButton = document.querySelector('.collapse-btn');
     if (collapseButton) {
-      // Wait a short moment for the page to fully load before collapsing
-      setTimeout(autoCollapseAnalysis, 100);
+      // Execute immediately without delay to reduce flashing
+      autoCollapseAnalysis();
     } else {
-      setTimeout(waitForCollapseButton, 200);
+      // Check more frequently for faster detection
+      setTimeout(waitForCollapseButton, 50);
     }
   }
 
-  // Start the process
+  // Start the process immediately
+  waitForCollapseButton();
+  
+  // Also try on DOMContentLoaded in case we missed it
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', waitForCollapseButton);
-  } else {
-    waitForCollapseButton();
   }
 
   setTimeout(() => {
