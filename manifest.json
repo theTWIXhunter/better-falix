@@ -30,7 +30,7 @@
 
 
     {
-      "matches": ["https://client.falixnodes.net/*"],
+      "matches": ["https://client.falixnodes.net/"],
       "js": ["features/general/custom-server-order/index.js"],
       "run_at": "document_idle"
     },
