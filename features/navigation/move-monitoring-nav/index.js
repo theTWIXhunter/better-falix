@@ -15,9 +15,13 @@ chrome.storage.sync.get({ moveMonitoringNav: false, enabled: true }, (data) => {
       link.textContent.trim() === 'Monitoring'
     )?.closest('.nav-item');
     if (monitoringItem) {
-      const advancedSection = document.querySelector('#advancedSection .navbar-nav');
-      if (advancedSection) {
-        advancedSection.insertBefore(monitoringItem, advancedSection.firstChild);
+      // Look for the Server Settings section instead of Advanced
+      const serverSettingsSection = document.querySelector('#serverSettingsSection .navbar-nav');
+      if (serverSettingsSection) {
+        serverSettingsSection.insertBefore(monitoringItem, serverSettingsSection.firstChild);
+        console.log('[better-falix] move-monitoring-nav: Moved Monitoring to Server Settings section');
+      } else {
+        console.log('[better-falix] move-monitoring-nav: Server Settings section not found');
       }
     }
   }

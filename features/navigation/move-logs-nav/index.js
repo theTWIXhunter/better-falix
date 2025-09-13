@@ -15,9 +15,13 @@ chrome.storage.sync.get({ moveLogsNav: false, enabled: true }, (data) => {
       link.textContent.trim() === 'Logs'
     )?.closest('.nav-item');
     if (logsItem) {
-      const advancedSection = document.querySelector('#advancedSection .navbar-nav');
-      if (advancedSection) {
-        advancedSection.insertBefore(logsItem, advancedSection.firstChild);
+      // Look for the Server Settings section instead of Advanced
+      const serverSettingsSection = document.querySelector('#serverSettingsSection .navbar-nav');
+      if (serverSettingsSection) {
+        serverSettingsSection.insertBefore(logsItem, serverSettingsSection.firstChild);
+        console.log('[better-falix] move-logs-nav: Moved Logs to Server Settings section');
+      } else {
+        console.log('[better-falix] move-logs-nav: Server Settings section not found');
       }
     }
     // Hide the "External Start Page" nav item if it exists

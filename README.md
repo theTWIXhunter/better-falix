@@ -28,8 +28,8 @@ Better Falix is a browser extension that enhances the Falixnodes client-side exp
 
 **Navigation**
 - **Move "Backups" to Server Settings:** Relocate the "Backups" navigation item to the Server Settings section.
-- **Move "Monitoring" to Advanced:** Move the "Monitoring" navigation item to the Advanced section.
-- **Move "Logs" to Advanced:** Move the "Logs" navigation item to the Advanced section.
+- **Move "Monitoring" to Server Settings:** Move the "Monitoring" navigation item to the Server Settings section.
+- **Move "Logs" to Server Settings:** Move the "Logs" navigation item to the Server Settings section.
 - **Remove "Remote Startup" Nav Item:** Hide the "Remote Startup" navigation item from the sidebar.
 - **Remove Navbar Support Links:** Optionally remove support-related links from the navbar.
 
