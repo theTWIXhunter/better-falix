@@ -39,7 +39,7 @@ const featureIds = [
   'betterEditorFullscreen',
   'coloredLogMessages',
   'autoCollapseLogAnalysis',
-  'moveAdminNav'
+  'moveAdminPanelNav'
 ];
 
 function setFeatureBtnState(btn, enabled) {
@@ -130,7 +130,8 @@ document.addEventListener('DOMContentLoaded', () => {
     collapsibleLogAnalysis: false,
     betterEditorFullscreen: false,
     coloredLogMessages: false,
-    autoCollapseLogAnalysis: false
+    autoCollapseLogAnalysis: false,
+    moveAdminPanelNav: false
 
   }, (data) => {
     updateToggleBtn(data.enabled);
