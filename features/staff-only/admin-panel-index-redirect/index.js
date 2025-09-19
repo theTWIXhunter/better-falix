@@ -16,8 +16,8 @@ chrome.storage.sync.get({ adminPanelIndexRedirect: false, enabled: true }, (data
     );
     
     if (adminPanelLink) {
-      // Change the href from "/admin" to "/admin/index"
-      if (adminPanelLink.getAttribute('href') === '/admin') {
+      // Change the href from "/admin/" to "/admin/index"
+      if (adminPanelLink.getAttribute('href') === '/admin/') {
         adminPanelLink.setAttribute('href', '/admin/index');
         console.log('[better-falix] admin-panel-index-redirect: Changed Admin Panel link to /admin/index');
       }
