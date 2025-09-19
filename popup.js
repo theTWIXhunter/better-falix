@@ -38,7 +38,8 @@ const featureIds = [
   'collapsibleLogAnalysis',
   'betterEditorFullscreen',
   'coloredLogMessages',
-  'autoCollapseLogAnalysis'
+  'autoCollapseLogAnalysis',
+  'moveAdminNav'
 ];
 
 function setFeatureBtnState(btn, enabled) {
