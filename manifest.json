@@ -64,11 +64,6 @@
       "js": ["features/general/Replace-account-category/index.js"],
       "run_at": "document_idle"
     },
-    {
-      "matches": ["https://client.falixnodes.net/support/viewticket.php*"],
-      "js": ["features/general/auto-expand-reply/index.js"],
-      "run_at": "document_idle"
-    },
 
 
 
