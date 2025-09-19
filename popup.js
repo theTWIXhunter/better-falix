@@ -40,7 +40,8 @@ const featureIds = [
   'coloredLogMessages',
   'autoCollapseLogAnalysis',
   'moveAdminPanelNav',
-  'adminPanelIndexRedirect'
+  'adminPanelIndexRedirect',
+  'autoExpandReply'
 ];
 
 function setFeatureBtnState(btn, enabled) {
@@ -133,7 +134,8 @@ document.addEventListener('DOMContentLoaded', () => {
     coloredLogMessages: false,
     autoCollapseLogAnalysis: false,
     moveAdminPanelNav: false,
-    adminPanelIndexRedirect: false
+    adminPanelIndexRedirect: false,
+    autoExpandReply: false
 
   }, (data) => {
     updateToggleBtn(data.enabled);
