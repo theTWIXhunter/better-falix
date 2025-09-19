@@ -17,7 +17,8 @@ chrome.storage.sync.get({ moveAdminPanelNav: false, enabled: true }, (data) => {
     if (AdminPanelItem) {
       const serverSettingsSection = document.querySelector('#serversSection .navbar-nav');
       if (serverSettingsSection) {
-        serverSettingsSection.insertBefore(AdminPanelItem, serverSettingsSection.firstChild);
+        // Insert at the end of the servers section instead of beginning
+        serverSettingsSection.appendChild(AdminPanelItem);
       }
     }
   }
