@@ -41,8 +41,7 @@ const featureIds = [
   'autoCollapseLogAnalysis',
   'moveAdminPanelNav',
   'adminPanelIndexRedirect',
-  'removePremiumRow',
-  'defaultAllStatus'
+  'removePremiumRow'
 ];
 
 function setFeatureBtnState(btn, enabled) {
@@ -136,8 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
     autoCollapseLogAnalysis: false,
     moveAdminPanelNav: false,
     adminPanelIndexRedirect: false,
-    removePremiumRow: false,
-    defaultAllStatus: false
+    removePremiumRow: false
 
   }, (data) => {
     updateToggleBtn(data.enabled);
