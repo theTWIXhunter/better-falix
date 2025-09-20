@@ -157,8 +157,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Main toggle logic
   document.getElementById('toggle').addEventListener('click', function() {
-    // Get the current visual state directly from the button instead of storage
-    const currentState = toggleBtn.classList.contains('off'); // If it has 'off' class, it's currently disabled
+    // Get the current visual state directly from this button
+    const currentState = this.classList.contains('off'); // If it has 'off' class, it's currently disabled
     const newState = !currentState; // Flip the state
     
     chrome.storage.sync.set({ enabled: newState }, () => {
