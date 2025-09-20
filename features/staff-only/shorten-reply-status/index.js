@@ -1,30 +1,27 @@
-/**
- * Shorten Reply Status - Changes "Awaiting User Reply" to "waiting"
- * 
- * This staff-only feature simplifies the ticket status displays by 
- * changing "Awaiting User Reply" text to just "waiting" for a cleaner interface
- * 
- * @author the_twix_hunter
- */
+// [better-falix] shorten-reply-status: Script loading
+console.log('[better-falix] shorten-reply-status: Script loading');
 
-(function() {
-  // Check if the feature is enabled
-  chrome.storage.sync.get(['extensionEnabled', 'shortenReplyStatus'], function(data) {
-    if (data.extensionEnabled && data.shortenReplyStatus) {
-      // Apply the function immediately
-      shortenReplyStatuses();
-      
-      // Set up a MutationObserver to apply the function to dynamically added elements
-      const observer = new MutationObserver(function(mutations) {
-        shortenReplyStatuses();
-      });
-      
-      // Start observing the document for added/removed nodes
-      observer.observe(document.body, {
-        childList: true,
-        subtree: true
-      });
-    }
+chrome.storage.sync.get({ shortenReplyStatus: false, enabled: true }, (data) => {
+  if (!data.enabled || !data.shortenReplyStatus) {
+    console.log('[better-falix] shorten-reply-status: Script disabled');
+    return;
+  }
+  console.log('[better-falix] shorten-reply-status: Script enabled');
+
+  //  --------- START FEATURE ----------
+  
+  // Apply the function immediately
+  shortenReplyStatuses();
+  
+  // Set up a MutationObserver to apply the function to dynamically added elements
+  const observer = new MutationObserver(function(mutations) {
+    shortenReplyStatuses();
+  });
+  
+  // Start observing the document for added/removed nodes
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true
   });
   
   function shortenReplyStatuses() {
@@ -54,4 +51,8 @@
       }
     });
   }
-})();
+  
+  setTimeout(() => {
+    console.log('[better-falix] shorten-reply-status: Script loaded successfully');
+  }, 10);
+});

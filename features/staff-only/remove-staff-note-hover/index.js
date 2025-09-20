@@ -1,20 +1,17 @@
-/**
- * Remove Staff Note Hover - Removes hover effects from staff note messages
- * 
- * This staff-only feature removes hover effects from elements with the class
- * "message-content support-message internal-message" to improve readability.
- * 
- * @author the_twix_hunter
- */
+// [better-falix] remove-staff-note-hover: Script loading
+console.log('[better-falix] remove-staff-note-hover: Script loading');
 
-(function() {
-  // Check if the feature is enabled
-  chrome.storage.sync.get(['extensionEnabled', 'removeStaffNoteHover'], function(data) {
-    if (data.extensionEnabled && data.removeStaffNoteHover) {
-      // Apply the feature
-      applyStaffNoteHoverFix();
-    }
-  });
+chrome.storage.sync.get({ removeStaffNoteHover: false, enabled: true }, (data) => {
+  if (!data.enabled || !data.removeStaffNoteHover) {
+    console.log('[better-falix] remove-staff-note-hover: Script disabled');
+    return;
+  }
+  console.log('[better-falix] remove-staff-note-hover: Script enabled');
+
+  //  --------- START FEATURE ----------
+  
+  // Apply the feature
+  applyStaffNoteHoverFix();
   
   function applyStaffNoteHoverFix() {
     // Create a style element
@@ -42,4 +39,8 @@
     document.head.appendChild(styleEl);
     console.log('[better-falix] remove-staff-note-hover: Style added to remove hover effects from staff notes');
   }
-})();
+  
+  setTimeout(() => {
+    console.log('[better-falix] remove-staff-note-hover: Script loaded successfully');
+  }, 10);
+});
