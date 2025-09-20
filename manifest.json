@@ -194,7 +194,7 @@
       "run_at": "document_idle"
     },
     {
-      "matches": ["https://client.falixnodes.net/support/viewticket.php*"],
+      "matches": ["https://client.falixnodes.net/admin/ListTickets"],
       "js": ["features/staff-only/shorten-reply-status/index.js"],
       "run_at": "document_idle"
     },
