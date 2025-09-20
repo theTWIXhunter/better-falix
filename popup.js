@@ -107,7 +107,7 @@ function setThemesListEnabled(enabled) {
 // Initial load
 document.addEventListener('DOMContentLoaded', () => {
   chrome.storage.sync.get({
-    enabled: true,
+    enabled: false,
     enableStaffFeatures: false,
     hideConsoleTabs: false,
     replaceAccountCategory: false,
@@ -157,15 +157,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Main toggle logic
   document.getElementById('toggle').addEventListener('click', function() {
-    chrome.storage.sync.get({ enabled: true }, (data) => {
-      const newState = !data.enabled;
-      chrome.storage.sync.set({ enabled: newState }, () => {
-        updateToggleBtn(newState);
-        chrome.storage.sync.get(null, (allData) => {
-          updateFeatureButtons(allData);
-          setThemesListEnabled(allData.enabled);
-          setFeaturesListEnabled(allData.enabled);
-        });
+    // Get the current visual state directly from the button instead of storage
+    const currentState = toggleBtn.classList.contains('off'); // If it has 'off' class, it's currently disabled
+    const newState = !currentState; // Flip the state
+    
+    chrome.storage.sync.set({ enabled: newState }, () => {
+      updateToggleBtn(newState);
+      chrome.storage.sync.get(null, (allData) => {
+        updateFeatureButtons(allData);
+        setThemesListEnabled(allData.enabled);
+        setFeaturesListEnabled(allData.enabled);
       });
     });
   });
