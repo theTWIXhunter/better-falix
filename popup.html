@@ -10,6 +10,7 @@
       --falix-accent: #0078d7;
       --falix-accent-hover: #005fa3;
       --falix-border: #23272b;
+      --falix-border-toggle: #343a40;
       --falix-text: #fff;
       --falix-muted: #b0b8c1;
       --falix-switch-bg: #23272b;
@@ -91,7 +92,7 @@
     }
     .feature-btn {
       background: var(--falix-switch-bg);
-      border: 1.5px solid var(--falix-border);
+      border: 1.5px solid var(--falix-border-toggle);
       border-radius: 16px;
       width: 38px;
       height: 22px;
@@ -507,6 +508,14 @@
             <div class="feature-row">
               <span class="feature-label" data-tooltip="Hides reply headers and containers in support tickets for a cleaner interface.">Hide Reply Headers</span>
               <button class="feature-btn" id="hideReplyHeader" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+            </div>
+            <div class="feature-row">
+              <span class="feature-label" data-tooltip="Changes 'Awaiting User Reply' text to just 'waiting' for cleaner ticket displays.">Shorten Reply Status</span>
+              <button class="feature-btn" id="shortenReplyStatus" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+            </div>
+            <div class="feature-row">
+              <span class="feature-label" data-tooltip="Removes hover effects from staff notes for consistent visibility.">Remove Staff Note Hover</span>
+              <button class="feature-btn" id="removeStaffNoteHover" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
             </div>
           </div>
         </div>

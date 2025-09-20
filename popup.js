@@ -43,7 +43,9 @@ const featureIds = [
   'adminPanelIndexRedirect',
   'removePremiumRow',
   'defaultAllStatus',
-  'hideReplyHeader'
+  'hideReplyHeader',
+  'shortenReplyStatus',
+  'removeStaffNoteHover'
 ];
 
 function setFeatureBtnState(btn, enabled) {
@@ -140,7 +142,9 @@ document.addEventListener('DOMContentLoaded', () => {
     adminPanelIndexRedirect: false,
     removePremiumRow: false,
     defaultAllStatus: false,
-    hideReplyHeader: false
+    hideReplyHeader: false,
+    shortenReplyStatus: false,
+    removeStaffNoteHover: false
 
   }, (data) => {
     updateToggleBtn(data.enabled);
