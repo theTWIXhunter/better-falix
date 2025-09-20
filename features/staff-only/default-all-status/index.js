@@ -33,6 +33,18 @@ chrome.storage.sync.get({ defaultAllStatus: false, enabled: true }, (data) => {
         const event = new Event('change', { bubbles: true });
         statusFilter.dispatchEvent(event);
         
+        // Find and click the search button
+        setTimeout(() => {
+          // Look for the search button - it's a submit button with class btn-outline-primary
+          const searchButton = document.querySelector('button[type="submit"].btn.btn-outline-primary');
+          if (searchButton) {
+            searchButton.click();
+            console.log('[better-falix] default-all-status: Clicked search button');
+          } else {
+            console.log('[better-falix] default-all-status: Search button not found');
+          }
+        }, 50); // Small delay to ensure the UI has updated
+        
         console.log('[better-falix] default-all-status: Set All Status as default option');
       } else {
         console.log('[better-falix] default-all-status: All Status option not found');
