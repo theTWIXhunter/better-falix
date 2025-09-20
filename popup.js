@@ -155,13 +155,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Main toggle logic
+  // Main toggle logic - completely reimplemented for reliability
   document.getElementById('toggle').addEventListener('click', function() {
-    // Get the current visual state directly from this button
-    const currentState = this.classList.contains('off'); // If it has 'off' class, it's currently disabled
-    const newState = !currentState; // Flip the state
+    // Simply check the current text content to determine state
+    const isCurrentlyDisabled = this.textContent === 'Enable Extension';
+    const newState = isCurrentlyDisabled; // If it says "Enable", we want to enable it (true)
+    
+    console.log('Toggle clicked. Current state:', isCurrentlyDisabled ? 'disabled' : 'enabled', 'New state:', newState ? 'enabled' : 'disabled');
     
     chrome.storage.sync.set({ enabled: newState }, () => {
+      console.log('Updated storage with enabled:', newState);
       updateToggleBtn(newState);
       chrome.storage.sync.get(null, (allData) => {
         updateFeatureButtons(allData);
