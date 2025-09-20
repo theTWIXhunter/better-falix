@@ -52,6 +52,9 @@ chrome.storage.sync.get(null, data => {
   
   const replaceSupportModalToggle = document.getElementById('replaceSupportModal');
   if (replaceSupportModalToggle) setToggleState(replaceSupportModalToggle, !!data.replaceSupportModal);
+  
+  const enableStaffFeaturesToggle = document.getElementById('enableStaffFeatures');
+  if (enableStaffFeaturesToggle) setToggleState(enableStaffFeaturesToggle, !!data.enableStaffFeatures);
 });
 
 // General toggles - only add listeners if elements exist
@@ -90,6 +93,7 @@ if (exportSettingsBtn) {
         // General settings
         enabled: document.getElementById('enabled')?.getAttribute('aria-pressed') === 'true',
         theme: document.getElementById('theme')?.value || 'auto',
+        enableStaffFeatures: document.getElementById('enableStaffFeatures')?.getAttribute('aria-pressed') === 'true',
         
         // Feature settings with values
         customServerOrder: document.getElementById('customServerOrder')?.getAttribute('aria-pressed') === 'true',
@@ -239,6 +243,15 @@ if (replaceSupportModalToggle) {
     const state = this.getAttribute('aria-pressed') !== 'true';
     setToggleState(this, state);
     saveSetting('replaceSupportModal', state);
+  });
+}
+
+const enableStaffFeaturesToggle = document.getElementById('enableStaffFeatures');
+if (enableStaffFeaturesToggle) {
+  enableStaffFeaturesToggle.addEventListener('click', function() {
+    const state = this.getAttribute('aria-pressed') !== 'true';
+    setToggleState(this, state);
+    saveSetting('enableStaffFeatures', state);
   });
 }
 

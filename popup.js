@@ -108,6 +108,7 @@ function setThemesListEnabled(enabled) {
 document.addEventListener('DOMContentLoaded', () => {
   chrome.storage.sync.get({
     enabled: false,
+    enableStaffFeatures: false,
     hideConsoleTabs: false,
     replaceAccountCategory: false,
     moveBackupsNav: false,
@@ -146,6 +147,12 @@ document.addEventListener('DOMContentLoaded', () => {
     updateFeatureButtons(data);
     setThemesListEnabled(data.enabled);
     setFeaturesListEnabled(data.enabled);
+    
+    // Show/hide staff features section based on enableStaffFeatures option
+    const staffOnlySection = document.getElementById('staffOnlySection');
+    if (staffOnlySection) {
+      staffOnlySection.style.display = data.enableStaffFeatures ? 'block' : 'none';
+    }
   });
 
   // Main toggle logic
