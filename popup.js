@@ -40,7 +40,8 @@ const featureIds = [
   'coloredLogMessages',
   'autoCollapseLogAnalysis',
   'moveAdminPanelNav',
-  'adminPanelIndexRedirect'
+  'adminPanelIndexRedirect',
+  'removePremiumRow'
 ];
 
 function setFeatureBtnState(btn, enabled) {
@@ -133,7 +134,8 @@ document.addEventListener('DOMContentLoaded', () => {
     coloredLogMessages: false,
     autoCollapseLogAnalysis: false,
     moveAdminPanelNav: false,
-    adminPanelIndexRedirect: false
+    adminPanelIndexRedirect: false,
+    removePremiumRow: false
 
   }, (data) => {
     updateToggleBtn(data.enabled);
