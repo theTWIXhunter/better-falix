@@ -188,6 +188,11 @@
       "js": ["features/staff-only/remove-premium-row/index.js"],
       "run_at": "document_idle"
     },
+    {
+      "matches": ["https://client.falixnodes.net/*"],
+      "js": ["features/staff-only/enhanced-reply-panel/index.js"],
+      "run_at": "document_idle"
+    },
 
 
 
