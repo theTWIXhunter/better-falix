@@ -15,6 +15,17 @@ chrome.storage.sync.get({ enhancedReplyPanel: false, enabled: true }, (data) => 
     const replyPanelToggle = document.querySelector('.reply-panel-toggle[data-action="toggle-reply-panel"]');
     
     if (replyPanelToggle) {
+      // Find the original form that contains the reply panel
+      const originalForm = document.querySelector('form[action*="ticket"]') || document.querySelector('form:has(.reply-textarea)');
+      if (!originalForm) {
+        console.error('[better-falix] enhanced-reply-panel: Could not find original form');
+        return;
+      }
+      
+      // Store the original form's action and method
+      const formAction = originalForm.action || '';
+      const formMethod = originalForm.method || 'post';
+      
       // Create the container for our enhanced panel
       const enhancedReplyPanel = document.createElement('div');
       
@@ -37,13 +48,38 @@ chrome.storage.sync.get({ enhancedReplyPanel: false, enabled: true }, (data) => 
 
         <!-- The textarea will be moved from the original panel -->
         <div id="textarea-container" style="position: relative;"></div>
+        
+        <!-- Hidden inputs container -->
+        <div id="hidden-inputs-container"></div>
       </form>`;
       
       // Replace the original toggle with our enhanced panel container
       replyPanelToggle.parentNode.replaceChild(enhancedReplyPanel, replyPanelToggle);
       
+      // Get a reference to our new form element
+      const enhancedForm = enhancedReplyPanel.querySelector('form');
+      
+      // Copy attributes from the original form
+      if (originalForm) {
+        // Copy the action and method attributes
+        enhancedForm.action = formAction;
+        enhancedForm.method = formMethod;
+        enhancedForm.id = originalForm.id || 'replyForm';
+        
+        // Copy other important form attributes
+        if (originalForm.enctype) enhancedForm.enctype = originalForm.enctype;
+        if (originalForm.target) enhancedForm.target = originalForm.target;
+        if (originalForm.name) enhancedForm.name = originalForm.name;
+        
+        // Copy all hidden input fields to preserve form data
+        const hiddenInputsContainer = enhancedForm.querySelector('#hidden-inputs-container');
+        originalForm.querySelectorAll('input[type="hidden"]').forEach(input => {
+          const clonedInput = input.cloneNode(true);
+          hiddenInputsContainer.appendChild(clonedInput);
+        });
+      }
+      
       // Look for original elements we need to move
-      const originalForm = document.querySelector('form[action*="ticket"]') || document.querySelector('form:has(.reply-textarea)');
       const originalTextarea = document.querySelector('.reply-textarea');
       const originalButtons = document.querySelectorAll('button[type="submit"], button[data-action="toggle-preview"], button[data-action="close-ticket"]');
       const originalInternalToggle = document.querySelector('#internalMessageToggle, input[name="internal"]');
@@ -186,11 +222,63 @@ chrome.storage.sync.get({ enhancedReplyPanel: false, enabled: true }, (data) => 
     }
   }
 
+  // Function to ensure submit buttons work correctly
+  function ensureButtonsWork() {
+    // Find all submit buttons in our enhanced form
+    const submitButtons = document.querySelectorAll('#replyForm button[type="submit"]');
+    
+    submitButtons.forEach(button => {
+      // Make sure the button has the correct type
+      if (button.getAttribute('type') !== 'submit') {
+        button.setAttribute('type', 'submit');
+      }
+      
+      // Check if it's correctly inside the form, if not - fix it
+      const form = button.closest('form');
+      if (!form) {
+        const replyForm = document.getElementById('replyForm');
+        if (replyForm) {
+          replyForm.appendChild(button);
+        }
+      }
+    });
+    
+    // Make sure the form submits correctly
+    const replyForm = document.getElementById('replyForm');
+    if (replyForm) {
+      // Remove any existing event listeners by cloning and replacing
+      const newForm = replyForm.cloneNode(false);
+      
+      // Copy all attributes
+      Array.from(replyForm.attributes).forEach(attr => {
+        newForm.setAttribute(attr.name, attr.value);
+      });
+      
+      // Move all children
+      while (replyForm.firstChild) {
+        newForm.appendChild(replyForm.firstChild);
+      }
+      
+      // Replace the form
+      replyForm.parentNode.replaceChild(newForm, replyForm);
+      
+      // Add a new event listener
+      newForm.addEventListener('submit', function(e) {
+        console.log('[better-falix] enhanced-reply-panel: Form submitting...');
+        // Let the form submit naturally - no need to prevent default
+      });
+    }
+  }
+  
   // Execute when DOM is ready
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', replaceReplyPanel);
+    document.addEventListener('DOMContentLoaded', () => {
+      replaceReplyPanel();
+      setTimeout(ensureButtonsWork, 100);
+    });
   } else {
     replaceReplyPanel();
+    setTimeout(ensureButtonsWork, 100);
   }
   
   // Monitor for page changes to handle dynamically loaded panels
@@ -203,7 +291,10 @@ chrome.storage.sync.get({ enhancedReplyPanel: false, enabled: true }, (data) => 
               node.querySelector('.reply-panel-toggle[data-action="toggle-reply-panel"]') : null;
             
             if (toggle || (node.classList && node.classList.contains('reply-panel-toggle'))) {
-              setTimeout(replaceReplyPanel, 10);
+              setTimeout(() => {
+                replaceReplyPanel();
+                setTimeout(ensureButtonsWork, 100);
+              }, 10);
               break;
             }
           }
