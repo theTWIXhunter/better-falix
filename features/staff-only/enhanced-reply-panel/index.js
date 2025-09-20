@@ -11,13 +11,19 @@ chrome.storage.sync.get({ enhancedReplyPanel: false, enabled: true }, (data) => 
   //  --------- START FEATURE ----------
 
   function replaceReplyPanel() {
+    // Analyze existing form submission logic for debugging
+    const existingForms = document.querySelectorAll('form');
+    existingForms.forEach(form => {
+      console.log('[better-falix] enhanced-reply-panel: Found form with action:', form.action || 'No action');
+    });
+    
     // Find the original reply panel toggle
     const replyPanelToggle = document.querySelector('.reply-panel-toggle[data-action="toggle-reply-panel"]');
     
     if (replyPanelToggle) {
       // Create the enhanced reply panel
       const enhancedReplyPanel = document.createElement('div');
-      enhancedReplyPanel.innerHTML = `<form id="replyForm">
+      enhancedReplyPanel.innerHTML = `<form id="replyForm" action="javascript:void(0);
 
 								<!-- Markdown Toolbar -->
 								<div class="markdown-toolbar" style="display: flex; gap: 0.25rem; padding: 0.5rem; background: rgba(0,0,0,0.3); border-radius: 8px 8px 0 0; border: 1px solid rgba(255,255,255,0.1); border-bottom: none; flex-wrap: wrap;">
@@ -135,13 +141,137 @@ chrome.storage.sync.get({ enhancedReplyPanel: false, enabled: true }, (data) => 
     const replyForm = document.getElementById('replyForm');
     if (replyForm) {
       replyForm.addEventListener('submit', (event) => {
-        // Prevent default to allow the original form handler to take over
-        // This is just to ensure our UI enhancements don't break form submission
-        console.log('[better-falix] enhanced-reply-panel: Form submitted');
+        // Prevent the default form submission which causes navigation to "#message-275"
+        event.preventDefault();
+        
+        // Get the message content
+        const messageContent = document.getElementById('replyTextarea').value;
+        const isInternalMessage = document.getElementById('internalMessageToggle').checked;
+        
+        console.log('[better-falix] enhanced-reply-panel: Form submission intercepted');
+        
+        // Find the original form submit function or create a new submission mechanism
+        
+        // Try to find and use the original AJAX submission functionality
+        const originalSubmitFunc = findOriginalFormSubmission();
+        if (originalSubmitFunc) {
+          console.log('[better-falix] enhanced-reply-panel: Using original submit function');
+          
+          try {
+            // Call the original function with the form as context
+            originalSubmitFunc.call(this, {
+              preventDefault: () => {}, // Mock event object
+              target: {
+                elements: {
+                  message: { value: messageContent },
+                  staff_only: { checked: isInternalMessage }
+                }
+              }
+            });
+            return; // Return early if we successfully used the original function
+          } catch (e) {
+            console.error('[better-falix] enhanced-reply-panel: Error using original submit function', e);
+            // Continue with other approaches
+          }
+        }
+        
+        // Second approach: Try to find and use the original submit button
+        const originalSubmitBtn = document.querySelector('button.submit-reply, button[type="submit"].btn-send, input[type="submit"]');
+        if (originalSubmitBtn) {
+          console.log('[better-falix] enhanced-reply-panel: Using original submit button');
+          
+          // Fill the original textarea if it exists
+          const originalTextarea = document.querySelector('textarea[name="message"]');
+          if (originalTextarea && originalTextarea !== document.getElementById('replyTextarea')) {
+            originalTextarea.value = messageContent;
+          }
+          
+          // Set the internal message checkbox if it exists
+          const originalInternalCheckbox = document.querySelector('input[name="staff_only"]');
+          if (originalInternalCheckbox) {
+            originalInternalCheckbox.checked = isInternalMessage;
+          }
+          
+          // Trigger the original submit button click
+          originalSubmitBtn.click();
+        } else {
+          console.log('[better-falix] enhanced-reply-panel: Creating new submission');
+          
+          // Second approach: Create a hidden form to use the original submission mechanism
+          const hiddenForm = document.createElement('form');
+          hiddenForm.style.display = 'none';
+          hiddenForm.method = 'post';
+          hiddenForm.action = window.location.pathname; // Use the current URL path
+          
+          // Add the message content
+          const messageInput = document.createElement('textarea');
+          messageInput.name = 'message';
+          messageInput.value = messageContent;
+          hiddenForm.appendChild(messageInput);
+          
+          // Add the internal message flag if checked
+          if (isInternalMessage) {
+            const staffOnlyInput = document.createElement('input');
+            staffOnlyInput.type = 'checkbox';
+            staffOnlyInput.name = 'staff_only';
+            staffOnlyInput.checked = true;
+            hiddenForm.appendChild(staffOnlyInput);
+          }
+          
+          // Add other necessary form fields based on the original form
+          // This might include a CSRF token, ticket ID, etc.
+          document.querySelectorAll('input[type="hidden"]').forEach(input => {
+            const clonedInput = document.createElement('input');
+            clonedInput.type = 'hidden';
+            clonedInput.name = input.name;
+            clonedInput.value = input.value;
+            hiddenForm.appendChild(clonedInput);
+          });
+          
+          // Append to body, submit, and then remove
+          document.body.appendChild(hiddenForm);
+          hiddenForm.submit();
+          document.body.removeChild(hiddenForm);
+        }
       });
     }
   }
 
+  // Function to find the original form submit handler
+  function findOriginalFormSubmission() {
+    // Try to find the original AJAX-based submission handler
+    const ajaxSubmit = window.submitReply || window.sendReply || window.submitTicketResponse;
+    
+    if (ajaxSubmit && typeof ajaxSubmit === 'function') {
+      console.log('[better-falix] enhanced-reply-panel: Found original AJAX submit function');
+      return ajaxSubmit;
+    }
+    
+    // Look for form elements that might contain the submission logic
+    const ticketForms = Array.from(document.querySelectorAll('form')).filter(form => {
+      return form.id?.includes('reply') || 
+             form.id?.includes('ticket') || 
+             form.id?.includes('message') ||
+             form.action?.includes('ticket') ||
+             form.action?.includes('message');
+    });
+    
+    if (ticketForms.length > 0) {
+      console.log('[better-falix] enhanced-reply-panel: Found potential ticket forms:', ticketForms.length);
+      
+      // We'll return the submit handler of the first form we find
+      const firstForm = ticketForms[0];
+      const originalHandler = firstForm.onsubmit;
+      
+      if (originalHandler) {
+        console.log('[better-falix] enhanced-reply-panel: Found original onsubmit handler');
+        return originalHandler;
+      }
+    }
+    
+    return null;
+  }
+  
   // Execute when DOM is ready
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', replaceReplyPanel);
