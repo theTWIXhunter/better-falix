@@ -59,7 +59,7 @@
     }
     .feature-toggle {
       background: #23272b;
-      border: 1.5px solid #23272b;
+      border: 1.5px solid #343a40;
       border-radius: 16px;
       width: 38px;
       height: 22px;
@@ -111,7 +111,7 @@
     .setting-toggle {
       /* Same as .feature-toggle */
       background: #23272b;
-      border: 1.5px solid #23272b;
+      border: 1.5px solid #343a40;
       border-radius: 16px;
       width: 38px;
       height: 22px;
@@ -175,6 +175,14 @@
     .reset-btn:hover {
       background: #b91c1c;
     }
+    #customServerOrder_list {
+      width: 100%;
+      min-height: 150px;
+      resize: vertical;
+      overflow: auto;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      line-height: 2;
+    }
   </style>
 </head>
 <body>
@@ -196,31 +204,22 @@
       <input type="file" id="importFileInput" accept=".json" style="display: none;">
       <button class="reset-btn" id="importSettings" style="background: #7c3aed; margin-left: 0;">Import</button>
     </div>
+    <div class="setting-row">
+      <span class="setting-label">Staff Features</span>
+      <button class="setting-toggle" id="enableStaffFeatures" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+    </div>
 
     <div class="section-title">Features</div>
 
     <!-- Example feature blocks -->
     <div class="feature-block">
       <div class="feature-header">
-        <span class="feature-title">Custom Server Order</span>
+        <span class="feature-title">Custom Server Order</span> <br><br>
         <button class="feature-toggle" id="customServerOrder" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
       </div>
-      <div class="feature-desc">Reorder your server list to your preferred order. <br> for example: "Servername1, Servername2, ServerName4" <br> (caps sensitive)</div>
-      <div class="setting-row">
-        <span class="setting-label">Order (comma separated)</span>
-        <input class="setting-input" id="customServerOrder_list" type="text" value="">
-      </div>
-    </div>
-
-    <div class="feature-block">
-      <div class="feature-header">
-        <span class="feature-title">Editor Wrapper Height</span>
-        <button class="feature-toggle" id="editorWrapperHeight" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
-      </div>
-      <div class="feature-desc">Sets the editor-wrapper height (normal: 400, plugin default: 600).</div>
-      <div class="setting-row">
-        <span class="setting-label">Height (px)</span>
-        <input class="setting-input" id="editorWrapperHeight_value" type="number" min="100" max="2000" value="600">
+      <div class="feature-desc">Reorder your server list to your preferred order (case sensitive). <br> resize the list if needed.</div>
+      <div class="setting-row" style="align-items: flex-start;">
+        <textarea class="setting-input" id="customServerOrder_list" placeholder="Enter server names, one per line&#10;Example:&#10;Server1,&#10;Server2,&#10;Server3"></textarea>
       </div>
     </div>
 

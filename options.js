@@ -52,6 +52,9 @@ chrome.storage.sync.get(null, data => {
   
   const replaceSupportModalToggle = document.getElementById('replaceSupportModal');
   if (replaceSupportModalToggle) setToggleState(replaceSupportModalToggle, !!data.replaceSupportModal);
+  
+  const enableStaffFeaturesToggle = document.getElementById('enableStaffFeatures');
+  if (enableStaffFeaturesToggle) setToggleState(enableStaffFeaturesToggle, !!data.enableStaffFeatures);
 });
 
 // General toggles - only add listeners if elements exist
@@ -90,13 +93,11 @@ if (exportSettingsBtn) {
         // General settings
         enabled: document.getElementById('enabled')?.getAttribute('aria-pressed') === 'true',
         theme: document.getElementById('theme')?.value || 'auto',
+        enableStaffFeatures: document.getElementById('enableStaffFeatures')?.getAttribute('aria-pressed') === 'true',
         
         // Feature settings with values
         customServerOrder: document.getElementById('customServerOrder')?.getAttribute('aria-pressed') === 'true',
         customServerOrder_list: document.getElementById('customServerOrder_list')?.value || '',
-        
-        editorWrapperHeight: document.getElementById('editorWrapperHeight')?.getAttribute('aria-pressed') === 'true',
-        editorWrapperHeight_value: parseInt(document.getElementById('editorWrapperHeight_value')?.value) || 600,
         
         navbarHover: document.getElementById('navbarHover')?.getAttribute('aria-pressed') === 'true',
         navbarHoverZoneWidth: parseInt(document.getElementById('navbarHoverZoneWidth')?.value) || 40,
@@ -239,6 +240,15 @@ if (replaceSupportModalToggle) {
     const state = this.getAttribute('aria-pressed') !== 'true';
     setToggleState(this, state);
     saveSetting('replaceSupportModal', state);
+  });
+}
+
+const enableStaffFeaturesToggle = document.getElementById('enableStaffFeatures');
+if (enableStaffFeaturesToggle) {
+  enableStaffFeaturesToggle.addEventListener('click', function() {
+    const state = this.getAttribute('aria-pressed') !== 'true';
+    setToggleState(this, state);
+    saveSetting('enableStaffFeatures', state);
   });
 }
 

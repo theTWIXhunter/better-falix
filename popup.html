@@ -10,6 +10,7 @@
       --falix-accent: #0078d7;
       --falix-accent-hover: #005fa3;
       --falix-border: #23272b;
+      --falix-border-toggle: #343a40;
       --falix-text: #fff;
       --falix-muted: #b0b8c1;
       --falix-switch-bg: #23272b;
@@ -91,7 +92,7 @@
     }
     .feature-btn {
       background: var(--falix-switch-bg);
-      border: 1.5px solid var(--falix-border);
+      border: 1.5px solid var(--falix-border-toggle);
       border-radius: 16px;
       width: 38px;
       height: 22px;
@@ -397,6 +398,10 @@
             <span class="feature-label" data-tooltip="Remove the Server Search bar from the main page.">Remove Server search bar</span>
             <button class="feature-btn" id="removeServerSearch" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
           </div>
+          <div class="feature-row">
+            <span class="feature-label" data-tooltip="Hides the Support category from the navigation and main interface.">Hide Support Catgory</span>
+            <button class="feature-btn" id="hideSupportCategory" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+          </div>
         </div>
 
         <!-- Console Features -->
@@ -426,10 +431,6 @@
           <div class="feature-row">
             <span class="feature-label" data-tooltip="Makes the Upload and Create buttons show their dropdowns when hovered.">Upload/Create Hover</span>
             <button class="feature-btn" id="uploadCreateHover" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
-          </div>
-          <div class="feature-row">
-            <span class="feature-label" data-tooltip="Makes the file editor 600px Height">Editor Wrapper Height</span>
-            <button class="feature-btn" id="editorWrapperHeight" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
           </div>
           <div class="feature-row">
             <span class="feature-label" data-tooltip="Hide editor header and breadcrumb when using built-in fullscreen mode.">Better Editor Fullscreen</span>
@@ -488,6 +489,41 @@
           </div>
         </div>
 
+        <!-- Staff Only (hidden by default) -->
+        <div id="staffOnlySection" style="display: none;">
+          <div class="category">Staff Only</div>
+          <div class="feature-list">
+            <div class="feature-row">
+              <span class="feature-label" data-tooltip="Move the Admin Panel from Account category to the Servers section.">Move Admin Panel nav-Button</span>
+              <button class="feature-btn" id="moveAdminPanelNav" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+            </div>
+            <div class="feature-row">
+              <span class="feature-label" data-tooltip="Redirect the Admin Panel link to /admin/index instead of /admin.">Admin Panel Index Redirect</span>
+              <button class="feature-btn" id="adminPanelIndexRedirect" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+            </div>
+            <div class="feature-row">
+              <span class="feature-label" data-tooltip="Removes the premium-row class from all table rows to improve visibility.">Remove Premium Row</span>
+              <button class="feature-btn" id="removePremiumRow" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+            </div>
+            <div class="feature-row">
+              <span class="feature-label" data-tooltip="Hides reply headers and containers in support tickets for a cleaner interface.">Hide Reply Headers</span>
+              <button class="feature-btn" id="hideReplyHeader" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+            </div>
+            <div class="feature-row">
+              <span class="feature-label" data-tooltip="Changes 'Awaiting User Reply' text to just 'waiting' for cleaner ticket displays.">Shorten Reply Status</span>
+              <button class="feature-btn" id="shortenReplyStatus" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+            </div>
+            <div class="feature-row">
+              <span class="feature-label" data-tooltip="Adds an Admin Pages category to the navbar with links to admin functions.">Add Admin Pages Category</span>
+              <button class="feature-btn" id="addAdminCategory" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+            </div>
+            <div class="feature-row">
+              <span class="feature-label" data-tooltip="Adds a toggle to hide closed tickets in the ticket list.">Hide Closed Tickets toggle</span>
+              <button class="feature-btn" id="hideClosedTickets" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+            </div>
+          </div>
+        </div>
+
 
         <div style="text-align: center; margin: 16px 0;">
           <button id="toggleArchivedFeatures" style="background: var(--falix-panel); color: var(--falix-muted); border: 1px solid var(--falix-border); border-radius: 6px; padding: 8px 16px; cursor: pointer; font-size: 0.9em; transition: all 0.2s;">
@@ -510,10 +546,14 @@
                 <span class="feature-label" data-tooltip="Makes the server name in the navbar clickable and redirect you to the main page.">Server Name Button</span>
                 <button class="feature-btn" id="serverNameButton" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
               </div>
-             <div class="feature-row">
+              <div class="feature-row">
                 <span class="feature-label" data-tooltip="Add a collapse/expand button to the Log Analysis section.">Collapsible Log Analysis</span>
                 <button class="feature-btn" id="collapsibleLogAnalysis" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
-             </div>
+              </div>
+              <div class="feature-row">
+               <span class="feature-label" data-tooltip="Makes the file editor 600px Height">Editor Wrapper Height</span>
+               <button class="feature-btn" id="editorWrapperHeight" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+              </div>
           </div>
         </div>
       </div>

@@ -33,12 +33,22 @@ const featureIds = [
   'customServerOrder',
   'editorFullscreen',
   'removeServerSearch',
+  'hideSupportCategory',
+  'hideClosedTickets',
   'removeLogsContainer',
   'redactedContentSubtle',
   'collapsibleLogAnalysis',
   'betterEditorFullscreen',
   'coloredLogMessages',
-  'autoCollapseLogAnalysis'
+  'autoCollapseLogAnalysis',
+  'moveAdminPanelNav',
+  'adminPanelIndexRedirect',
+  'removePremiumRow',
+  'defaultAllStatus',
+  'hideReplyHeader',
+  'shortenReplyStatus',
+  'addAdminCategory',
+
 ];
 
 function setFeatureBtnState(btn, enabled) {
@@ -103,6 +113,7 @@ function setThemesListEnabled(enabled) {
 document.addEventListener('DOMContentLoaded', () => {
   chrome.storage.sync.get({
     enabled: false,
+    enableStaffFeatures: false,
     hideConsoleTabs: false,
     replaceAccountCategory: false,
     moveBackupsNav: false,
@@ -129,26 +140,45 @@ document.addEventListener('DOMContentLoaded', () => {
     collapsibleLogAnalysis: false,
     betterEditorFullscreen: false,
     coloredLogMessages: false,
-    autoCollapseLogAnalysis: false
+    autoCollapseLogAnalysis: false,
+    moveAdminPanelNav: false,
+    adminPanelIndexRedirect: false,
+    removePremiumRow: false,
+    defaultAllStatus: false,
+    hideReplyHeader: false,
+    shortenReplyStatus: false,
+    addAdminCategory: false,
+    hideSupportCategory: false,
+    hideClosedTickets: false
 
   }, (data) => {
     updateToggleBtn(data.enabled);
     updateFeatureButtons(data);
     setThemesListEnabled(data.enabled);
     setFeaturesListEnabled(data.enabled);
+    
+    // Show/hide staff features section based on enableStaffFeatures option
+    const staffOnlySection = document.getElementById('staffOnlySection');
+    if (staffOnlySection) {
+      staffOnlySection.style.display = data.enableStaffFeatures ? 'block' : 'none';
+    }
   });
 
-  // Main toggle logic
+  // Main toggle logic - completely reimplemented for reliability
   document.getElementById('toggle').addEventListener('click', function() {
-    chrome.storage.sync.get({ enabled: true }, (data) => {
-      const newState = !data.enabled;
-      chrome.storage.sync.set({ enabled: newState }, () => {
-        updateToggleBtn(newState);
-        chrome.storage.sync.get(null, (allData) => {
-          updateFeatureButtons(allData);
-          setThemesListEnabled(allData.enabled);
-          setFeaturesListEnabled(allData.enabled);
-        });
+    // Simply check the current text content to determine state
+    const isCurrentlyDisabled = this.textContent === 'Enable Extension';
+    const newState = isCurrentlyDisabled; // If it says "Enable", we want to enable it (true)
+    
+    console.log('Toggle clicked. Current state:', isCurrentlyDisabled ? 'disabled' : 'enabled', 'New state:', newState ? 'enabled' : 'disabled');
+    
+    chrome.storage.sync.set({ enabled: newState }, () => {
+      console.log('Updated storage with enabled:', newState);
+      updateToggleBtn(newState);
+      chrome.storage.sync.get(null, (allData) => {
+        updateFeatureButtons(allData);
+        setThemesListEnabled(allData.enabled);
+        setFeaturesListEnabled(allData.enabled);
       });
     });
   });
