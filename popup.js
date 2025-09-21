@@ -33,7 +33,7 @@ const featureIds = [
   'customServerOrder',
   'editorFullscreen',
   'removeServerSearch',
-  'hideSupportSection',
+  'hideSupportCategory',
   'hideClosedTickets',
   'removeLogsContainer',
   'redactedContentSubtle',
@@ -47,7 +47,8 @@ const featureIds = [
   'defaultAllStatus',
   'hideReplyHeader',
   'shortenReplyStatus',
-  'addAdminCategory'
+  'addAdminCategory',
+
 ];
 
 function setFeatureBtnState(btn, enabled) {
@@ -147,7 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
     hideReplyHeader: false,
     shortenReplyStatus: false,
     addAdminCategory: false,
-    hideSupportSection: false,
+    hideSupportCategory: false,
     hideClosedTickets: false
 
   }, (data) => {
