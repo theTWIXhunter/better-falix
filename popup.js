@@ -33,6 +33,7 @@ const featureIds = [
   'customServerOrder',
   'editorFullscreen',
   'removeServerSearch',
+  'hideSupportCategory',
   'removeLogsContainer',
   'redactedContentSubtle',
   'collapsibleLogAnalysis',
@@ -146,7 +147,8 @@ document.addEventListener('DOMContentLoaded', () => {
     hideReplyHeader: false,
     shortenReplyStatus: false,
     removeStaffNoteHover: false,
-    addAdminCategory: false
+    addAdminCategory: false,
+    hideSupportCategory: false
 
   }, (data) => {
     updateToggleBtn(data.enabled);
