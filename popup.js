@@ -146,7 +146,6 @@ document.addEventListener('DOMContentLoaded', () => {
     defaultAllStatus: false,
     hideReplyHeader: false,
     shortenReplyStatus: false,
-    removeStaffNoteHover: false,
     addAdminCategory: false,
     hideSupportCategory: false
 
