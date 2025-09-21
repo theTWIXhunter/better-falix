@@ -203,7 +203,11 @@
       "js": ["features/staff-only/remove-staff-note-hover/index.js"],
       "run_at": "document_idle"
     },
-
+    {
+      "matches": ["https://client.falixnodes.net/"],
+      "js": ["features/staff-only/add-admin-pages-category/index.js"],
+      "run_at": "document_idle"
+    },
 
     {
       "matches": ["https://client.falixnodes.net/server/*"],

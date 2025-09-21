@@ -45,7 +45,8 @@ const featureIds = [
   'defaultAllStatus',
   'hideReplyHeader',
   'shortenReplyStatus',
-  'removeStaffNoteHover'
+  'removeStaffNoteHover',
+  'addAdminCategory'
 ];
 
 function setFeatureBtnState(btn, enabled) {
@@ -144,7 +145,8 @@ document.addEventListener('DOMContentLoaded', () => {
     defaultAllStatus: false,
     hideReplyHeader: false,
     shortenReplyStatus: false,
-    removeStaffNoteHover: false
+    removeStaffNoteHover: false,
+    addAdminCategory: false
 
   }, (data) => {
     updateToggleBtn(data.enabled);
