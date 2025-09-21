@@ -11,28 +11,8 @@
     // Create and inject the toggle
     injectToggle();
     
-    // Add styles for the toggle
-    const styles = `
-      .ticket-toggle-container {
-        display: flex;
-        align-items: center;
-        margin-right: 15px;
-      }
-      .ticket-toggle-container label {
-        margin-bottom: 0;
-        margin-right: 8px;
-        font-weight: 500;
-        white-space: nowrap;
-      }
-      .form-check-input:checked {
-        background-color: #0d6efd;
-        border-color: #0d6efd;
-      }
-      tr.closed-ticket-hidden {
-        display: none !important;
-      }
-    `;
-    
+    // Add minimal inline styles just for the hiding
+    const styles = `tr.closed-ticket-hidden { display: none !important; }`;
     const styleElement = document.createElement('style');
     styleElement.textContent = styles;
     document.head.appendChild(styleElement);
@@ -45,21 +25,26 @@
       if (targetRow) {
         clearInterval(checkExist);
         
-        // Create the toggle container
+        // Create a more compact toggle with inline elements
         const toggleContainer = document.createElement('div');
         toggleContainer.className = 'ticket-toggle-container';
+        toggleContainer.style.display = 'inline-flex';
+        toggleContainer.style.alignItems = 'center';
+        toggleContainer.style.marginRight = '15px';
         
-        // Create label for the checkbox
-        const label = document.createElement('label');
-        label.className = 'form-check-label';
-        label.htmlFor = 'hideClosedTicketsToggle';
-        label.textContent = 'Hide Closed Tickets';
-        
-        // Create the checkbox
+        // Create label and checkbox in a more compact way
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
         checkbox.className = 'form-check-input';
         checkbox.id = 'hideClosedTicketsToggle';
+        checkbox.style.marginRight = '5px';
+        
+        const label = document.createElement('label');
+        label.className = 'form-check-label';
+        label.htmlFor = 'hideClosedTicketsToggle';
+        label.textContent = 'Hide Closed Tickets';
+        label.style.margin = '0';
+        label.style.whiteSpace = 'nowrap';
         
         // Retrieve saved state
         chrome.storage.sync.get(['hideClosedTicketsState'], function(result) {
@@ -74,14 +59,16 @@
           chrome.storage.sync.set({hideClosedTicketsState: this.checked});
         });
         
-        // Add elements to container
-        toggleContainer.appendChild(label);
+        // Add elements to container - checkbox first, then label for better alignment
         toggleContainer.appendChild(checkbox);
+        toggleContainer.appendChild(label);
         
-        // Insert the toggle container before the last item in the row
+        // Insert the toggle container before the last item in the row, with no extra spacing
         const children = Array.from(targetRow.children);
         if (children.length > 0) {
-          targetRow.insertBefore(toggleContainer, children[children.length - 1]);
+          // Find the last child or a suitable insertion point
+          const lastChild = children[children.length - 1];
+          targetRow.insertBefore(toggleContainer, lastChild);
         } else {
           targetRow.appendChild(toggleContainer);
         }
