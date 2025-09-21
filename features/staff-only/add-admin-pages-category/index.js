@@ -33,7 +33,7 @@ chrome.storage.sync.get({ addAdminCategory: false, enabled: true }, (data) => {
     const adminPagesHtml = `
       <div class="nav-category collapsed" data-bs-toggle="collapse" data-bs-target="#adminPagesSection" aria-expanded="true" data-category="ADMIN">
         <svg class="svg-inline--fa fa-cube category-icon" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="cube" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M234.5 5.7c13.9-5 29.1-5 43.1 0l192 68.6C495 83.4 512 107.5 512 134.6l0 242.9c0 27-17 51.2-42.5 60.3l-192 68.6c-13.9 5-29.1 5-43.1 0l-192-68.6C17 428.6 0 404.5 0 377.4L0 134.6c0-27 17-51.2 42.5-60.3l192-68.6zM256 66L82.3 128 256 190l173.7-62L256 66zm32 368.6l160-57.1 0-188L288 246.6l0 188z"></path></svg>
-        <span>Admin Pages</span>
+        <span>ADMIN</span>
         <svg class="svg-inline--fa fa-chevron-down toggle-icon" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-down" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"></path></svg>
       </div>
       <div class="collapse show" id="adminPagesSection">
