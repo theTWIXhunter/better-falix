@@ -44,6 +44,10 @@ Better Falix is a browser extension that enhances the FalixNodes client-side exp
 - **Colored Log Messages:** Color warning log messages gold and error log messages red.
 - **Auto-Collapse Log Analysis:** Automatically collapse the Log Analysis section when the page loads.
 
+### Staff-only features
+This is a hidden category with features for the admin/support panel and a lot of pages that are all admin-only. this category is hidden by default but can be shown in the options page, only falix staff will be able to notice and use these features.
+
+
 ### Archived features
 
 Warning: These features are archived, this is either because they are replaced or because they got implemented into the native page.
