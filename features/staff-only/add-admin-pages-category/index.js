@@ -1,17 +1,17 @@
-// [better-falix] add-admin-pages-category: Script loading
-console.log('[better-falix] add-admin-pages-category: Script loading');
+// [better-falix] add-admin-category: Script loading
+console.log('[better-falix] add-admin-category: Script loading');
 
-chrome.storage.sync.get({ addAdminPagesCategory: false, enabled: true }, (data) => {
-  if (!data.enabled || !data.addAdminPagesCategory) {
-    console.log('[better-falix] add-admin-pages-category: Script disabled');
+chrome.storage.sync.get({ addAdminCategory: false, enabled: true }, (data) => {
+  if (!data.enabled || !data.addAdminCategory) {
+    console.log('[better-falix] add-admin-category: Script disabled');
     return;
   }
-  console.log('[better-falix] add-admin-pages-category: Script enabled');
+  console.log('[better-falix] add-admin-category: Script enabled');
 
   //  --------- START FEATURE ----------
 
   // Function to add the admin pages category to the sidebar
-  function addAdminPagesCategory() {
+  function addAdminCategory() {
     // Only run on the main client page
     if (!window.location.pathname.match(/^\/$|^\/index$/)) {
       return;
@@ -20,7 +20,7 @@ chrome.storage.sync.get({ addAdminPagesCategory: false, enabled: true }, (data) 
     // Check if the menu-scroll-container exists
     const menuScrollContainer = document.querySelector('.menu-scroll-container');
     if (!menuScrollContainer) {
-      console.log('[better-falix] add-admin-pages-category: Menu scroll container not found');
+      console.log('[better-falix] add-admin-category: Menu scroll container not found');
       return;
     }
 
@@ -90,7 +90,7 @@ chrome.storage.sync.get({ addAdminPagesCategory: false, enabled: true }, (data) 
       menuScrollContainer.appendChild(element);
     });
     
-    console.log('[better-falix] add-admin-pages-category: Admin pages category added to menu-scroll-container');
+    console.log('[better-falix] add-admin-category: Admin pages category added to menu-scroll-container');
 
     // Add click event listener to the category to toggle collapse
     const navCategory = document.querySelector('[data-bs-target="#adminPagesSection"]');
@@ -107,9 +107,9 @@ chrome.storage.sync.get({ addAdminPagesCategory: false, enabled: true }, (data) 
 
   // Execute when DOM is fully loaded
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', addAdminPagesCategory);
+    document.addEventListener('DOMContentLoaded', addAdminCategory);
   } else {
-    addAdminPagesCategory();
+    addAdminCategory();
   }
   
   // Watch for dynamic changes to the menu container
@@ -118,7 +118,7 @@ chrome.storage.sync.get({ addAdminPagesCategory: false, enabled: true }, (data) 
       if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
         // Check if the menu container was added/modified
         if (document.querySelector('.menu-scroll-container') && !document.getElementById('adminPagesSection')) {
-          addAdminPagesCategory();
+          addAdminCategory();
         }
       }
     }
@@ -131,6 +131,6 @@ chrome.storage.sync.get({ addAdminPagesCategory: false, enabled: true }, (data) 
   });
 
   setTimeout(() => {
-    console.log('[better-falix] add-admin-pages-category: Script loaded successfully');
+    console.log('[better-falix] add-admin-category: Script loaded successfully');
   }, 10);
 });
