@@ -99,9 +99,6 @@ if (exportSettingsBtn) {
         customServerOrder: document.getElementById('customServerOrder')?.getAttribute('aria-pressed') === 'true',
         customServerOrder_list: document.getElementById('customServerOrder_list')?.value || '',
         
-        editorWrapperHeight: document.getElementById('editorWrapperHeight')?.getAttribute('aria-pressed') === 'true',
-        editorWrapperHeight_value: parseInt(document.getElementById('editorWrapperHeight_value')?.value) || 600,
-        
         navbarHover: document.getElementById('navbarHover')?.getAttribute('aria-pressed') === 'true',
         navbarHoverZoneWidth: parseInt(document.getElementById('navbarHoverZoneWidth')?.value) || 40,
         
