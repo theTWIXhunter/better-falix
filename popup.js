@@ -46,7 +46,6 @@ const featureIds = [
   'defaultAllStatus',
   'hideReplyHeader',
   'shortenReplyStatus',
-  'removeStaffNoteHover',
   'addAdminCategory'
 ];
 
