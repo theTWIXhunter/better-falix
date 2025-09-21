@@ -103,11 +103,6 @@
     },
     {
       "matches": ["https://client.falixnodes.net/server/edit*"],
-      "js": ["features/filemanager/editor-wrapper-height/index.js"],
-      "run_at": "document_idle"
-    },
-    {
-      "matches": ["https://client.falixnodes.net/server/edit*"],
       "js": ["features/filemanager/better-editor-fullscreen/index.js"],
       "run_at": "document_idle"
     },
@@ -235,6 +230,11 @@
     {
       "matches": ["https://client.falixnodes.net/shared-logs/*"],
       "js": ["features/archived/legacy-collapsible-log-analysis/index.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://client.falixnodes.net/server/edit*"],
+      "js": ["features/archived/editor-wrapper-height/index.js"],
       "run_at": "document_idle"
     },
 
