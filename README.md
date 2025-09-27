@@ -2,6 +2,8 @@
 
 Better Falix is a browser extension that enhances the FalixNodes client-side experience by allowing you to customize and improve the website's navigation and interface.
 
+**Any questions? Join our discord server here:** https://discord.gg/EXm6uWcCeV
+
 ## Features
 
 - **Enable/Disable All Features:** A master toggle to quickly enable or disable all extension features.
