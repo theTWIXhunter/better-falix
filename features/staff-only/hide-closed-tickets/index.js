@@ -1,11 +1,14 @@
-// Hide Closed Tickets Feature
-(function() {
-  // Check if the feature is enabled
-  chrome.storage.sync.get(['hideClosedTickets'], function(result) {
-    if (result.hideClosedTickets) {
-      initHideClosedTickets();
-    }
-  });
+// [better-falix] admin-panel-index-redirect: Script loading
+console.log('[better-falix] hide-closed-tickets: Script loading');
+
+chrome.storage.sync.get({ hideClosedTickets: false, enabled: true }, (data) => {
+  if (!data.enabled || !data.hideClosedTickets) {
+    console.log('[better-falix] hide-closed-tickets: Script disabled');
+    return;
+  }
+  console.log('[better-falix] hide-closed-tickets: Script enabled');
+
+  //  --------- START FEATURE ----------
 
   function initHideClosedTickets() {
     // Create and inject the toggle
