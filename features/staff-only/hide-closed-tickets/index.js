@@ -1,7 +1,7 @@
 // [better-falix] admin-panel-index-redirect: Script loading
 console.log('[better-falix] hide-closed-tickets: Script loading');
 
-chrome.storage.sync.get({ hideClosedTickets: false, enabled: true }, (data) => {
+chrome.storage.sync.get({enabled: true, hideClosedTickets: false}, (data) => {
   if (!data.enabled || !data.hideClosedTickets) {
     console.log('[better-falix] hide-closed-tickets: Script disabled');
     return;
@@ -123,4 +123,7 @@ chrome.storage.sync.get({ hideClosedTickets: false, enabled: true }, (data) => {
     // Start observing the target node for configured mutations
     observer.observe(targetNode, config);
   }
-})();
+
+  // Initialize the feature
+  initHideClosedTickets();
+});
