@@ -1,34 +1,43 @@
-// [better-falix] Replace CPU with Node: Script loading
-console.log('[better-falix] Replace CPU with Node: Script loading');
+// [better-falix] Replace-CPU-with-Node: Script loading
+console.log('[better-falix] Replace-CPU-with-Node: Script loading');
 
 chrome.storage.sync.get({ replaceCpuWithNode: false, enabled: true }, (data) => {
   if (!data.enabled || !data.replaceCpuWithNode) {
-    console.log('[better-falix] Replace CPU with Node: Script disabled');
+    console.log('[better-falix] Replace-CPU-with-Node: Script disabled');
     return;
   }
-  console.log('[better-falix] Replace CPU with Node: Script enabled');
+  console.log('[better-falix] Replace-CPU-with-Node: Script enabled');
 
   // --------- START FEATURE ----------
 
   function replaceCpuWithNode() {
-    // Find the CPU info card
-    const cpuCard = document.querySelector('.compact-info-card');
-    if (!cpuCard) {
-      console.log('[better-falix] Replace CPU with Node: CPU card not found');
-      return;
-    }
+    // Find all CPU info cards
+    const cpuCards = document.querySelectorAll('.compact-info-card');
+    console.log('[better-falix] Replace CPU with Node: Found', cpuCards.length, 'compact info cards');
+    
+    let targetCard = null;
+    
+    // Look through all cards to find the one with "CPU" header
+    cpuCards.forEach((card, index) => {
+      const headerText = card.querySelector('.compact-info-header');
+      
+      if (headerText && headerText.textContent.trim().toUpperCase() === 'CPU') {
+        targetCard = card;
+        console.log('[better-falix] Replace-CPU-with-Node: Found CPU card at index', index);
+      }
+    });
 
-    // Check if this is the CPU card by looking for the microchip icon
-    const cpuIcon = cpuCard.querySelector('.fa-microchip');
-    if (!cpuIcon) {
-      console.log('[better-falix] Replace CPU with Node: CPU icon not found');
+    if (!targetCard) {
+      console.log('[better-falix] Replace-CPU-with-Node: CPU card not found');
       return;
     }
 
     // Find the node information from the third span with class="support-info-text"
     const supportInfoSpans = document.querySelectorAll('span.support-info-text');
+    console.log('[better-falix] Replace CPU with Node: Found', supportInfoSpans.length, 'support info spans');
+    
     if (supportInfoSpans.length < 3) {
-      console.log('[better-falix] Replace CPU with Node: Not enough support info spans found');
+      console.log('[better-falix] Replace-CPU-with-Node: Not enough support info spans found');
       return;
     }
 
@@ -36,7 +45,7 @@ chrome.storage.sync.get({ replaceCpuWithNode: false, enabled: true }, (data) => 
     console.log('[better-falix] Replace CPU with Node: Found node info:', nodeInfo);
 
     // Replace the CPU icon with a server/node icon
-    const iconContainer = cpuCard.querySelector('.compact-info-icon');
+    const iconContainer = targetCard.querySelector('.compact-info-icon');
     if (iconContainer) {
       iconContainer.innerHTML = `
         <svg class="svg-inline--fa fa-server" aria-hidden="true" focusable="false" data-prefix="fad" data-icon="server" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -49,18 +58,18 @@ chrome.storage.sync.get({ replaceCpuWithNode: false, enabled: true }, (data) => 
     }
 
     // Replace the header text
-    const headerElement = cpuCard.querySelector('.compact-info-header');
+    const headerElement = targetCard.querySelector('.compact-info-header');
     if (headerElement) {
       headerElement.textContent = 'Node';
     }
 
     // Replace the value with node information
-    const valueElement = cpuCard.querySelector('.compact-info-value span');
+    const valueElement = targetCard.querySelector('.compact-info-value span');
     if (valueElement) {
       valueElement.textContent = nodeInfo;
     }
 
-    console.log('[better-falix] Replace CPU with Node: Successfully replaced CPU info with node info');
+    console.log('[better-falix] Replace-CPU-with-Node: Successfully replaced CPU info with node info');
   }
 
   // Wait for the page to load and then replace the CPU info
@@ -88,5 +97,5 @@ chrome.storage.sync.get({ replaceCpuWithNode: false, enabled: true }, (data) => 
     waitForElements();
   }
 
-  console.log('[better-falix] Replace CPU with Node: Script loaded successfully');
+  console.log('[better-falix] Replace-CPU-with-Node: Script loaded successfully');
 });
