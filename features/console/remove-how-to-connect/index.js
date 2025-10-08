@@ -13,8 +13,8 @@ chrome.storage.sync.get({ enabled: true, removeHowToConnect: false }, (data) => 
   function removeHowToConnectSections() {
     // Remove all elements with class "connect-step"
     document.querySelectorAll('.connect-step').forEach(el => el.remove());
-    // Remove all elements with class "dns-verification-section"
-    document.querySelectorAll('.dns-verification-section').forEach(el => el.remove());
+    // Remove all elements with class "remote-startup-section"
+    document.querySelectorAll('.remote-startup-section').forEach(el => el.remove());
     // Remove all <div class="bedrock-detail-row"> with label "Server Name:"
     document.querySelectorAll('.bedrock-detail-row').forEach(row => {
       const label = row.querySelector('.bedrock-label');
