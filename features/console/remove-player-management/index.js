@@ -19,7 +19,7 @@ chrome.storage.sync.get({ removePlayerManagement: false, enabled: true }, (data)
     infoCards.forEach((card, index) => {
       const headerText = card.querySelector('.compact-info-header');
       
-      if (headerText && headerText.textContent.trim().toLowerCase().includes('player management')) {
+      if (headerText && headerText.textContent.trim().toLowerCase().includes('Player Management')) {
         console.log('[better-falix] Remove Player Management: Found Player Management card at index', index);
         card.remove();
         console.log('[better-falix] Remove Player Management: Successfully removed Player Management card');
