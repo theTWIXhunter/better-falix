@@ -13,16 +13,16 @@ chrome.storage.sync.get({ removeMaxPlayers: false, enabled: true }, (data) => {
   function removeMaxPlayersCard() {
     // Find all compact info cards
     const infoCards = document.querySelectorAll('.compact-info-card');
-    console.log('[better-falix] Remove Max Players: Found', infoCards.length, 'compact info cards');
+    //console.log('[better-falix] Remove Max Players: Found', infoCards.length, 'compact info cards');
     
     // Look through all cards to find the one with "Max Players" header
     infoCards.forEach((card, index) => {
       const headerText = card.querySelector('.compact-info-header');
       
       if (headerText && headerText.textContent.trim().toLowerCase().includes('max players')) {
-        console.log('[better-falix] Remove Max Players: Found Max Players card at index', index);
+        //console.log('[better-falix] Remove Max Players: Found Max Players card at index', index);
         card.remove();
-        console.log('[better-falix] Remove Max Players: Successfully removed Max Players card');
+        //console.log('[better-falix] Remove Max Players: Successfully removed Max Players card');
       }
     });
   }

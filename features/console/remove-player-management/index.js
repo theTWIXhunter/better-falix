@@ -13,21 +13,21 @@ chrome.storage.sync.get({ removePlayerManagement: false, enabled: true }, (data)
   function removePlayerManagementCard() {
     // Find all compact info cards
     const infoCards = document.querySelectorAll('.compact-info-card');
-    console.log('[better-falix] Remove Player Management: Found', infoCards.length, 'compact info cards');
+    //console.log('[better-falix] Remove Player Management: Found', infoCards.length, 'compact info cards');
     
     // Look through all cards to find the one with "Player Management" header or modal target
     infoCards.forEach((card, index) => {
       const headerText = card.querySelector('.compact-info-header');
       const modalTarget = card.getAttribute('data-bs-target');
-      
+
       // Check for Player Management text in header or playerManagementModal target
       const hasPlayerManagementText = headerText && headerText.textContent.trim().toLowerCase().includes('player management');
       const hasPlayerManagementModal = modalTarget === '#playerManagementModal';
       
       if (hasPlayerManagementText || hasPlayerManagementModal) {
-        console.log('[better-falix] Remove Player Management: Found Player Management card at index', index);
+        //console.log('[better-falix] Remove Player Management: Found Player Management card at index', index);
         card.remove();
-        console.log('[better-falix] Remove Player Management: Successfully removed Player Management card');
+        //console.log('[better-falix] Remove Player Management: Successfully removed Player Management card');
       }
     });
   }

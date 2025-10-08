@@ -46,14 +46,14 @@ chrome.storage.sync.get({ navbarHover: false, navbarHoverZoneWidth: 30, enabled:
       if (isSidebarCollapsed(sidebar)) {
         sidebar.classList.remove('collapsed');
         navOpenedByFeature = true;
-        console.log('[Better-Falix] open navigation hover: Sidebar opened (desktop)');
+        //console.log('[Better-Falix] open navigation hover: Sidebar opened (desktop)');
       }
     } else {
       // Mobile: add 'show'
       if (!isSidebarMobileOpen(sidebar)) {
         sidebar.classList.add('show');
         navOpenedByFeature = true;
-        console.log('[Better-Falix] open navigation hover: Sidebar opened (mobile)');
+        //console.log('[Better-Falix] open navigation hover: Sidebar opened (mobile)');
       }
     }
   }
@@ -67,14 +67,14 @@ chrome.storage.sync.get({ navbarHover: false, navbarHoverZoneWidth: 30, enabled:
       if (!isSidebarCollapsed(sidebar)) {
         sidebar.classList.add('collapsed');
         navOpenedByFeature = false;
-        console.log('[Better-Falix] open navigation hover: Sidebar closed (desktop)');
+        //console.log('[Better-Falix] open navigation hover: Sidebar closed (desktop)');
       }
     } else {
       // Mobile: remove 'show'
       if (isSidebarMobileOpen(sidebar)) {
         sidebar.classList.remove('show');
         navOpenedByFeature = false;
-        console.log('[Better-Falix] open navigation hover: Sidebar closed (mobile)');
+        //console.log('[Better-Falix] open navigation hover: Sidebar closed (mobile)');
       }
     }
   }
@@ -105,7 +105,7 @@ chrome.storage.sync.get({ navbarHover: false, navbarHoverZoneWidth: 30, enabled:
           }, 100);
         });
         
-        console.log('[Better-Falix] navbarhover: Found and integrated toggle button:', selector);
+        //console.log('[Better-Falix] navbarhover: Found and integrated toggle button:', selector);
       }
     });
   }
