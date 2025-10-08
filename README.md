@@ -36,7 +36,6 @@ Better Falix is a browser extension that enhances the FalixNodes client-side exp
 - **Move "Backups" to Server Settings:** Relocate the "Backups" navigation item to the Server Settings section.
 - **Move "Monitoring" to Server Settings:** Move the "Monitoring" navigation item to the Server Settings section.
 - **Move "Logs" to Server Settings:** Move the "Logs" navigation item to the Server Settings section.
-- **Remove "Remote Startup" Nav Item:** Hide the "Remote Startup" navigation item from the sidebar.
 - **Remove Navbar Support Links:** Optionally remove support-related links from the navbar.
 
 ### Shared Logs
@@ -59,6 +58,7 @@ Enabling these features might cause issues or incompatibilities with other plugi
 - **Server Name Button:** Makes the server name in the navbar clickable and redirect you to the main page (added to falix itself).
 - **Collapsible Log Analysis:** Add a collapse/expand button to the Log Analysis section (added to falix itself).
 - **Editor Wrapper Height:** Sets the file editor height to 600px (new height can be configured in the config) (the issue this was fixing got solved).
+- **Remove "Remote Startup" Nav Item:** Hide the "Remote Startup" navigation item from the sidebar (removed from the navbar by default now).
 
 
 ## Usage
