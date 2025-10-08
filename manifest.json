@@ -87,6 +87,11 @@
       "js": ["features/console/remove-how-to-connect/index.js"],
       "run_at": "document_idle"
     },
+    {
+      "matches": ["https://client.falixnodes.net/server/console*"],
+      "js": ["features/console/replace-cpu-with-node/index.js"],
+      "run_at": "document_idle"
+    },
 
 
 
