@@ -92,6 +92,11 @@
       "js": ["features/console/replace-cpu-with-node/index.js"],
       "run_at": "document_idle"
     },
+    {
+      "matches": ["https://client.falixnodes.net/server/console*"],
+      "js": ["features/console/remove-max-players/index.js"],
+      "run_at": "document_idle"
+    },
 
 
 
