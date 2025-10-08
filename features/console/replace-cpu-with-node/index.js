@@ -44,23 +44,10 @@ chrome.storage.sync.get({ replaceCpuWithNode: false, enabled: true }, (data) => 
     const nodeInfo = supportInfoSpans[2].textContent.trim();
     console.log('[better-falix] Replace CPU with Node: Found node info:', nodeInfo);
 
-    // Replace the CPU icon with a server/node icon
-    const iconContainer = targetCard.querySelector('.compact-info-icon');
-    if (iconContainer) {
-      iconContainer.innerHTML = `
-        <svg class="svg-inline--fa fa-server" aria-hidden="true" focusable="false" data-prefix="fad" data-icon="server" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-          <g class="fa-duotone-group">
-            <path class="fa-secondary" fill="currentColor" d="M64 32C28.7 32 0 60.7 0 96l0 64c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-64c0-35.3-28.7-64-64-64L64 32zm0 256c-35.3 0-64 28.7-64 64l0 64c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-64c0-35.3-28.7-64-64-64L64 288z"></path>
-            <path class="fa-primary" fill="currentColor" d="M448 96l0 64L64 160l0-64 384 0zm0 256l0 64L64 416l0-64 384 0z"></path>
-          </g>
-        </svg>
-      `;
-    }
-
-    // Replace the header text
+    // Replace the header text (keep the original CPU icon)
     const headerElement = targetCard.querySelector('.compact-info-header');
     if (headerElement) {
-      headerElement.textContent = 'Node';
+      headerElement.textContent = 'Server Node';
     }
 
     // Replace the value with node information
@@ -82,7 +69,7 @@ chrome.storage.sync.get({ replaceCpuWithNode: false, enabled: true }, (data) => 
         clearInterval(checkInterval);
         replaceCpuWithNode();
       }
-    }, 100);
+    });
 
     // Stop checking after 10 seconds
     setTimeout(() => {
