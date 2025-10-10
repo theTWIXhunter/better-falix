@@ -51,7 +51,6 @@ const featureIds = [
   'hideReplyHeader',
   'shortenReplyStatus',
   'addAdminCategory',
-  'switchTicketButtons',
 
 ];
 
@@ -155,7 +154,6 @@ document.addEventListener('DOMContentLoaded', () => {
     hideReplyHeader: false,
     shortenReplyStatus: false,
     addAdminCategory: false,
-    switchTicketButtons: false,
     hideSupportCategory: false,
     hideClosedTickets: false
 
