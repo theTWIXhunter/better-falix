@@ -20,10 +20,10 @@ chrome.storage.sync.get({ switchTicketButtons: false, enabled: true }, (data) =>
     buttons.forEach(button => {
       const buttonText = button.textContent.trim().toLowerCase();
       
-      if (buttonText.includes('close ticket') || buttonText.includes('close the ticket')) {
+      if (buttonText.includes('yes, close it') || buttonText.includes('close it')) {
         closeTicketButton = button;
         console.log('[better-falix] Switch Ticket Buttons: Found close ticket button:', button.textContent.trim());
-      } else if (buttonText.includes('leave ticket open') || buttonText.includes('leave open')) {
+      } else if (buttonText.includes('keep it open') || buttonText.includes('keep open')) {
         leaveOpenButton = button;
         console.log('[better-falix] Switch Ticket Buttons: Found leave open button:', button.textContent.trim());
       }
