@@ -45,20 +45,47 @@ chrome.storage.sync.get({ switchTicketButtons: false, enabled: true }, (data) =>
 
   // Wait for the page to load and then switch the button texts
   function waitForElements() {
-    const checkInterval = setInterval(() => {
+    // Set up a mutation observer to watch for SweetAlert modals
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'childList') {
+          mutation.addedNodes.forEach((node) => {
+            if (node.nodeType === 1) { // Element node
+              // Check if this is a SweetAlert modal or contains one
+              const isModal = node.classList && node.classList.contains('swal2-container');
+              const containsModal = node.querySelector && node.querySelector('.swal2-container');
+              
+              if (isModal || containsModal) {
+                console.log('[better-falix] Switch Ticket Buttons: SweetAlert modal detected');
+                // Small delay to ensure the modal is fully rendered
+                setTimeout(() => {
+                  switchTicketButtonsText();
+                }, 50);
+              }
+            }
+          });
+        }
+      });
+    });
+
+    // Start observing the document for changes
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+
+    // Also try to switch buttons that might already be present
+    const checkExisting = () => {
       const closeButton = document.querySelector('.swal2-confirm.swal2-styled');
       const cancelButton = document.querySelector('.swal2-cancel.swal2-styled');
       
       if (closeButton && cancelButton) {
-        clearInterval(checkInterval);
         switchTicketButtonsText();
       }
-    }, 100);
+    };
 
-    // Stop checking after 10 seconds
-    setTimeout(() => {
-      clearInterval(checkInterval);
-    }, 10000);
+    // Check for existing modals
+    checkExisting();
   }
 
   // Start the process
