@@ -11,11 +11,16 @@ chrome.storage.sync.get({ switchTicketButtons: false, enabled: true }, (data) =>
   // --------- START FEATURE ----------
 
   // Intercept SweetAlert2 fire method to swap button configurations
-  function interceptSwal() {
-    if (typeof Swal !== 'undefined') {
-      const originalFire = Swal.fire;
+  function interceptSwal(retryCount = 0) {
+    const maxRetries = 50; // Maximum 5 seconds of retrying (50 * 100ms)
+    
+    // Check for SweetAlert2 in multiple ways
+    const swal = window.Swal || window.swal || window.sweetAlert2;
+    
+    if (swal && typeof swal.fire === 'function') {
+      const originalFire = swal.fire;
       
-      Swal.fire = function(config) {
+      swal.fire = function(config) {
         // Check if this is a confirmation dialog with both confirm and cancel buttons
         if (config && config.showCancelButton && config.confirmButtonText && config.cancelButtonText) {
           console.log('[better-falix] Switch Ticket Buttons: Intercepting SweetAlert with confirm/cancel buttons');
@@ -46,10 +51,15 @@ chrome.storage.sync.get({ switchTicketButtons: false, enabled: true }, (data) =>
       };
       
       console.log('[better-falix] Switch Ticket Buttons: Successfully intercepted Swal.fire');
-    } else {
-      console.log('[better-falix] Switch Ticket Buttons: Swal not found, retrying...');
+    } else if (retryCount < maxRetries) {
+      // Only log every 10 retries to reduce spam
+      if (retryCount % 10 === 0) {
+        console.log('[better-falix] Switch Ticket Buttons: Swal not found, retrying... (attempt ' + (retryCount + 1) + '/' + maxRetries + ')');
+      }
       // Retry after a short delay
-      setTimeout(interceptSwal, 100);
+      setTimeout(() => interceptSwal(retryCount + 1), 100);
+    } else {
+      console.log('[better-falix] Switch Ticket Buttons: Swal not found after maximum retries, giving up');
     }
   }
 
