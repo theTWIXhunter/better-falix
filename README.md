@@ -79,6 +79,8 @@ Enabling these features might cause issues or incompatibilities with other plugi
 
 - To add new features, create a new folder in the `features/` directory and put your main code inside together with (optional) extra data and/or assets.
 
+- special category features (archived and staff only) should be put inside their respective part of the popup.html file.
+
 - Add your feature to the popup by adding:
 popup.HTML:
 

@@ -209,6 +209,11 @@
       "run_at": "document_idle"
     },
     {
+      "matches": ["https://client.falixnodes.net/support/viewticket.php*"],
+      "js": ["features/staff-only/switch-ticket-buttons/index.js"],
+      "run_at": "document_idle"
+    },
+    {
       "matches": ["https://client.falixnodes.net/admin/ListTickets"],
       "js": ["features/staff-only/shorten-reply-status/index.js"],
       "run_at": "document_idle"
