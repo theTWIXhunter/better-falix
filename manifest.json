@@ -141,6 +141,11 @@
       "run_at": "document_idle"
     },
     {
+      "matches": ["https://client.falixnodes.net/server/*"],
+      "js": ["features/archived/remove-external-start-nav/index.js"],
+      "run_at": "document_idle"
+    },
+    {
       "matches": ["https://client.falixnodes.net/*"],
       "js": ["features/navigation/remove-navbar-support-links/index.js"],
       "run_at": "document_idle"
