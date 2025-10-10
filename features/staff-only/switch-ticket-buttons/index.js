@@ -11,23 +11,17 @@ chrome.storage.sync.get({ switchTicketButtons: false, enabled: true }, (data) =>
   // --------- START FEATURE ----------
 
   function switchTicketButtonsText() {
-    // Find buttons that contain "close ticket" and "leave ticket open" text
-    const buttons = document.querySelectorAll('button, .btn, input[type="button"], input[type="submit"]');
+    // Find buttons by their specific CSS classes in the SweetAlert modal
+    const closeTicketButton = document.querySelector('.swal2-confirm.swal2-styled');
+    const leaveOpenButton = document.querySelector('.swal2-cancel.swal2-styled');
     
-    let closeTicketButton = null;
-    let leaveOpenButton = null;
+    if (closeTicketButton) {
+      console.log('[better-falix] Switch Ticket Buttons: Found close ticket button:', closeTicketButton.textContent.trim());
+    }
     
-    buttons.forEach(button => {
-      const buttonText = button.textContent.trim().toLowerCase();
-      
-      if (buttonText.includes('yes, close it') || buttonText.includes('close it')) {
-        closeTicketButton = button;
-        console.log('[better-falix] Switch Ticket Buttons: Found close ticket button:', button.textContent.trim());
-      } else if (buttonText.includes('keep it open') || buttonText.includes('keep open')) {
-        leaveOpenButton = button;
-        console.log('[better-falix] Switch Ticket Buttons: Found leave open button:', button.textContent.trim());
-      }
-    });
+    if (leaveOpenButton) {
+      console.log('[better-falix] Switch Ticket Buttons: Found leave open button:', leaveOpenButton.textContent.trim());
+    }
     
     // Switch the text content of the buttons
     if (closeTicketButton && leaveOpenButton) {
@@ -52,9 +46,10 @@ chrome.storage.sync.get({ switchTicketButtons: false, enabled: true }, (data) =>
   // Wait for the page to load and then switch the button texts
   function waitForElements() {
     const checkInterval = setInterval(() => {
-      const buttons = document.querySelectorAll('button, .btn, input[type="button"], input[type="submit"]');
+      const closeButton = document.querySelector('.swal2-confirm.swal2-styled');
+      const cancelButton = document.querySelector('.swal2-cancel.swal2-styled');
       
-      if (buttons.length > 0) {
+      if (closeButton && cancelButton) {
         clearInterval(checkInterval);
         switchTicketButtonsText();
       }
