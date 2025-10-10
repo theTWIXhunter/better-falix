@@ -23,12 +23,12 @@ chrome.storage.sync.get({ switchTicketButtons: false, enabled: true }, (data) =>
       console.log('[better-falix] Switch Ticket Buttons: Found leave open button:', leaveOpenButton.textContent.trim());
     }
     
-    // Switch both the text content AND the CSS classes/functionality of the buttons
+    // Switch both the text content and the CSS classes/functionality
     if (closeTicketButton && leaveOpenButton) {
       const closeText = closeTicketButton.textContent.trim();
       const leaveText = leaveOpenButton.textContent.trim();
       
-      console.log('[better-falix] Switch Ticket Buttons: Switching button texts and classes');
+      console.log('[better-falix] Switch Ticket Buttons: Switching button texts and actions');
       console.log('[better-falix] Switch Ticket Buttons: Close button had:', closeText);
       console.log('[better-falix] Switch Ticket Buttons: Leave button had:', leaveText);
       
@@ -36,7 +36,7 @@ chrome.storage.sync.get({ switchTicketButtons: false, enabled: true }, (data) =>
       closeTicketButton.textContent = leaveText;
       leaveOpenButton.textContent = closeText;
       
-      // Swap CSS classes to swap functionality
+      // Swap the CSS classes to swap functionality
       // Remove current classes
       closeTicketButton.classList.remove('swal2-confirm');
       closeTicketButton.classList.add('swal2-cancel');
@@ -44,14 +44,13 @@ chrome.storage.sync.get({ switchTicketButtons: false, enabled: true }, (data) =>
       leaveOpenButton.classList.remove('swal2-cancel');
       leaveOpenButton.classList.add('swal2-confirm');
       
-      // Swap background colors to maintain visual consistency
-      const closeButtonStyle = closeTicketButton.style.backgroundColor;
-      const leaveButtonStyle = leaveOpenButton.style.backgroundColor;
+      // Swap background colors to match the new roles
+      const closeStyle = closeTicketButton.style.backgroundColor;
+      const leaveStyle = leaveOpenButton.style.backgroundColor;
+      closeTicketButton.style.backgroundColor = leaveStyle;
+      leaveOpenButton.style.backgroundColor = closeStyle;
       
-      closeTicketButton.style.backgroundColor = leaveButtonStyle;
-      leaveOpenButton.style.backgroundColor = closeButtonStyle;
-      
-      console.log('[better-falix] Switch Ticket Buttons: Successfully switched button texts and functionality');
+      console.log('[better-falix] Switch Ticket Buttons: Successfully switched button texts and actions');
     } else {
       console.log('[better-falix] Switch Ticket Buttons: Could not find both buttons');
       console.log('[better-falix] Switch Ticket Buttons: Close button found:', !!closeTicketButton);
