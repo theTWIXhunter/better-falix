@@ -19,50 +19,48 @@ chrome.storage.sync.get({ switchTicketButtons: false, enabled: true }, (data) =>
 
     console.log('[better-falix] Switch Ticket Buttons: Found swal2-actions container');
 
-    // Find the confirm and cancel buttons
-    const confirmButton = actionsContainer.querySelector('.swal2-confirm');
-    const cancelButton = actionsContainer.querySelector('.swal2-cancel');
+    // Find the original buttons to get their onclick handlers
+    const originalConfirmButton = actionsContainer.querySelector('.swal2-confirm');
+    const originalCancelButton = actionsContainer.querySelector('.swal2-cancel');
 
-    if (!confirmButton || !cancelButton) {
+    if (!originalConfirmButton || !originalCancelButton) {
       console.log('[better-falix] Switch Ticket Buttons: Buttons not found');
       return;
     }
 
     console.log('[better-falix] Switch Ticket Buttons: Found both buttons');
-    console.log('[better-falix] Switch Ticket Buttons: Confirm button text:', confirmButton.textContent.trim());
-    console.log('[better-falix] Switch Ticket Buttons: Cancel button text:', cancelButton.textContent.trim());
+    console.log('[better-falix] Switch Ticket Buttons: Original confirm text:', originalConfirmButton.textContent.trim());
+    console.log('[better-falix] Switch Ticket Buttons: Original cancel text:', originalCancelButton.textContent.trim());
 
-    // Store the original text and onclick handlers
-    const confirmText = confirmButton.textContent.trim();
-    const cancelText = cancelButton.textContent.trim();
-    const confirmHandler = confirmButton.onclick;
-    const cancelHandler = cancelButton.onclick;
+    // Store the original onclick handlers
+    const originalConfirmHandler = originalConfirmButton.onclick;
+    const originalCancelHandler = originalCancelButton.onclick;
 
-    // Switch the text content
-    confirmButton.textContent = cancelText;
-    cancelButton.textContent = confirmText;
+    // Store original click event listeners by cloning
+    const originalConfirmClone = originalConfirmButton.cloneNode(true);
+    const originalCancelClone = originalCancelButton.cloneNode(true);
 
-    // Switch the onclick handlers
-    confirmButton.onclick = cancelHandler;
-    cancelButton.onclick = confirmHandler;
+    // Replace the entire swal2-actions HTML structure
+    actionsContainer.innerHTML = `
+      <div class="swal2-loader"></div>
+      <button type="button" class="swal2-confirm swal2-styled swal2-default-outline" aria-label="" style="display: inline-block; background-color: rgb(108, 117, 125);">Keep it open</button>
+      <button type="button" class="swal2-deny swal2-styled" aria-label="" style="display: none;">No</button>
+      <button type="button" class="swal2-cancel swal2-styled swal2-default-outline" aria-label="" style="display: inline-block; background-color: rgb(220, 38, 38);">Yes, close it</button>
+    `;
 
-    // Also handle click event listeners if they exist
-    const confirmClone = confirmButton.cloneNode(true);
-    const cancelClone = cancelButton.cloneNode(true);
+    // Get the new buttons after HTML replacement
+    const newConfirmButton = actionsContainer.querySelector('.swal2-confirm');
+    const newCancelButton = actionsContainer.querySelector('.swal2-cancel');
 
-    // Set the switched text again after cloning
-    confirmClone.textContent = cancelText;
-    cancelClone.textContent = confirmText;
+    if (newConfirmButton && newCancelButton) {
+      // Assign the SWAPPED handlers - confirm gets original cancel's handler, cancel gets original confirm's handler
+      newConfirmButton.onclick = originalCancelHandler; // "Keep it open" should do what "cancel" originally did
+      newCancelButton.onclick = originalConfirmHandler; // "Yes, close it" should do what "confirm" originally did
 
-    // Replace the buttons with the clones to remove old event listeners
-    confirmButton.parentNode.replaceChild(confirmClone, confirmButton);
-    cancelButton.parentNode.replaceChild(cancelClone, cancelButton);
-
-    // Add back the switched handlers
-    confirmClone.onclick = cancelHandler;
-    cancelClone.onclick = confirmHandler;
-
-    console.log('[better-falix] Switch Ticket Buttons: Successfully switched button text and actions');
+      console.log('[better-falix] Switch Ticket Buttons: Successfully replaced HTML and switched button actions');
+      console.log('[better-falix] Switch Ticket Buttons: New confirm text:', newConfirmButton.textContent.trim());
+      console.log('[better-falix] Switch Ticket Buttons: New cancel text:', newCancelButton.textContent.trim());
+    }
   }
 
   // Use MutationObserver to watch for the modal appearing
