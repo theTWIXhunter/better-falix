@@ -10,51 +10,58 @@ chrome.storage.sync.get({ switchTicketButtons: false, enabled: true }, (data) =>
 
   // --------- START FEATURE ----------
 
+  // Intercept SweetAlert2 fire method to swap button configurations
+  function interceptSwal() {
+    if (typeof Swal !== 'undefined') {
+      const originalFire = Swal.fire;
+      
+      Swal.fire = function(config) {
+        // Check if this is a confirmation dialog with both confirm and cancel buttons
+        if (config && config.showCancelButton && config.confirmButtonText && config.cancelButtonText) {
+          console.log('[better-falix] Switch Ticket Buttons: Intercepting SweetAlert with confirm/cancel buttons');
+          console.log('[better-falix] Switch Ticket Buttons: Original confirm text:', config.confirmButtonText);
+          console.log('[better-falix] Switch Ticket Buttons: Original cancel text:', config.cancelButtonText);
+          
+          // Swap the button texts and their associated actions
+          const originalConfirmText = config.confirmButtonText;
+          const originalCancelText = config.cancelButtonText;
+          const originalConfirmColor = config.confirmButtonColor;
+          const originalCancelColor = config.cancelButtonColor;
+          
+          // Swap texts
+          config.confirmButtonText = originalCancelText;
+          config.cancelButtonText = originalConfirmText;
+          
+          // Swap colors if they exist
+          if (originalConfirmColor || originalCancelColor) {
+            config.confirmButtonColor = originalCancelColor;
+            config.cancelButtonColor = originalConfirmColor;
+          }
+          
+          console.log('[better-falix] Switch Ticket Buttons: Swapped confirm text:', config.confirmButtonText);
+          console.log('[better-falix] Switch Ticket Buttons: Swapped cancel text:', config.cancelButtonText);
+        }
+        
+        return originalFire.call(this, config);
+      };
+      
+      console.log('[better-falix] Switch Ticket Buttons: Successfully intercepted Swal.fire');
+    } else {
+      console.log('[better-falix] Switch Ticket Buttons: Swal not found, retrying...');
+      // Retry after a short delay
+      setTimeout(interceptSwal, 100);
+    }
+  }
+
   function switchTicketButtonsText() {
-    // Find buttons by their specific CSS classes in the SweetAlert modal
+    // This function is now mainly for fallback/debugging
     const closeTicketButton = document.querySelector('.swal2-confirm.swal2-styled');
     const leaveOpenButton = document.querySelector('.swal2-cancel.swal2-styled');
     
-    if (closeTicketButton) {
-      console.log('[better-falix] Switch Ticket Buttons: Found close ticket button:', closeTicketButton.textContent.trim());
-    }
-    
-    if (leaveOpenButton) {
-      console.log('[better-falix] Switch Ticket Buttons: Found leave open button:', leaveOpenButton.textContent.trim());
-    }
-    
-    // Switch both the text content and the CSS classes/functionality
     if (closeTicketButton && leaveOpenButton) {
-      const closeText = closeTicketButton.textContent.trim();
-      const leaveText = leaveOpenButton.textContent.trim();
-      
-      console.log('[better-falix] Switch Ticket Buttons: Switching button texts and actions');
-      console.log('[better-falix] Switch Ticket Buttons: Close button had:', closeText);
-      console.log('[better-falix] Switch Ticket Buttons: Leave button had:', leaveText);
-      
-      // Swap text content
-      closeTicketButton.textContent = leaveText;
-      leaveOpenButton.textContent = closeText;
-      
-      // Swap the CSS classes to swap functionality
-      // Remove current classes
-      closeTicketButton.classList.remove('swal2-confirm');
-      closeTicketButton.classList.add('swal2-cancel');
-      
-      leaveOpenButton.classList.remove('swal2-cancel');
-      leaveOpenButton.classList.add('swal2-confirm');
-      
-      // Swap background colors to match the new roles
-      const closeStyle = closeTicketButton.style.backgroundColor;
-      const leaveStyle = leaveOpenButton.style.backgroundColor;
-      closeTicketButton.style.backgroundColor = leaveStyle;
-      leaveOpenButton.style.backgroundColor = closeStyle;
-      
-      console.log('[better-falix] Switch Ticket Buttons: Successfully switched button texts and actions');
-    } else {
-      console.log('[better-falix] Switch Ticket Buttons: Could not find both buttons');
-      console.log('[better-falix] Switch Ticket Buttons: Close button found:', !!closeTicketButton);
-      console.log('[better-falix] Switch Ticket Buttons: Leave open button found:', !!leaveOpenButton);
+      console.log('[better-falix] Switch Ticket Buttons: Found existing modal buttons');
+      console.log('[better-falix] Switch Ticket Buttons: Confirm button text:', closeTicketButton.textContent.trim());
+      console.log('[better-falix] Switch Ticket Buttons: Cancel button text:', leaveOpenButton.textContent.trim());
     }
   }
 
@@ -105,8 +112,12 @@ chrome.storage.sync.get({ switchTicketButtons: false, enabled: true }, (data) =>
 
   // Start the process
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', waitForElements);
+    document.addEventListener('DOMContentLoaded', () => {
+      interceptSwal();
+      waitForElements();
+    });
   } else {
+    interceptSwal();
     waitForElements();
   }
 
