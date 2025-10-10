@@ -43,16 +43,15 @@ chrome.storage.sync.get({ switchTicketButtons: false, enabled: true }, (data) =>
     const newCancelButton = actionsContainer.querySelector('.swal2-cancel');
 
     if (newConfirmButton && newCancelButton) {
-      // Instead of trying to preserve handlers, trigger the original buttons when new ones are clicked
+      // The actions should match the button text (not swapped)
       newConfirmButton.addEventListener('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
-        console.log('[better-falix] Switch Ticket Buttons: New confirm button (Keep it open) clicked - triggering original cancel');
+        console.log('[better-falix] Switch Ticket Buttons: "Keep it open" clicked - triggering CANCEL action');
         
-        // Create and dispatch a click event on the original cancel button logic
-        // Find if there's a Swal instance and call the appropriate method
+        // "Keep it open" should trigger the CANCEL action (close the modal without confirming)
         if (window.Swal && window.Swal.getPopup()) {
-          window.Swal.close(); // This simulates clicking "cancel/keep open"
+          window.Swal.close();
         } else {
           // Fallback: simulate click on original cancel button
           originalCancelButton.click();
@@ -62,19 +61,11 @@ chrome.storage.sync.get({ switchTicketButtons: false, enabled: true }, (data) =>
       newCancelButton.addEventListener('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
-        console.log('[better-falix] Switch Ticket Buttons: New cancel button (Yes, close it) clicked - triggering original confirm');
+        console.log('[better-falix] Switch Ticket Buttons: "Yes, close it" clicked - triggering CONFIRM action');
         
-        // Create and dispatch a click event on the original confirm button logic
+        // "Yes, close it" should trigger the CONFIRM action (actually close the ticket)
         if (window.Swal && window.Swal.getPopup()) {
-          // Try to find the Swal instance and call confirm
-          const popup = window.Swal.getPopup();
-          const confirmBtn = popup.querySelector('.swal2-confirm');
-          if (confirmBtn && confirmBtn !== newConfirmButton) {
-            confirmBtn.click();
-          } else {
-            // Alternative: check if there's a resolve function we can call
-            window.Swal.clickConfirm();
-          }
+          window.Swal.clickConfirm();
         } else {
           // Fallback: simulate click on original confirm button
           originalConfirmButton.click();
