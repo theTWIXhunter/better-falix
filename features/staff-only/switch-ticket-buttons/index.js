@@ -23,19 +23,35 @@ chrome.storage.sync.get({ switchTicketButtons: false, enabled: true }, (data) =>
       console.log('[better-falix] Switch Ticket Buttons: Found leave open button:', leaveOpenButton.textContent.trim());
     }
     
-    // Switch the text content of the buttons
+    // Switch both the text content AND the CSS classes/functionality of the buttons
     if (closeTicketButton && leaveOpenButton) {
       const closeText = closeTicketButton.textContent.trim();
       const leaveText = leaveOpenButton.textContent.trim();
       
-      console.log('[better-falix] Switch Ticket Buttons: Switching button texts');
+      console.log('[better-falix] Switch Ticket Buttons: Switching button texts and classes');
       console.log('[better-falix] Switch Ticket Buttons: Close button had:', closeText);
       console.log('[better-falix] Switch Ticket Buttons: Leave button had:', leaveText);
       
+      // Swap text content
       closeTicketButton.textContent = leaveText;
       leaveOpenButton.textContent = closeText;
       
-      console.log('[better-falix] Switch Ticket Buttons: Successfully switched button texts');
+      // Swap CSS classes to swap functionality
+      // Remove current classes
+      closeTicketButton.classList.remove('swal2-confirm');
+      closeTicketButton.classList.add('swal2-cancel');
+      
+      leaveOpenButton.classList.remove('swal2-cancel');
+      leaveOpenButton.classList.add('swal2-confirm');
+      
+      // Swap background colors to maintain visual consistency
+      const closeButtonStyle = closeTicketButton.style.backgroundColor;
+      const leaveButtonStyle = leaveOpenButton.style.backgroundColor;
+      
+      closeTicketButton.style.backgroundColor = leaveButtonStyle;
+      leaveOpenButton.style.backgroundColor = closeButtonStyle;
+      
+      console.log('[better-falix] Switch Ticket Buttons: Successfully switched button texts and functionality');
     } else {
       console.log('[better-falix] Switch Ticket Buttons: Could not find both buttons');
       console.log('[better-falix] Switch Ticket Buttons: Close button found:', !!closeTicketButton);
