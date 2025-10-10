@@ -223,6 +223,11 @@
       "js": ["features/staff-only/hide-closed-tickets/index.js"],
       "run_at": "document_idle"
     },
+    {
+      "matches": ["https://client.falixnodes.net/support/viewticket.php*"],
+      "js": ["features/staff-only/switch-ticket-buttons/index.js"],
+      "run_at": "document_idle"
+    },
 
 
 
