@@ -43,17 +43,24 @@ chrome.storage.sync.get({ switchTicketButtons: false, enabled: true }, (data) =>
     const newCancelButton = actionsContainer.querySelector('.swal2-cancel');
 
     if (newConfirmButton && newCancelButton) {
-      // The actions should match the button text (not swapped)
+      // The actions should match the current button text exactly
       newConfirmButton.addEventListener('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
-        console.log('[better-falix] Switch Ticket Buttons: "Keep it open" clicked - triggering CANCEL action');
+        console.log('[better-falix] Switch Ticket Buttons: "Keep it open" clicked - should CANCEL (keep ticket open)');
         
-        // "Keep it open" should trigger the CANCEL action (close the modal without confirming)
+        // "Keep it open" text means we should CANCEL the close action (keep the ticket open)
         if (window.Swal && window.Swal.getPopup()) {
-          window.Swal.close();
+          // Try multiple ways to cancel/close the modal without confirming
+          if (window.Swal.close) {
+            window.Swal.close();
+          } else if (window.Swal.clickCancel) {
+            window.Swal.clickCancel();
+          } else {
+            window.Swal.dismiss();
+          }
         } else {
-          // Fallback: simulate click on original cancel button
+          // Fallback: simulate click on original cancel button  
           originalCancelButton.click();
         }
       });
@@ -61,11 +68,21 @@ chrome.storage.sync.get({ switchTicketButtons: false, enabled: true }, (data) =>
       newCancelButton.addEventListener('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
-        console.log('[better-falix] Switch Ticket Buttons: "Yes, close it" clicked - triggering CONFIRM action');
+        console.log('[better-falix] Switch Ticket Buttons: "Yes, close it" clicked - should CONFIRM (close ticket)');
         
-        // "Yes, close it" should trigger the CONFIRM action (actually close the ticket)
+        // "Yes, close it" text means we should CONFIRM the close action (actually close the ticket)
         if (window.Swal && window.Swal.getPopup()) {
-          window.Swal.clickConfirm();
+          // Try multiple ways to confirm the action
+          if (window.Swal.clickConfirm) {
+            window.Swal.clickConfirm();
+          } else {
+            // Alternative approach: find and click the original confirm button
+            const popup = window.Swal.getPopup();
+            const originalConfirm = popup.querySelector('.swal2-confirm:not([style*="Keep it open"])');
+            if (originalConfirm) {
+              originalConfirm.click();
+            }
+          }
         } else {
           // Fallback: simulate click on original confirm button
           originalConfirmButton.click();
