@@ -106,23 +106,16 @@ chrome.storage.sync.get({ enabled: true, replaceAccountCategory: false }, (data)
       // Optionally add an icon
       logout.innerHTML = '<i class="fa-solid fa-arrow-right-from-bracket"></i> Logout';
 
-      // Divider
+      // Divider (only above logout)
       const divider = document.createElement('div');
       divider.style.height = '1px';
       divider.style.background = 'var(--bs-border-color, #23272b)';
       divider.style.margin = '0.25rem 0';
 
-      // Clone divider for sessions
-      const sessionsDivider = divider.cloneNode(true);
-      // Clone divider for activity
-      const activityDivider = divider.cloneNode(true);
-
       popup.appendChild(settings);
-      popup.appendChild(divider);
       popup.appendChild(sessions);
-      popup.appendChild(sessionsDivider);
       popup.appendChild(activity);
-      popup.appendChild(activityDivider);
+      popup.appendChild(divider);
       popup.appendChild(logout);
 
       document.body.appendChild(popup);
