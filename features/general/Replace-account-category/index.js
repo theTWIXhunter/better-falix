@@ -55,6 +55,23 @@ chrome.storage.sync.get({ enabled: true, replaceAccountCategory: false }, (data)
       // Optionally add an icon
       settings.innerHTML = '<i class="fa-solid fa-user-gear"></i> Profile Settings';
 
+      // Sessions
+      const sessions = document.createElement('a');
+      sessions.href = 'https://client.falixnodes.net/profile/sessions';
+      sessions.textContent = 'Sessions';
+      sessions.style.display = 'flex';
+      sessions.style.alignItems = 'center';
+      sessions.style.gap = '0.5rem';
+      sessions.style.padding = '0.75rem 1.25rem';
+      sessions.style.color = 'var(--bs-light, #fff)';
+      sessions.style.textDecoration = 'none';
+      sessions.style.cursor = 'pointer';
+      sessions.style.transition = 'background 0.15s';
+      sessions.addEventListener('mouseover', () => sessions.style.background = 'var(--bs-secondary-bg, #23272b)');
+      sessions.addEventListener('mouseout', () => sessions.style.background = 'none');
+      // Optionally add an icon
+      sessions.innerHTML = '<i class="fa-solid fa-desktop"></i> Sessions';
+
       // Activity
       const activity = document.createElement('a');
       activity.href = 'https://client.falixnodes.net/profile/activity';
@@ -95,10 +112,17 @@ chrome.storage.sync.get({ enabled: true, replaceAccountCategory: false }, (data)
       divider.style.background = 'var(--bs-border-color, #23272b)';
       divider.style.margin = '0.25rem 0';
 
+      // Clone divider for sessions
+      const sessionsDivider = divider.cloneNode(true);
+      // Clone divider for activity
+      const activityDivider = divider.cloneNode(true);
+
       popup.appendChild(settings);
       popup.appendChild(divider);
+      popup.appendChild(sessions);
+      popup.appendChild(sessionsDivider);
       popup.appendChild(activity);
-      popup.appendChild(divider);
+      popup.appendChild(activityDivider);
       popup.appendChild(logout);
 
       document.body.appendChild(popup);
