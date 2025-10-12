@@ -10,7 +10,14 @@ chrome.storage.sync.get({ renameAddonsToMods: false, enabled: true }, (data) => 
 
   //  --------- START FEATURE ----------
 
+  let hasProcessed = false;
+
   function renameAddonsToMods() {
+    // Prevent continuous processing if already done
+    if (hasProcessed) {
+      return;
+    }
+
     //console.log('[Better-Falix] rename-addons-to-mods: Running renameAddonsToMods function');
     // Find navigation items in the Minecraft category
     const navItems = document.querySelectorAll('.nav-item');
@@ -37,6 +44,7 @@ chrome.storage.sync.get({ renameAddonsToMods: false, enabled: true }, (data) => 
           }
           
           //console.log('[Better-Falix] rename-addons-to-mods: Renamed Addons to Mods');
+          hasProcessed = true; // Mark as processed
           break;
         }
       }
@@ -68,13 +76,6 @@ chrome.storage.sync.get({ renameAddonsToMods: false, enabled: true }, (data) => 
 
   // Run the function immediately
   renameAddonsToMods();
-
-  // Also watch for dynamically loaded content
-  const observer = new MutationObserver(() => {
-    renameAddonsToMods();
-  });
-
-  observer.observe(document.body, { childList: true, subtree: true });
 
   console.log('[Better-Falix] rename-addons-to-mods: Script loaded successfully');
 });
