@@ -49,23 +49,15 @@ function addSplitAddonsTabs() {
       return;
     }
 
-    // Get the server ID from the current URL
-    const serverIdMatch = window.location.pathname.match(/\/server\/([^\/]+)/);
-    if (!serverIdMatch) {
-      console.log('[Better Falix] Could not extract server ID');
-      return;
-    }
-    const serverId = serverIdMatch[1];
-
     // Hide the original addons tab
     addonsTab.style.display = 'none';
 
     // Create the new split tabs
     const tabsData = [
-      { name: 'Plugins', url: `/server/${serverId}/plugins`, icon: 'fa-puzzle-piece' },
-      { name: 'Mods', url: `/server/${serverId}/mods`, icon: 'fa-wrench' },
-      { name: 'Modpacks', url: `/server/${serverId}/modpacks`, icon: 'fa-box' },
-      { name: 'Datapacks', url: `/server/${serverId}/datapacks`, icon: 'fa-database' }
+      { name: 'Plugins', url: 'https://client.falixnodes.net/server/plugins', icon: 'fa-puzzle-piece' },
+      { name: 'Mods', url: 'https://client.falixnodes.net/server/mods', icon: 'fa-wrench' },
+      { name: 'Modpacks', url: 'https://client.falixnodes.net/server/modpacks', icon: 'fa-box' },
+      { name: 'Datapacks', url: 'https://client.falixnodes.net/server/datapacks', icon: 'fa-database' }
     ];
 
     // Insert the new tabs after the addons tab
@@ -80,7 +72,7 @@ function addSplitAddonsTabs() {
       link.href = tabData.url;
       
       // Check if this is the current page to add active class
-      if (window.location.pathname.includes(tabData.url)) {
+      if (window.location.href === tabData.url) {
         link.classList.add('active');
       }
       
