@@ -130,7 +130,7 @@ Start your script with:
 console.log('[better-falix] FEATURE-NAME: Script loading');
 
 chrome.storage.sync.get({ featureName: false, enabled: true }, (data) => {
-  if (!data.enabled || !data featureName) {
+  if (!data.enabled || !data.featureName) {
     console.log('[better-falix] FEATURE-NAME: Script disabled');
     return;
   }
