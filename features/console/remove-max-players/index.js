@@ -19,7 +19,7 @@ chrome.storage.sync.get({ removeMaxPlayers: false, enabled: true }, (data) => {
     infoCards.forEach((card, index) => {
       const headerText = card.querySelector('.compact-info-header');
       
-      if (headerText && headerText.textContent.trim().toLowerCase().includes('max players')) {
+      if (headerText && headerText.textContent && headerText.textContent.trim().toLowerCase().includes('max players')) {
         //console.log('[better-falix] Remove Max Players: Found Max Players card at index', index);
         card.remove();
         //console.log('[better-falix] Remove Max Players: Successfully removed Max Players card');
