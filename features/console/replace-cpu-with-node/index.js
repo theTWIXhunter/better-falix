@@ -33,16 +33,30 @@ chrome.storage.sync.get({ replaceCpuWithNode: false, enabled: true }, (data) => 
     }
 
     // Find the node information from the third span with class="support-info-text"
+    // Also check the new modal structure created by replace-support-modal feature
     const supportInfoSpans = document.querySelectorAll('span.support-info-text');
-    console.log('[better-falix] Replace CPU with Node: Found', supportInfoSpans.length, 'support info spans');
+    const bedrockValues = document.querySelectorAll('.bedrock-value');
     
-    if (supportInfoSpans.length < 3) {
-      console.log('[better-falix] Replace-CPU-with-Node: Not enough support info spans found');
+    console.log('[better-falix] Replace CPU with Node: Found', supportInfoSpans.length, 'support info spans');
+    console.log('[better-falix] Replace CPU with Node: Found', bedrockValues.length, 'bedrock values');
+    
+    let nodeInfo = null;
+    
+    // Try to get node info from original structure first
+    if (supportInfoSpans.length >= 3) {
+      nodeInfo = supportInfoSpans[2].textContent.trim();
+      console.log('[better-falix] Replace CPU with Node: Found node info from original structure:', nodeInfo);
+    }
+    // If that fails, try to get it from the new modal structure (replace-support-modal)
+    else if (bedrockValues.length >= 3) {
+      nodeInfo = bedrockValues[2].textContent.trim();
+      console.log('[better-falix] Replace CPU with Node: Found node info from new modal structure:', nodeInfo);
+    }
+    
+    if (!nodeInfo) {
+      console.log('[better-falix] Replace-CPU-with-Node: Node information not found in either structure');
       return;
     }
-
-    const nodeInfo = supportInfoSpans[2].textContent.trim();
-    console.log('[better-falix] Replace CPU with Node: Found node info:', nodeInfo);
 
     // Replace the header text (keep the original CPU icon)
     const headerElement = targetCard.querySelector('.compact-info-header');
@@ -64,12 +78,17 @@ chrome.storage.sync.get({ replaceCpuWithNode: false, enabled: true }, (data) => 
     const checkInterval = setInterval(() => {
       const cpuCard = document.querySelector('.compact-info-card');
       const supportInfoSpans = document.querySelectorAll('span.support-info-text');
+      const bedrockValues = document.querySelectorAll('.bedrock-value');
       
-      if (cpuCard && supportInfoSpans.length >= 3) {
+      // Check if we have either the original structure or the new modal structure
+      const hasOriginalStructure = cpuCard && supportInfoSpans.length >= 3;
+      const hasNewStructure = cpuCard && bedrockValues.length >= 3;
+      
+      if (hasOriginalStructure || hasNewStructure) {
         clearInterval(checkInterval);
         replaceCpuWithNode();
       }
-    });
+    }, 100);
 
     // Stop checking after 10 seconds
     setTimeout(() => {
