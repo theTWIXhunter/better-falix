@@ -48,9 +48,25 @@ chrome.storage.sync.get({ replaceCpuWithNode: false, enabled: true }, (data) => 
       console.log('[better-falix] Replace CPU with Node: Found node info from original structure:', nodeInfo);
     }
     // If that fails, try to get it from the new modal structure (replace-support-modal)
+    // Look specifically for the bedrock-value that has node information (should contain node name)
     else if (bedrockValues.length >= 3) {
-      nodeInfo = bedrockValues[2].textContent.trim();
-      console.log('[better-falix] Replace CPU with Node: Found node info from new modal structure:', nodeInfo);
+      // Check each bedrock-value to find the one that looks like a node name
+      for (let i = 0; i < bedrockValues.length; i++) {
+        const value = bedrockValues[i].textContent.trim();
+        console.log('[better-falix] Replace CPU with Node: Checking bedrock-value', i, ':', value);
+        // Node names typically contain letters and numbers, not just numbers
+        if (value && value.length > 2 && /[a-zA-Z]/.test(value) && !value.includes('@') && !value.includes('.')) {
+          nodeInfo = value;
+          console.log('[better-falix] Replace CPU with Node: Found node info from new modal structure:', nodeInfo);
+          break;
+        }
+      }
+      
+      // If no suitable node name found, fall back to the third element
+      if (!nodeInfo && bedrockValues.length >= 3) {
+        nodeInfo = bedrockValues[2].textContent.trim();
+        console.log('[better-falix] Replace CPU with Node: Using fallback - third bedrock-value:', nodeInfo);
+      }
     }
     
     if (!nodeInfo) {
