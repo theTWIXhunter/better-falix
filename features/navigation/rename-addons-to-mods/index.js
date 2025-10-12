@@ -11,7 +11,7 @@ chrome.storage.sync.get({ renameAddonsToMods: false, enabled: true }, (data) => 
   //  --------- START FEATURE ----------
 
   function renameAddonsToMods() {
-    console.log('[Better-Falix] rename-addons-to-mods: Running renameAddonsToMods function');
+    //console.log('[Better-Falix] rename-addons-to-mods: Running renameAddonsToMods function');
     // Find navigation items in the Minecraft category
     const navItems = document.querySelectorAll('.nav-item');
     //console.log('[Better-Falix] rename-addons-to-mods: Found', navItems.length, 'nav items');
