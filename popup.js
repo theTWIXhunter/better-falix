@@ -37,6 +37,7 @@ const featureIds = [
   'editorFullscreen',
   'removeServerSearch',
   'hideSupportCategory',
+  'splitAddonsTabs',
   'hideClosedTickets',
   'removeLogsContainer',
   'redactedContentSubtle',
@@ -157,6 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
     addAdminCategory: false,
     switchTicketButtons: false,
     hideSupportCategory: false,
+    splitAddonsTabs: false,
     hideClosedTickets: false
 
   }, (data) => {

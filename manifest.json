@@ -69,6 +69,11 @@
       "js": ["features/general/Replace-account-category/index.js"],
       "run_at": "document_idle"
     },
+    {
+      "matches": ["https://client.falixnodes.net/server/*"],
+      "js": ["features/general/split-addons-tabs/index.js"],
+      "run_at": "document_idle"
+    },
 
 
 
