@@ -144,8 +144,10 @@ chrome.storage.sync.get({ featureName: false, enabled: true }, (data) => {
 All logging should use the following format:
 
 ```log
-[Better-Falix] FEATURENAME: logged message here
+[Better-Falix] FEATURE-NAME: logged message here
 ```
+
+with the FEATURE-NAME being the name of the folder (with -)
 
 A basic feature logs the following events:
 

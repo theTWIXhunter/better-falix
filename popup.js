@@ -39,6 +39,7 @@ const featureIds = [
   'hideSupportCategory',
   'splitAddonsTabs',
   'renameConfigToProperties',
+  'renameAddonsToMods',
   'hideClosedTickets',
   'removeLogsContainer',
   'redactedContentSubtle',
@@ -161,6 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
     hideSupportCategory: false,
     splitAddonsTabs: false,
     renameConfigToProperties: false,
+    renameAddonsToMods: false,
     hideClosedTickets: false
 
   }, (data) => {
