@@ -17,8 +17,19 @@ chrome.storage.sync.get({ renameConfigToProperties: false, enabled: true }, (dat
     for (const item of navItems) {
       const link = item.querySelector('a');
       if (link && link.textContent.trim().toLowerCase() === 'config') {
-        // Change the text content to "Properties"
-        link.textContent = 'Properties';
+        // Find the icon element (usually an <i> tag)
+        const icon = link.querySelector('i');
+        
+        if (icon) {
+          // Keep the icon and update the text content
+          link.innerHTML = '';
+          link.appendChild(icon);
+          link.appendChild(document.createTextNode(' Properties'));
+        } else {
+          // No icon found, just change text
+          link.textContent = 'Properties';
+        }
+        
         console.log('[Better-Falix] rename-Config-To-Properties: Renamed Config to Properties');
         break;
       }
@@ -29,7 +40,20 @@ chrome.storage.sync.get({ renameConfigToProperties: false, enabled: true }, (dat
     for (const link of allLinks) {
       if (link.textContent.trim().toLowerCase() === 'config' && 
           link.href && link.href.includes('/server/') && link.href.includes('/properties')) {
-        link.textContent = 'Properties';
+        
+        // Find the icon element (usually an <i> tag)
+        const icon = link.querySelector('i');
+        
+        if (icon) {
+          // Keep the icon and update the text content
+          link.innerHTML = '';
+          link.appendChild(icon);
+          link.appendChild(document.createTextNode(' Properties'));
+        } else {
+          // No icon found, just change text
+          link.textContent = 'Properties';
+        }
+        
         console.log('[Better-Falix] rename-Config-To-Properties: Renamed additional Config link to Properties');
       }
     }
