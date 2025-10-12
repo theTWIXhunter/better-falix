@@ -165,6 +165,11 @@
       "js": ["features/navigation/remove-console-files-category/index.js"],
       "run_at": "document_idle"
     },
+    {
+      "matches": ["https://client.falixnodes.net/server/*"],
+      "js": ["features/navigation/rename-config-to-properties/index.js"],
+      "run_at": "document_idle"
+    },
 
 
 

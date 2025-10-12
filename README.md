@@ -108,7 +108,7 @@ manifest.json:
 ```json
     {
       "matches": ["https://client.falixnodes.net/server/versions*"],
-      "js": ["features/FEATURENAME/index.js"],
+      "js": ["features/FEATURE-NAME/index.js"],
       "run_at": "document_idle"
     }
 ```
@@ -127,14 +127,14 @@ Start your script with:
 
 ```js
 // [better-falix] FEATURENAME: Script loading
-console.log('[better-falix] FEATURENAME: Script loading');
+console.log('[better-falix] FEATURE-NAME: Script loading');
 
-chrome.storage.sync.get({ FEATURENAME: false, enabled: true }, (data) => {
-  if (!data.enabled || !data FEATURENAME) {
-    console.log('[better-falix] FEATURENAME: Script disabled');
+chrome.storage.sync.get({ featureName: false, enabled: true }, (data) => {
+  if (!data.enabled || !data featureName) {
+    console.log('[better-falix] FEATURE-NAME: Script disabled');
     return;
   }
-  console.log('[better-falix] FEATURENAME: Script enabled');
+  console.log('[better-falix] FEATURE-NAME: Script enabled');
 
   //  --------- START FEATURE ----------
 ```
