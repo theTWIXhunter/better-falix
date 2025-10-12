@@ -1,9 +1,14 @@
-// Split Addons Tabs Feature
-// Splits the addons tab back into separate plugins, mods, modpacks, and datapacks tabs
-// and hides the content-type-nav on those pages
+// [better-falix] splitAddonsTabs: Script loading
+console.log('[better-falix] split-Addons-Tabs: Script loading');
 
-function addSplitAddonsTabs() {
-  console.log('[Better Falix] Split Addons Tabs feature loaded');
+chrome.storage.sync.get({ splitAddonsTabs: false, enabled: true }, (data) => {
+  if (!data.enabled || !data.splitAddonsTabs) {
+    console.log('[better-falix] split-Addons-Tabs: Script disabled');
+    return;
+  }
+  console.log('[better-falix] split-Addons-Tabs: Script enabled');
+
+  //  --------- START FEATURE ----------
 
   // Check if we're on a server page
   if (!window.location.pathname.includes('/server/')) {
@@ -15,7 +20,7 @@ function addSplitAddonsTabs() {
     const contentTypeNav = document.querySelector('.content-type-nav');
     if (contentTypeNav) {
       contentTypeNav.style.display = 'none';
-      console.log('[Better Falix] Hidden content-type-nav');
+      //console.log('[Better-Falix] split-Addons-Tabs: Hidden content-type-nav');
     }
   }
 
@@ -45,7 +50,7 @@ function addSplitAddonsTabs() {
     }
 
     if (!addonsTab) {
-      console.log('[Better Falix] Addons tab not found');
+      //console.log('[Better-Falix] split-Addons-Tabs: Addons tab not found');
       return;
     }
 
@@ -85,7 +90,7 @@ function addSplitAddonsTabs() {
       insertAfter = newTab;
     });
 
-    console.log('[Better Falix] Split addons tabs added successfully');
+    //console.log('[Better-Falix] split-Addons-Tabs: Split addons tabs added successfully');
   }
 
   // Try to add the tabs immediately
@@ -103,23 +108,6 @@ function addSplitAddonsTabs() {
   });
 
   observer.observe(document.body, { childList: true, subtree: true });
-}
 
-// Check if the feature is enabled
-chrome.storage.sync.get(['splitAddonsTabs'], (result) => {
-  if (result.splitAddonsTabs) {
-    addSplitAddonsTabs();
-  }
-});
-
-// Listen for storage changes
-chrome.storage.onChanged.addListener((changes) => {
-  if (changes.splitAddonsTabs) {
-    if (changes.splitAddonsTabs.newValue) {
-      addSplitAddonsTabs();
-    } else {
-      // Reload page to remove the feature
-      location.reload();
-    }
-  }
+  console.log('[Better-Falix] splitAddonsTabs: Script loaded successfully');
 });
