@@ -2,8 +2,9 @@
 console.log('[better-falix] rename-addons-to-mods: Script loading');
 
 chrome.storage.sync.get({ renameAddonsToMods: false, enabled: true }, (data) => {
+  console.log('[better-falix] rename-addons-to-mods: Storage data:', data);
   if (!data.enabled || !data.renameAddonsToMods) {
-    console.log('[better-falix] rename-addons-to-mods: Script disabled');
+    console.log('[better-falix] rename-addons-to-mods: Script disabled', 'enabled:', data.enabled, 'renameAddonsToMods:', data.renameAddonsToMods);
     return;
   }
   console.log('[better-falix] rename-addons-to-mods: Script enabled');
@@ -11,27 +12,34 @@ chrome.storage.sync.get({ renameAddonsToMods: false, enabled: true }, (data) => 
   //  --------- START FEATURE ----------
 
   function renameAddonsToMods() {
+    console.log('[Better-Falix] rename-addons-to-mods: Running renameAddonsToMods function');
     // Find navigation items in the Minecraft category
     const navItems = document.querySelectorAll('.nav-item');
+    console.log('[Better-Falix] rename-addons-to-mods: Found', navItems.length, 'nav items');
     
     for (const item of navItems) {
       const link = item.querySelector('a');
-      if (link && link.textContent.trim().toLowerCase().includes('addon')) {
-        // Find the icon element (usually an <i> tag)
-        const icon = link.querySelector('i');
-        
-        if (icon) {
-          // Keep the icon and update the text content
-          link.innerHTML = '';
-          link.appendChild(icon);
-          link.appendChild(document.createTextNode(' Mods'));
-        } else {
-          // No icon found, just change text
-          link.textContent = 'Mods';
+      if (link) {
+        const linkText = link.textContent.trim().toLowerCase();
+        console.log('[Better-Falix] rename-addons-to-mods: Checking nav item:', linkText);
+        if (linkText.includes('addon')) {
+          console.log('[Better-Falix] rename-addons-to-mods: Found addons link:', linkText);
+          // Find the icon element (usually an <i> tag)
+          const icon = link.querySelector('i');
+          
+          if (icon) {
+            // Keep the icon and update the text content
+            link.innerHTML = '';
+            link.appendChild(icon);
+            link.appendChild(document.createTextNode(' Mods'));
+          } else {
+            // No icon found, just change text
+            link.textContent = 'Mods';
+          }
+          
+          console.log('[Better-Falix] rename-addons-to-mods: Renamed Addons to Mods');
+          break;
         }
-        
-        console.log('[Better-Falix] rename-addons-to-mods: Renamed Addons to Mods');
-        break;
       }
     }
 
