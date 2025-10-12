@@ -28,12 +28,18 @@ const featureIds = [
   'serverNameButton',
   'navbarHover',
   'replaceSupportModal',
+  'replaceCpuWithNode',
+  'removeMaxPlayers',
+  'removePlayerManagement',
   'uploadCreateHover',
   'editorWrapperHeight',
   'customServerOrder',
   'editorFullscreen',
   'removeServerSearch',
   'hideSupportCategory',
+  'splitAddonsTabs',
+  'renameConfigToProperties',
+  'renameAddonsToMods',
   'hideClosedTickets',
   'removeLogsContainer',
   'redactedContentSubtle',
@@ -47,7 +53,7 @@ const featureIds = [
   'defaultAllStatus',
   'hideReplyHeader',
   'shortenReplyStatus',
-  'addAdminCategory',
+  'addAdminCategory'
 
 ];
 
@@ -130,6 +136,9 @@ document.addEventListener('DOMContentLoaded', () => {
     serverNameButton: false,
     navbarHover: false,
     replaceSupportModal: false,
+    replaceCpuWithNode: false,
+    removeMaxPlayers: false,
+    removePlayerManagement: false,
     uploadCreateHover: false,
     editorWrapperHeight: false,
     customServerOrder: false,
@@ -149,6 +158,9 @@ document.addEventListener('DOMContentLoaded', () => {
     shortenReplyStatus: false,
     addAdminCategory: false,
     hideSupportCategory: false,
+    splitAddonsTabs: false,
+    renameConfigToProperties: false,
+    renameAddonsToMods: false,
     hideClosedTickets: false
 
   }, (data) => {

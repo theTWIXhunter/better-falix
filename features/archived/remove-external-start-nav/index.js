@@ -11,10 +11,10 @@ chrome.storage.sync.get({ enabled: true, removeExternalStartNav: false }, (data)
   //  --------- START FEATURE ----------
 
   function hideExternalStartNav() {
-    console.log('[better-falix] hideExternalStartNav called');
+    //console.log('[better-falix] hideExternalStartNav called');
     // Find all nav-link spans and look for "Remote Startup"
     const spans = Array.from(document.querySelectorAll('.nav-item .nav-link span'));
-    console.log('[better-falix] Found nav-link spans:', spans.map(s => s.textContent.trim()));
+    //console.log('[better-falix] Found nav-link spans:', spans.map(s => s.textContent.trim()));
     const remoteStartupItem = spans.find(span =>
       span.textContent.trim().toLowerCase() === 'remote startup'
     )?.closest('.nav-item');

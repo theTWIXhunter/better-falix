@@ -69,6 +69,11 @@
       "js": ["features/general/Replace-account-category/index.js"],
       "run_at": "document_idle"
     },
+    {
+      "matches": ["https://client.falixnodes.net/server/*"],
+      "js": ["features/general/split-addons-tabs/index.js"],
+      "run_at": "document_idle"
+    },
 
 
 
@@ -85,6 +90,21 @@
     {
       "matches": ["https://client.falixnodes.net/server/console*"],
       "js": ["features/console/remove-how-to-connect/index.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://client.falixnodes.net/server/console*"],
+      "js": ["features/console/replace-cpu-with-node/index.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://client.falixnodes.net/server/console*"],
+      "js": ["features/console/remove-max-players/index.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://client.falixnodes.net/server/console*"],
+      "js": ["features/console/remove-player-management/index.js"],
       "run_at": "document_idle"
     },
 
@@ -127,7 +147,7 @@
     },
     {
       "matches": ["https://client.falixnodes.net/server/*"],
-      "js": ["features/navigation/remove-external-start-nav/index.js"],
+      "js": ["features/archived/remove-external-start-nav/index.js"],
       "run_at": "document_idle"
     },
     {
@@ -143,6 +163,16 @@
     {
       "matches": ["https://client.falixnodes.net/server/*"],
       "js": ["features/navigation/remove-console-files-category/index.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://client.falixnodes.net/server/*"],
+      "js": ["features/navigation/rename-config-to-properties/index.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://client.falixnodes.net/server/*"],
+      "js": ["features/navigation/rename-addons-to-mods/index.js"],
       "run_at": "document_idle"
     },
 
