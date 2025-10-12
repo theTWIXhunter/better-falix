@@ -2,7 +2,6 @@
 console.log('[better-falix] rename-addons-to-mods: Script loading');
 
 chrome.storage.sync.get({ renameAddonsToMods: false, enabled: true }, (data) => {
-  console.log('[better-falix] rename-addons-to-mods: Storage data:', data);
   if (!data.enabled || !data.renameAddonsToMods) {
     console.log('[better-falix] rename-addons-to-mods: Script disabled', 'enabled:', data.enabled, 'renameAddonsToMods:', data.renameAddonsToMods);
     return;
@@ -15,15 +14,15 @@ chrome.storage.sync.get({ renameAddonsToMods: false, enabled: true }, (data) => 
     console.log('[Better-Falix] rename-addons-to-mods: Running renameAddonsToMods function');
     // Find navigation items in the Minecraft category
     const navItems = document.querySelectorAll('.nav-item');
-    console.log('[Better-Falix] rename-addons-to-mods: Found', navItems.length, 'nav items');
+    //console.log('[Better-Falix] rename-addons-to-mods: Found', navItems.length, 'nav items');
     
     for (const item of navItems) {
       const link = item.querySelector('a');
       if (link) {
         const linkText = link.textContent.trim().toLowerCase();
-        console.log('[Better-Falix] rename-addons-to-mods: Checking nav item:', linkText);
+        //console.log('[Better-Falix] rename-addons-to-mods: Checking nav item:', linkText);
         if (linkText.includes('addon')) {
-          console.log('[Better-Falix] rename-addons-to-mods: Found addons link:', linkText);
+          //console.log('[Better-Falix] rename-addons-to-mods: Found addons link:', linkText);
           // Find the icon element (usually an <i> tag)
           const icon = link.querySelector('i');
           
@@ -37,7 +36,7 @@ chrome.storage.sync.get({ renameAddonsToMods: false, enabled: true }, (data) => 
             link.textContent = 'Mods';
           }
           
-          console.log('[Better-Falix] rename-addons-to-mods: Renamed Addons to Mods');
+          //console.log('[Better-Falix] rename-addons-to-mods: Renamed Addons to Mods');
           break;
         }
       }
@@ -62,7 +61,7 @@ chrome.storage.sync.get({ renameAddonsToMods: false, enabled: true }, (data) => 
           link.textContent = 'Mods';
         }
         
-        console.log('[Better-Falix] rename-addons-to-mods: Renamed additional Addons link to Mods');
+        //console.log('[Better-Falix] rename-addons-to-mods: Renamed additional Addons link to Mods');
       }
     }
   }
