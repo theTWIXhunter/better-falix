@@ -238,6 +238,11 @@
       "js": ["features/staff-only/hide-closed-tickets/index.js"],
       "run_at": "document_idle"
     },
+    {
+      "matches": ["https://client.falixnodes.net/admin/*"],
+      "js": ["features/staff-only/duplicate-admin-buttons/index.js"],
+      "run_at": "document_idle"
+    },
 
 
 

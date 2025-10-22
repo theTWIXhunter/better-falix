@@ -53,7 +53,8 @@ const featureIds = [
   'defaultAllStatus',
   'hideReplyHeader',
   'shortenReplyStatus',
-  'addAdminCategory'
+  'addAdminCategory',
+  'duplicateAdminButtons'
 
 ];
 
@@ -157,6 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
     hideReplyHeader: false,
     shortenReplyStatus: false,
     addAdminCategory: false,
+    duplicateAdminButtons: false,
     hideSupportCategory: false,
     splitAddonsTabs: false,
     renameConfigToProperties: false,
