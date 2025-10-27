@@ -23,7 +23,11 @@ Better Falix is a browser extension that enhances the FalixNodes client-side exp
 
 - **Hide Console Tabs:** Optionally hide unnecessary console tabs for a cleaner interface (added to Falix itself using a dropdown, this feature will just delete the dropdown button itself).
 - **Replace Support Modal:** Replaces the support modal with a cleaner one and adds a copy all button.
+- **Replace CPU with Node:** Replaces the CPU information with Node information in the console.
+- **Remove Max Players card:** Removes the Max Players info card from the console interface.
+- **Remove Player Management card:** Removes the Player Management info card from the console interface.
 - **Replace connect modal:** Removes all "How to connect" steps, DNS verification sections, and the "Server Name" row from the connect button and adds back the IPwithPORT and PORT.
+- **Remove Premium Transfer Banner:** Removes the 'Welcome to Premium' transfer notification banner from the console.
 
 ### Filemanager
 
