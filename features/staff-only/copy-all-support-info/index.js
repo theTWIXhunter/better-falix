@@ -3,11 +3,50 @@ console.log('[better-falix] copy-all-support-info: Script loaded');
 chrome.storage.sync.get(['copyAllSupportInfo'], function(result) {
     if (result.copyAllSupportInfo) {
         console.log('[better-falix] copy-all-support-info: Feature enabled');
-        addCopyAllButton();
+        waitForServerInfo();
     } else {
         console.log('[better-falix] copy-all-support-info: Feature disabled');
     }
 });
+
+function waitForServerInfo() {
+    const ticketMetaItem = document.querySelector('span.ticket-meta-item#server-info-value');
+    
+    if (!ticketMetaItem) {
+        console.log('[better-falix] copy-all-support-info: Ticket meta item not found');
+        return;
+    }
+
+    // Check if server link already exists
+    const existingLink = ticketMetaItem.querySelector('a[href*="ViewServer"]');
+    if (existingLink) {
+        console.log('[better-falix] copy-all-support-info: Server info already loaded');
+        addCopyAllButton();
+        return;
+    }
+
+    // Otherwise, wait for it to load dynamically
+    console.log('[better-falix] copy-all-support-info: Waiting for server info to load...');
+    const observer = new MutationObserver((mutations) => {
+        const serverLink = ticketMetaItem.querySelector('a[href*="ViewServer"]');
+        if (serverLink) {
+            console.log('[better-falix] copy-all-support-info: Server info detected, adding button');
+            observer.disconnect();
+            addCopyAllButton();
+        }
+    });
+
+    observer.observe(ticketMetaItem, {
+        childList: true,
+        subtree: true
+    });
+
+    // Timeout after 10 seconds
+    setTimeout(() => {
+        observer.disconnect();
+        console.log('[better-falix] copy-all-support-info: Timeout waiting for server info');
+    }, 10000);
+}
 
 function addCopyAllButton() {
     const ticketMetaItem = document.querySelector('span.ticket-meta-item#server-info-value');
