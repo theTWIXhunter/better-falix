@@ -113,6 +113,11 @@
       "js": ["features/console/remove-player-management/index.js"],
       "run_at": "document_start"
     },
+    {
+      "matches": ["https://client.falixnodes.net/server/console*"],
+      "js": ["features/console/remove-premium-transfer/index.js"],
+      "run_at": "document_start"
+    },
 
 
 

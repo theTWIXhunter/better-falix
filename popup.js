@@ -39,6 +39,7 @@ const featureIds = [
   'replaceCpuWithNode',
   'removeMaxPlayers',
   'removePlayerManagement',
+  'removePremiumTransfer',
   'uploadCreateHover',
   'editorWrapperHeight',
   'customServerOrder',
