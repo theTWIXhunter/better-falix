@@ -157,6 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
     editorFullscreen: false,
     removeServerSearch: false,
     removeLogsContainer: false,
+    removePremiumTransfer: false,
     redactedContentSubtle: false,
     collapsibleLogAnalysis: false,
     betterEditorFullscreen: false,
