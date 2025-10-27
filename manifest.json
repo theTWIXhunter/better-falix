@@ -186,6 +186,11 @@
       "js": ["features/navigation/split-addons-tabs/index.js"],
       "run_at": "document_idle"
     },
+    {
+      "matches": ["https://client.falixnodes.net/server/*"],
+      "js": ["features/navigation/add-versions-nav/index.js"],
+      "run_at": "document_idle"
+    },
 
 
 

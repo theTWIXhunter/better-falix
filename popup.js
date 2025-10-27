@@ -51,6 +51,7 @@ const featureIds = [
   'splitAddonsTabs',
   'renameConfigToProperties',
   'renameAddonsToMods',
+  'addVersionsNav',
   'hideClosedTickets',
   'removeLogsContainer',
   'redactedContentSubtle',
@@ -178,6 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
     splitAddonsTabs: false,
     renameConfigToProperties: false,
     renameAddonsToMods: false,
+    addVersionsNav: false,
     hideClosedTickets: false,
     copyAllSupportInfo: false
 

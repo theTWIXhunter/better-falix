@@ -37,6 +37,11 @@ Better Falix is a browser extension that enhances the FalixNodes client-side exp
 - **Move "Monitoring" to Server Settings:** Move the "Monitoring" navigation item to the Server Settings section.
 - **Move "Logs" to Server Settings:** Move the "Logs" navigation item to the Server Settings section.
 - **Remove Navbar Support Links:** Optionally remove support-related links from the navbar.
+- **Remove "Console" and "Files" categories:** Remove "Console" and "Files" categories (keep items).
+- **Rename Config to Properties:** Renames the "Config" navigation option to "Properties" in the Minecraft category for clarity.
+- **Rename Addons to Mods:** Renames the "Addons" navigation option to "Mods" in the Minecraft category for clarity.
+- **Split Addons Tabs:** Splits the addons tab back into separate plugins, mods, modpacks, and datapacks tabs on server pages.
+- **Add Versions Nav:** Adds a "Versions" link with a code-branch icon to the Minecraft section of the navbar for quick access to server version changes.
 
 ### Shared Logs
 
