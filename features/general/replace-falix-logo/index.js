@@ -1,10 +1,15 @@
-// Replaces Falix logo images (src ending with falix.svg) with a chosen custom logo
-// Options are stored in chrome.storage.sync under keys:
-// - replaceFalixLogo: boolean
-// - replaceFalixLogoChoice: string (one of the keys in `CHOICES`)
+// [better-falix] replace-falix-logo: Script loading
+console.log('[better-falix] replace-falix-logo: Script loading');
 
-(function(){
-  const NAME = '[better-falix] replace-falix-logo:';
+chrome.storage.sync.get({ replaceFalixLogo: false, enabled: true, replaceFalixLogoChoice: 'better-falix_normal_logo' }, (data) => {
+  if (!data.enabled || !data.replaceFalixLogo) {
+    console.log('[better-falix] replace-falix-logo: Script disabled');
+    return;
+  }
+  console.log('[better-falix] replace-falix-logo: Script enabled');
+
+  //  --------- START FEATURE ----------
+
   const CHOICES = {
     'better-falix_normal_logo': 'https://thetwixhunter.nekoweb.org/better-falix/icons/better-falix_normal_logo.png',
     'falix_rainbow_gradient': 'https://thetwixhunter.nekoweb.org/better-falix/icons/falix_rainbow_gradient.png',
@@ -13,7 +18,10 @@
     'TWIX_logoandname': 'https://thetwixhunter.nekoweb.org/better-falix/icons/TWIX_logoandname.png'
   };
 
-  function replaceAllLogos(url) {
+  const choice = data.replaceFalixLogoChoice || 'better-falix_normal_logo';
+  const logoUrl = CHOICES[choice] || CHOICES['better-falix_normal_logo'];
+
+  function replaceAllLogos() {
     try {
       // Replace img elements whose src ends with falix.svg or contains /assets/falix
       const imgs = Array.from(document.querySelectorAll('img'));
@@ -21,7 +29,7 @@
         try {
           const src = img.getAttribute('src') || '';
           if (src.endsWith('/assets/falix.svg') || /falix\.svg/.test(src)) {
-            img.setAttribute('src', url);
+            img.setAttribute('src', logoUrl);
             // clear srcset if present to avoid browser choosing original
             if (img.hasAttribute('srcset')) img.removeAttribute('srcset');
           }
@@ -30,45 +38,33 @@
         }
       });
 
-      // Also try to replace any inline SVG <use xlink:href="/assets/falix.svg#..."> or object/embed references
       // Replace background-image styles that reference falix.svg
-      const all = Array.from(document.querySelectorAll('[style], div, a, span'));
+      const all = Array.from(document.querySelectorAll('[style]'));
       all.forEach(el => {
         try {
           const s = el.style && el.style.backgroundImage || '';
           if (s && s.indexOf('falix.svg') !== -1) {
-            el.style.backgroundImage = `url('${url}')`;
+            el.style.backgroundImage = `url('${logoUrl}')`;
           }
         } catch (e) {}
       });
     } catch (e) {
-      console.error(NAME, 'replacement error', e);
+      console.error('[better-falix] replace-falix-logo: replacement error', e);
     }
   }
 
-  function attemptReplace(choiceKey) {
-    const url = CHOICES[choiceKey] || CHOICES['better-falix_normal_logo'];
-    replaceAllLogos(url);
-  }
+  // One-shot replace now
+  replaceAllLogos();
 
-  chrome.storage && chrome.storage.sync && chrome.storage.sync.get({ replaceFalixLogo: false, replaceFalixLogoChoice: 'better-falix_normal_logo' }, (data) => {
-    if (!data || !data.replaceFalixLogo) {
-      console.log(NAME, 'disabled in settings');
-      return;
-    }
-    const choice = data.replaceFalixLogoChoice || 'better-falix_normal_logo';
-    console.log(NAME, 'enabled, using choice', choice);
-
-    // One-shot replace now
-    attemptReplace(choice);
-
-    // Observe mutations for up to 3s to catch late-inserted logos
-    const observer = new MutationObserver((mutations) => {
-      attemptReplace(choice);
-    });
-    observer.observe(document.documentElement || document.body, { childList: true, subtree: true, attributes: true });
-    setTimeout(() => {
-      try { observer.disconnect(); } catch (e) {}
-    }, 3000);
+  // Observe mutations for up to 3s to catch late-inserted logos
+  const observer = new MutationObserver(() => {
+    replaceAllLogos();
   });
-})();
+  observer.observe(document.documentElement || document.body, { childList: true, subtree: true, attributes: true });
+  setTimeout(() => {
+    try { 
+      observer.disconnect();
+      console.log('[better-falix] replace-falix-logo: Script loaded successfully');
+    } catch (e) {}
+  }, 3000);
+});
