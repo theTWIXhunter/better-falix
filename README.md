@@ -110,10 +110,9 @@ manifest.json:
     {
       "matches": ["https://client.falixnodes.net/server/versions*"],
       "js": ["features/FEATURE-NAME/index.js"],
-      "run_at": "document_start"
+      "run_at": "document_idle"
     }
 ```
-We are using document_start beacuse document_idle caused some flickering issues, if your feature doesn't work with document_start then please let us know.
 
 README.md
 
