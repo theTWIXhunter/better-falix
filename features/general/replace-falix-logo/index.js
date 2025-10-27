@@ -33,6 +33,9 @@ chrome.storage.sync.get({ replaceFalixLogo: false, enabled: true, replaceFalixLo
             img.setAttribute('src', logoUrl);
             // clear srcset if present to avoid browser choosing original
             if (img.hasAttribute('srcset')) img.removeAttribute('srcset');
+            // Remove width and height attributes to allow natural sizing
+            if (img.hasAttribute('width')) img.removeAttribute('width');
+            if (img.hasAttribute('height')) img.removeAttribute('height');
           }
         } catch (e) {
           // ignore per-element errors
