@@ -37,12 +37,12 @@
     {
       "matches": ["https://client.falixnodes.net/server/versions*"],
       "js": ["features/general/itsjust-geyser/index.js"],
-      "run_at": "document_idle"
+      "run_at": "document_start"
     },
     {
       "matches": ["https://client.falixnodes.net/server/versions*"],
       "js": ["features/general/itsjust-paper/index.js"],
-      "run_at": "document_idle"
+      "run_at": "document_start"
     },
     {
       "matches": ["https://client.falixnodes.net/*"],
@@ -77,7 +77,7 @@
     {
       "matches": ["https://client.falixnodes.net/*"],
       "js": ["features/general/Replace-account-category/index.js"],
-      "run_at": "document_idle"
+      "run_at": "document_start"
     },
 
 
