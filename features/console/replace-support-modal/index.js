@@ -10,82 +10,111 @@ chrome.storage.sync.get({ replaceSupportModal: false, enabled: true }, (data) =>
 
   //  --------- START FEATURE ----------
 
-  function hideSupportModalBody() {
-    // Replace all modal-body elements that are support modals
+  const processedModals = new WeakSet();
+
+  function replaceSupportModal() {
+    // Find and modify support modals
     document.querySelectorAll('.modal-body').forEach((modalBody) => {
-      if (
-        modalBody.querySelector('.support-warning') &&
-        modalBody.querySelector('.support-info-card')
-      ) {
-        // Get values from the original modal if possible
-        const supportId = modalBody.querySelector('.support-info-text')?.textContent?.trim() || '';
-        const supportPin = modalBody.querySelectorAll('.support-info-text')[1]?.textContent?.trim() || '';
-        const nodeInfo = modalBody.querySelectorAll('.support-info-text')[2]?.textContent?.trim() || '';
-        const serverName = modalBody.querySelector('.support-info-card:last-child .support-info-text')?.textContent?.trim() || '';
+      // Skip if already processed
+      if (processedModals.has(modalBody)) return;
 
-        // Add a copy button at the top that copies both values
-        const copyAllBtn = `
-          <button class="btn connect-inline-copy" id="bf-support-copy-all" style="margin-bottom:12px;" title="Copy all">
-            <svg class="svg-inline--fa fa-copy" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="copy" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M208 0L332.1 0c12.7 0 24.9 5.1 33.9 14.1l67.9 67.9c9 9 14.1 21.2 14.1 33.9L448 336c0 26.5-21.5 48-48 48l-192 0c-26.5 0-48-21.5-48-48l0-288c0-26.5 21.5-48 48-48zM48 128l80 0 0 64-64 0 0 256 192 0 0-32 64 0 0 48c0 26.5-21.5 48-48 48L48 512c-26.5 0-48-21.5-48-48L0 176c0-26.5 21.5-48 48-48z"></path></svg>
-            <span>Copy All</span>
-          </button>
-        `;
+      // Check if this is a support modal by looking for support-info-card
+      const supportCards = modalBody.querySelectorAll('.support-info-card');
+      if (supportCards.length === 0) return;
 
-        const newHtml = `
-      ${copyAllBtn}
-      <div class="connect-steps" id="javaSteps">
-        <div class="connect-bedrock-details">
-          <div class="bedrock-detail-row">
-            <span class="bedrock-label">Support ID:</span>
-            <span class="bedrock-value">${supportId}</span>
-            <button class="btn connect-inline-copy" onclick="copyConnectionInfo('${supportId}', this)" title="Copy address">
-              <svg class="svg-inline--fa fa-copy" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="copy" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M208 0L332.1 0c12.7 0 24.9 5.1 33.9 14.1l67.9 67.9c9 9 14.1 21.2 14.1 33.9L448 336c0 26.5-21.5 48-48 48l-192 0c-26.5 0-48-21.5-48-48l0-288c0-26.5 21.5-48 48-48zM48 128l80 0 0 64-64 0 0 256 192 0 0-32 64 0 0 48c0 26.5-21.5 48-48 48L48 512c-26.5 0-48-21.5-48-48L0 176c0-26.5 21.5-48 48-48z"></path></svg>
-            </button>
-          </div>
-          <div class="bedrock-detail-row">
-            <span class="bedrock-label">Support PIN:</span><span class="bedrock-value">${supportPin}</span>
-            <button class="btn connect-inline-copy" onclick="copyConnectionInfo('${supportPin}', this)" title="Copy to clipboard">
-              <svg class="svg-inline--fa fa-copy" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="copy" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M208 0L332.1 0c12.7 0 24.9 5.1 33.9 14.1l67.9 67.9c9 9 14.1 21.2 14.1 33.9L448 336c0 26.5-21.5 48-48 48l-192 0c-26.5 0-48-21.5-48-48l0-288c0-26.5 21.5-48 48-48zM48 128l80 0 0 64-64 0 0 256 192 0 0-32 64 0 0 48c0 26.5-21.5 48-48 48L48 512c-26.5 0-48-21.5-48-48L0 176c0-26.5 21.5-48 48-48z"></path></svg>
-            </button>
-          </div>
-          <div class="bedrock-detail-row">
-            <span class="bedrock-label">Node:</span><span class="bedrock-value">${nodeInfo}</span>
-            <button class="btn connect-inline-copy" onclick="copyConnectionInfo('${nodeInfo}', this)" title="Copy node info">
-              <svg class="svg-inline--fa fa-copy" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="copy" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M208 0L332.1 0c12.7 0 24.9 5.1 33.9 14.1l67.9 67.9c9 9 14.1 21.2 14.1 33.9L448 336c0 26.5-21.5 48-48 48l-192 0c-26.5 0-48-21.5-48-48l0-288c0-26.5 21.5-48 48-48zM48 128l80 0 0 64-64 0 0 256 192 0 0-32 64 0 0 48c0 26.5-21.5 48-48 48L48 512c-26.5 0-48-21.5-48-48L0 176c0-26.5 21.5-48 48-48z"></path></svg>
-            </button>
-          </div>
-        </div>
-      </div>
-      `;
-        modalBody.innerHTML = newHtml;
+      // Mark as processed immediately to prevent re-processing
+      processedModals.add(modalBody);
 
-        // Add copy event for the "Copy All" button
-        setTimeout(() => {
-          const btn = modalBody.querySelector('#bf-support-copy-all');
-          if (btn) {
-            btn.addEventListener('click', () => {
-              const text = `Support ID: ${supportId}\nSupport PIN: ${supportPin}\nNode: ${nodeInfo}`;
-              navigator.clipboard.writeText(text);
-            });
+      try {
+        // Remove the warning section
+        const warningSection = modalBody.querySelector('.support-warning');
+        if (warningSection) {
+          warningSection.remove();
+        }
+
+        // Remove the support ticket notice
+        const ticketNotice = modalBody.querySelector('.support-ticket-notice');
+        if (ticketNotice) {
+          ticketNotice.remove();
+        }
+
+        // Process each support-info-card
+        supportCards.forEach((card) => {
+          // Add height style to all cards
+          card.style.height = '50px';
+
+          // Remove the label section
+          const label = card.querySelector('.support-info-label');
+          if (label) {
+            label.remove();
           }
-        }, 0);
+
+          // Modify the value section
+          const valueDiv = card.querySelector('.support-info-value');
+          if (valueDiv) {
+            valueDiv.style.marginTop = '-25px';
+
+            // Get the current text content
+            const textSpan = valueDiv.querySelector('.support-info-text');
+            if (!textSpan) return;
+
+            const textContent = textSpan.textContent.trim();
+
+            // Determine the label based on card order or content
+            let labelText = '';
+            const allCards = Array.from(modalBody.querySelectorAll('.support-info-card'));
+            const cardIndex = allCards.indexOf(card);
+
+            if (cardIndex === 0) {
+              labelText = 'SUPPORT ID:';
+            } else if (cardIndex === 1) {
+              labelText = 'SUPPORT PIN:';
+            } else if (cardIndex === 2) {
+              labelText = 'NODE:';
+              // For node, keep only the node name (before the dash)
+              const nodeName = textContent.split(' - ')[0];
+              textSpan.textContent = nodeName;
+            }
+
+            // Insert label before the text span (only if not already there)
+            if (labelText && !valueDiv.textContent.includes(labelText)) {
+              const labelNode = document.createTextNode('\n    ' + labelText + '\n        ');
+              valueDiv.insertBefore(labelNode, textSpan);
+            }
+          }
+        });
+      } catch (e) {
+        console.error('[better-falix] replaceSupportModal: Error processing modal', e);
       }
     });
   }
 
-  function observeModals() {
-    hideSupportModalBody();
-    const observer = new MutationObserver(hideSupportModalBody);
-    observer.observe(document.body, { childList: true, subtree: true });
-  }
+  // Initial replacement
+  replaceSupportModal();
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', observeModals);
-  } else {
-    observeModals();
-  }
+  // Watch for new modals with a more targeted observer
+  const observer = new MutationObserver((mutations) => {
+    // Only check if modal-related elements were added
+    let shouldCheck = false;
+    for (const mutation of mutations) {
+      for (const node of mutation.addedNodes) {
+        if (node.nodeType === 1 && (node.classList?.contains('modal') || node.querySelector?.('.modal-body'))) {
+          shouldCheck = true;
+          break;
+        }
+      }
+      if (shouldCheck) break;
+    }
+    
+    if (shouldCheck) {
+      replaceSupportModal();
+    }
+  });
+
+  observer.observe(document.body, { childList: true, subtree: true });
 
   setTimeout(() => {
+    observer.disconnect();
     console.log('[better-falix] replaceSupportModal: Script loaded successfully');
-  }, 10);
+  }, 3000);
 });

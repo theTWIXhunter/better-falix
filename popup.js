@@ -8,6 +8,14 @@ document.addEventListener('DOMContentLoaded', () => {
     e.preventDefault();
     chrome.tabs.create({ url: chrome.runtime.getURL('options.html') });
   });
+
+  // Handle gear icon clicks to open settings page
+  document.querySelectorAll('.feature-settings-icon').forEach(icon => {
+    icon.addEventListener('click', function(e) {
+      e.stopPropagation(); // Prevent triggering tooltip or other events
+      chrome.tabs.create({ url: chrome.runtime.getURL('options.html') });
+    });
+  });
 });
 
 const toggleBtn = document.getElementById('toggle');
@@ -21,7 +29,7 @@ const featureIds = [
   'removeNavbarSupportLinks',
   'removeConsoleFilesCategory',
   'removeSftpUpload',
-  'removeHowToConnect',
+  'replaceConnectTab',
   'removeExitDiscount',
   'itsJustPaper',
   'itsJustGeyser',
@@ -31,15 +39,19 @@ const featureIds = [
   'replaceCpuWithNode',
   'removeMaxPlayers',
   'removePlayerManagement',
+  'removePremiumTransfer',
   'uploadCreateHover',
   'editorWrapperHeight',
   'customServerOrder',
   'editorFullscreen',
   'removeServerSearch',
   'hideSupportCategory',
+  'removeLanguageSelector',
+  'replaceFalixLogo',
   'splitAddonsTabs',
   'renameConfigToProperties',
   'renameAddonsToMods',
+  'addVersionsNav',
   'hideClosedTickets',
   'removeLogsContainer',
   'redactedContentSubtle',
@@ -51,9 +63,11 @@ const featureIds = [
   'adminPanelIndexRedirect',
   'removePremiumRow',
   'defaultAllStatus',
-  'hideReplyHeader',
+  'compactReplyBox',
   'shortenReplyStatus',
-  'addAdminCategory'
+  'addAdminCategory',
+  'duplicateAdminButtons',
+  'copyAllSupportInfo'
 
 ];
 
@@ -129,7 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
     removeNavbarSupportLinks: false,
     removeConsoleFilesCategory: false,
     removeSftpUpload: false,
-    removeHowToConnect: false,
+    replaceConnectTab: false,
     removeExitDiscount: false,
     itsJustPaper: false,
     itsJustGeyser: false,
@@ -145,6 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
     editorFullscreen: false,
     removeServerSearch: false,
     removeLogsContainer: false,
+    removePremiumTransfer: false,
     redactedContentSubtle: false,
     collapsibleLogAnalysis: false,
     betterEditorFullscreen: false,
@@ -154,14 +169,19 @@ document.addEventListener('DOMContentLoaded', () => {
     adminPanelIndexRedirect: false,
     removePremiumRow: false,
     defaultAllStatus: false,
-    hideReplyHeader: false,
+    compactReplyBox: false,
     shortenReplyStatus: false,
     addAdminCategory: false,
+    duplicateAdminButtons: false,
     hideSupportCategory: false,
+    removeLanguageSelector: false,
+    replaceFalixLogo: false,
     splitAddonsTabs: false,
     renameConfigToProperties: false,
     renameAddonsToMods: false,
-    hideClosedTickets: false
+    addVersionsNav: false,
+    hideClosedTickets: false,
+    copyAllSupportInfo: false
 
   }, (data) => {
     updateToggleBtn(data.enabled);

@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Better-Falix",
-  "version": "1.0.0",
+  "version": "1.2.3",
   "description": "A Chrome extension that enhances the Falixnodes client experience by adding custom features and improvements.",
   "icons": {
     "16": "assets/icons/icon16.png",
@@ -66,12 +66,17 @@
     },
     {
       "matches": ["https://client.falixnodes.net/*"],
-      "js": ["features/general/Replace-account-category/index.js"],
-      "run_at": "document_idle"
+      "js": ["features/general/remove-language-selector/index.js"],
+      "run_at": "document_start"
     },
     {
-      "matches": ["https://client.falixnodes.net/server/*"],
-      "js": ["features/general/split-addons-tabs/index.js"],
+      "matches": ["https://client.falixnodes.net/*"],
+      "js": ["features/general/replace-falix-logo/index.js"],
+      "run_at": "document_start"
+    },
+    {
+      "matches": ["https://client.falixnodes.net/*"],
+      "js": ["features/general/Replace-account-category/index.js"],
       "run_at": "document_idle"
     },
 
@@ -80,7 +85,8 @@
 
     {
       "matches": ["https://client.falixnodes.net/server/console*"],
-      "js": ["features/console/hide-console-tabs/index.js"]
+      "js": ["features/console/hide-console-tabs/index.js"],
+      "run_at": "document_start"
     },
     {
       "matches": ["https://client.falixnodes.net/server/console*"],
@@ -89,7 +95,7 @@
     },
     {
       "matches": ["https://client.falixnodes.net/server/console*"],
-      "js": ["features/console/remove-how-to-connect/index.js"],
+      "js": ["features/console/replace-connect-tab/index.js"],
       "run_at": "document_idle"
     },
     {
@@ -106,6 +112,11 @@
       "matches": ["https://client.falixnodes.net/server/console*"],
       "js": ["features/console/remove-player-management/index.js"],
       "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://client.falixnodes.net/server/console*"],
+      "js": ["features/console/remove-premium-transfer/index.js"],
+      "run_at": "document_start"
     },
 
 
@@ -162,17 +173,22 @@
     },
     {
       "matches": ["https://client.falixnodes.net/server/*"],
-      "js": ["features/navigation/remove-console-files-category/index.js"],
-      "run_at": "document_idle"
-    },
-    {
-      "matches": ["https://client.falixnodes.net/server/*"],
       "js": ["features/navigation/rename-config-to-properties/index.js"],
       "run_at": "document_idle"
     },
     {
       "matches": ["https://client.falixnodes.net/server/*"],
       "js": ["features/navigation/rename-addons-to-mods/index.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://client.falixnodes.net/server/*"],
+      "js": ["features/navigation/split-addons-tabs/index.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://client.falixnodes.net/server/*"],
+      "js": ["features/navigation/add-versions-nav/index.js"],
       "run_at": "document_idle"
     },
 
@@ -220,7 +236,7 @@
     },
     {
       "matches": ["https://client.falixnodes.net/support/viewticket.php*"],
-      "js": ["features/staff-only/hide-reply-header/index.js"],
+      "js": ["features/staff-only/compact-reply-box/index.js"],
       "run_at": "document_idle"
     },
     {
@@ -234,8 +250,13 @@
       "run_at": "document_idle"
     },
     {
-      "matches": ["https://client.falixnodes.net/admin/ListTickets*"],
-      "js": ["features/staff-only/hide-closed-tickets/index.js"],
+      "matches": ["https://client.falixnodes.net/admin/*"],
+      "js": ["features/staff-only/duplicate-admin-buttons/index.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://client.falixnodes.net/support/viewticket.php*"],
+      "js": ["features/staff-only/copy-all-support-info/index.js"],
       "run_at": "document_idle"
     },
 
@@ -260,6 +281,11 @@
     {
       "matches": ["https://client.falixnodes.net/server/edit*"],
       "js": ["features/archived/editor-wrapper-height/index.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://client.falixnodes.net/admin/ListTickets*"],
+      "js": ["features/archived/hide-closed-tickets/index.js"],
       "run_at": "document_idle"
     },
 
