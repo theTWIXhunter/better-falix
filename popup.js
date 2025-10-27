@@ -8,6 +8,14 @@ document.addEventListener('DOMContentLoaded', () => {
     e.preventDefault();
     chrome.tabs.create({ url: chrome.runtime.getURL('options.html') });
   });
+
+  // Handle gear icon clicks to open settings page
+  document.querySelectorAll('.feature-settings-icon').forEach(icon => {
+    icon.addEventListener('click', function(e) {
+      e.stopPropagation(); // Prevent triggering tooltip or other events
+      chrome.tabs.create({ url: chrome.runtime.getURL('options.html') });
+    });
+  });
 });
 
 const toggleBtn = document.getElementById('toggle');
