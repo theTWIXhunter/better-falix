@@ -231,7 +231,7 @@
     },
     {
       "matches": ["https://client.falixnodes.net/support/viewticket.php*"],
-      "js": ["features/staff-only/hide-reply-header/index.js"],
+      "js": ["features/staff-only/compact-reply-box/index.js"],
       "run_at": "document_idle"
     },
     {
@@ -242,11 +242,6 @@
     {
       "matches": ["https://client.falixnodes.net/"],
       "js": ["features/staff-only/add-admin-pages-category/index.js"],
-      "run_at": "document_idle"
-    },
-    {
-      "matches": ["https://client.falixnodes.net/admin/ListTickets*"],
-      "js": ["features/staff-only/hide-closed-tickets/index.js"],
       "run_at": "document_idle"
     },
     {
@@ -281,6 +276,11 @@
     {
       "matches": ["https://client.falixnodes.net/server/edit*"],
       "js": ["features/archived/editor-wrapper-height/index.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://client.falixnodes.net/admin/ListTickets*"],
+      "js": ["features/archived/hide-closed-tickets/index.js"],
       "run_at": "document_idle"
     },
 

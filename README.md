@@ -46,8 +46,16 @@ Better Falix is a browser extension that enhances the FalixNodes client-side exp
 - **Auto-Collapse Log Analysis:** Automatically collapse the Log Analysis section when the page loads.
 
 ### Staff-only features
-This is a hidden category with features for the admin/support panel and a lot of pages that are all admin-only. this category is hidden by default but can be shown in the options page, only falix staff will be able to notice and use these features.
+Note: this category isn't visible by default, you can enable "staff features" in the options page.
 
+- **Move Admin Panel nav-Button:** Move the Admin Panel from Account category to the Servers section.
+- **Admin Panel Index Redirect:** Redirect the Admin Panel link on the navbar to /admin/index instead of /admin to fix navbar issues.
+- **Remove Premium Row:** the support center is only available to premium users, no indication needed anymore.
+- **Compact Reply box:**  removes the  unnecessarily bulky "write a reply" headers from the message box in the support center chat.
+- **Shorten awaiting Status:** Changes 'Awaiting User Reply' text to just 'waiting' for cleaner ticket displays.
+- **Add Admin Pages Category:** takes all the "pages" from the admin panel and ads them to the normal navbar for better accessibility.
+- **Duplicate Admin Buttons** duplicates the save buttons at the bottom of the admin server so it's also at the top.
+- **Copy All Support Info:** Adds a Copy All button to ticket support information for quick copying of server ID, PIN, and ticket details.
 
 ### Archived features
 
@@ -59,7 +67,7 @@ Enabling these features might cause issues or incompatibilities with other plugi
 - **Collapsible Log Analysis:** Add a collapse/expand button to the Log Analysis section (added to falix itself).
 - **Editor Wrapper Height:** Sets the file editor height to 600px (new height can be configured in the config) (the issue this was fixing got solved).
 - **Remove "Remote Startup" Nav Item:** Hide the "Remote Startup" navigation item from the sidebar (removed from the navbar by default now).
-
+- **Hide Closed Tickets toggle:** Removed because of vanilla change
 
 ## Usage
 
