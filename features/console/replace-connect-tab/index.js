@@ -1,16 +1,16 @@
-// [better-falix] remove-how-to-connect: Script loading
-console.log('[better-falix] remove-how-to-connect: Script loading');
+// [better-falix] replace-connect-tab: Script loading
+console.log('[better-falix] replace-connect-tab: Script loading');
 
-chrome.storage.sync.get({ enabled: true, removeHowToConnect: false }, (data) => {
-  if (!data.enabled || !data.removeHowToConnect) {
-    console.log('[better-falix] remove-how-to-connect: Script disabled');
+chrome.storage.sync.get({ enabled: true, replaceConnectTab: false }, (data) => {
+  if (!data.enabled || !data.replaceConnectTab) {
+    console.log('[better-falix] replace-connect-tab: Script disabled');
     return;
   }
-  console.log('[better-falix] remove-how-to-connect: Script enabled');
+  console.log('[better-falix] replace-connect-tab: Script enabled');
 
   //  --------- START FEATURE ----------
 
-  function removeHowToConnectSections() {
+  function replaceConnectTabSections() {
     // Remove all connect steps
     document.querySelectorAll('.connect-step').forEach(el => el.remove());
     // Remove remote startup section
@@ -25,7 +25,7 @@ chrome.storage.sync.get({ enabled: true, removeHowToConnect: false }, (data) => 
     const javaSteps = document.getElementById('javaSteps');
     
     if (!addressBox || !javaSteps) {
-      console.log('[better-falix] remove-how-to-connect: Connection info not found');
+      console.log('[better-falix] replace-connect-tab: Connection info not found');
       return;
     }
 
@@ -41,7 +41,7 @@ chrome.storage.sync.get({ enabled: true, removeHowToConnect: false }, (data) => 
     // Extract port (after the colon in fullAddress)
     const port = fullAddress.includes(':') ? fullAddress.split(':')[1] : '';
     
-    console.log('[better-falix] remove-how-to-connect: IP:', ip, 'Full:', fullAddress, 'Port:', port);
+    console.log('[better-falix] replace-connect-tab: IP:', ip, 'Full:', fullAddress, 'Port:', port);
 
     // Remove the old address box
     addressBox.remove();
@@ -76,12 +76,12 @@ chrome.storage.sync.get({ enabled: true, removeHowToConnect: false }, (data) => 
 
   // Fix: always run after DOMContentLoaded to ensure all elements exist
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', removeHowToConnectSections);
+    document.addEventListener('DOMContentLoaded', replaceConnectTabSections);
   } else {
-    setTimeout(removeHowToConnectSections, 0);
+    setTimeout(replaceConnectTabSections, 0);
   }
 
   setTimeout(() => {
-    console.log('[better-falix] remove-how-to-connect: Script loaded successfully');
+    console.log('[better-falix] replace-connect-tab: Script loaded successfully');
   }, 10);
 });

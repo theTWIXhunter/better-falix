@@ -95,7 +95,7 @@
     },
     {
       "matches": ["https://client.falixnodes.net/server/console*"],
-      "js": ["features/console/remove-how-to-connect/index.js"],
+      "js": ["features/console/replace-connect-tab/index.js"],
       "run_at": "document_idle"
     },
     {

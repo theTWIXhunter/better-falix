@@ -22,8 +22,8 @@ Better Falix is a browser extension that enhances the FalixNodes client-side exp
 ### Console
 
 - **Hide Console Tabs:** Optionally hide unnecessary console tabs for a cleaner interface (added to Falix itself using a dropdown, this feature will just delete the dropdown button itself).
-- **replace Support Modal:** Replaces the support modal with a cleaner one and adds a copy all button.
-- **Remove How To Connect:** Removes all "How to connect" steps, DNS verification sections, and the "Server Name" row from the connect button and adds back the IPwithPORT.
+- **Replace Support Modal:** Replaces the support modal with a cleaner one and adds a copy all button.
+- **Replace connect modal:** Removes all "How to connect" steps, DNS verification sections, and the "Server Name" row from the connect button and adds back the IPwithPORT and PORT.
 
 ### Filemanager
 
