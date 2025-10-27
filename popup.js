@@ -84,13 +84,6 @@ function updateFeatureButtons(data) {
     }
   });
   setFeaturesListEnabled(data.enabled);
-
-  // Also update the logo choice dropdown
-  const logoChoiceSelect = document.getElementById('replaceFalixLogoChoice');
-  if (logoChoiceSelect) {
-    logoChoiceSelect.value = data.replaceFalixLogoChoice || 'better-falix_normal_logo';
-    logoChoiceSelect.disabled = !data.enabled;
-  }
 }
 
 function updateToggleBtn(enabled) {
@@ -231,21 +224,6 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
   });
-
-  // Logo choice dropdown logic
-  const logoChoiceSelect = document.getElementById('replaceFalixLogoChoice');
-  if (logoChoiceSelect) {
-    // Populate on load
-    chrome.storage.sync.get({ replaceFalixLogoChoice: 'better-falix_normal_logo', enabled: false }, (data) => {
-      logoChoiceSelect.value = data.replaceFalixLogoChoice || 'better-falix_normal_logo';
-      logoChoiceSelect.disabled = !data.enabled;
-    });
-
-    // Persist on change
-    logoChoiceSelect.addEventListener('change', function() {
-      chrome.storage.sync.set({ replaceFalixLogoChoice: this.value });
-    });
-  }
 
   // Slider logic with animation and tab memory
   const featuresTab = document.getElementById('features-tab');

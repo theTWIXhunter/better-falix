@@ -55,6 +55,12 @@ chrome.storage.sync.get(null, data => {
   
   const enableStaffFeaturesToggle = document.getElementById('enableStaffFeatures');
   if (enableStaffFeaturesToggle) setToggleState(enableStaffFeaturesToggle, !!data.enableStaffFeatures);
+  
+  const replaceFalixLogoToggle = document.getElementById('replaceFalixLogo');
+  if (replaceFalixLogoToggle) setToggleState(replaceFalixLogoToggle, !!data.replaceFalixLogo);
+  
+  const replaceFalixLogoChoice = document.getElementById('replaceFalixLogoChoice');
+  if (replaceFalixLogoChoice) replaceFalixLogoChoice.value = data.replaceFalixLogoChoice || 'better-falix_normal_logo';
 });
 
 // General toggles - only add listeners if elements exist
@@ -249,6 +255,22 @@ if (enableStaffFeaturesToggle) {
     const state = this.getAttribute('aria-pressed') !== 'true';
     setToggleState(this, state);
     saveSetting('enableStaffFeatures', state);
+  });
+}
+
+const replaceFalixLogoToggle = document.getElementById('replaceFalixLogo');
+if (replaceFalixLogoToggle) {
+  replaceFalixLogoToggle.addEventListener('click', function() {
+    const state = this.getAttribute('aria-pressed') !== 'true';
+    setToggleState(this, state);
+    saveSetting('replaceFalixLogo', state);
+  });
+}
+
+const replaceFalixLogoChoice = document.getElementById('replaceFalixLogoChoice');
+if (replaceFalixLogoChoice) {
+  replaceFalixLogoChoice.addEventListener('change', function() {
+    saveSetting('replaceFalixLogoChoice', this.value);
   });
 }
 
