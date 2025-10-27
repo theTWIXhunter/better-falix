@@ -17,12 +17,23 @@ function addCopyAllButton() {
         return;
     }
 
-    // Extract server ID from the link
-    const serverLink = ticketMetaItem.querySelector('a[href*="/admin/ViewServer?id="]');
+    console.log('[better-falix] copy-all-support-info: Ticket meta item found', ticketMetaItem);
+
+    // Extract server ID from the link - try multiple selectors
+    let serverLink = ticketMetaItem.querySelector('a[href*="/admin/ViewServer?id="]');
     if (!serverLink) {
-        console.log('[better-falix] copy-all-support-info: Server link not found');
+        serverLink = ticketMetaItem.querySelector('a[href*="ViewServer"]');
+    }
+    if (!serverLink) {
+        serverLink = ticketMetaItem.querySelector('a');
+    }
+    
+    if (!serverLink) {
+        console.log('[better-falix] copy-all-support-info: Server link not found. HTML:', ticketMetaItem.innerHTML);
         return;
     }
+    
+    console.log('[better-falix] copy-all-support-info: Server link found', serverLink.href);
     
     const serverIdMatch = serverLink.href.match(/id=(\d+)/);
     const serverId = serverIdMatch ? serverIdMatch[1] : '';
@@ -30,6 +41,8 @@ function addCopyAllButton() {
     // Extract PIN from the span
     const pinElement = ticketMetaItem.querySelector('#serverPinCode');
     const pin = pinElement ? pinElement.textContent.trim() : '';
+    
+    console.log('[better-falix] copy-all-support-info: Server ID:', serverId, 'PIN:', pin);
     
     // Extract ticket ID from URL
     const urlParams = new URLSearchParams(window.location.search);
