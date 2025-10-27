@@ -15,8 +15,6 @@ chrome.storage.sync.get({ enabled: true, removeHowToConnect: false }, (data) => 
     document.querySelectorAll('.connect-step').forEach(el => el.remove());
     // Remove remote startup section
     document.querySelectorAll('.remote-startup-section').forEach(el => el.remove());
-    // Remove DNS verification section
-    document.querySelectorAll('.dns-verification-section').forEach(el => el.remove());
     // Remove edition tabs
     document.querySelectorAll('.connect-edition-tabs').forEach(el => el.remove());
     // Remove bedrock steps
@@ -52,9 +50,10 @@ chrome.storage.sync.get({ enabled: true, removeHowToConnect: false }, (data) => 
     function createAddressBox(label, value, copyValue) {
       const box = document.createElement('div');
       box.className = 'connect-address-box';
+      box.style.cssText = 'display: flex; align-items: center; white-space: nowrap;';
       box.innerHTML = `
-        ${label} <span class="connect-address-text">${value}</span>
-        <button class="btn connect-inline-copy" onclick="copyConnectionInfo('${copyValue}', this)" title="Copy to clipboard">
+        ${label} <span class="connect-address-text" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex-shrink: 1; min-width: 0;">${value}</span>
+        <button class="btn connect-inline-copy" onclick="copyConnectionInfo('${copyValue}', this)" title="Copy to clipboard" style="flex-shrink: 0;">
           <svg class="svg-inline--fa fa-copy" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="copy" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M208 0L332.1 0c12.7 0 24.9 5.1 33.9 14.1l67.9 67.9c9 9 14.1 21.2 14.1 33.9L448 336c0 26.5-21.5 48-48 48l-192 0c-26.5 0-48-21.5-48-48l0-288c0-26.5 21.5-48 48-48zM48 128l80 0 0 64-64 0 0 256 192 0 0-32 64 0 0 48c0 26.5-21.5 48-48 48L48 512c-26.5 0-48-21.5-48-48L0 176c0-26.5 21.5-48 48-48z"></path></svg>
         </button>
       `;
