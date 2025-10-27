@@ -65,7 +65,8 @@ const featureIds = [
   'hideReplyHeader',
   'shortenReplyStatus',
   'addAdminCategory',
-  'duplicateAdminButtons'
+  'duplicateAdminButtons',
+  'copyAllSupportInfo'
 
 ];
 
@@ -177,7 +178,8 @@ document.addEventListener('DOMContentLoaded', () => {
     splitAddonsTabs: false,
     renameConfigToProperties: false,
     renameAddonsToMods: false,
-    hideClosedTickets: false
+    hideClosedTickets: false,
+    copyAllSupportInfo: false
 
   }, (data) => {
     updateToggleBtn(data.enabled);
