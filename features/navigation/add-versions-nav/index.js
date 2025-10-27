@@ -11,24 +11,23 @@ chrome.storage.sync.get({ addVersionsNav: false, enabled: true }, (data) => {
   //  --------- START FEATURE ----------
 
   function addVersionsNavItem() {
-    // Find the Minecraft category
-    const minecraftCategory = Array.from(document.querySelectorAll('.nav-category-label')).find(
-      el => el.textContent.trim() === 'Minecraft'
-    );
+    // Find the Minecraft category button
+    const minecraftCategory = document.querySelector('.nav-category[data-category="MINECRAFT"]');
 
     if (!minecraftCategory) {
       console.log('[better-falix] add-versions-nav: Minecraft category not found');
       return;
     }
 
-    const minecraftSection = minecraftCategory.closest('.nav-category');
-    if (!minecraftSection) {
-      console.log('[better-falix] add-versions-nav: Minecraft section not found');
+    // Find the nav-section containing this category
+    const navSection = minecraftCategory.closest('.nav-section');
+    if (!navSection) {
+      console.log('[better-falix] add-versions-nav: Nav section not found');
       return;
     }
 
     // Check if Versions link already exists
-    const existingVersionsLink = minecraftSection.querySelector('a[href="/server/versions"]');
+    const existingVersionsLink = navSection.querySelector('a[href="/server/versions"]');
     if (existingVersionsLink) {
       console.log('[better-falix] add-versions-nav: Versions link already exists');
       return;
@@ -44,14 +43,14 @@ chrome.storage.sync.get({ addVersionsNav: false, enabled: true }, (data) => {
       <span>Versions</span>
     `;
 
-    // Find the nav-items container within the Minecraft section
-    const navItems = minecraftSection.querySelector('.nav-items');
-    if (navItems) {
+    // Find the collapsible content area (minecraftSection)
+    const minecraftSection = document.getElementById('minecraftSection');
+    if (minecraftSection) {
       // Add it as the first item in the Minecraft section
-      navItems.insertBefore(versionsNavItem, navItems.firstChild);
+      minecraftSection.insertBefore(versionsNavItem, minecraftSection.firstChild);
       console.log('[better-falix] add-versions-nav: Versions nav item added successfully');
     } else {
-      console.log('[better-falix] add-versions-nav: Nav items container not found');
+      console.log('[better-falix] add-versions-nav: Minecraft section content not found');
     }
   }
 
