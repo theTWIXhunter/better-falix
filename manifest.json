@@ -32,37 +32,37 @@
     {
       "matches": ["https://client.falixnodes.net/"],
       "js": ["features/general/custom-server-order/index.js"],
-      "run_at": "document_start"
+      "run_at": "document_idle"
     },
     {
       "matches": ["https://client.falixnodes.net/server/versions*"],
       "js": ["features/general/itsjust-geyser/index.js"],
-      "run_at": "document_start"
+      "run_at": "document_idle"
     },
     {
       "matches": ["https://client.falixnodes.net/server/versions*"],
       "js": ["features/general/itsjust-paper/index.js"],
-      "run_at": "document_start"
+      "run_at": "document_idle"
     },
     {
       "matches": ["https://client.falixnodes.net/*"],
       "js": ["features/general/navbarhover/index.js"],
-      "run_at": "document_start"
+      "run_at": "document_idle"
     }, 
     {
       "matches": ["https://falixnodes.net/*"],
       "js": ["features/general/remove-exit-discount/index.js"],
-      "run_at": "document_start"
+      "run_at": "document_idle"
     },
     {
       "matches": ["https://client.falixnodes.net/"],
       "js": ["features/general/remove-server-search/index.js"],
-      "run_at": "document_start"
+      "run_at": "document_idle"
     },
     {
       "matches": ["https://client.falixnodes.net/*"],
       "js": ["features/general/hide-support-category/index.js"],
-      "run_at": "document_start"
+      "run_at": "document_idle"
     },
     {
       "matches": ["https://client.falixnodes.net/*"],
@@ -77,7 +77,7 @@
     {
       "matches": ["https://client.falixnodes.net/*"],
       "js": ["features/general/Replace-account-category/index.js"],
-      "run_at": "document_start"
+      "run_at": "document_idle"
     },
 
 
@@ -91,27 +91,27 @@
     {
       "matches": ["https://client.falixnodes.net/server/console*"],
       "js": ["features/console/replace-support-modal/index.js"],
-      "run_at": "document_start"
+      "run_at": "document_idle"
     },
     {
       "matches": ["https://client.falixnodes.net/server/console*"],
       "js": ["features/console/remove-how-to-connect/index.js"],
-      "run_at": "document_start"
+      "run_at": "document_idle"
     },
     {
       "matches": ["https://client.falixnodes.net/server/console*"],
       "js": ["features/console/replace-cpu-with-node/index.js"],
-      "run_at": "document_start"
+      "run_at": "document_idle"
     },
     {
       "matches": ["https://client.falixnodes.net/server/console*"],
       "js": ["features/console/remove-max-players/index.js"],
-      "run_at": "document_start"
+      "run_at": "document_idle"
     },
     {
       "matches": ["https://client.falixnodes.net/server/console*"],
       "js": ["features/console/remove-player-management/index.js"],
-      "run_at": "document_start"
+      "run_at": "document_idle"
     },
     {
       "matches": ["https://client.falixnodes.net/server/console*"],
@@ -125,17 +125,17 @@
     {
       "matches": ["https://client.falixnodes.net/server/filemanager*"],
       "js": ["features/filemanager/remove-sftp-upload/index.js"],
-      "run_at": "document_start"
+      "run_at": "document_idle"
     },
     {
       "matches": ["https://client.falixnodes.net/server/filemanager*"],
       "js": ["features/filemanager/upload-create-hover/index.js"],
-      "run_at": "document_start"
+      "run_at": "document_idle"
     },
     {
       "matches": ["https://client.falixnodes.net/server/edit*"],
       "js": ["features/filemanager/better-editor-fullscreen/index.js"],
-      "run_at": "document_start"
+      "run_at": "document_idle"
     },
 
 
@@ -144,47 +144,47 @@
     {
       "matches": ["https://client.falixnodes.net/server/*"],
       "js": ["features/navigation/move-backups-nav/index.js"],
-      "run_at": "document_start"
+      "run_at": "document_idle"
     },
     {
       "matches": ["https://client.falixnodes.net/server/*"],
       "js": ["features/navigation/move-monitoring-nav/index.js"],
-      "run_at": "document_start"
+      "run_at": "document_idle"
     },
     {
       "matches": ["https://client.falixnodes.net/server/*"],
       "js": ["features/navigation/move-logs-nav/index.js"],
-      "run_at": "document_start"
+      "run_at": "document_idle"
     },
     {
       "matches": ["https://client.falixnodes.net/server/*"],
       "js": ["features/archived/remove-external-start-nav/index.js"],
-      "run_at": "document_start"
+      "run_at": "document_idle"
     },
     {
       "matches": ["https://client.falixnodes.net/*"],
       "js": ["features/navigation/remove-navbar-support-links/index.js"],
-      "run_at": "document_start"
+      "run_at": "document_idle"
     },
     {
       "matches": ["https://client.falixnodes.net/server/*"],
       "js": ["features/navigation/remove-console-files-category/index.js"],
-      "run_at": "document_start"
+      "run_at": "document_idle"
     },
     {
       "matches": ["https://client.falixnodes.net/server/*"],
       "js": ["features/navigation/rename-config-to-properties/index.js"],
-      "run_at": "document_start"
+      "run_at": "document_idle"
     },
     {
       "matches": ["https://client.falixnodes.net/server/*"],
       "js": ["features/navigation/rename-addons-to-mods/index.js"],
-      "run_at": "document_start"
+      "run_at": "document_idle"
     },
     {
       "matches": ["https://client.falixnodes.net/server/*"],
       "js": ["features/navigation/split-addons-tabs/index.js"],
-      "run_at": "document_start"
+      "run_at": "document_idle"
     },
 
 
@@ -193,22 +193,22 @@
     {
       "matches": ["https://client.falixnodes.net/shared-logs/*"],
       "js": ["features/logsharing/remove-logs-container/index.js"],
-      "run_at": "document_start"
+      "run_at": "document_idle"
     },
     {
       "matches": ["https://client.falixnodes.net/shared-logs/*"],
       "js": ["features/logsharing/redacted-content-subtle/index.js"],
-      "run_at": "document_start"
+      "run_at": "document_idle"
     },
     {
       "matches": ["https://client.falixnodes.net/shared-logs/*"],
       "js": ["features/logsharing/colored-log-messages/index.js"],
-      "run_at": "document_start"
+      "run_at": "document_idle"
     },
     {
       "matches": ["https://client.falixnodes.net/shared-logs/*"],
       "js": ["features/logsharing/auto-collapse-log-analysis/index.js"],
-      "run_at": "document_start"
+      "run_at": "document_idle"
     },
 
 
@@ -217,42 +217,42 @@
     {
       "matches": ["https://client.falixnodes.net/*"],
       "js": ["features/staff-only/move-admin-nav/index.js"],
-      "run_at": "document_start"
+      "run_at": "document_idle"
     },
     {
       "matches": ["https://client.falixnodes.net/"],
       "js": ["features/staff-only/admin-panel-index-redirect/index.js"],
-      "run_at": "document_start"
+      "run_at": "document_idle"
     },
     {
       "matches": ["https://client.falixnodes.net/admin/ListTickets"],
       "js": ["features/staff-only/remove-premium-row/index.js"],
-      "run_at": "document_start"
+      "run_at": "document_idle"
     },
     {
       "matches": ["https://client.falixnodes.net/support/viewticket.php*"],
       "js": ["features/staff-only/hide-reply-header/index.js"],
-      "run_at": "document_start"
+      "run_at": "document_idle"
     },
     {
       "matches": ["https://client.falixnodes.net/admin/ListTickets"],
       "js": ["features/staff-only/shorten-reply-status/index.js"],
-      "run_at": "document_start"
+      "run_at": "document_idle"
     },
     {
       "matches": ["https://client.falixnodes.net/"],
       "js": ["features/staff-only/add-admin-pages-category/index.js"],
-      "run_at": "document_start"
+      "run_at": "document_idle"
     },
     {
       "matches": ["https://client.falixnodes.net/admin/ListTickets*"],
       "js": ["features/staff-only/hide-closed-tickets/index.js"],
-      "run_at": "document_start"
+      "run_at": "document_idle"
     },
     {
       "matches": ["https://client.falixnodes.net/admin/*"],
       "js": ["features/staff-only/duplicate-admin-buttons/index.js"],
-      "run_at": "document_start"
+      "run_at": "document_idle"
     },
 
 
@@ -261,22 +261,22 @@
     {
       "matches": ["https://client.falixnodes.net/server/*"],
       "js": ["features/archived/legacy-server-name-button/index.js"],
-      "run_at": "document_start"
+      "run_at": "document_idle"
     },  
     {
       "matches": ["https://client.falixnodes.net/server/edit*"],
       "js": ["features/archived/legacy-editor-fullscreen/index.js"],
-      "run_at": "document_start"
+      "run_at": "document_idle"
     },
     {
       "matches": ["https://client.falixnodes.net/shared-logs/*"],
       "js": ["features/archived/legacy-collapsible-log-analysis/index.js"],
-      "run_at": "document_start"
+      "run_at": "document_idle"
     },
     {
       "matches": ["https://client.falixnodes.net/server/edit*"],
       "js": ["features/archived/editor-wrapper-height/index.js"],
-      "run_at": "document_start"
+      "run_at": "document_idle"
     },
 
 
@@ -285,12 +285,12 @@
     {
       "matches": ["https://client.falixnodes.net/*"],
       "js": ["themes/light-mode/index.js"],
-      "run_at": "document_start"
+      "run_at": "document_idle"
     },
     {
       "matches": ["https://client.falixnodes.net/*"],
       "js": ["themes/purple-mode/index.js"],
-      "run_at": "document_start"
+      "run_at": "document_idle"
     }
   ]
 }
