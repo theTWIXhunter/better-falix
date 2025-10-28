@@ -17,34 +17,51 @@ chrome.storage.sync.get({ enabled: true, replaceConnectTab: false }, (data) => {
     document.querySelectorAll('.remote-startup-section').forEach(el => el.remove());
     // Remove edition tabs
     document.querySelectorAll('.connect-edition-tabs').forEach(el => el.remove());
-    // Remove bedrock steps
-    document.querySelectorAll('#bedrockSteps').forEach(el => el.remove());
 
-    // Get the connection info
-    const addressBox = document.querySelector('.connect-address-box');
     const javaSteps = document.getElementById('javaSteps');
+    const bedrockSteps = document.getElementById('bedrockSteps');
     
-    if (!addressBox || !javaSteps) {
-      console.log('[better-falix] replace-connect-tab: Connection info not found');
+    if (!javaSteps) {
+      console.log('[better-falix] replace-connect-tab: Java steps not found');
       return;
     }
 
-    // Extract IP and port from the copy button's onclick attribute
-    const copyBtn = addressBox.querySelector('.connect-inline-copy');
-    const onclickAttr = copyBtn?.getAttribute('onclick');
-    const match = onclickAttr?.match(/copyConnectionInfo\('([^']+)'/);
-    const fullAddress = match ? match[1] : '';
+    // Extract IP and port from the Bedrock section's minecraft:// link
+    let ip = '';
+    let port = '';
+    let fullAddress = '';
     
-    // Extract IP (from address text)
-    const ip = addressBox.querySelector('.connect-address-text')?.textContent?.trim() || '';
+    if (bedrockSteps) {
+      const minecraftLink = bedrockSteps.querySelector('a[href^="minecraft://?addExternalServer="]');
+      if (minecraftLink) {
+        const href = minecraftLink.getAttribute('href');
+        // Extract from: minecraft://?addExternalServer=NAME|IP:PORT
+        const match = href.match(/addExternalServer=[^|]+\|([^:]+):(\d+)/);
+        if (match) {
+          ip = match[1];
+          port = match[2];
+          fullAddress = `${ip}:${port}`;
+        }
+      }
+    }
     
-    // Extract port (after the colon in fullAddress)
-    const port = fullAddress.includes(':') ? fullAddress.split(':')[1] : '';
+    // Fallback: try to get IP from Java address box if it exists
+    if (!ip) {
+      const addressBox = document.querySelector('#javaSteps .connect-address-box');
+      if (addressBox) {
+        ip = addressBox.querySelector('.connect-address-text')?.textContent?.trim() || '';
+      }
+    }
     
-    console.log('[better-falix] replace-connect-tab: IP:', ip, 'Full:', fullAddress, 'Port:', port);
+    console.log('[better-falix] replace-connect-tab: IP:', ip, 'Port:', port, 'Full:', fullAddress);
 
-    // Remove the old address box
-    addressBox.remove();
+    // Remove bedrock steps after extracting info
+    if (bedrockSteps) {
+      bedrockSteps.remove();
+    }
+
+    // Remove any existing address boxes in javaSteps
+    javaSteps.querySelectorAll('.connect-address-box').forEach(el => el.remove());
 
     // Helper function to create address box
     function createAddressBox(label, value, copyValue) {
