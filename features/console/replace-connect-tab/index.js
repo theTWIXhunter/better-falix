@@ -60,13 +60,22 @@ chrome.storage.sync.get({ enabled: true, replaceConnectTab: false }, (data) => {
       const text = element.textContent || '';
       // Check if it contains "NODE:" text
       if (text.includes('NODE:')) {
+        // Try to get from .support-info-text (with replace-support-modal enabled)
         const supportInfoText = element.querySelector('.support-info-text');
+        let nodeText = '';
         if (supportInfoText) {
-          // Extract just the NODE part (before " - CPU" if it exists)
-          const nodeText = supportInfoText.textContent.trim();
-          dynamicIp = nodeText.split(' - ')[0].trim();
-          break;
+          nodeText = supportInfoText.textContent.trim();
+        } else {
+          // Fallback: extract from the full text (without replace-support-modal)
+          // Text format: "NODE: node123 - CPU: 4 vCores"
+          const match = text.match(/NODE:\s*([^\s-]+)/);
+          if (match) {
+            nodeText = match[1];
+          }
         }
+        // Extract just the NODE part (before " - CPU" if it exists)
+        dynamicIp = nodeText.split(' - ')[0].trim();
+        break;
       }
     }
     
