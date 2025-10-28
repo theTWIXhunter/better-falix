@@ -127,10 +127,15 @@ chrome.storage.sync.get({ customServerOrder: false, customServerOrder_list: '', 
     setTimeout(waitForServersList, 200);
   }
 
+  // Run immediately
+  waitForServersList();
+  
+  // Rerun at document_idle for consistency
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', waitForServersList);
-  } else {
-    waitForServersList();
+  } else if (document.readyState === 'interactive') {
+    // Wait for complete
+    window.addEventListener('load', waitForServersList);
   }
 
   setTimeout(() => {

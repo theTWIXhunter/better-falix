@@ -27,6 +27,14 @@ chrome.storage.sync.get({ removePremiumTransfer: false, enabled: true }, (data) 
 
   // Remove immediately
   removePremiumTransferBanner();
+  
+  // Rerun at document_idle for consistency
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', removePremiumTransferBanner);
+  } else if (document.readyState === 'interactive') {
+    // Wait for complete
+    window.addEventListener('load', removePremiumTransferBanner);
+  }
 
   // Observe for dynamic content
   const observer = new MutationObserver(() => {

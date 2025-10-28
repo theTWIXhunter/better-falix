@@ -32,7 +32,7 @@
     {
       "matches": ["https://client.falixnodes.net/"],
       "js": ["features/general/custom-server-order/index.js"],
-      "run_at": "document_idle"
+      "run_at": "document_start"
     },
     {
       "matches": ["https://client.falixnodes.net/server/versions*"],
@@ -116,7 +116,7 @@
     {
       "matches": ["https://client.falixnodes.net/server/console*"],
       "js": ["features/console/remove-premium-transfer/index.js"],
-      "run_at": "document_idle"
+      "run_at": "document_start"
     },
 
 
@@ -169,7 +169,7 @@
     {
       "matches": ["https://client.falixnodes.net/server/*"],
       "js": ["features/navigation/remove-console-files-category/index.js"],
-      "run_at": "document_idle"
+      "run_at": "document_start"
     },
     {
       "matches": ["https://client.falixnodes.net/server/*"],

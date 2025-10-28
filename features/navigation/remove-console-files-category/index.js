@@ -15,10 +15,16 @@ chrome.storage.sync.get({ enabled: true, removeConsoleFilesCategory: false }, (d
       const btn = document.querySelector('button.nav-category[data-category="CONSOLE & FILES"]');
       if (btn) btn.style.display = 'none';
     }
+    
+    // Run immediately
+    run();
+    
+    // Rerun at document_idle for consistency
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', run);
-    } else {
-      run();
+    } else if (document.readyState === 'interactive') {
+      // Wait for complete
+      window.addEventListener('load', run);
     }
   })();
 
