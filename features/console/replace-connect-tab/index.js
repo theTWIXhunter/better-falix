@@ -11,6 +11,12 @@ chrome.storage.sync.get({ enabled: true, replaceConnectTab: false }, (data) => {
   //  --------- START FEATURE ----------
 
   function replaceConnectTabSections() {
+    // Fix aria-hidden accessibility warning by removing it from the modal
+    const connectModal = document.getElementById('connectgui');
+    if (connectModal && connectModal.hasAttribute('aria-hidden')) {
+      connectModal.removeAttribute('aria-hidden');
+    }
+
     // Remove all connect steps
     document.querySelectorAll('.connect-step').forEach(el => el.remove());
     // Remove remote startup section
