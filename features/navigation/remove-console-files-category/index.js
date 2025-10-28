@@ -11,6 +11,8 @@ chrome.storage.sync.get({ enabled: true, removeConsoleFilesCategory: false }, (d
   //  --------- START FEATURE ----------
 
   (function hideConsoleFilesCategory() {
+    let hasRunOnLoad = false;
+    
     function run() {
       const btn = document.querySelector('button.nav-category[data-category="CONSOLE & FILES"]');
       if (btn) btn.style.display = 'none';
@@ -19,12 +21,22 @@ chrome.storage.sync.get({ enabled: true, removeConsoleFilesCategory: false }, (d
     // Run immediately
     run();
     
-    // Rerun at document_idle for consistency
+    // Rerun at document_idle for consistency (only once)
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', run);
+      document.addEventListener('DOMContentLoaded', () => {
+        if (!hasRunOnLoad) {
+          hasRunOnLoad = true;
+          run();
+        }
+      });
     } else if (document.readyState === 'interactive') {
       // Wait for complete
-      window.addEventListener('load', run);
+      window.addEventListener('load', () => {
+        if (!hasRunOnLoad) {
+          hasRunOnLoad = true;
+          run();
+        }
+      });
     }
   })();
 

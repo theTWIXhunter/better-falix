@@ -10,6 +10,8 @@ chrome.storage.sync.get({ hideConsoleTabs: false, enabled: true }, (data) => {
 
   //  --------- START FEATURE ----------
 
+  let hasRunOnLoad = false;
+
   const hideTabs = () => {
     const el = document.querySelector('.console-tabs');
     if (el) el.style.display = 'none';
@@ -17,12 +19,22 @@ chrome.storage.sync.get({ hideConsoleTabs: false, enabled: true }, (data) => {
   
   hideTabs();
   
-  // Rerun at document_idle for consistency
+  // Rerun at document_idle for consistency (only once)
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', hideTabs);
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!hasRunOnLoad) {
+        hasRunOnLoad = true;
+        hideTabs();
+      }
+    });
   } else if (document.readyState === 'interactive') {
     // Wait for complete
-    window.addEventListener('load', hideTabs);
+    window.addEventListener('load', () => {
+      if (!hasRunOnLoad) {
+        hasRunOnLoad = true;
+        hideTabs();
+      }
+    });
   }
   
   const observer = new MutationObserver(hideTabs);

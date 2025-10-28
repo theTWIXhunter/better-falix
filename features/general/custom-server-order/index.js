@@ -105,6 +105,8 @@ chrome.storage.sync.get({ customServerOrder: false, customServerOrder_list: '', 
   }
 
   // Wait for DOM and for #serverslist to exist
+  let hasRunOnLoad = false;
+  
   function waitForServersList() {
     const serversList = document.getElementById('serverslist');
     if (serversList) {
@@ -130,12 +132,22 @@ chrome.storage.sync.get({ customServerOrder: false, customServerOrder_list: '', 
   // Run immediately
   waitForServersList();
   
-  // Rerun at document_idle for consistency
+  // Rerun at document_idle for consistency (only once)
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', waitForServersList);
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!hasRunOnLoad) {
+        hasRunOnLoad = true;
+        waitForServersList();
+      }
+    });
   } else if (document.readyState === 'interactive') {
     // Wait for complete
-    window.addEventListener('load', waitForServersList);
+    window.addEventListener('load', () => {
+      if (!hasRunOnLoad) {
+        hasRunOnLoad = true;
+        waitForServersList();
+      }
+    });
   }
 
   setTimeout(() => {

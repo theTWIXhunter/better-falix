@@ -10,6 +10,8 @@ chrome.storage.sync.get({ removePremiumTransfer: false, enabled: true }, (data) 
 
   //  --------- START FEATURE ----------
 
+  let hasRunOnLoad = false;
+
   function removePremiumTransferBanner() {
     try {
       // Find all alert divs that contain the "Welcome to Premium" text
@@ -28,12 +30,22 @@ chrome.storage.sync.get({ removePremiumTransfer: false, enabled: true }, (data) 
   // Remove immediately
   removePremiumTransferBanner();
   
-  // Rerun at document_idle for consistency
+  // Rerun at document_idle for consistency (only once)
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', removePremiumTransferBanner);
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!hasRunOnLoad) {
+        hasRunOnLoad = true;
+        removePremiumTransferBanner();
+      }
+    });
   } else if (document.readyState === 'interactive') {
     // Wait for complete
-    window.addEventListener('load', removePremiumTransferBanner);
+    window.addEventListener('load', () => {
+      if (!hasRunOnLoad) {
+        hasRunOnLoad = true;
+        removePremiumTransferBanner();
+      }
+    });
   }
 
   // Observe for dynamic content

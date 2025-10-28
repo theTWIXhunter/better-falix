@@ -21,6 +21,8 @@ chrome.storage.sync.get({ replaceFalixLogo: false, enabled: true, replaceFalixLo
 
   const choice = data.replaceFalixLogoChoice || 'better-falix_normal_logo';
   const logoUrl = CHOICES[choice] || CHOICES['better-falix_normal_logo'];
+  
+  let hasRunOnLoad = false;
 
   function replaceAllLogos() {
     try {
@@ -60,12 +62,22 @@ chrome.storage.sync.get({ replaceFalixLogo: false, enabled: true, replaceFalixLo
   // One-shot replace now
   replaceAllLogos();
 
-  // Rerun at document_idle for consistency
+  // Rerun at document_idle for consistency (only once)
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', replaceAllLogos);
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!hasRunOnLoad) {
+        hasRunOnLoad = true;
+        replaceAllLogos();
+      }
+    });
   } else if (document.readyState === 'interactive') {
     // Wait for complete
-    window.addEventListener('load', replaceAllLogos);
+    window.addEventListener('load', () => {
+      if (!hasRunOnLoad) {
+        hasRunOnLoad = true;
+        replaceAllLogos();
+      }
+    });
   }
 
   // Observe mutations for up to 3s to catch late-inserted logos
