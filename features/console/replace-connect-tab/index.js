@@ -53,7 +53,24 @@ chrome.storage.sync.get({ enabled: true, replaceConnectTab: false }, (data) => {
       }
     }
     
-    console.log('[better-falix] replace-connect-tab: IP:', ip, 'Port:', port, 'Full:', fullAddress);
+    // Extract NODE (dynamic IP) from support info
+    let dynamicIp = '';
+    const supportInfoElements = document.querySelectorAll('.support-info-value');
+    for (const element of supportInfoElements) {
+      const text = element.textContent || '';
+      // Check if it contains "NODE:" text
+      if (text.includes('NODE:')) {
+        const supportInfoText = element.querySelector('.support-info-text');
+        if (supportInfoText) {
+          // Extract just the NODE part (before " - CPU" if it exists)
+          const nodeText = supportInfoText.textContent.trim();
+          dynamicIp = nodeText.split(' - ')[0].trim();
+          break;
+        }
+      }
+    }
+    
+    console.log('[better-falix] replace-connect-tab: IP:', ip, 'Port:', port, 'Full:', fullAddress, 'Dynamic IP:', dynamicIp);
 
     // Remove bedrock steps after extracting info
     if (bedrockSteps) {
@@ -88,6 +105,12 @@ chrome.storage.sync.get({ enabled: true, replaceConnectTab: false }, (data) => {
     // Add Port box
     if (port) {
       javaSteps.appendChild(createAddressBox('PORT:', port, port));
+    }
+    
+    // Add Dynamic IP box
+    if (dynamicIp) {
+      const fullDynamicIp = `${dynamicIp}.falixserver.net`;
+      javaSteps.appendChild(createAddressBox('DYNAMIC IP:', fullDynamicIp, fullDynamicIp));
     }
   }
 
