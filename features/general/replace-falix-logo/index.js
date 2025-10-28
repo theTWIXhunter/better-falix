@@ -60,6 +60,14 @@ chrome.storage.sync.get({ replaceFalixLogo: false, enabled: true, replaceFalixLo
   // One-shot replace now
   replaceAllLogos();
 
+  // Rerun at document_idle for consistency
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', replaceAllLogos);
+  } else if (document.readyState === 'interactive') {
+    // Wait for complete
+    window.addEventListener('load', replaceAllLogos);
+  }
+
   // Observe mutations for up to 3s to catch late-inserted logos
   const observer = new MutationObserver(() => {
     replaceAllLogos();
