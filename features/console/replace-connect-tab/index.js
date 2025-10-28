@@ -10,54 +10,6 @@ chrome.storage.sync.get({ enabled: true, replaceConnectTab: false }, (data) => {
 
   //  --------- START FEATURE ----------
 
-  function extractDynamicIp() {
-    // Extract NODE (dynamic IP) from support info
-    let dynamicIp = '';
-    const supportInfoElements = document.querySelectorAll('.support-info-value');
-    for (const element of supportInfoElements) {
-      const text = element.textContent || '';
-      // Check if it contains "NODE:" text
-      if (text.includes('NODE:')) {
-        const supportInfoText = element.querySelector('.support-info-text');
-        if (supportInfoText) {
-          // Extract just the NODE part (before " - CPU" if it exists)
-          const nodeText = supportInfoText.textContent.trim();
-          dynamicIp = nodeText.split(' - ')[0].trim();
-          break;
-        }
-      }
-    }
-    return dynamicIp;
-  }
-
-  function waitForDynamicIp(callback) {
-    const dynamicIp = extractDynamicIp();
-    if (dynamicIp) {
-      callback(dynamicIp);
-      return;
-    }
-
-    // Wait for support info to load
-    const observer = new MutationObserver(() => {
-      const dynamicIp = extractDynamicIp();
-      if (dynamicIp) {
-        observer.disconnect();
-        callback(dynamicIp);
-      }
-    });
-
-    observer.observe(document.body, {
-      childList: true,
-      subtree: true
-    });
-
-    // Timeout after 5 seconds
-    setTimeout(() => {
-      observer.disconnect();
-      callback('');
-    }, 5000);
-  }
-
   function replaceConnectTabSections() {
     // Remove all connect steps
     document.querySelectorAll('.connect-step').forEach(el => el.remove());
@@ -101,7 +53,24 @@ chrome.storage.sync.get({ enabled: true, replaceConnectTab: false }, (data) => {
       }
     }
     
-    console.log('[better-falix] replace-connect-tab: IP:', ip, 'Port:', port, 'Full:', fullAddress);
+    // Extract NODE (dynamic IP) from support info
+    let dynamicIp = '';
+    const supportInfoElements = document.querySelectorAll('.support-info-value');
+    for (const element of supportInfoElements) {
+      const text = element.textContent || '';
+      // Check if it contains "NODE:" text
+      if (text.includes('NODE:')) {
+        const supportInfoText = element.querySelector('.support-info-text');
+        if (supportInfoText) {
+          // Extract just the NODE part (before " - CPU" if it exists)
+          const nodeText = supportInfoText.textContent.trim();
+          dynamicIp = nodeText.split(' - ')[0].trim();
+          break;
+        }
+      }
+    }
+    
+    console.log('[better-falix] replace-connect-tab: IP:', ip, 'Port:', port, 'Full:', fullAddress, 'Dynamic IP:', dynamicIp);
 
     // Remove bedrock steps after extracting info
     if (bedrockSteps) {
@@ -138,14 +107,11 @@ chrome.storage.sync.get({ enabled: true, replaceConnectTab: false }, (data) => {
       javaSteps.appendChild(createAddressBox('PORT:', port, port));
     }
     
-    // Wait for and add Dynamic IP box
-    waitForDynamicIp((dynamicIp) => {
-      console.log('[better-falix] replace-connect-tab: Dynamic IP found:', dynamicIp);
-      if (dynamicIp) {
-        const fullDynamicIp = `${dynamicIp}.falixserver.net`;
-        javaSteps.appendChild(createAddressBox('DYNAMIC IP:', fullDynamicIp, fullDynamicIp));
-      }
-    });
+    // Add Dynamic IP box
+    if (dynamicIp) {
+      const fullDynamicIp = `${dynamicIp}.falixserver.net`;
+      javaSteps.appendChild(createAddressBox('DYNAMIC IP:', fullDynamicIp, fullDynamicIp));
+    }
   }
 
   // Fix: always run after DOMContentLoaded to ensure all elements exist
