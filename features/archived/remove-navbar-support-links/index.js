@@ -1,8 +1,12 @@
+// [better-falix] remove-navbar-support-links: ARCHIVED
+// This feature has been implemented in normal Falix and is no longer needed.
+// Kept here for reference.
+
 // [better-falix] remove-navbar-support-links: Script loading
 console.log('[better-falix] remove-navbar-support-links: Script loading');
 
-chrome.storage.sync.get({ enabled: true, removeNavbarSupportLinks: false }, (data) => {
-  if (!data.enabled || !data.removeNavbarSupportLinks) {
+chrome.storage.sync.get({ enabled: true, ARCHIVED_removeNavbarSupportLinks: false }, (data) => {
+  if (!data.enabled || !data.ARCHIVED_removeNavbarSupportLinks) {
     console.log('[better-falix] remove-navbar-support-links: Script disabled');
     return;
   }

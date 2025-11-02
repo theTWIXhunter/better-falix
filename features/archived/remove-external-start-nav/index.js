@@ -1,8 +1,8 @@
 // [better-falix] remove-external-start-nav: Script loading
 console.log('[better-falix] remove-external-start-nav: Script loading');
 
-chrome.storage.sync.get({ enabled: true, removeExternalStartNav: false }, (data) => {
-  if (!data.enabled || !data.removeExternalStartNav) {
+chrome.storage.sync.get({ enabled: true, ARCHIVED_removeExternalStartNav: false }, (data) => {
+  if (!data.enabled || !data.ARCHIVED_removeExternalStartNav) {
     console.log('[better-falix] remove-external-start-nav: Script disabled');
     return;
   }

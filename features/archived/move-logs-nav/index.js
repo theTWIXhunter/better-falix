@@ -1,8 +1,12 @@
+// [better-falix] move-logs-nav: ARCHIVED
+// This feature has been implemented in normal Falix and is no longer needed.
+// Kept here for reference.
+
 // [better-falix] move-Logs-nav: Script loading
 console.log('[better-falix] move-Logs-nav: Script loading');
 
-chrome.storage.sync.get({ moveLogsNav: false, enabled: true }, (data) => {
-  if (!data.enabled || !data.moveLogsNav) {
+chrome.storage.sync.get({ ARCHIVED_moveLogsNav: false, enabled: true }, (data) => {
+  if (!data.enabled || !data.ARCHIVED_moveLogsNav) {
     console.log('[better-falix] move-Logs-nav: Script disabled');
     return;
   }

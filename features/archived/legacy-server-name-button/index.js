@@ -1,8 +1,8 @@
 // [better-falix] server-name-button: Script loading
 console.log('[better-falix] server-name-button: Script loading');
 
-chrome.storage.sync.get({ enabled: true, serverNameButton: false }, (data) => {
-  if (!data.enabled || !data.serverNameButton) {
+chrome.storage.sync.get({ enabled: true, ARCHIVED_serverNameButton: false }, (data) => {
+  if (!data.enabled || !data.ARCHIVED_serverNameButton) {
     console.log('[better-falix] server-name-button: Script disabled');
     return;
   }

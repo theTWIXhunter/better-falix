@@ -1,8 +1,8 @@
 // [better-falix] admin-panel-index-redirect: Script loading
 console.log('[better-falix] hide-closed-tickets: Script loading');
 
-chrome.storage.sync.get({enabled: true, hideClosedTickets: false}, (data) => {
-  if (!data.enabled || !data.hideClosedTickets) {
+chrome.storage.sync.get({enabled: true, ARCHIVED_hideClosedTickets: false}, (data) => {
+  if (!data.enabled || !data.ARCHIVED_hideClosedTickets) {
     console.log('[better-falix] hide-closed-tickets: Script disabled');
     return;
   }

@@ -1,8 +1,8 @@
 // [better-falix] collapsible-log-analysis: Script loading
 console.log('[better-falix] legacy-collapsible-log-analysis: Script loading');
 
-chrome.storage.sync.get({ collapsibleLogAnalysis: false, enabled: true }, (data) => {
-  if (!data.enabled || !data.collapsibleLogAnalysis) {
+chrome.storage.sync.get({ ARCHIVED_collapsibleLogAnalysis: false, enabled: true }, (data) => {
+  if (!data.enabled || !data.ARCHIVED_collapsibleLogAnalysis) {
     console.log('[better-falix] legacy-collapsible-log-analysis: Script disabled');
     return;
   }

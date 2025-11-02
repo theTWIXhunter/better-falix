@@ -1,8 +1,8 @@
 // [better-falix] LEGACY-editor-fullscreen: Script loading
 console.log('[better-falix] LEGACY-editor-fullscreen: Script loading');
 
-chrome.storage.sync.get({ editorFullscreen: false, enabled: true }, (data) => {
-  if (!data.enabled || !data.editorFullscreen) {
+chrome.storage.sync.get({ ARCHIVED_editorFullscreen: false, enabled: true }, (data) => {
+  if (!data.enabled || !data.ARCHIVED_editorFullscreen) {
     console.log('[better-falix] LEGACY-editor-fullscreen: Script disabled');
     return;
   }

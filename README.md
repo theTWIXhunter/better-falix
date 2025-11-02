@@ -37,11 +37,6 @@ Better Falix is a browser extension that enhances the FalixNodes client-side exp
 
 ### Navigation
 
-- **Move "Backups" to Server Settings:** Relocate the "Backups" navigation item to the Server Settings section.
-- **Move "Monitoring" to Server Settings:** Move the "Monitoring" navigation item to the Server Settings section.
-- **Move "Logs" to Server Settings:** Move the "Logs" navigation item to the Server Settings section.
-- **Remove Navbar Support Links:** Optionally remove support-related links from the navbar.
-- **Remove "Console" and "Files" categories:** Remove "Console" and "Files" categories (keep items).
 - **Rename Config to Properties:** Renames the "Config" navigation option to "Properties" in the Minecraft category for clarity.
 - **Rename Addons to Mods:** Renames the "Addons" navigation option to "Mods" in the Minecraft category for clarity.
 - **Split Addons Tabs:** Splits the addons tab back into separate plugins, mods, modpacks, and datapacks tabs on server pages.
@@ -71,6 +66,11 @@ Note: this category isn't visible by default, you can enable "staff features" in
 Warning: These features are archived, this is either because they are replaced or because they got implemented into the native page.
 Enabling these features might cause issues or incompatibilities with other plugins or native features.
 
+- **Move "Backups" to Server Settings:** Relocate the "Backups" navigation item to the Server Settings section (implemented in normal Falix).
+- **Move "Monitoring" to Server Settings:** Move the "Monitoring" navigation item to the Server Settings section (implemented in normal Falix).
+- **Move "Logs" to Server Settings:** Move the "Logs" navigation item to the Server Settings section (implemented in normal Falix).
+- **Remove Navbar Support Links:** Optionally remove support-related links from the navbar (implemented in normal Falix).
+- **Remove "Console" and "Files" categories:** Remove "Console" and "Files" categories (keep items) (implemented in normal Falix).
 - **Editor Fullscreen**: Adds a button to the file editor toolbar that allows you to make the editor and toolbar take up the entire browser window (added to falix itself).
 - **Server Name Button:** Makes the server name in the navbar clickable and redirect you to the main page (added to falix itself).
 - **Collapsible Log Analysis:** Add a collapse/expand button to the Log Analysis section (added to falix itself).
