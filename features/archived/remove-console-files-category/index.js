@@ -1,8 +1,12 @@
+// [better-falix] remove-console-files-category: ARCHIVED
+// This feature has been implemented in normal Falix and is no longer needed.
+// Kept here for reference.
+
 // [better-falix] remove-console-files-category: Script loading
 console.log('[better-falix] remove-console-files-category: Script loading');
 
-chrome.storage.sync.get({ enabled: true, removeConsoleFilesCategory: false }, (data) => {
-  if (!data.enabled || !data.removeConsoleFilesCategory) {
+chrome.storage.sync.get({ enabled: true, ARCHIVED_removeConsoleFilesCategory: false }, (data) => {
+  if (!data.enabled || !data.ARCHIVED_removeConsoleFilesCategory) {
     console.log('[better-falix] remove-console-files-category: Script disabled');
     return;
   }

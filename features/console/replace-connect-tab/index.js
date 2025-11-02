@@ -11,40 +11,89 @@ chrome.storage.sync.get({ enabled: true, replaceConnectTab: false }, (data) => {
   //  --------- START FEATURE ----------
 
   function replaceConnectTabSections() {
+    // Fix aria-hidden accessibility warning by removing it from the modal
+    const connectModal = document.getElementById('connectgui');
+    if (connectModal && connectModal.hasAttribute('aria-hidden')) {
+      connectModal.removeAttribute('aria-hidden');
+    }
+
     // Remove all connect steps
     document.querySelectorAll('.connect-step').forEach(el => el.remove());
     // Remove remote startup section
     document.querySelectorAll('.remote-startup-section').forEach(el => el.remove());
     // Remove edition tabs
     document.querySelectorAll('.connect-edition-tabs').forEach(el => el.remove());
-    // Remove bedrock steps
-    document.querySelectorAll('#bedrockSteps').forEach(el => el.remove());
 
-    // Get the connection info
-    const addressBox = document.querySelector('.connect-address-box');
     const javaSteps = document.getElementById('javaSteps');
+    const bedrockSteps = document.getElementById('bedrockSteps');
     
-    if (!addressBox || !javaSteps) {
-      console.log('[better-falix] replace-connect-tab: Connection info not found');
+    if (!javaSteps) {
+      console.log('[better-falix] replace-connect-tab: Java steps not found');
       return;
     }
 
-    // Extract IP and port from the copy button's onclick attribute
-    const copyBtn = addressBox.querySelector('.connect-inline-copy');
-    const onclickAttr = copyBtn?.getAttribute('onclick');
-    const match = onclickAttr?.match(/copyConnectionInfo\('([^']+)'/);
-    const fullAddress = match ? match[1] : '';
+    // Extract IP and port from the Bedrock section's minecraft:// link
+    let ip = '';
+    let port = '';
+    let fullAddress = '';
     
-    // Extract IP (from address text)
-    const ip = addressBox.querySelector('.connect-address-text')?.textContent?.trim() || '';
+    if (bedrockSteps) {
+      const minecraftLink = bedrockSteps.querySelector('a[href^="minecraft://?addExternalServer="]');
+      if (minecraftLink) {
+        const href = minecraftLink.getAttribute('href');
+        // Extract from: minecraft://?addExternalServer=NAME|IP:PORT
+        const match = href.match(/addExternalServer=[^|]+\|([^:]+):(\d+)/);
+        if (match) {
+          ip = match[1];
+          port = match[2];
+          fullAddress = `${ip}:${port}`;
+        }
+      }
+    }
     
-    // Extract port (after the colon in fullAddress)
-    const port = fullAddress.includes(':') ? fullAddress.split(':')[1] : '';
+    // Fallback: try to get IP from Java address box if it exists
+    if (!ip) {
+      const addressBox = document.querySelector('#javaSteps .connect-address-box');
+      if (addressBox) {
+        ip = addressBox.querySelector('.connect-address-text')?.textContent?.trim() || '';
+      }
+    }
     
-    console.log('[better-falix] replace-connect-tab: IP:', ip, 'Full:', fullAddress, 'Port:', port);
+    // Extract NODE (dynamic IP) from support info
+    let dynamicIp = '';
+    const supportInfoElements = document.querySelectorAll('.support-info-value');
+    for (const element of supportInfoElements) {
+      const text = element.textContent || '';
+      // Check if it contains "NODE:" text
+      if (text.includes('NODE:')) {
+        // Try to get from .support-info-text (with replace-support-modal enabled)
+        const supportInfoText = element.querySelector('.support-info-text');
+        let nodeText = '';
+        if (supportInfoText) {
+          nodeText = supportInfoText.textContent.trim();
+        } else {
+          // Fallback: extract from the full text (without replace-support-modal)
+          // Text format: "NODE: node123 - CPU: 4 vCores"
+          const match = text.match(/NODE:\s*([^\s-]+)/);
+          if (match) {
+            nodeText = match[1];
+          }
+        }
+        // Extract just the NODE part (before " - CPU" if it exists)
+        dynamicIp = nodeText.split(' - ')[0].trim();
+        break;
+      }
+    }
+    
+    console.log('[better-falix] replace-connect-tab: IP:', ip, 'Port:', port, 'Full:', fullAddress, 'Dynamic IP:', dynamicIp);
 
-    // Remove the old address box
-    addressBox.remove();
+    // Remove bedrock steps after extracting info
+    if (bedrockSteps) {
+      bedrockSteps.remove();
+    }
+
+    // Remove any existing address boxes in javaSteps
+    javaSteps.querySelectorAll('.connect-address-box').forEach(el => el.remove());
 
     // Helper function to create address box
     function createAddressBox(label, value, copyValue) {
@@ -71,6 +120,16 @@ chrome.storage.sync.get({ enabled: true, replaceConnectTab: false }, (data) => {
     // Add Port box
     if (port) {
       javaSteps.appendChild(createAddressBox('PORT:', port, port));
+    }
+    
+    // Add Dynamic IP box
+    if (dynamicIp && port) {
+      // Check if node matches EUX-O pattern (e.g., EU4-O, EU5-O)
+      const isEUXONode = /^EU\d+-O$/i.test(dynamicIp);
+      const fullDynamicIp = isEUXONode 
+        ? `host.falixserver.net:${port}`
+        : `${dynamicIp}.falixserver.net:${port}`;
+      javaSteps.appendChild(createAddressBox('DYNAMIC IP:', fullDynamicIp, fullDynamicIp));
     }
   }
 

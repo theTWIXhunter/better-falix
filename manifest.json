@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Better-Falix",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "description": "A Chrome extension that enhances the Falixnodes client experience by adding custom features and improvements.",
   "icons": {
     "16": "assets/icons/icon16.png",
@@ -67,7 +67,7 @@
     {
       "matches": ["https://client.falixnodes.net/*"],
       "js": ["features/general/remove-language-selector/index.js"],
-      "run_at": "document_start"
+      "run_at": "document_idle"
     },
     {
       "matches": ["https://client.falixnodes.net/*"],
@@ -143,32 +143,7 @@
 
     {
       "matches": ["https://client.falixnodes.net/server/*"],
-      "js": ["features/navigation/move-backups-nav/index.js"],
-      "run_at": "document_idle"
-    },
-    {
-      "matches": ["https://client.falixnodes.net/server/*"],
-      "js": ["features/navigation/move-monitoring-nav/index.js"],
-      "run_at": "document_idle"
-    },
-    {
-      "matches": ["https://client.falixnodes.net/server/*"],
-      "js": ["features/navigation/move-logs-nav/index.js"],
-      "run_at": "document_idle"
-    },
-    {
-      "matches": ["https://client.falixnodes.net/server/*"],
       "js": ["features/archived/remove-external-start-nav/index.js"],
-      "run_at": "document_idle"
-    },
-    {
-      "matches": ["https://client.falixnodes.net/*"],
-      "js": ["features/navigation/remove-navbar-support-links/index.js"],
-      "run_at": "document_idle"
-    },
-    {
-      "matches": ["https://client.falixnodes.net/server/*"],
-      "js": ["features/navigation/remove-console-files-category/index.js"],
       "run_at": "document_idle"
     },
     {
@@ -287,6 +262,31 @@
       "matches": ["https://client.falixnodes.net/admin/ListTickets*"],
       "js": ["features/archived/hide-closed-tickets/index.js"],
       "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://client.falixnodes.net/server/*"],
+      "js": ["features/archived/move-backups-nav/index.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://client.falixnodes.net/server/*"],
+      "js": ["features/archived/move-monitoring-nav/index.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://client.falixnodes.net/server/*"],
+      "js": ["features/archived/move-logs-nav/index.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://client.falixnodes.net/*"],
+      "js": ["features/archived/remove-navbar-support-links/index.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://client.falixnodes.net/server/*"],
+      "js": ["features/archived/remove-console-files-category/index.js"],
+      "run_at": "document_start"
     },
 
 

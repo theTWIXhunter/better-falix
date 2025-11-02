@@ -1,8 +1,8 @@
 // [better-falix] editor-wrapper-height: Script loading
 console.log('[better-falix] editor-wrapper-height: Script loading');
 
-chrome.storage.sync.get({ editorWrapperHeight: false, enabled: true }, (data) => {
-  if (!data.enabled || !data.editorWrapperHeight) {
+chrome.storage.sync.get({ ARCHIVED_editorWrapperHeight: false, enabled: true }, (data) => {
+  if (!data.enabled || !data.ARCHIVED_editorWrapperHeight) {
     console.log('[better-falix] editor-wrapper-height: Script disabled');
     return;
   }
@@ -15,8 +15,8 @@ let isEditorFullscreen = false;
 function setEditorHeight() {
   // Only set height if not in fullscreen mode
   if (isEditorFullscreen) return;
-  chrome.storage.sync.get({ editorWrapperHeight: false, editorWrapperHeight_value: 600, enabled: true }, (data) => {
-    if (!data.enabled || !data.editorWrapperHeight) {
+  chrome.storage.sync.get({ ARCHIVED_editorWrapperHeight: false, editorWrapperHeight_value: 600, enabled: true }, (data) => {
+    if (!data.enabled || !data.ARCHIVED_editorWrapperHeight) {
       // Remove our height if not enabled
       document.querySelectorAll('.editor-wrapper').forEach(el => {
         el.style.removeProperty('height');

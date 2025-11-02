@@ -44,7 +44,9 @@ chrome.storage.sync.get({ replaceCpuWithNode: false, enabled: true }, (data) => 
     
     // Try to get node info from original structure first
     if (supportInfoSpans.length >= 3) {
-      nodeInfo = supportInfoSpans[2].textContent.trim();
+      const fullText = supportInfoSpans[2].textContent.trim();
+      // Extract just the node name (before " - CPU" part)
+      nodeInfo = fullText.split(' - ')[0].trim();
       console.log('[better-falix] Replace CPU with Node: Found node info from original structure:', nodeInfo);
     }
     // If that fails, try to get it from the new modal structure (replace-support-modal)
@@ -56,7 +58,8 @@ chrome.storage.sync.get({ replaceCpuWithNode: false, enabled: true }, (data) => 
         console.log('[better-falix] Replace CPU with Node: Checking bedrock-value', i, ':', value);
         // Node names typically contain letters and numbers, not just numbers
         if (value && value.length > 2 && /[a-zA-Z]/.test(value) && !value.includes('@') && !value.includes('.')) {
-          nodeInfo = value;
+          // Extract just the node name (before " - CPU" part if present)
+          nodeInfo = value.split(' - ')[0].trim();
           console.log('[better-falix] Replace CPU with Node: Found node info from new modal structure:', nodeInfo);
           break;
         }
@@ -64,7 +67,9 @@ chrome.storage.sync.get({ replaceCpuWithNode: false, enabled: true }, (data) => 
       
       // If no suitable node name found, fall back to the third element
       if (!nodeInfo && bedrockValues.length >= 3) {
-        nodeInfo = bedrockValues[2].textContent.trim();
+        const fallbackText = bedrockValues[2].textContent.trim();
+        // Extract just the node name (before " - CPU" part)
+        nodeInfo = fallbackText.split(' - ')[0].trim();
         console.log('[better-falix] Replace CPU with Node: Using fallback - third bedrock-value:', nodeInfo);
       }
     }
