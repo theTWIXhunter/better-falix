@@ -28,6 +28,29 @@ chrome.storage.sync.get({ enabled: true, accuratePendingName: false }, (data) =>
         continue;
       }
 
+      // Skip exceptions
+      const parent = node.parentElement;
+      
+      // Skip <p> elements inside div with class="message-text"
+      if (parent.tagName === 'P' && parent.parentElement && parent.parentElement.classList.contains('message-text')) {
+        continue;
+      }
+      
+      // Skip elements with class="mb-0" (title)
+      if (parent.classList.contains('mb-0')) {
+        continue;
+      }
+      
+      // Skip elements with class="message-sender" (username)
+      if (parent.classList.contains('message-sender')) {
+        continue;
+      }
+      
+      // Skip <a> elements inside class="ticket-subject"
+      if (parent.tagName === 'A' && parent.closest('.ticket-subject')) {
+        continue;
+      }
+
       // Check if the text contains "Pending" (case-insensitive)
       if (/pending/i.test(node.textContent)) {
         nodesToReplace.push(node);
