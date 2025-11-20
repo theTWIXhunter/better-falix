@@ -31,17 +31,17 @@ chrome.storage.sync.get({ enabled: true, accuratePendingName: false }, (data) =>
       // Skip exceptions
       const parent = node.parentElement;
       
-      // Skip <p> elements inside div with class="message-text"
+      // Skip Message content (<p> elements inside div with class="message-text")
       if (parent.tagName === 'P' && parent.parentElement && parent.parentElement.classList.contains('message-text')) {
         continue;
       }
       
-      // Skip elements with class="mb-0" (title)
+      // Skip Ticket Title in viewticketpage (elements with class="mb-0")
       if (parent.classList.contains('mb-0')) {
         continue;
       }
       
-      // Skip elements with class="message-sender" (username)
+      // Skip Usernames (elements with class="message-sender")
       if (parent.classList.contains('message-sender')) {
         continue;
       }
