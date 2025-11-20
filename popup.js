@@ -67,7 +67,8 @@ const featureIds = [
   'shortenReplyStatus',
   'addAdminCategory',
   'duplicateAdminButtons',
-  'copyAllSupportInfo'
+  'copyAllSupportInfo',
+  'accuratePendingName'
 
 ];
 
@@ -173,6 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
     shortenReplyStatus: false,
     addAdminCategory: false,
     duplicateAdminButtons: false,
+    accuratePendingName: false,
     hideSupportCategory: false,
     removeLanguageSelector: false,
     replaceFalixLogo: false,
