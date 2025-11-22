@@ -195,6 +195,30 @@
 
 
     {
+      "matches": ["https://client.falixnodes.net/support/viewticket.php*"],
+      "js": ["features/support-center/hide-write-a-reply-header/index.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://client.falixnodes.net/support/viewticket.php*"],
+      "js": ["features/support-center/i-know-markdown/index.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://client.falixnodes.net/support/viewticket.php*"],
+      "js": ["features/support-center/hide-template-button/index.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://client.falixnodes.net/support/viewticket.php*"],
+      "js": ["features/support-center/remove-file-upload-label/index.js"],
+      "run_at": "document_idle"
+    },
+
+
+
+
+    {
       "matches": ["https://client.falixnodes.net/*"],
       "js": ["features/staff-only/move-admin-nav/index.js"],
       "run_at": "document_idle"
@@ -207,11 +231,6 @@
     {
       "matches": ["https://client.falixnodes.net/admin/ListTickets"],
       "js": ["features/staff-only/remove-premium-row/index.js"],
-      "run_at": "document_idle"
-    },
-    {
-      "matches": ["https://client.falixnodes.net/support/viewticket.php*"],
-      "js": ["features/staff-only/compact-reply-box/index.js"],
       "run_at": "document_idle"
     },
     {
@@ -237,21 +256,6 @@
     {
       "matches": ["https://client.falixnodes.net/admin/ListTickets*", "https://client.falixnodes.net/support/viewticket.php*"],
       "js": ["features/staff-only/accurate-pending-name/index.js"],
-      "run_at": "document_idle"
-    },
-    {
-      "matches": ["https://client.falixnodes.net/support/viewticket.php*"],
-      "js": ["features/staff-only/i-know-markdown/index.js"],
-      "run_at": "document_idle"
-    },
-    {
-      "matches": ["https://client.falixnodes.net/support/viewticket.php*"],
-      "js": ["features/staff-only/hide-template-button/index.js"],
-      "run_at": "document_idle"
-    },
-    {
-      "matches": ["https://client.falixnodes.net/support/viewticket.php*"],
-      "js": ["features/staff-only/remove-file-upload-label/index.js"],
       "run_at": "document_idle"
     },
 
