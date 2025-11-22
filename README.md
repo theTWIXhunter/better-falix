@@ -17,7 +17,6 @@ Better Falix is a browser extension that enhances the FalixNodes client-side exp
 - **it's just Paper:** Renames "Craftbukkit / Spigot / PaperSpigot" to "Paper" in the server type dropdown for clarity.
 - **it's just Geyser:** Renames "Java + Bedrock Support (Geyser)" to "geyser" in the server type dropdown for clarity.
 - **Remove Server search bar:** Removes the Server Search bar from the main page.
-- **Hide Support Category:** Hides the Support category from the navigation and main interface.
 
 ### Console
 
@@ -41,6 +40,7 @@ Better Falix is a browser extension that enhances the FalixNodes client-side exp
 - **Rename Addons to Mods:** Renames the "Addons" navigation option to "Mods" in the Minecraft category for clarity.
 - **Split Addons Tabs:** Splits the addons tab back into separate plugins, mods, modpacks, and datapacks tabs on server pages.
 - **Add Versions Nav:** Adds a "Versions" link with a code-branch icon to the Minecraft section of the navbar for quick access to server version changes.
+- **Hide Support Category:** Hides the Support category from the navigation and main interface.
 
 ### Shared Logs
 

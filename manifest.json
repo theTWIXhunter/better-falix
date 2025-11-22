@@ -61,11 +61,6 @@
     },
     {
       "matches": ["https://client.falixnodes.net/*"],
-      "js": ["features/general/hide-support-category/index.js"],
-      "run_at": "document_idle"
-    },
-    {
-      "matches": ["https://client.falixnodes.net/*"],
       "js": ["features/general/remove-language-selector/index.js"],
       "run_at": "document_idle"
     },
@@ -164,6 +159,11 @@
     {
       "matches": ["https://client.falixnodes.net/server/*"],
       "js": ["features/navigation/add-versions-nav/index.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://client.falixnodes.net/*"],
+      "js": ["features/navigation/hide-support-category/index.js"],
       "run_at": "document_idle"
     },
 
