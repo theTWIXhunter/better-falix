@@ -10,16 +10,9 @@ chrome.storage.sync.get(['copyAllSupportInfo'], function(result) {
 });
 
 function waitForServerInfo() {
-    const ticketMetaItem = document.querySelector('span.ticket-meta-item#server-info-value');
-    
-    if (!ticketMetaItem) {
-        console.log('[better-falix] copy-all-support-info: Ticket meta item not found');
-        return;
-    }
-
-    // Check if server link already exists
-    const existingLink = ticketMetaItem.querySelector('a[href*="ViewServer"]');
-    if (existingLink) {
+    // Check if server-display already exists
+    const existingServerDisplay = document.querySelector('.server-display');
+    if (existingServerDisplay && existingServerDisplay.querySelector('a[href*="ViewServer"]')) {
         console.log('[better-falix] copy-all-support-info: Server info already loaded');
         addCopyAllButton();
         return;
@@ -28,15 +21,15 @@ function waitForServerInfo() {
     // Otherwise, wait for it to load dynamically
     console.log('[better-falix] copy-all-support-info: Waiting for server info to load...');
     const observer = new MutationObserver((mutations) => {
-        const serverLink = ticketMetaItem.querySelector('a[href*="ViewServer"]');
-        if (serverLink) {
+        const serverDisplay = document.querySelector('.server-display');
+        if (serverDisplay && serverDisplay.querySelector('a[href*="ViewServer"]')) {
             console.log('[better-falix] copy-all-support-info: Server info detected, adding button');
             observer.disconnect();
             addCopyAllButton();
         }
     });
 
-    observer.observe(ticketMetaItem, {
+    observer.observe(document.body, {
         childList: true,
         subtree: true
     });
@@ -49,26 +42,21 @@ function waitForServerInfo() {
 }
 
 function addCopyAllButton() {
-    const ticketMetaItem = document.querySelector('span.ticket-meta-item#server-info-value');
+    // Look for the visible server-display element instead of the hidden ticket-meta-item
+    const serverDisplay = document.querySelector('.server-display');
     
-    if (!ticketMetaItem) {
-        console.log('[better-falix] copy-all-support-info: Ticket meta item not found');
+    if (!serverDisplay) {
+        console.log('[better-falix] copy-all-support-info: Server display not found');
         return;
     }
 
-    console.log('[better-falix] copy-all-support-info: Ticket meta item found', ticketMetaItem);
+    console.log('[better-falix] copy-all-support-info: Server display found', serverDisplay);
 
-    // Extract server ID from the link - try multiple selectors
-    let serverLink = ticketMetaItem.querySelector('a[href*="/admin/ViewServer?id="]');
-    if (!serverLink) {
-        serverLink = ticketMetaItem.querySelector('a[href*="ViewServer"]');
-    }
-    if (!serverLink) {
-        serverLink = ticketMetaItem.querySelector('a');
-    }
+    // Extract server ID from the link
+    const serverLink = serverDisplay.querySelector('a[href*="/admin/ViewServer?id="]');
     
     if (!serverLink) {
-        console.log('[better-falix] copy-all-support-info: Server link not found. HTML:', ticketMetaItem.innerHTML);
+        console.log('[better-falix] copy-all-support-info: Server link not found. HTML:', serverDisplay.innerHTML);
         return;
     }
     
@@ -77,8 +65,8 @@ function addCopyAllButton() {
     const serverIdMatch = serverLink.href.match(/id=(\d+)/);
     const serverId = serverIdMatch ? serverIdMatch[1] : '';
     
-    // Extract PIN from the new structure (.server-pin-badge)
-    const pinBadge = ticketMetaItem.querySelector('.server-pin-badge');
+    // Extract PIN from the server-pin-badge
+    const pinBadge = serverDisplay.querySelector('.server-pin-badge');
     if (!pinBadge) {
         console.log('[better-falix] copy-all-support-info: PIN badge not found');
         return;
@@ -141,11 +129,6 @@ Ticket: [Support-center-${ticketId}](https://client.falixnodes.net/support/viewt
     });
     
     // Add the button after the PIN badge in the server-display span
-    const serverDisplay = ticketMetaItem.querySelector('.server-display');
-    if (serverDisplay) {
-        serverDisplay.appendChild(copyAllBtn);
-        console.log('[better-falix] copy-all-support-info: Copy All button added successfully');
-    } else {
-        console.log('[better-falix] copy-all-support-info: Server display span not found');
-    }
+    serverDisplay.appendChild(copyAllBtn);
+    console.log('[better-falix] copy-all-support-info: Copy All button added successfully');
 }
