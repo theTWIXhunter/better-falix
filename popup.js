@@ -68,11 +68,7 @@ const featureIds = [
   'addAdminCategory',
   'duplicateAdminButtons',
   'copyAllSupportInfo',
-  'accuratePendingName',
-  'iKnowMarkdown',
-  'hideTemplateButton',
-  'removeFileUploadLabel'
-
+  'accuratePendingName'
 ];
 
 function setFeatureBtnState(btn, enabled) {
@@ -178,9 +174,6 @@ document.addEventListener('DOMContentLoaded', () => {
     addAdminCategory: false,
     duplicateAdminButtons: false,
     accuratePendingName: false,
-    iKnowMarkdown: false,
-    hideTemplateButton: false,
-    removeFileUploadLabel: false,
     hideSupportCategory: false,
     removeLanguageSelector: false,
     replaceFalixLogo: false,
