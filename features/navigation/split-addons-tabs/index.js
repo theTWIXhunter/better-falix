@@ -25,7 +25,7 @@ chrome.storage.sync.get({ splitAddonsTabs: false, enabled: true }, (data) => {
   }
 
   // Check if we're on an addon page and hide the nav
-  const addonPages = ['/server/plugins', '/server/mods', '/server/modpacks', '/server/datapacks'];
+  const addonPages = ['/server/plugins', '/server/mods', '/server/modpacks', '/server/datapacks', '/server/resourcepacks'];
   if (addonPages.some(page => window.location.pathname.includes(page))) {
     hideContentTypeNav();
     // Also watch for dynamically loaded content
@@ -74,7 +74,8 @@ chrome.storage.sync.get({ splitAddonsTabs: false, enabled: true }, (data) => {
       { name: 'Plugins', path: `/server/${serverId}/plugins`, icon: 'fa-puzzle-piece' },
       { name: 'Mods', path: `/server/${serverId}/mods`, icon: 'fa-wrench' },
       { name: 'Modpacks', path: `/server/${serverId}/modpacks`, icon: 'fa-box' },
-      { name: 'Datapacks', path: `/server/${serverId}/datapacks`, icon: 'fa-database' }
+      { name: 'Datapacks', path: `/server/${serverId}/datapacks`, icon: 'fa-database' },
+      { name: 'Resourcepacks', path: `/server/${serverId}/resourcepacks`, icon: 'fa-palette' }
     ];
 
     // Insert the new tabs after the addons tab
