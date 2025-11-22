@@ -1,12 +1,16 @@
 // [better-falix] i-know-markdown: Script loading
 console.log('[better-falix] i-know-markdown: Script loading');
 
-chrome.storage.sync.get({ enabled: true, iKnowMarkdown: false }, (data) => {
+chrome.storage.sync.get({ enabled: true, iKnowMarkdown: false, hideTemplateButton: false, removeFileUploadLabel: false }, (data) => {
   if (!data.enabled || !data.iKnowMarkdown) {
     console.log('[better-falix] i-know-markdown: Script disabled');
     return;
   }
   console.log('[better-falix] i-know-markdown: Script enabled');
+
+  // Check if all three features are enabled
+  const allThreeEnabled = data.iKnowMarkdown && data.hideTemplateButton && data.removeFileUploadLabel;
+  console.log('[better-falix] i-know-markdown: All three features enabled:', allThreeEnabled);
 
   //  --------- START FEATURE ----------
 
@@ -65,6 +69,14 @@ chrome.storage.sync.get({ enabled: true, iKnowMarkdown: false }, (data) => {
     document.querySelectorAll('.actionbuttonlist').forEach(el => {
       el.style.marginLeft = '39%';
     });
+
+    // If all three features are enabled, hide the entire markdown-toolbar
+    if (allThreeEnabled) {
+      document.querySelectorAll('.markdown-toolbar').forEach(el => {
+        el.style.setProperty('display', 'none', 'important');
+      });
+      console.log('[better-falix] i-know-markdown: Hidden entire markdown-toolbar');
+    }
 
     console.log('[better-falix] i-know-markdown: Hidden markdown formatting buttons');
   }
