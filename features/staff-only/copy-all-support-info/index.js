@@ -84,9 +84,9 @@ function addCopyAllButton() {
     
     // Create the formatted support information
     const supportInfo = `Support Information:
-Support ID: [${serverId}](https://client.falixnodes.net/admin/ViewServer?id=${serverId})
+Support ID: [${serverId}](<https://client.falixnodes.net/admin/ViewServer?id=${serverId}>)
 Support PIN: ${pin}
-Ticket: [Support-center-${ticketId}](https://client.falixnodes.net/support/viewticket.php?id=${ticketId})`;
+Ticket: [Support-center-${ticketId}](<https://client.falixnodes.net/support/viewticket.php?id=${ticketId}>)`;
 
     // Create the button with styling to match the new server display
     const copyAllBtn = document.createElement('span');
