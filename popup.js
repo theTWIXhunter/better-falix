@@ -63,13 +63,16 @@ const featureIds = [
   'adminPanelIndexRedirect',
   'removePremiumRow',
   'defaultAllStatus',
-  'compactReplyBox',
+  'hideWriteAReplyHeader',
   'shortenReplyStatus',
   'addAdminCategory',
   'duplicateAdminButtons',
   'copyAllSupportInfo',
-  'accuratePendingName'
-
+  'accuratePendingName',
+  'compactReplyBox',
+  'iKnowMarkdown',
+  'hideTemplateButton',
+  'removeFileUploadLabel'
 ];
 
 function setFeatureBtnState(btn, enabled) {
@@ -170,7 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
     adminPanelIndexRedirect: false,
     removePremiumRow: false,
     defaultAllStatus: false,
-    compactReplyBox: false,
+    hideWriteAReplyHeader: false,
     shortenReplyStatus: false,
     addAdminCategory: false,
     duplicateAdminButtons: false,
@@ -183,7 +186,11 @@ document.addEventListener('DOMContentLoaded', () => {
     renameAddonsToMods: false,
     addVersionsNav: false,
     ARCHIVED_hideClosedTickets: false,
-    copyAllSupportInfo: false
+    copyAllSupportInfo: false,
+    compactReplyBox: false,
+    iKnowMarkdown: false,
+    hideTemplateButton: false,
+    removeFileUploadLabel: false
 
   }, (data) => {
     updateToggleBtn(data.enabled);

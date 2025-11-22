@@ -1,4 +1,4 @@
-# Better Falix 1.2.6
+# Better Falix 1.3.0
 
 Better Falix is a browser extension that enhances the FalixNodes client-side experience by allowing you to customize and improve the website's navigation and interface.
 
@@ -49,17 +49,25 @@ Better Falix is a browser extension that enhances the FalixNodes client-side exp
 - **Colored Log Messages:** Color warning log messages gold and error log messages red.
 - **Auto-Collapse Log Analysis:** Automatically collapse the Log Analysis section when the page loads.
 
+### Support Center
+Note: this category isn't visible by default, you can enable "staff features" in the options page.
+
+- **Hide Reply Headers:**  removes the  unnecessarily bulky "write a reply" headers from the message box in the support center chat.
+- **I Know Markdown:** Hides markdown formatting buttons in ticket reply box for users who prefer to write markdown manually.
+- **Hide Template Button:** Hides the template button in ticket reply box. You can use '!' command instead to access templates.
+- **Remove File Upload Label:** Removes the file upload label from ticket reply box.
+
 ### Staff-only features
 Note: this category isn't visible by default, you can enable "staff features" in the options page.
 
 - **Move Admin Panel nav-Button:** Move the Admin Panel from Account category to the Servers section.
 - **Admin Panel Index Redirect:** Redirect the Admin Panel link on the navbar to /admin/index instead of /admin to fix navbar issues.
 - **Remove Premium Row:** the support center is only available to premium users, no indication needed anymore.
-- **Compact Reply box:**  removes the  unnecessarily bulky "write a reply" headers from the message box in the support center chat.
 - **Shorten awaiting Status:** Changes 'Awaiting User Reply' text to just 'waiting' for cleaner ticket displays.
 - **Add Admin Pages Category:** takes all the "pages" from the admin panel and ads them to the normal navbar for better accessibility.
 - **Duplicate Admin Buttons** duplicates the save buttons at the bottom of the admin server so it's also at the top.
 - **Copy All Support Info:** Adds a Copy All button to ticket support information for quick copying of server ID, PIN, and ticket details.
+- **Accurate Pending Name:** Renames the "Pending" ticket category to "Lilying" on ticket list and ticket view pages.
 
 ### Archived features
 

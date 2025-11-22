@@ -10,16 +10,9 @@ chrome.storage.sync.get(['copyAllSupportInfo'], function(result) {
 });
 
 function waitForServerInfo() {
-    const ticketMetaItem = document.querySelector('span.ticket-meta-item#server-info-value');
-    
-    if (!ticketMetaItem) {
-        console.log('[better-falix] copy-all-support-info: Ticket meta item not found');
-        return;
-    }
-
-    // Check if server link already exists
-    const existingLink = ticketMetaItem.querySelector('a[href*="ViewServer"]');
-    if (existingLink) {
+    // Check if server-display already exists
+    const existingServerDisplay = document.querySelector('.server-display');
+    if (existingServerDisplay && existingServerDisplay.querySelector('a[href*="ViewServer"]')) {
         console.log('[better-falix] copy-all-support-info: Server info already loaded');
         addCopyAllButton();
         return;
@@ -28,15 +21,15 @@ function waitForServerInfo() {
     // Otherwise, wait for it to load dynamically
     console.log('[better-falix] copy-all-support-info: Waiting for server info to load...');
     const observer = new MutationObserver((mutations) => {
-        const serverLink = ticketMetaItem.querySelector('a[href*="ViewServer"]');
-        if (serverLink) {
+        const serverDisplay = document.querySelector('.server-display');
+        if (serverDisplay && serverDisplay.querySelector('a[href*="ViewServer"]')) {
             console.log('[better-falix] copy-all-support-info: Server info detected, adding button');
             observer.disconnect();
             addCopyAllButton();
         }
     });
 
-    observer.observe(ticketMetaItem, {
+    observer.observe(document.body, {
         childList: true,
         subtree: true
     });
@@ -49,26 +42,21 @@ function waitForServerInfo() {
 }
 
 function addCopyAllButton() {
-    const ticketMetaItem = document.querySelector('span.ticket-meta-item#server-info-value');
+    // Look for the visible server-display element instead of the hidden ticket-meta-item
+    const serverDisplay = document.querySelector('.server-display');
     
-    if (!ticketMetaItem) {
-        console.log('[better-falix] copy-all-support-info: Ticket meta item not found');
+    if (!serverDisplay) {
+        console.log('[better-falix] copy-all-support-info: Server display not found');
         return;
     }
 
-    console.log('[better-falix] copy-all-support-info: Ticket meta item found', ticketMetaItem);
+    console.log('[better-falix] copy-all-support-info: Server display found', serverDisplay);
 
-    // Extract server ID from the link - try multiple selectors
-    let serverLink = ticketMetaItem.querySelector('a[href*="/admin/ViewServer?id="]');
-    if (!serverLink) {
-        serverLink = ticketMetaItem.querySelector('a[href*="ViewServer"]');
-    }
-    if (!serverLink) {
-        serverLink = ticketMetaItem.querySelector('a');
-    }
+    // Extract server ID from the link
+    const serverLink = serverDisplay.querySelector('a[href*="/admin/ViewServer?id="]');
     
     if (!serverLink) {
-        console.log('[better-falix] copy-all-support-info: Server link not found. HTML:', ticketMetaItem.innerHTML);
+        console.log('[better-falix] copy-all-support-info: Server link not found. HTML:', serverDisplay.innerHTML);
         return;
     }
     
@@ -77,9 +65,16 @@ function addCopyAllButton() {
     const serverIdMatch = serverLink.href.match(/id=(\d+)/);
     const serverId = serverIdMatch ? serverIdMatch[1] : '';
     
-    // Extract PIN from the span
-    const pinElement = ticketMetaItem.querySelector('#serverPinCode');
-    const pin = pinElement ? pinElement.textContent.trim() : '';
+    // Extract PIN from the server-pin-badge
+    const pinBadge = serverDisplay.querySelector('.server-pin-badge');
+    if (!pinBadge) {
+        console.log('[better-falix] copy-all-support-info: PIN badge not found');
+        return;
+    }
+    
+    // Extract PIN from the text content (format: "PIN: 5665")
+    const pinMatch = pinBadge.textContent.match(/PIN:\s*(\d+)/);
+    const pin = pinMatch ? pinMatch[1] : '';
     
     console.log('[better-falix] copy-all-support-info: Server ID:', serverId, 'PIN:', pin);
     
@@ -89,29 +84,41 @@ function addCopyAllButton() {
     
     // Create the formatted support information
     const supportInfo = `Support Information:
-Support ID: [${serverId}](https://client.falixnodes.net/admin/ViewServer?id=${serverId})
+Support ID: [${serverId}](<https://client.falixnodes.net/admin/ViewServer?id=${serverId}>)
 Support PIN: ${pin}
-Ticket: [Support-center-${ticketId}](https://client.falixnodes.net/support/viewticket.php?id=${ticketId})`;
+Ticket: [Support-center-${ticketId}](<https://client.falixnodes.net/support/viewticket.php?id=${ticketId}>)`;
 
-    // Create the button
-    const copyAllBtn = document.createElement('button');
-    copyAllBtn.className = 'copy-pin-btn';
-    copyAllBtn.setAttribute('data-pin', supportInfo);
-    copyAllBtn.innerHTML = `
-        <svg class="svg-inline--fa fa-copy me-1" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="copy" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M208 0L332.1 0c12.7 0 24.9 5.1 33.9 14.1l67.9 67.9c9 9 14.1 21.2 14.1 33.9L448 336c0 26.5-21.5 48-48 48l-192 0c-26.5 0-48-21.5-48-48l0-288c0-26.5 21.5-48 48-48zM48 128l80 0 0 64-64 0 0 256 192 0 0-32 64 0 0 48c0 26.5-21.5 48-48 48L48 512c-26.5 0-48-21.5-48-48L0 176c0-26.5 21.5-48 48-48z"></path></svg>Copy All
+    // Create the button with styling to match the new server display
+    const copyAllBtn = document.createElement('span');
+    copyAllBtn.className = 'server-pin-badge';
+    copyAllBtn.style.cssText = `
+        background: rgba(var(--falcon-info-rgb), 0.15);
+        color: rgb(var(--falcon-info-rgb));
+        padding: 0.2rem 0.5rem;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        margin-left: 0.5rem;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        transition: all 0.2s;
     `;
+    copyAllBtn.setAttribute('data-pin', supportInfo);
+    copyAllBtn.setAttribute('title', 'Click to copy all support information');
+    copyAllBtn.innerHTML = `Copy All`;
     
     // Add click handler
-    copyAllBtn.addEventListener('click', function() {
+    copyAllBtn.addEventListener('click', function(event) {
+        event.stopPropagation();
         const textToCopy = this.getAttribute('data-pin');
         navigator.clipboard.writeText(textToCopy).then(() => {
             console.log('[better-falix] copy-all-support-info: Support information copied to clipboard');
             
             // Visual feedback
             const originalText = this.innerHTML;
-            this.innerHTML = `
-                <svg class="svg-inline--fa fa-check me-1" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="check" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"></path></svg>Copied!
-            `;
+            this.innerHTML = `Copied!`;
             
             setTimeout(() => {
                 this.innerHTML = originalText;
@@ -121,12 +128,7 @@ Ticket: [Support-center-${ticketId}](https://client.falixnodes.net/support/viewt
         });
     });
     
-    // Add the button as the last child of the ticket-meta-item div
-    const innerDiv = ticketMetaItem.querySelector('div');
-    if (innerDiv) {
-        innerDiv.appendChild(copyAllBtn);
-        console.log('[better-falix] copy-all-support-info: Copy All button added successfully');
-    } else {
-        console.log('[better-falix] copy-all-support-info: Inner div not found');
-    }
+    // Add the button after the PIN badge in the server-display span
+    serverDisplay.appendChild(copyAllBtn);
+    console.log('[better-falix] copy-all-support-info: Copy All button added successfully');
 }
