@@ -38,7 +38,7 @@ chrome.storage.sync.get({ enabled: true, iKnowMarkdown: false }, (data) => {
 
     // Hide dropdown
     document.querySelectorAll('.dropdown.d-inline-block').forEach(el => {
-      el.style.display = 'none';
+      el.style.setProperty('display', 'none', 'important');
     });
 
     // Hide help button
