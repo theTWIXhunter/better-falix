@@ -77,9 +77,18 @@ function addCopyAllButton() {
     const serverIdMatch = serverLink.href.match(/id=(\d+)/);
     const serverId = serverIdMatch ? serverIdMatch[1] : '';
     
-    // Extract PIN from the span
-    const pinElement = ticketMetaItem.querySelector('#serverPinCode');
-    const pin = pinElement ? pinElement.textContent.trim() : '';
+    // Extract PIN from the new structure (.server-pin-badge)
+    let pin = '';
+    const pinBadge = ticketMetaItem.querySelector('.server-pin-badge');
+    if (pinBadge) {
+        // Extract PIN from the text content (format: "PIN: 5665")
+        const pinMatch = pinBadge.textContent.match(/PIN:\s*(\d+)/);
+        pin = pinMatch ? pinMatch[1] : '';
+    } else {
+        // Fallback to old structure
+        const pinElement = ticketMetaItem.querySelector('#serverPinCode');
+        pin = pinElement ? pinElement.textContent.trim() : '';
+    }
     
     console.log('[better-falix] copy-all-support-info: Server ID:', serverId, 'PIN:', pin);
     
