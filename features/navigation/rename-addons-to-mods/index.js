@@ -1,11 +1,18 @@
-// [better-falix] rename-addons-to-mods: Script loading
+// [better-falix] renameAddonsToMods: Script loading
 console.log('[better-falix] rename-addons-to-mods: Script loading');
 
-chrome.storage.sync.get({ renameAddonsToMods: false, enabled: true }, (data) => {
+chrome.storage.sync.get({ renameAddonsToMods: false, splitAddonsTabs: false, enabled: true }, (data) => {
   if (!data.enabled || !data.renameAddonsToMods) {
     console.log('[better-falix] rename-addons-to-mods: Script disabled', 'enabled:', data.enabled, 'renameAddonsToMods:', data.renameAddonsToMods);
     return;
   }
+  
+  // Disable if split addons tabs is active
+  if (data.splitAddonsTabs) {
+    console.log('[better-falix] rename-addons-to-mods: Script disabled because splitAddonsTabs is active');
+    return;
+  }
+  
   console.log('[better-falix] rename-addons-to-mods: Script enabled');
 
   //  --------- START FEATURE ----------
