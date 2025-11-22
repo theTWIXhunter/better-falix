@@ -10,14 +10,7 @@ chrome.storage.sync.get({ renameAddonsToMods: false, enabled: true }, (data) => 
 
   //  --------- START FEATURE ----------
 
-  let hasProcessed = false;
-
   function renameAddonsToMods() {
-    // Prevent continuous processing if already done
-    if (hasProcessed) {
-      return;
-    }
-
     //console.log('[Better-Falix] rename-addons-to-mods: Running renameAddonsToMods function');
     // Find navigation items in the Minecraft category
     const navItems = document.querySelectorAll('.nav-item');
@@ -30,13 +23,15 @@ chrome.storage.sync.get({ renameAddonsToMods: false, enabled: true }, (data) => 
         //console.log('[Better-Falix] rename-addons-to-mods: Checking nav item:', linkText);
         if (linkText.includes('addon')) {
           //console.log('[Better-Falix] rename-addons-to-mods: Found addons link:', linkText);
-          // Find the icon element (usually an <i> tag)
-          const icon = link.querySelector('i');
+          // Find the icon element (usually an <i> or <svg> tag)
+          const icon = link.querySelector('i, svg');
           
           if (icon) {
+            // Clone the icon to preserve it
+            const iconClone = icon.cloneNode(true);
             // Keep the icon and update the text content
             link.innerHTML = '';
-            link.appendChild(icon);
+            link.appendChild(iconClone);
             link.appendChild(document.createTextNode(' Mods'));
           } else {
             // No icon found, just change text
@@ -44,7 +39,6 @@ chrome.storage.sync.get({ renameAddonsToMods: false, enabled: true }, (data) => 
           }
           
           //console.log('[Better-Falix] rename-addons-to-mods: Renamed Addons to Mods');
-          hasProcessed = true; // Mark as processed
           break;
         }
       }
@@ -56,13 +50,15 @@ chrome.storage.sync.get({ renameAddonsToMods: false, enabled: true }, (data) => 
       if (link.textContent.trim().toLowerCase().includes('addon') && 
           link.href && link.href.includes('/server/') && link.href.includes('/plugins')) {
         
-        // Find the icon element (usually an <i> tag)
-        const icon = link.querySelector('i');
+        // Find the icon element (usually an <i> or <svg> tag)
+        const icon = link.querySelector('i, svg');
         
         if (icon) {
+          // Clone the icon to preserve it
+          const iconClone = icon.cloneNode(true);
           // Keep the icon and update the text content
           link.innerHTML = '';
-          link.appendChild(icon);
+          link.appendChild(iconClone);
           link.appendChild(document.createTextNode(' Mods'));
         } else {
           // No icon found, just change text
@@ -76,6 +72,13 @@ chrome.storage.sync.get({ renameAddonsToMods: false, enabled: true }, (data) => 
 
   // Run the function immediately
   renameAddonsToMods();
+
+  // Watch for dynamically loaded content (for SPA navigation)
+  const observer = new MutationObserver(() => {
+    renameAddonsToMods();
+  });
+
+  observer.observe(document.body, { childList: true, subtree: true });
 
   console.log('[Better-Falix] rename-addons-to-mods: Script loaded successfully');
 });
