@@ -214,6 +214,11 @@
       "js": ["features/support-center/remove-file-upload-label/index.js"],
       "run_at": "document_idle"
     },
+    {
+      "matches": ["https://client.falixnodes.net/support/viewticket.php*"],
+      "js": ["features/support-center/show-ticket-id/index.js"],
+      "run_at": "document_idle"
+    },
 
 
 

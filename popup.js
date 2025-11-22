@@ -72,7 +72,8 @@ const featureIds = [
   'compactReplyBox',
   'iKnowMarkdown',
   'hideTemplateButton',
-  'removeFileUploadLabel'
+  'removeFileUploadLabel',
+  'showTicketId'
 ];
 
 function setFeatureBtnState(btn, enabled) {
@@ -190,7 +191,8 @@ document.addEventListener('DOMContentLoaded', () => {
     compactReplyBox: false,
     iKnowMarkdown: false,
     hideTemplateButton: false,
-    removeFileUploadLabel: false
+    removeFileUploadLabel: false,
+    showTicketId: false
 
   }, (data) => {
     updateToggleBtn(data.enabled);

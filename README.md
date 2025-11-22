@@ -56,6 +56,7 @@ Note: this category isn't visible by default, you can enable "staff features" in
 - **I Know Markdown:** Hides markdown formatting buttons in ticket reply box for users who prefer to write markdown manually.
 - **Hide Template Button:** Hides the template button in ticket reply box. You can use '!' command instead to access templates.
 - **Remove File Upload Label:** Removes the file upload label from ticket reply box.
+- **Show Ticket ID in Title:** Adds the ticket ID to the start of the ticket title (e.g., '#123 - Title') for easier identification.
 
 ### Staff-only features
 Note: this category isn't visible by default, you can enable "staff features" in the options page.
