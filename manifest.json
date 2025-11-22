@@ -249,6 +249,11 @@
       "js": ["features/staff-only/hide-template-button/index.js"],
       "run_at": "document_idle"
     },
+    {
+      "matches": ["https://client.falixnodes.net/support/viewticket.php*"],
+      "js": ["features/staff-only/remove-file-upload-label/index.js"],
+      "run_at": "document_idle"
+    },
 
 
 

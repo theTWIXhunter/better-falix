@@ -70,7 +70,8 @@ const featureIds = [
   'copyAllSupportInfo',
   'accuratePendingName',
   'iKnowMarkdown',
-  'hideTemplateButton'
+  'hideTemplateButton',
+  'removeFileUploadLabel'
 
 ];
 
@@ -179,6 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
     accuratePendingName: false,
     iKnowMarkdown: false,
     hideTemplateButton: false,
+    removeFileUploadLabel: false,
     hideSupportCategory: false,
     removeLanguageSelector: false,
     replaceFalixLogo: false,
