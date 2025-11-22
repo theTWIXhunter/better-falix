@@ -60,6 +60,8 @@ Note: this category isn't visible by default, you can enable "staff features" in
 - **Add Admin Pages Category:** takes all the "pages" from the admin panel and ads them to the normal navbar for better accessibility.
 - **Duplicate Admin Buttons** duplicates the save buttons at the bottom of the admin server so it's also at the top.
 - **Copy All Support Info:** Adds a Copy All button to ticket support information for quick copying of server ID, PIN, and ticket details.
+- **Accurate Pending Name:** Renames the "Pending" ticket category to "Lilying" on ticket list and ticket view pages.
+- **I Know Markdown:** Hides markdown formatting buttons in ticket reply box for users who prefer to write markdown manually.
 
 ### Archived features
 

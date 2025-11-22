@@ -68,7 +68,8 @@ const featureIds = [
   'addAdminCategory',
   'duplicateAdminButtons',
   'copyAllSupportInfo',
-  'accuratePendingName'
+  'accuratePendingName',
+  'iKnowMarkdown'
 
 ];
 
@@ -175,6 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
     addAdminCategory: false,
     duplicateAdminButtons: false,
     accuratePendingName: false,
+    iKnowMarkdown: false,
     hideSupportCategory: false,
     removeLanguageSelector: false,
     replaceFalixLogo: false,

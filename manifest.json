@@ -239,6 +239,11 @@
       "js": ["features/staff-only/accurate-pending-name/index.js"],
       "run_at": "document_idle"
     },
+    {
+      "matches": ["https://client.falixnodes.net/support/viewticket.php*"],
+      "js": ["features/staff-only/i-know-markdown/index.js"],
+      "run_at": "document_idle"
+    },
 
 
 
