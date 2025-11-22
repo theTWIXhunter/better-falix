@@ -62,6 +62,7 @@ Note: this category isn't visible by default, you can enable "staff features" in
 - **Copy All Support Info:** Adds a Copy All button to ticket support information for quick copying of server ID, PIN, and ticket details.
 - **Accurate Pending Name:** Renames the "Pending" ticket category to "Lilying" on ticket list and ticket view pages.
 - **I Know Markdown:** Hides markdown formatting buttons in ticket reply box for users who prefer to write markdown manually.
+- **Hide Template Button:** Hides the template button in ticket reply box. You can use '!' command instead to access templates.
 
 ### Archived features
 

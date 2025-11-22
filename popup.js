@@ -69,7 +69,8 @@ const featureIds = [
   'duplicateAdminButtons',
   'copyAllSupportInfo',
   'accuratePendingName',
-  'iKnowMarkdown'
+  'iKnowMarkdown',
+  'hideTemplateButton'
 
 ];
 
@@ -177,6 +178,7 @@ document.addEventListener('DOMContentLoaded', () => {
     duplicateAdminButtons: false,
     accuratePendingName: false,
     iKnowMarkdown: false,
+    hideTemplateButton: false,
     hideSupportCategory: false,
     removeLanguageSelector: false,
     replaceFalixLogo: false,
