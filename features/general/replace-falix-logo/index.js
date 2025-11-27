@@ -16,7 +16,8 @@ chrome.storage.sync.get({ replaceFalixLogo: false, enabled: true, replaceFalixLo
     'falix_rainbow_pride': 'https://thetwixhunter.nekoweb.org/better-falix/icons/falix_rainbow_pride.png',
     'TWIX_logo_falix': 'https://thetwixhunter.nekoweb.org/better-falix/icons/TWIX_logo.png',
     'TWIX_logoandname': 'https://thetwixhunter.nekoweb.org/better-falix/icons/TWIX_logoandname.png',
-    'Falix_invaders_logo':'https://thetwixhunter.nekoweb.org/better-falix/icons/falixinvaders_logo.png'
+    'Falix_invaders_logo':'https://thetwixhunter.nekoweb.org/better-falix/icons/falixinvaders_logo.png',
+    'falix_pineapple_pizza': 'https://thetwixhunter.nekoweb.org/better-falix/icons/falix_pineapple_pizza.png'
   };
 
   const choice = data.replaceFalixLogoChoice || 'better-falix_normal_logo';
