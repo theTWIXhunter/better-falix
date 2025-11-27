@@ -65,7 +65,7 @@
       "run_at": "document_idle"
     },
     {
-      "matches": ["https://client.falixnodes.net/*"],
+      "matches": ["https://client.falixnodes.net/*, https://falixnodes.net/*, https://kb.falixnodes.net/*"],
       "js": ["features/general/replace-falix-logo/index.js"],
       "run_at": "document_start"
     },
