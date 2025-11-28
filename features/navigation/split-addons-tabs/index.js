@@ -71,11 +71,11 @@ chrome.storage.sync.get({ splitAddonsTabs: false, enabled: true }, (data) => {
 
     // Create the new split tabs with dynamic server ID
     const tabsData = [
-      { name: 'Plugins', path: `/server/${serverId}/plugins`, icon: 'fa-puzzle-piece' },
-      { name: 'Mods', path: `/server/${serverId}/mods`, icon: 'fa-wrench' },
-      { name: 'Modpacks', path: `/server/${serverId}/modpacks`, icon: 'fa-box' },
-      { name: 'Datapacks', path: `/server/${serverId}/datapacks`, icon: 'fa-database' },
-      { name: 'Resourcepacks', path: `/server/${serverId}/resourcepacks`, icon: 'fa-palette' }
+      { name: 'Plugins', path: `/server/plugins`, icon: 'fa-puzzle-piece' },
+      { name: 'Mods', path: `/server/mods`, icon: 'fa-wrench' },
+      { name: 'Modpacks', path: `/server/modpacks`, icon: 'fa-box' },
+      { name: 'Datapacks', path: `/server/datapacks`, icon: 'fa-database' },
+      { name: 'Resourcepacks', path: `/server/resourcepacks`, icon: 'fa-palette' }
     ];
 
     // Insert the new tabs after the addons tab
