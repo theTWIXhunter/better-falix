@@ -11,11 +11,11 @@ function setToggleState(btn, state) {
 function saveSetting(key, value) {
   const obj = {};
   obj[key] = value;
-  chrome.storage.sync.set(obj);
+  browser.storage.sync.set(obj);
 }
 
 // Load settings and update UI
-chrome.storage.sync.get(null, data => {
+browser.storage.sync.get(null).then(data => {
   // Only set toggle states for elements that exist
   const enabledToggle = document.getElementById('enabled');
   if (enabledToggle) setToggleState(enabledToggle, !!data.enabled);
@@ -84,7 +84,7 @@ const resetAllBtn = document.getElementById('resetAll');
 if (resetAllBtn) {
   resetAllBtn.addEventListener('click', function() {
     if (confirm('Reset all settings to default?')) {
-      chrome.storage.sync.clear(() => window.location.reload());
+      browser.storage.sync.clear().then(() => window.location.reload());
     }
   });
 }
@@ -93,7 +93,7 @@ if (resetAllBtn) {
 const exportSettingsBtn = document.getElementById('exportSettings');
 if (exportSettingsBtn) {
   exportSettingsBtn.addEventListener('click', function() {
-    chrome.storage.sync.get(null, (data) => {
+    browser.storage.sync.get(null).then((data) => {
       // Save current UI values to storage first, then export everything
       const uiSettings = {
         // General settings
@@ -117,9 +117,10 @@ if (exportSettingsBtn) {
       };
 
       // Save current UI values to storage first
-      chrome.storage.sync.set(uiSettings, () => {
+      browser.storage.sync.set(uiSettings).then(() => {
         // Then get ALL storage data and export it
-        chrome.storage.sync.get(null, (allData) => {
+        return browser.storage.sync.get(null);
+      }).then((allData) => {
           const settingsJson = JSON.stringify(allData, null, 2);
           const blob = new Blob([settingsJson], { type: 'application/json' });
           const url = URL.createObjectURL(blob);
@@ -153,11 +154,11 @@ if (importSettingsBtn && importFileInput) {
       try {
         const settings = JSON.parse(e.target.result);
         if (confirm('Import these settings? This will overwrite your current settings.')) {
-          chrome.storage.sync.clear(() => {
-            chrome.storage.sync.set(settings, () => {
-              alert('Settings imported successfully!');
-              window.location.reload();
-            });
+          browser.storage.sync.clear().then(() => {
+            return browser.storage.sync.set(settings);
+          }).then(() => {
+            alert('Settings imported successfully!');
+            window.location.reload();
           });
         }
       } catch (error) {
@@ -277,7 +278,7 @@ if (replaceFalixLogoChoice) {
 
 // --- Feature logic for reorder and editor height ---
 function applyCustomServerOrder() {
-  chrome.storage.sync.get(['customServerOrder', 'customServerOrder_list'], data => {
+  browser.storage.sync.get(['customServerOrder', 'customServerOrder_list']).then(data => {
     if (!data.customServerOrder) return;
     const orderList = (data.customServerOrder_list || '')
       .split(',')
@@ -326,7 +327,7 @@ function waitForServersList() {
 
 // --- Feature logic for editor-wrapper height ---
 function applyEditorWrapperHeight() {
-  chrome.storage.sync.get(['editorWrapperHeight', 'editorWrapperHeight_value'], data => {
+  browser.storage.sync.get(['editorWrapperHeight', 'editorWrapperHeight_value']).then(data => {
     if (!data.editorWrapperHeight) return;
     const height = parseInt(data.editorWrapperHeight_value, 10) || 600;
     document.querySelectorAll('.editor-wrapper').forEach(el => {
