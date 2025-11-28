@@ -1,4 +1,4 @@
-# Better Falix 1.3.0
+# Better Falix 1.3.1
 
 Better Falix is a browser extension that enhances the FalixNodes client-side experience by allowing you to customize and improve the website's navigation and interface.
 
@@ -17,7 +17,6 @@ Better Falix is a browser extension that enhances the FalixNodes client-side exp
 - **it's just Paper:** Renames "Craftbukkit / Spigot / PaperSpigot" to "Paper" in the server type dropdown for clarity.
 - **it's just Geyser:** Renames "Java + Bedrock Support (Geyser)" to "geyser" in the server type dropdown for clarity.
 - **Remove Server search bar:** Removes the Server Search bar from the main page.
-- **Hide Support Category:** Hides the Support category from the navigation and main interface.
 
 ### Console
 
@@ -41,6 +40,7 @@ Better Falix is a browser extension that enhances the FalixNodes client-side exp
 - **Rename Addons to Mods:** Renames the "Addons" navigation option to "Mods" in the Minecraft category for clarity.
 - **Split Addons Tabs:** Splits the addons tab back into separate plugins, mods, modpacks, and datapacks tabs on server pages.
 - **Add Versions Nav:** Adds a "Versions" link with a code-branch icon to the Minecraft section of the navbar for quick access to server version changes.
+- **Hide Support Category:** Hides the Support category from the navigation and main interface.
 
 ### Shared Logs
 
@@ -56,6 +56,7 @@ Note: this category isn't visible by default, you can enable "staff features" in
 - **I Know Markdown:** Hides markdown formatting buttons in ticket reply box for users who prefer to write markdown manually.
 - **Hide Template Button:** Hides the template button in ticket reply box. You can use '!' command instead to access templates.
 - **Remove File Upload Label:** Removes the file upload label from ticket reply box.
+- **Show Ticket ID in Title:** Adds the ticket ID to the start of the ticket title (e.g., '#123 - Title') for easier identification.
 
 ### Staff-only features
 Note: this category isn't visible by default, you can enable "staff features" in the options page.

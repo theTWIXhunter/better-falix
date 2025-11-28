@@ -16,7 +16,8 @@ chrome.storage.sync.get({ replaceFalixLogo: false, enabled: true, replaceFalixLo
     'falix_rainbow_pride': 'https://thetwixhunter.nekoweb.org/better-falix/icons/falix_rainbow_pride.png',
     'TWIX_logo_falix': 'https://thetwixhunter.nekoweb.org/better-falix/icons/TWIX_logo.png',
     'TWIX_logoandname': 'https://thetwixhunter.nekoweb.org/better-falix/icons/TWIX_logoandname.png',
-    'Falix_invaders_logo':'https://thetwixhunter.nekoweb.org/better-falix/icons/falixinvaders_logo.png'
+    'Falix_invaders_logo':'https://thetwixhunter.nekoweb.org/better-falix/icons/falixinvaders_logo.png',
+    'falix_pineapple_pizza': 'https://thetwixhunter.nekoweb.org/better-falix/icons/falix_pineapple_pizza.png'
   };
 
   const choice = data.replaceFalixLogoChoice || 'better-falix_normal_logo';
@@ -26,18 +27,29 @@ chrome.storage.sync.get({ replaceFalixLogo: false, enabled: true, replaceFalixLo
 
   function replaceAllLogos() {
     try {
-      // Replace img elements whose src ends with falix.svg or contains /assets/falix
+      // Replace img elements whose src contains falix.svg or /assets/images/falix or /assets/falix
       const imgs = Array.from(document.querySelectorAll('img'));
       imgs.forEach(img => {
         try {
+          // Skip if already replaced
+          if (img.hasAttribute('data-better-falix-logo-replaced')) return;
+          
           const src = img.getAttribute('src') || '';
-          if (src.endsWith('/assets/falix.svg') || /falix\.svg/.test(src)) {
+          const alt = img.getAttribute('alt') || '';
+          // Check if src contains falix.svg or alt contains "Falix Logo"
+          if (src.includes('falix.svg') || 
+              src.includes('/assets/images/falix') || 
+              src.includes('/assets/falix') ||
+              (alt.toLowerCase().includes('falix') && alt.toLowerCase().includes('logo'))) {
             img.setAttribute('src', logoUrl);
             // clear srcset if present to avoid browser choosing original
             if (img.hasAttribute('srcset')) img.removeAttribute('srcset');
             // Remove width and height attributes to allow natural sizing
             if (img.hasAttribute('width')) img.removeAttribute('width');
             if (img.hasAttribute('height')) img.removeAttribute('height');
+            // Mark as replaced
+            img.setAttribute('data-better-falix-logo-replaced', 'true');
+            console.log('[better-falix] replace-falix-logo: Replaced logo in img element');
           }
         } catch (e) {
           // ignore per-element errors
@@ -48,9 +60,14 @@ chrome.storage.sync.get({ replaceFalixLogo: false, enabled: true, replaceFalixLo
       const all = Array.from(document.querySelectorAll('[style]'));
       all.forEach(el => {
         try {
+          // Skip if already replaced
+          if (el.hasAttribute('data-better-falix-bg-replaced')) return;
+          
           const s = el.style && el.style.backgroundImage || '';
           if (s && s.indexOf('falix.svg') !== -1) {
             el.style.backgroundImage = `url('${logoUrl}')`;
+            el.setAttribute('data-better-falix-bg-replaced', 'true');
+            console.log('[better-falix] replace-falix-logo: Replaced logo in background-image');
           }
         } catch (e) {}
       });
@@ -80,7 +97,7 @@ chrome.storage.sync.get({ replaceFalixLogo: false, enabled: true, replaceFalixLo
     });
   }
 
-  // Observe mutations for up to 3s to catch late-inserted logos
+  // Observe mutations for up to 5s to catch late-inserted logos
   const observer = new MutationObserver(() => {
     replaceAllLogos();
   });
@@ -90,5 +107,5 @@ chrome.storage.sync.get({ replaceFalixLogo: false, enabled: true, replaceFalixLo
       observer.disconnect();
       console.log('[better-falix] replace-falix-logo: Script loaded successfully');
     } catch (e) {}
-  }, 3000);
+  }, 5000);
 });

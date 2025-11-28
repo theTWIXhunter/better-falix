@@ -25,7 +25,7 @@ chrome.storage.sync.get({ splitAddonsTabs: false, enabled: true }, (data) => {
   }
 
   // Check if we're on an addon page and hide the nav
-  const addonPages = ['/server/plugins', '/server/mods', '/server/modpacks', '/server/datapacks'];
+  const addonPages = ['/server/plugins', '/server/mods', '/server/modpacks', '/server/datapacks', '/server/resourcepacks'];
   if (addonPages.some(page => window.location.pathname.includes(page))) {
     hideContentTypeNav();
     // Also watch for dynamically loaded content
@@ -43,7 +43,7 @@ chrome.storage.sync.get({ splitAddonsTabs: false, enabled: true }, (data) => {
     
     for (const item of navItems) {
       const link = item.querySelector('a');
-      if (link && link.textContent.trim().toLowerCase().includes('addon')) {
+      if (link && (link.textContent.trim().toLowerCase().includes('addon') || link.textContent.trim().toLowerCase() === 'mods')) {
         addonsTab = item;
         break;
       }
@@ -54,15 +54,28 @@ chrome.storage.sync.get({ splitAddonsTabs: false, enabled: true }, (data) => {
       return;
     }
 
+    // Check if tabs already exist to prevent duplicates
+    const existingSplitTab = addonsTab.parentNode.querySelector('a[href*="/server/plugins"]');
+    if (existingSplitTab && existingSplitTab.closest('.nav-item') !== addonsTab) {
+      //console.log('[Better-Falix] split-Addons-Tabs: Tabs already exist');
+      return;
+    }
+
     // Hide the original addons tab
     addonsTab.style.display = 'none';
 
-    // Create the new split tabs
+    // Get the server ID from the current URL
+    const urlParts = window.location.pathname.split('/');
+    const serverIndex = urlParts.indexOf('server');
+    const serverId = serverIndex >= 0 && urlParts[serverIndex + 1] ? urlParts[serverIndex + 1] : '';
+
+    // Create the new split tabs with dynamic server ID
     const tabsData = [
-      { name: 'Plugins', url: 'https://client.falixnodes.net/server/plugins', icon: 'fa-puzzle-piece' },
-      { name: 'Mods', url: 'https://client.falixnodes.net/server/mods', icon: 'fa-wrench' },
-      { name: 'Modpacks', url: 'https://client.falixnodes.net/server/modpacks', icon: 'fa-box' },
-      { name: 'Datapacks', url: 'https://client.falixnodes.net/server/datapacks', icon: 'fa-database' }
+      { name: 'Plugins', path: `/server/plugins`, icon: 'fa-puzzle-piece' },
+      { name: 'Mods', path: `/server/mods`, icon: 'fa-wrench' },
+      { name: 'Modpacks', path: `/server/modpacks`, icon: 'fa-box' },
+      { name: 'Datapacks', path: `/server/datapacks`, icon: 'fa-database' },
+      { name: 'Resourcepacks', path: `/server/resourcepacks`, icon: 'fa-palette' }
     ];
 
     // Insert the new tabs after the addons tab
@@ -71,13 +84,14 @@ chrome.storage.sync.get({ splitAddonsTabs: false, enabled: true }, (data) => {
     tabsData.forEach(tabData => {
       const newTab = document.createElement('li');
       newTab.className = 'nav-item';
+      newTab.setAttribute('data-better-falix-split-tab', 'true');
       
       const link = document.createElement('a');
       link.className = 'nav-link';
-      link.href = tabData.url;
+      link.href = tabData.path;
       
       // Check if this is the current page to add active class
-      if (window.location.href === tabData.url) {
+      if (window.location.pathname.includes(tabData.path)) {
         link.classList.add('active');
       }
       
@@ -90,24 +104,24 @@ chrome.storage.sync.get({ splitAddonsTabs: false, enabled: true }, (data) => {
       insertAfter = newTab;
     });
 
-    //console.log('[Better-Falix] split-Addons-Tabs: Split addons tabs added successfully');
+    console.log('[Better-Falix] split-Addons-Tabs: Split addons tabs added successfully');
   }
 
   // Try to add the tabs immediately
   addSplitTabs();
 
   // Also watch for navigation changes
-  const observer = new MutationObserver(() => {
+  const navObserver = new MutationObserver(() => {
     // Check if we're still on a server page and the tabs aren't already added
     if (window.location.pathname.includes('/server/')) {
-      const existingCustomTabs = document.querySelector('a[href*="/server/"][href*="/plugins"]');
-      if (!existingCustomTabs) {
+      const existingSplitTab = document.querySelector('[data-better-falix-split-tab="true"]');
+      if (!existingSplitTab) {
         addSplitTabs();
       }
     }
   });
 
-  observer.observe(document.body, { childList: true, subtree: true });
+  navObserver.observe(document.body, { childList: true, subtree: true });
 
   console.log('[Better-Falix] splitAddonsTabs: Script loaded successfully');
 });

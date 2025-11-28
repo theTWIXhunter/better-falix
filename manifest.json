@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Better-Falix",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "A Chrome extension that enhances the Falixnodes client experience by adding custom features and improvements.",
   "icons": {
     "16": "assets/icons/icon16.png",
@@ -61,16 +61,11 @@
     },
     {
       "matches": ["https://client.falixnodes.net/*"],
-      "js": ["features/general/hide-support-category/index.js"],
-      "run_at": "document_idle"
-    },
-    {
-      "matches": ["https://client.falixnodes.net/*"],
       "js": ["features/general/remove-language-selector/index.js"],
       "run_at": "document_idle"
     },
     {
-      "matches": ["https://client.falixnodes.net/*"],
+      "matches": ["https://client.falixnodes.net/*", "https://falixnodes.net/*", "https://kb.falixnodes.net/*"],
       "js": ["features/general/replace-falix-logo/index.js"],
       "run_at": "document_start"
     },
@@ -166,6 +161,11 @@
       "js": ["features/navigation/add-versions-nav/index.js"],
       "run_at": "document_idle"
     },
+    {
+      "matches": ["https://client.falixnodes.net/*"],
+      "js": ["features/navigation/hide-support-category/index.js"],
+      "run_at": "document_idle"
+    },
 
 
 
@@ -212,6 +212,11 @@
     {
       "matches": ["https://client.falixnodes.net/support/viewticket.php*"],
       "js": ["features/support-center/remove-file-upload-label/index.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://client.falixnodes.net/support/viewticket.php*"],
+      "js": ["features/support-center/show-ticket-id/index.js"],
       "run_at": "document_idle"
     },
 
