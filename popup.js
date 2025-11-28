@@ -6,14 +6,14 @@ document.addEventListener('DOMContentLoaded', () => {
   // Handle settings page opening
   document.getElementById('openSettings').addEventListener('click', function(e) {
     e.preventDefault();
-    browser.tabs.create({ url: browser.runtime.getURL('options.html') });
+    chrome.tabs.create({ url: chrome.runtime.getURL('options.html') });
   });
 
   // Handle gear icon clicks to open settings page
   document.querySelectorAll('.feature-settings-icon').forEach(icon => {
     icon.addEventListener('click', function(e) {
       e.stopPropagation(); // Prevent triggering tooltip or other events
-      browser.tabs.create({ url: browser.runtime.getURL('options.html') });
+      chrome.tabs.create({ url: chrome.runtime.getURL('options.html') });
     });
   });
 });
@@ -136,7 +136,7 @@ function setThemesListEnabled(enabled) {
 
 // Initial load
 document.addEventListener('DOMContentLoaded', () => {
-  browser.storage.sync.get({
+  chrome.storage.sync.get({
     enabled: false,
     enableStaffFeatures: false,
     hideConsoleTabs: false,
@@ -215,14 +215,14 @@ document.addEventListener('DOMContentLoaded', () => {
     
     console.log('Toggle clicked. Current state:', isCurrentlyDisabled ? 'disabled' : 'enabled', 'New state:', newState ? 'enabled' : 'disabled');
     
-    browser.storage.sync.set({ enabled: newState }).then(() => {
+    chrome.storage.sync.set({ enabled: newState }, () => {
       console.log('Updated storage with enabled:', newState);
       updateToggleBtn(newState);
-      return browser.storage.sync.get(null);
-    }).then((allData) => {
-      updateFeatureButtons(allData);
-      setThemesListEnabled(allData.enabled);
-      setFeaturesListEnabled(allData.enabled);
+      chrome.storage.sync.get(null, (allData) => {
+        updateFeatureButtons(allData);
+        setThemesListEnabled(allData.enabled);
+        setFeaturesListEnabled(allData.enabled);
+      });
     });
   });
 
@@ -237,9 +237,9 @@ document.addEventListener('DOMContentLoaded', () => {
         setFeatureBtnState(btn, newState);
         const obj = {};
         obj[id] = newState;
-        browser.storage.sync.set(obj).then(() => {
-          return browser.storage.sync.get(null);
-        }).then(updateFeatureButtons);
+        chrome.storage.sync.set(obj, () => {
+          chrome.storage.sync.get(null, updateFeatureButtons);
+        });
       });
       btn.addEventListener('keydown', function(e) {
         if (e.key === ' ' || e.key === 'Enter') {
@@ -272,12 +272,12 @@ document.addEventListener('DOMContentLoaded', () => {
       sliderIndicator.style.left = '50%';
     }
     if (save) {
-      browser.storage.sync.set({ popupActiveTab: tab });
+      chrome.storage.sync.set({ popupActiveTab: tab });
     }
   }
 
   // Restore last active tab (and only activate after storage is loaded)
-  browser.storage.sync.get(['popupActiveTab']).then(function(data) {
+  chrome.storage.sync.get(['popupActiveTab'], function(data) {
     const tab = data.popupActiveTab || 'features';
     activateTab(tab, false);
   });
@@ -299,14 +299,14 @@ document.addEventListener('DOMContentLoaded', () => {
       btn.closest('.theme-card').classList.toggle('selected', btn.dataset.theme === themeName);
     }
   });
-    browser.storage.sync.set({ activeTheme: themeName });
+    chrome.storage.sync.set({ activeTheme: themeName });
   }  document.querySelectorAll('.theme-select-btn').forEach(btn => {
     btn.addEventListener('click', function() {
       setActiveTheme(this.dataset.theme);
     });
   });
 
-  browser.storage.sync.get(['activeTheme']).then(function(data) {
+  chrome.storage.sync.get(['activeTheme'], function(data) {
     const activeTheme = data.activeTheme || 'default';
     setActiveTheme(activeTheme);
   });
