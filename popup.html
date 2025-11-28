@@ -24,6 +24,13 @@
       padding: 0;
       background: var(--falix-bg);
       color: var(--falix-text);
+      -webkit-font-smoothing: antialiased;
+    }
+    @-moz-document url-prefix() {
+      body {
+        font-weight: 400;
+        -moz-osx-font-smoothing: grayscale;
+      }
     }
     #popup-container {
       padding: 20px 18px 18px 18px;
@@ -45,6 +52,11 @@
       letter-spacing: 0.5px;
       box-shadow: 0 2px 8px 0 rgba(0,0,0,0.08);
     }
+    @-moz-document url-prefix() {
+      #toggle {
+        font-weight: 500;
+      }
+    }
     #toggle.off {
       background: #444;
       color: #bbb;
@@ -63,6 +75,11 @@
       letter-spacing: 0.5px;
       border-left: 3px solid var(--falix-accent);
       padding-left: 8px;
+    }
+    @-moz-document url-prefix() {
+      .category {
+        font-weight: 500;
+      }
     }
     .feature-list {
       background: var(--falix-panel);
