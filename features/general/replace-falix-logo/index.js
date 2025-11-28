@@ -31,6 +31,9 @@ chrome.storage.sync.get({ replaceFalixLogo: false, enabled: true, replaceFalixLo
       const imgs = Array.from(document.querySelectorAll('img'));
       imgs.forEach(img => {
         try {
+          // Skip if already replaced
+          if (img.hasAttribute('data-better-falix-logo-replaced')) return;
+          
           const src = img.getAttribute('src') || '';
           const alt = img.getAttribute('alt') || '';
           // Check if src contains falix.svg or alt contains "Falix Logo"
@@ -44,6 +47,8 @@ chrome.storage.sync.get({ replaceFalixLogo: false, enabled: true, replaceFalixLo
             // Remove width and height attributes to allow natural sizing
             if (img.hasAttribute('width')) img.removeAttribute('width');
             if (img.hasAttribute('height')) img.removeAttribute('height');
+            // Mark as replaced
+            img.setAttribute('data-better-falix-logo-replaced', 'true');
             console.log('[better-falix] replace-falix-logo: Replaced logo in img element');
           }
         } catch (e) {
@@ -55,9 +60,13 @@ chrome.storage.sync.get({ replaceFalixLogo: false, enabled: true, replaceFalixLo
       const all = Array.from(document.querySelectorAll('[style]'));
       all.forEach(el => {
         try {
+          // Skip if already replaced
+          if (el.hasAttribute('data-better-falix-bg-replaced')) return;
+          
           const s = el.style && el.style.backgroundImage || '';
           if (s && s.indexOf('falix.svg') !== -1) {
             el.style.backgroundImage = `url('${logoUrl}')`;
+            el.setAttribute('data-better-falix-bg-replaced', 'true');
             console.log('[better-falix] replace-falix-logo: Replaced logo in background-image');
           }
         } catch (e) {}
