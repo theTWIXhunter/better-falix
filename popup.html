@@ -2,6 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Better Falix</title>
   <style>
     :root {
@@ -17,18 +18,21 @@
       --falix-switch-checked: #0078d7;
     }
     body {
-      min-width: 420px;
-      max-width: 520px;
+      width: 520px;
+      width: 420px;
       font-family: 'Segoe UI', 'Arial', sans-serif;
       margin: 0;
       padding: 0;
       background: var(--falix-bg);
       color: var(--falix-text);
+      font-size: 14px;
+      overflow-x: hidden;
     }
     #popup-container {
       padding: 20px 18px 18px 18px;
       background: var(--falix-bg);
-      max-width: 520px;
+      width: 100%;
+      box-sizing: border-box;
     }
     #toggle {
       width: calc(100% - 50px);
@@ -41,9 +45,19 @@
       border-radius: 8px;
       cursor: pointer;
       transition: background 0.2s;
-      font-weight: 600;
+      font-weight: 625;
       letter-spacing: 0.5px;
       box-shadow: 0 2px 8px 0 rgba(0,0,0,0.08);
+      font-family: 'Segoe UI', 'Arial', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-shadow: 0 0 0.3px currentColor;
+    }
+    @supports (-moz-appearance: none) {
+      #toggle {
+        font-weight: 600;
+        text-shadow: 0 0 0.5px currentColor, 0 0 0.5px currentColor;
+      }
     }
     #toggle.off {
       background: #444;
@@ -501,7 +515,7 @@
             <button class="feature-btn" id="hideSupportCategory" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
           </div>
         </div>
-      
+
         <!-- Logs sharing -->
         <div class="category">Logs sharing</div>
         <div class="feature-list">

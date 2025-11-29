@@ -296,13 +296,11 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.theme-select-btn').forEach(btn => {
       btn.classList.toggle('selected', btn.dataset.theme === themeName);
       if (btn.closest('.theme-card')) {
-        btn.closest('.theme-card').classList.toggle('selected', btn.dataset.theme === themeName);
-      }
-    });
+      btn.closest('.theme-card').classList.toggle('selected', btn.dataset.theme === themeName);
+    }
+  });
     chrome.storage.sync.set({ activeTheme: themeName });
-  }
-
-  document.querySelectorAll('.theme-select-btn').forEach(btn => {
+  }  document.querySelectorAll('.theme-select-btn').forEach(btn => {
     btn.addEventListener('click', function() {
       setActiveTheme(this.dataset.theme);
     });
