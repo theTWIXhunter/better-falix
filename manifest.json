@@ -13,6 +13,12 @@
     "gecko": {
       "id": "better-falix@thetwixhunter.dev",
       "strict_min_version": "109.0",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
+    },
+    "gecko_android": {
+      "strict_min_version": "109.0"
     }
   },
   "permissions": [
@@ -62,7 +68,7 @@
     },
     {
       "matches": ["https://client.falixnodes.net/"],
-      "js": ["features/general/remove-server-search/index.js"],
+      "js": ["features/general/Remove-server-search/index.js"],
       "run_at": "document_idle"
     },
     {
