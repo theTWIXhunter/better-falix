@@ -13,7 +13,7 @@
     "gecko": {
       "id": "better-falix@thetwixhunter.dev",
       "strict_min_version": "109.0",
-      "data_collection_permissions": false
+      "data_collection_permissions": {}
     },
     "gecko_android": {
       "strict_min_version": "109.0"
