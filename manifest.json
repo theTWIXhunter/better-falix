@@ -12,8 +12,7 @@
   "browser_specific_settings": {
     "gecko": {
       "id": "better-falix@thetwixhunter.dev",
-      "strict_min_version": "109.0",
-      "update_url": "https://raw.githubusercontent.com/theTWIXhunter/better-falix/main/updates.json"
+      "strict_min_version": "109.0"
     }
   },
   "permissions": [
