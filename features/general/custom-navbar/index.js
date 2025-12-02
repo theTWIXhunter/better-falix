@@ -51,10 +51,28 @@ chrome.storage.sync.get({ customNavbar: false, enabled: true, navbarConfig: null
   function createNavSection(sectionConfig, sectionIndex) {
     const sectionId = `customSection${sectionIndex}`;
     const isExpanded = sectionConfig.expanded !== false;
+    const hideHeader = sectionConfig.hideHeader || false;
 
     const section = document.createElement('div');
     section.className = 'nav-section';
     
+    // If hideHeader is true, skip creating the category button and just add items directly
+    if (hideHeader) {
+      const navList = document.createElement('ul');
+      navList.className = 'navbar-nav';
+      navList.setAttribute('role', 'list');
+
+      // Add items directly without collapse wrapper
+      sectionConfig.items.forEach(item => {
+        const navItem = createNavItem(item);
+        navList.appendChild(navItem);
+      });
+
+      section.appendChild(navList);
+      return section;
+    }
+    
+    // Original behavior: show category header
     const categoryButton = document.createElement('button');
     categoryButton.className = 'nav-category';
     categoryButton.setAttribute('data-bs-toggle', 'collapse');

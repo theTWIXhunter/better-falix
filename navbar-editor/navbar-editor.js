@@ -373,6 +373,7 @@ function addSection(pageType) {
   document.getElementById('sectionModalTitle').textContent = 'Add Category';
   document.getElementById('sectionName').value = '';
   document.getElementById('sectionExpanded').checked = true;
+  document.getElementById('sectionHideHeader').checked = false;
   document.getElementById('sectionModal').classList.add('active');
 }
 
@@ -382,6 +383,7 @@ function editSection(index) {
   document.getElementById('sectionModalTitle').textContent = 'Edit Category';
   document.getElementById('sectionName').value = section.name;
   document.getElementById('sectionExpanded').checked = section.expanded;
+  document.getElementById('sectionHideHeader').checked = section.hideHeader || false;
   document.getElementById('sectionModal').classList.add('active');
 }
 
@@ -394,17 +396,19 @@ function deleteSection(index) {
 function saveSectionModal() {
   const name = document.getElementById('sectionName').value.trim();
   const expanded = document.getElementById('sectionExpanded').checked;
+  const hideHeader = document.getElementById('sectionHideHeader').checked;
   
   if (!name) return;
   
   if (editingSection.index === -1) {
-    currentConfig.sections.push({ name, expanded, items: [] });
+    currentConfig.sections.push({ name, expanded, hideHeader, items: [] });
   } else {
     currentConfig.sections[editingSection.index].name = name;
     currentConfig.sections[editingSection.index].expanded = expanded;
+    currentConfig.sections[editingSection.index].hideHeader = hideHeader;
   }
   
-  saveConfig();
+  saveConfig(true);
   closeSectionModal();
 }
 
