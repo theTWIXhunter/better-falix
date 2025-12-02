@@ -80,7 +80,7 @@ if (themeSelect) {
 const openNavbarEditorBtn = document.getElementById('openNavbarEditor');
 if (openNavbarEditorBtn) {
   openNavbarEditorBtn.addEventListener('click', function() {
-    chrome.tabs.create({ url: chrome.runtime.getURL('navbar-editor.html') });
+    chrome.tabs.create({ url: chrome.runtime.getURL('navbar-editor/navbar-editor.html') });
   });
 }
 
