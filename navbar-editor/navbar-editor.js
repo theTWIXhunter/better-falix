@@ -323,6 +323,7 @@ function setupEventListeners() {
 }
 
 function switchTab(tabName) {
+  console.log('[navbar-editor] switchTab called with:', tabName);
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
   
@@ -330,18 +331,25 @@ function switchTab(tabName) {
   document.getElementById(tabName).classList.add('active');
   
   currentPageType = tabName === 'server-pages' ? 'server' : 'other';
+  console.log('[navbar-editor] currentPageType set to:', currentPageType);
   renderSections(currentPageType);
 }
 
 function renderSections(pageType) {
   const configKey = `navbarConfig${pageType === 'server' ? 'Server' : 'Other'}`;
+  console.log('[navbar-editor] renderSections called with pageType:', pageType, 'configKey:', configKey);
   
   chrome.storage.sync.get([configKey], (result) => {
+    console.log('[navbar-editor] Storage get result:', result);
     currentConfig = result[configKey] || DEFAULT_CONFIGS[pageType];
+    console.log('[navbar-editor] Current config loaded:', currentConfig);
     
     // If config was loaded from defaults, save it
     if (!result[configKey]) {
-      chrome.storage.sync.set({ [configKey]: currentConfig });
+      console.log('[navbar-editor] No config found, saving defaults');
+      chrome.storage.sync.set({ [configKey]: currentConfig }, () => {
+        console.log('[navbar-editor] Defaults saved successfully');
+      });
     }
     
     const container = document.getElementById(`${pageType === 'server' ? 'server' : 'other'}-sections`);
