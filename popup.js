@@ -73,7 +73,8 @@ const featureIds = [
   'iKnowMarkdown',
   'hideTemplateButton',
   'removeFileUploadLabel',
-  'showTicketId'
+  'showTicketId',
+  'navbarEditorEnabled'
 ];
 
 function setFeatureBtnState(btn, enabled) {
@@ -191,7 +192,8 @@ document.addEventListener('DOMContentLoaded', () => {
     iKnowMarkdown: false,
     hideTemplateButton: false,
     removeFileUploadLabel: false,
-    showTicketId: false
+    showTicketId: false,
+    navbarEditorEnabled: false
 
   }, (data) => {
     updateToggleBtn(data.enabled);
