@@ -1,6 +1,6 @@
 console.log('[better-falix] navbar-editor: Script loading');
 
-chrome.storage.sync.get({ enabled: true, navbarEditorEnabled: false }, (data) => {
+chrome.storage.local.get({ enabled: true, navbarEditorEnabled: false }, (data) => {
   if (!data.enabled || !data.navbarEditorEnabled) {
     console.log('[better-falix] navbar-editor: Script disabled');
     return;
@@ -11,7 +11,7 @@ chrome.storage.sync.get({ enabled: true, navbarEditorEnabled: false }, (data) =>
   const configKey = isServerPage ? 'navbarConfigServer' : 'navbarConfigOther';
   console.log('[better-falix] navbar-editor: Looking for config key:', configKey, 'isServerPage:', isServerPage);
 
-  chrome.storage.sync.get([configKey], (result) => {
+  chrome.storage.local.get([configKey], (result) => {
     console.log('[better-falix] navbar-editor: Storage result:', result);
     const config = result[configKey];
     if (!config || !config.sections || config.sections.length === 0) {

@@ -250,7 +250,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function loadConfigs() {
-  chrome.storage.sync.get(['navbarConfigServer', 'navbarConfigOther'], (result) => {
+  chrome.storage.local.get(['navbarConfigServer', 'navbarConfigOther'], (result) => {
     const toSave = {};
     
     if (!result.navbarConfigServer) {
@@ -261,7 +261,7 @@ function loadConfigs() {
     }
     
     if (Object.keys(toSave).length > 0) {
-      chrome.storage.sync.set(toSave, () => {
+      chrome.storage.local.set(toSave, () => {
         renderSections(currentPageType);
       });
     } else {
@@ -339,7 +339,7 @@ function renderSections(pageType) {
   const configKey = `navbarConfig${pageType === 'server' ? 'Server' : 'Other'}`;
   console.log('[navbar-editor] renderSections called with pageType:', pageType, 'configKey:', configKey);
   
-  chrome.storage.sync.get([configKey], (result) => {
+  chrome.storage.local.get([configKey], (result) => {
     console.log('[navbar-editor] Storage get result:', result);
     currentConfig = result[configKey] || DEFAULT_CONFIGS[pageType];
     console.log('[navbar-editor] Current config loaded:', currentConfig);
@@ -347,7 +347,7 @@ function renderSections(pageType) {
     // If config was loaded from defaults, save it
     if (!result[configKey]) {
       console.log('[navbar-editor] No config found, saving defaults');
-      chrome.storage.sync.set({ [configKey]: currentConfig }, () => {
+      chrome.storage.local.set({ [configKey]: currentConfig }, () => {
         console.log('[navbar-editor] Defaults saved successfully');
       });
     }
@@ -500,7 +500,7 @@ function closeItemModal() {
 function saveConfig(silent = false) {
   const configKey = `navbarConfig${currentPageType === 'server' ? 'Server' : 'Other'}`;
   console.log('[navbar-editor] Saving config:', configKey, currentConfig);
-  chrome.storage.sync.set({ [configKey]: currentConfig }, () => {
+  chrome.storage.local.set({ [configKey]: currentConfig }, () => {
     console.log('[navbar-editor] Config saved successfully');
     if (!silent) {
       renderSections(currentPageType);
@@ -510,7 +510,7 @@ function saveConfig(silent = false) {
 
 function resetToDefault() {
   if (!confirm('Reset to default navbar configuration?')) return;
-  chrome.storage.sync.set({
+  chrome.storage.local.set({
     navbarConfigServer: DEFAULT_CONFIGS.server,
     navbarConfigOther: DEFAULT_CONFIGS.other
   }, () => {
