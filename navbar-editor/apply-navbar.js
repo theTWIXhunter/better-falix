@@ -12,11 +12,12 @@ chrome.storage.sync.get({ enabled: true, navbarEditorEnabled: false }, (data) =>
 
   chrome.storage.sync.get([configKey], (result) => {
     const config = result[configKey];
-    if (!config || !config.sections) {
-      console.log('[better-falix] navbar-editor: No custom navbar config found');
+    if (!config || !config.sections || config.sections.length === 0) {
+      console.log('[better-falix] navbar-editor: No custom navbar config found or empty config');
       return;
     }
 
+    console.log('[better-falix] navbar-editor: Config loaded:', config);
     applyNavbarConfig(config);
   });
 });
@@ -29,11 +30,14 @@ function applyNavbarConfig(config) {
     return;
   }
 
+  console.log('[better-falix] navbar-editor: Applying config with', config.sections.length, 'sections');
+
   // Clear existing sections
   navContainer.innerHTML = '';
 
   // Build new navbar from config
-  config.sections.forEach(section => {
+  config.sections.forEach((section, index) => {
+    console.log('[better-falix] navbar-editor: Creating section', index + 1, ':', section.name);
     const sectionEl = createNavSection(section);
     navContainer.appendChild(sectionEl);
   });
