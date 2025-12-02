@@ -318,8 +318,26 @@ function setupEventListeners() {
       case 'reset':
         resetToDefault();
         break;
+      case 'export':
+        openExportModal();
+        break;
+      case 'export-current':
+        exportConfig('current');
+        break;
+      case 'export-all':
+        exportConfig('all');
+        break;
+      case 'close-export-modal':
+        closeExportModal();
+        break;
+      case 'import':
+        importConfig();
+        break;
     }
   });
+  
+  // File import handler
+  document.getElementById('importFile').addEventListener('change', handleFileImport);
 }
 
 function switchTab(tabName) {
@@ -517,3 +535,92 @@ function resetToDefault() {
     loadConfigs();
   });
 }
+
+function openExportModal() {
+  document.getElementById('exportModal').classList.add('active');
+}
+
+function closeExportModal() {
+  document.getElementById('exportModal').classList.remove('active');
+}
+
+function exportConfig(scope) {
+  chrome.storage.local.get(['navbarConfigServer', 'navbarConfigOther'], (result) => {
+    let exportData;
+    let filename;
+    
+    if (scope === 'current') {
+      const configKey = `navbarConfig${currentPageType === 'server' ? 'Server' : 'Other'}`;
+      const pageTypeName = currentPageType === 'server' ? 'server-pages' : 'other-pages';
+      exportData = {
+        type: 'single',
+        pageType: currentPageType,
+        config: result[configKey] || currentConfig
+      };
+      filename = `navbar-config-${pageTypeName}-${Date.now()}.json`;
+    } else {
+      exportData = {
+        type: 'all',
+        navbarConfigServer: result.navbarConfigServer || DEFAULT_CONFIGS.server,
+        navbarConfigOther: result.navbarConfigOther || DEFAULT_CONFIGS.other
+      };
+      filename = `navbar-config-all-${Date.now()}.json`;
+    }
+    
+    const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    closeExportModal();
+  });
+}
+
+function importConfig() {
+  document.getElementById('importFile').click();
+}
+
+function handleFileImport(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const importData = JSON.parse(e.target.result);
+      
+      if (importData.type === 'single') {
+        // Import single page config
+        const configKey = `navbarConfig${importData.pageType === 'server' ? 'Server' : 'Other'}`;
+        chrome.storage.local.set({ [configKey]: importData.config }, () => {
+          alert(`Configuration imported successfully for ${importData.pageType === 'server' ? 'server pages' : 'other pages'}!`);
+          loadConfigs();
+        });
+      } else if (importData.type === 'all') {
+        // Import all configs
+        chrome.storage.local.set({
+          navbarConfigServer: importData.navbarConfigServer,
+          navbarConfigOther: importData.navbarConfigOther
+        }, () => {
+          alert('All configurations imported successfully!');
+          loadConfigs();
+        });
+      } else {
+        alert('Invalid configuration file format.');
+      }
+    } catch (error) {
+      alert('Error reading configuration file: ' + error.message);
+    }
+    
+    // Reset file input
+    event.target.value = '';
+  };
+  
+  reader.readAsText(file);
+}
+

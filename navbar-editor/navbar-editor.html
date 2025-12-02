@@ -319,6 +319,9 @@
 
     <div class="save-section">
       <button class="btn btn-secondary" data-action="reset">Reset to Default</button>
+      <button class="btn btn-secondary" data-action="export">Export</button>
+      <button class="btn btn-secondary" data-action="import">Import</button>
+      <input type="file" id="importFile" accept=".json" style="display: none;">
       <span style="color: #b0b8c1; font-size: 14px; margin-left: auto;">All changes are saved automatically</span>
     </div>
   </div>
@@ -342,6 +345,23 @@
       <div class="modal-actions">
         <button class="btn btn-secondary" data-action="close-section-modal">Cancel</button>
         <button class="btn btn-primary" data-action="save-section-modal">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Export Modal -->
+  <div id="exportModal" class="modal">
+    <div class="modal-content">
+      <h2 class="modal-title">Export Configuration</h2>
+      <div class="form-group">
+        <label>What would you like to export?</label>
+        <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
+          <button class="btn btn-primary" data-action="export-current" style="width: 100%;">Export Current Page Only</button>
+          <button class="btn btn-primary" data-action="export-all" style="width: 100%;">Export All Configurations</button>
+        </div>
+      </div>
+      <div class="modal-actions" style="margin-top: 20px;">
+        <button class="btn btn-secondary" data-action="close-export-modal">Cancel</button>
       </div>
     </div>
   </div>
