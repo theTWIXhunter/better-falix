@@ -9,11 +9,13 @@ chrome.storage.sync.get({ enabled: true, navbarEditorEnabled: false }, (data) =>
 
   const isServerPage = window.location.pathname.startsWith('/server/');
   const configKey = isServerPage ? 'navbarConfigServer' : 'navbarConfigOther';
+  console.log('[better-falix] navbar-editor: Looking for config key:', configKey, 'isServerPage:', isServerPage);
 
   chrome.storage.sync.get([configKey], (result) => {
+    console.log('[better-falix] navbar-editor: Storage result:', result);
     const config = result[configKey];
     if (!config || !config.sections || config.sections.length === 0) {
-      console.log('[better-falix] navbar-editor: No custom navbar config found or empty config');
+      console.log('[better-falix] navbar-editor: No custom navbar config found or empty config', 'config:', config);
       return;
     }
 
