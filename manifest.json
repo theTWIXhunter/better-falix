@@ -43,8 +43,8 @@
   "content_scripts": [ 
     {
       "matches": ["https://client.falixnodes.net/*"],
-      "js": ["features/general/custom-navbar/index.js"],
-      "run_at": "document_idle"
+      "js": ["navbar-editor/apply-navbar.js"],
+      "run_at": "document_start"
     },
     {
       "matches": ["https://client.falixnodes.net/"],
@@ -347,11 +347,6 @@
       "matches": ["https://client.falixnodes.net/*"],
       "js": ["themes/purple-mode/index.js"],
       "run_at": "document_idle"
-    },
-    {
-      "matches": ["https://client.falixnodes.net/*"],
-      "js": ["navbar-editor/apply-navbar.js"],
-      "run_at": "document_start"
     }
   ]
 }

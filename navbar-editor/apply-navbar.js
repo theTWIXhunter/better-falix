@@ -49,6 +49,12 @@ function createNavSection(section) {
   const sectionDiv = document.createElement('div');
   sectionDiv.className = 'nav-section';
 
+  // If hideHeader is true, just add items directly without header
+  if (section.hideHeader) {
+    sectionDiv.innerHTML = section.items.map(item => createNavItem(item)).join('');
+    return sectionDiv;
+  }
+
   const sectionId = section.name.toLowerCase().replace(/\s+/g, '') + 'Section';
   const expandedClass = section.expanded ? 'show' : '';
 
