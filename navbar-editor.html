@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Navbar Editor - Better-Falix</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #181c20;
+      color: #fff;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: #23272b;
+      border-radius: 10px;
+      padding: 32px 28px 24px 28px;
+      box-shadow: 0 2px 16px 0 rgba(0,0,0,0.13);
+    }
+
+    h1 {
+      margin-bottom: 10px;
+      font-size: 2em;
+      color: #0078d7;
+    }
+
+    .subtitle {
+      color: #b0b8c1;
+      margin-bottom: 30px;
+      font-size: 0.98em;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #343a40;
+    }
+
+    .tab {
+      padding: 12px 24px;
+      background: transparent;
+      border: none;
+      color: #b0b8c1;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -2px;
+      transition: all 0.2s;
+    }
+
+    .tab:hover {
+      color: #fff;
+    }
+
+    .tab.active {
+      color: #3b82f6;
+      border-bottom-color: #3b82f6;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .sections {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .section {
+      background: #181c20;
+      border-radius: 8px;
+      padding: 15px;
+      border: 1px solid #343a40;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .drag-handle {
+      cursor: grab;
+      color: #b0b8c1;
+      font-size: 18px;
+    }
+
+    .section-title {
+      flex: 1;
+      font-weight: 600;
+      font-size: 16px;
+      color: #fff;
+    }
+
+    .section-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn {
+      padding: 6px 12px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .btn-sm {
+      padding: 4px 10px;
+      font-size: 12px;
+    }
+
+    .btn-primary {
+      background: #0078d7;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #0063b1;
+    }
+
+    .btn-secondary {
+      background: #343a40;
+      color: #fff;
+    }
+
+    .btn-secondary:hover {
+      background: #3e444a;
+    }
+
+    .btn-danger {
+      background: #ef4444;
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background: #b91c1c;
+    }
+
+    .items {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .item {
+      background: #23272b;
+      padding: 12px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid #343a40;
+    }
+
+    .item-info {
+      flex: 1;
+    }
+
+    .item-name {
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .item-url {
+      font-size: 12px;
+      color: #b0b8c1;
+    }
+
+    .add-section-btn {
+      margin-top: 20px;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: #23272b;
+      padding: 24px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 500px;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: 0 2px 16px 0 rgba(0,0,0,0.13);
+    }
+
+    .modal-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: #0078d7;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #b0b8c1;
+    }
+
+    input[type="text"],
+    input[type="url"],
+    textarea {
+      width: 100%;
+      padding: 10px;
+      background: #181c20;
+      border: 1px solid #444;
+      border-radius: 6px;
+      color: #fff;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    input[type="text"]:focus,
+    input[type="url"]:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #0078d7;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+      font-family: 'Segoe UI', monospace;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      margin-top: 20px;
+    }
+
+    .save-section {
+      position: sticky;
+      bottom: 0;
+      background: #23272b;
+      padding: 20px 0;
+      margin-top: 30px;
+      border-top: 2px solid #343a40;
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+
+    .helper-text {
+      font-size: 12px;
+      color: #b0b8c1;
+      margin-top: 4px;
+    }
+
+    .icon-preview {
+      width: 24px;
+      height: 24px;
+      margin-top: 6px;
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Navbar Editor</h1>
+    <p class="subtitle">Customize your navigation menu for different page types</p>
+
+    <div class="tabs">
+      <button class="tab active" data-tab="server-pages">Server Pages (/server/*)</button>
+      <button class="tab" data-tab="other-pages">Other Pages</button>
+    </div>
+
+    <div id="server-pages" class="tab-content active">
+      <div class="sections" id="server-sections"></div>
+      <button class="btn btn-primary add-section-btn" onclick="addSection('server')">+ Add Category</button>
+    </div>
+
+    <div id="other-pages" class="tab-content">
+      <div class="sections" id="other-sections"></div>
+      <button class="btn btn-primary add-section-btn" onclick="addSection('other')">+ Add Category</button>
+    </div>
+
+    <div class="save-section">
+      <button class="btn btn-secondary" onclick="resetToDefault()">Reset to Default</button>
+      <button class="btn btn-primary" onclick="saveConfig()">Save Configuration</button>
+    </div>
+  </div>
+
+  <!-- Section Modal -->
+  <div id="sectionModal" class="modal">
+    <div class="modal-content">
+      <h2 class="modal-title" id="sectionModalTitle">Edit Category</h2>
+      <div class="form-group">
+        <label>Category Name</label>
+        <input type="text" id="sectionName" placeholder="e.g., Servers">
+      </div>
+      <div class="form-group">
+        <label>Icon SVG Path (d attribute)</label>
+        <textarea id="sectionIconPath" placeholder="M234.5 5.7c13.9-5 29.1-5..."></textarea>
+        <div class="helper-text">Get icon paths from FontAwesome or other SVG icon libraries</div>
+      </div>
+      <div class="form-group">
+        <label>Icon ViewBox (optional)</label>
+        <input type="text" id="sectionIconViewBox" placeholder="0 0 512 512">
+      </div>
+      <div class="form-group checkbox-group">
+        <input type="checkbox" id="sectionExpanded" checked>
+        <label for="sectionExpanded" style="margin: 0">Expanded by default</label>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" onclick="closeSectionModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveSectionModal()">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Item Modal -->
+  <div id="itemModal" class="modal">
+    <div class="modal-content">
+      <h2 class="modal-title" id="itemModalTitle">Edit Item</h2>
+      <div class="form-group">
+        <label>Item Name</label>
+        <input type="text" id="itemName" placeholder="e.g., Server List">
+      </div>
+      <div class="form-group">
+        <label>URL</label>
+        <input type="text" id="itemUrl" placeholder="e.g., /server/console">
+      </div>
+      <div class="form-group">
+        <label>Icon SVG Path (d attribute)</label>
+        <textarea id="itemIconPath" placeholder="M40 48C26.7 48 16 58.7..."></textarea>
+      </div>
+      <div class="form-group">
+        <label>Icon ViewBox (optional)</label>
+        <input type="text" id="itemIconViewBox" placeholder="0 0 512 512">
+      </div>
+      <div class="form-group">
+        <label>Target (optional)</label>
+        <input type="text" id="itemTarget" placeholder="_blank for new tab">
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" onclick="closeItemModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveItemModal()">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="navbar-editor.js"></script>
+</body>
+</html>
