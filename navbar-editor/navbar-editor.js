@@ -10,6 +10,7 @@ const DEFAULT_CONFIGS = {
       {
         name: 'Console & Files',
         expanded: true,
+        hideHeader: true,
         items: [
           {
             name: 'Console',
