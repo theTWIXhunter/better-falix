@@ -330,6 +330,12 @@ function renderSections(pageType) {
   
   chrome.storage.sync.get([configKey], (result) => {
     currentConfig = result[configKey] || DEFAULT_CONFIGS[pageType];
+    
+    // If config was loaded from defaults, save it
+    if (!result[configKey]) {
+      chrome.storage.sync.set({ [configKey]: currentConfig });
+    }
+    
     const container = document.getElementById(`${pageType === 'server' ? 'server' : 'other'}-sections`);
     container.innerHTML = '';
     
