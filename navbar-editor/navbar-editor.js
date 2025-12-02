@@ -251,14 +251,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function loadConfigs() {
   chrome.storage.sync.get(['navbarConfigServer', 'navbarConfigOther'], (result) => {
+    const toSave = {};
+    
     if (!result.navbarConfigServer) {
-      chrome.storage.sync.set({ navbarConfigServer: DEFAULT_CONFIGS.server });
+      toSave.navbarConfigServer = DEFAULT_CONFIGS.server;
     }
     if (!result.navbarConfigOther) {
-      chrome.storage.sync.set({ navbarConfigOther: DEFAULT_CONFIGS.other });
+      toSave.navbarConfigOther = DEFAULT_CONFIGS.other;
     }
     
-    renderSections(currentPageType);
+    if (Object.keys(toSave).length > 0) {
+      chrome.storage.sync.set(toSave, () => {
+        renderSections(currentPageType);
+      });
+    } else {
+      renderSections(currentPageType);
+    }
   });
 }
 
