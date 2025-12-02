@@ -1,21 +1,22 @@
 // [better-falix] custom-navbar: Script loading
 console.log('[better-falix] custom-navbar: Script loading');
 
-chrome.storage.sync.get({ customNavbar: false, enabled: true, navbarConfig: null }, (data) => {
-  if (!data.enabled || !data.customNavbar || !data.navbarConfig) {
-    console.log('[better-falix] custom-navbar: Script disabled or no config');
+chrome.storage.sync.get({ customNavbar: false, enabled: true, navbarConfigServer: null, navbarConfigOther: null }, (data) => {
+  if (!data.enabled || !data.customNavbar) {
+    console.log('[better-falix] custom-navbar: Script disabled');
     return;
   }
-  console.log('[better-falix] custom-navbar: Script enabled');
-
+  
   // Determine which config to use based on current URL
   const isServerPage = window.location.pathname.startsWith('/server/');
-  const config = isServerPage ? data.navbarConfig.serverPages : data.navbarConfig.otherPages;
+  const config = isServerPage ? data.navbarConfigServer : data.navbarConfigOther;
 
   if (!config || !config.sections || config.sections.length === 0) {
     console.log('[better-falix] custom-navbar: No configuration for this page type');
     return;
   }
+  
+  console.log('[better-falix] custom-navbar: Script enabled with config:', config);
 
   function customizeNavbar() {
     const navContainer = document.querySelector('.navbar-nav-container');
