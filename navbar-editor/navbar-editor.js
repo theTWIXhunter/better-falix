@@ -489,10 +489,14 @@ function closeItemModal() {
   editingItem = null;
 }
 
-function saveConfig() {
+function saveConfig(silent = false) {
   const configKey = `navbarConfig${currentPageType === 'server' ? 'Server' : 'Other'}`;
+  console.log('[navbar-editor] Saving config:', configKey, currentConfig);
   chrome.storage.sync.set({ [configKey]: currentConfig }, () => {
-    renderSections(currentPageType);
+    console.log('[navbar-editor] Config saved successfully');
+    if (!silent) {
+      renderSections(currentPageType);
+    }
   });
 }
 
