@@ -58,18 +58,6 @@ Note: this category isn't visible by default, you can enable "staff features" in
 - **Remove File Upload Label:** Removes the file upload label from ticket reply box.
 - **Show Ticket ID in Title:** Adds the ticket ID to the start of the ticket title (e.g., '#123 - Title') for easier identification.
 
-### Staff-only features
-Note: this category isn't visible by default, you can enable "staff features" in the options page.
-
-- **Move Admin Panel nav-Button:** Move the Admin Panel from Account category to the Servers section.
-- **Admin Panel Index Redirect:** Redirect the Admin Panel link on the navbar to /admin/index instead of /admin to fix navbar issues.
-- **Remove Premium Row:** the support center is only available to premium users, no indication needed anymore.
-- **Shorten awaiting Status:** Changes 'Awaiting User Reply' text to just 'waiting' for cleaner ticket displays.
-- **Add Admin Pages Category:** takes all the "pages" from the admin panel and ads them to the normal navbar for better accessibility.
-- **Duplicate Admin Buttons** duplicates the save buttons at the bottom of the admin server so it's also at the top.
-- **Copy All Support Info:** Adds a Copy All button to ticket support information for quick copying of server ID, PIN, and ticket details.
-- **Accurate Pending Name:** Renames the "Pending" ticket category to "Lilying" on ticket list and ticket view pages.
-
 ### Archived features
 
 Warning: These features are archived, this is either because they are replaced or because they got implemented into the native page.
