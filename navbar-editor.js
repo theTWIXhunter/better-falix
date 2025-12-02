@@ -144,6 +144,7 @@ document.querySelectorAll('.tab').forEach(tab => {
 function renderSections() {
   renderPageSections('server', 'server-sections');
   renderPageSections('other', 'other-sections');
+  saveConfig(true);
 }
 
 function renderPageSections(pageType, containerId) {
@@ -366,9 +367,11 @@ function moveItem(pageType, sectionIndex, itemIndex, direction) {
   renderSections();
 }
 
-function saveConfig() {
+function saveConfig(silent = false) {
   chrome.storage.sync.set({ navbarConfig: config }, () => {
-    alert('Configuration saved! Reload the page to see changes.');
+    if (!silent) {
+      alert('Configuration saved! Reload the page to see changes.');
+    }
   });
 }
 
@@ -377,7 +380,7 @@ function resetToDefault() {
   
   config = JSON.parse(JSON.stringify(defaultConfig));
   renderSections();
-  saveConfig();
+  saveConfig(true);
 }
 
 // Event delegation for all button clicks
@@ -415,9 +418,6 @@ document.addEventListener('click', (e) => {
       break;
     case 'move-item':
       moveItem(pageType, sectionIndex, itemIndex, direction);
-      break;
-    case 'save':
-      saveConfig();
       break;
     case 'reset':
       resetToDefault();
