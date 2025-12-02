@@ -53,9 +53,6 @@ chrome.storage.sync.get(null, data => {
   const replaceSupportModalToggle = document.getElementById('replaceSupportModal');
   if (replaceSupportModalToggle) setToggleState(replaceSupportModalToggle, !!data.replaceSupportModal);
   
-  const enableStaffFeaturesToggle = document.getElementById('enableStaffFeatures');
-  if (enableStaffFeaturesToggle) setToggleState(enableStaffFeaturesToggle, !!data.enableStaffFeatures);
-  
   const replaceFalixLogoToggle = document.getElementById('replaceFalixLogo');
   if (replaceFalixLogoToggle) setToggleState(replaceFalixLogoToggle, !!data.replaceFalixLogo);
   

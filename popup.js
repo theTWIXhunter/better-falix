@@ -138,7 +138,6 @@ function setThemesListEnabled(enabled) {
 document.addEventListener('DOMContentLoaded', () => {
   chrome.storage.sync.get({
     enabled: false,
-    enableStaffFeatures: false,
     hideConsoleTabs: false,
     replaceAccountCategory: false,
     ARCHIVED_moveBackupsNav: false,
