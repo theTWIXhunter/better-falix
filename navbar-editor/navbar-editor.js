@@ -1,8 +1,3 @@
-let config = {
-  serverPages: { sections: [] },
-  otherPages: { sections: [] }
-};
-
 // Default configurations
 const DEFAULT_CONFIGS = {
   server: {
