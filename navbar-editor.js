@@ -158,13 +158,18 @@ function renderPageSections(pageType, containerId) {
     sectionEl.innerHTML = `
       <div class="section-header">
         <span class="drag-handle">⋮⋮</span>
-        <span class="section-title">${section.name}</span>
+        <span class="section-title">
+          <svg style="width: 16px; height: 16px; vertical-align: middle; margin-right: 6px;" viewBox="${section.iconViewBox || '0 0 512 512'}" fill="currentColor">
+            <path d="${section.iconPath}"></path>
+          </svg>
+          ${section.name}
+        </span>
         <div class="section-actions">
-          <button class="btn btn-sm btn-secondary" onclick="editSection('${pageType}', ${sectionIndex})">Edit</button>
-          <button class="btn btn-sm btn-primary" onclick="addItem('${pageType}', ${sectionIndex})">+ Add Item</button>
-          <button class="btn btn-sm btn-secondary" onclick="moveSection('${pageType}', ${sectionIndex}, -1)" ${sectionIndex === 0 ? 'disabled' : ''}>↑</button>
-          <button class="btn btn-sm btn-secondary" onclick="moveSection('${pageType}', ${sectionIndex}, 1)" ${sectionIndex === sections.length - 1 ? 'disabled' : ''}>↓</button>
-          <button class="btn btn-sm btn-danger" onclick="deleteSection('${pageType}', ${sectionIndex})">×</button>
+          <button class="btn btn-sm btn-secondary" data-action="edit-section" data-page-type="${pageType}" data-section-index="${sectionIndex}">Edit</button>
+          <button class="btn btn-sm btn-primary" data-action="add-item" data-page-type="${pageType}" data-section-index="${sectionIndex}">+ Add Item</button>
+          <button class="btn btn-sm btn-secondary" data-action="move-section" data-page-type="${pageType}" data-section-index="${sectionIndex}" data-direction="-1" ${sectionIndex === 0 ? 'disabled' : ''}>↑</button>
+          <button class="btn btn-sm btn-secondary" data-action="move-section" data-page-type="${pageType}" data-section-index="${sectionIndex}" data-direction="1" ${sectionIndex === sections.length - 1 ? 'disabled' : ''}>↓</button>
+          <button class="btn btn-sm btn-danger" data-action="delete-section" data-page-type="${pageType}" data-section-index="${sectionIndex}">×</button>
         </div>
       </div>
       <div class="items" id="${pageType}-items-${sectionIndex}"></div>
@@ -188,15 +193,18 @@ function renderItems(pageType, sectionIndex) {
     itemEl.className = 'item';
     itemEl.innerHTML = `
       <span class="drag-handle">⋮⋮</span>
+      <svg style="width: 16px; height: 16px; flex-shrink: 0;" viewBox="${item.iconViewBox || '0 0 512 512'}" fill="currentColor">
+        <path d="${item.iconPath}"></path>
+      </svg>
       <div class="item-info">
         <div class="item-name">${item.name}</div>
         <div class="item-url">${item.url}</div>
       </div>
       <div class="section-actions">
-        <button class="btn btn-sm btn-secondary" onclick="editItem('${pageType}', ${sectionIndex}, ${itemIndex})">Edit</button>
-        <button class="btn btn-sm btn-secondary" onclick="moveItem('${pageType}', ${sectionIndex}, ${itemIndex}, -1)" ${itemIndex === 0 ? 'disabled' : ''}>↑</button>
-        <button class="btn btn-sm btn-secondary" onclick="moveItem('${pageType}', ${sectionIndex}, ${itemIndex}, 1)" ${itemIndex === items.length - 1 ? 'disabled' : ''}>↓</button>
-        <button class="btn btn-sm btn-danger" onclick="deleteItem('${pageType}', ${sectionIndex}, ${itemIndex})">×</button>
+        <button class="btn btn-sm btn-secondary" data-action="edit-item" data-page-type="${pageType}" data-section-index="${sectionIndex}" data-item-index="${itemIndex}">Edit</button>
+        <button class="btn btn-sm btn-secondary" data-action="move-item" data-page-type="${pageType}" data-section-index="${sectionIndex}" data-item-index="${itemIndex}" data-direction="-1" ${itemIndex === 0 ? 'disabled' : ''}>↑</button>
+        <button class="btn btn-sm btn-secondary" data-action="move-item" data-page-type="${pageType}" data-section-index="${sectionIndex}" data-item-index="${itemIndex}" data-direction="1" ${itemIndex === items.length - 1 ? 'disabled' : ''}>↓</button>
+        <button class="btn btn-sm btn-danger" data-action="delete-item" data-page-type="${pageType}" data-section-index="${sectionIndex}" data-item-index="${itemIndex}">×</button>
       </div>
     `;
     container.appendChild(itemEl);
@@ -384,3 +392,60 @@ function resetToDefault() {
   renderSections();
   saveConfig();
 }
+
+// Event delegation for all button clicks
+document.addEventListener('click', (e) => {
+  const button = e.target.closest('button[data-action]');
+  if (!button) return;
+  
+  const action = button.dataset.action;
+  const pageType = button.dataset.pageType;
+  const sectionIndex = parseInt(button.dataset.sectionIndex);
+  const itemIndex = parseInt(button.dataset.itemIndex);
+  const direction = parseInt(button.dataset.direction);
+  
+  switch (action) {
+    case 'add-section':
+      addSection(pageType);
+      break;
+    case 'edit-section':
+      editSection(pageType, sectionIndex);
+      break;
+    case 'delete-section':
+      deleteSection(pageType, sectionIndex);
+      break;
+    case 'move-section':
+      moveSection(pageType, sectionIndex, direction);
+      break;
+    case 'add-item':
+      addItem(pageType, sectionIndex);
+      break;
+    case 'edit-item':
+      editItem(pageType, sectionIndex, itemIndex);
+      break;
+    case 'delete-item':
+      deleteItem(pageType, sectionIndex, itemIndex);
+      break;
+    case 'move-item':
+      moveItem(pageType, sectionIndex, itemIndex, direction);
+      break;
+    case 'save':
+      saveConfig();
+      break;
+    case 'reset':
+      resetToDefault();
+      break;
+    case 'close-section-modal':
+      closeSectionModal();
+      break;
+    case 'save-section-modal':
+      saveSectionModal();
+      break;
+    case 'close-item-modal':
+      closeItemModal();
+      break;
+    case 'save-item-modal':
+      saveItemModal();
+      break;
+  }
+});

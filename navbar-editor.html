@@ -315,17 +315,17 @@
 
     <div id="server-pages" class="tab-content active">
       <div class="sections" id="server-sections"></div>
-      <button class="btn btn-primary add-section-btn" onclick="addSection('server')">+ Add Category</button>
+      <button class="btn btn-primary add-section-btn" data-action="add-section" data-page-type="server">+ Add Category</button>
     </div>
 
     <div id="other-pages" class="tab-content">
       <div class="sections" id="other-sections"></div>
-      <button class="btn btn-primary add-section-btn" onclick="addSection('other')">+ Add Category</button>
+      <button class="btn btn-primary add-section-btn" data-action="add-section" data-page-type="other">+ Add Category</button>
     </div>
 
     <div class="save-section">
-      <button class="btn btn-secondary" onclick="resetToDefault()">Reset to Default</button>
-      <button class="btn btn-primary" onclick="saveConfig()">Save Configuration</button>
+      <button class="btn btn-secondary" data-action="reset">Reset to Default</button>
+      <button class="btn btn-primary" data-action="save">Save Configuration</button>
     </div>
   </div>
 
@@ -351,8 +351,8 @@
         <label for="sectionExpanded" style="margin: 0">Expanded by default</label>
       </div>
       <div class="modal-actions">
-        <button class="btn btn-secondary" onclick="closeSectionModal()">Cancel</button>
-        <button class="btn btn-primary" onclick="saveSectionModal()">Save</button>
+        <button class="btn btn-secondary" data-action="close-section-modal">Cancel</button>
+        <button class="btn btn-primary" data-action="save-section-modal">Save</button>
       </div>
     </div>
   </div>
@@ -382,8 +382,8 @@
         <input type="text" id="itemTarget" placeholder="_blank for new tab">
       </div>
       <div class="modal-actions">
-        <button class="btn btn-secondary" onclick="closeItemModal()">Cancel</button>
-        <button class="btn btn-primary" onclick="saveItemModal()">Save</button>
+        <button class="btn btn-secondary" data-action="close-item-modal">Cancel</button>
+        <button class="btn btn-primary" data-action="save-item-modal">Save</button>
       </div>
     </div>
   </div>
