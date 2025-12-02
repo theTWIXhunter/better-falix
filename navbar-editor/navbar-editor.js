@@ -479,10 +479,15 @@ function saveConfig() {
 
 function resetToDefault() {
   if (!confirm('Reset to default navbar configuration?')) return;
+  
+  // Set both configurations to their defaults
   chrome.storage.sync.set({
     navbarConfigServer: DEFAULT_CONFIGS.server,
     navbarConfigOther: DEFAULT_CONFIGS.other
   }, () => {
-    loadConfigs();
+    console.log('[better-falix] navbar-editor: Reset to defaults');
+    // Reload the current page type to show the defaults
+    currentConfig = DEFAULT_CONFIGS[currentPageType];
+    renderSections(currentPageType);
   });
 }
