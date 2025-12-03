@@ -138,46 +138,40 @@
       flex-wrap: wrap;
     }
 
-    .btn {
-      padding: 6px 12px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 13px;
-      font-weight: 500;
-      transition: all 0.2s;
+    .reorder-buttons {
+      display: flex;
+      gap: 4px;
+      margin-right: 8px;
     }
 
-    .btn-sm {
-      padding: 4px 10px;
-      font-size: 12px;
-    }
-
-    .btn-primary {
-      background: #0078d7;
-      color: white;
-    }
-
-    .btn-primary:hover {
-      background: #0063b1;
-    }
-
-    .btn-secondary {
+    .btn-reorder {
+      padding: 4px 8px;
       background: #343a40;
+      color: #b0b8c1;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-reorder:hover:not(:disabled) {
+      background: #3e444a;
       color: #fff;
     }
 
-    .btn-secondary:hover {
-      background: #3e444a;
+    .btn-reorder:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
     }
 
-    .btn-danger {
-      background: #ef4444;
-      color: white;
-    }
-
-    .btn-danger:hover {
-      background: #b91c1c;
+    .btn-reorder svg {
+      width: 12px;
+      height: 12px;
+      fill: currentColor;
     }
 
     .items {
@@ -380,6 +374,10 @@
         flex-basis: 100%;
         order: 4;
         margin-top: 8px;
+      }
+
+      .reorder-buttons {
+        order: 2;
       }
 
       .item {
