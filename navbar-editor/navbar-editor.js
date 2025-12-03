@@ -355,27 +355,24 @@ function switchTab(tabName) {
 
 function renderSections(pageType) {
   const configKey = `navbarConfig${pageType === 'server' ? 'Server' : 'Other'}`;
-  console.log('[navbar-editor] renderSections called with pageType:', pageType, 'configKey:', configKey);
   
-  chrome.storage.local.get([configKey], (result) => {
-    console.log('[navbar-editor] Storage get result:', result);
+  chrome.storage.sync.get([configKey], (result) => {
     currentConfig = result[configKey] || DEFAULT_CONFIGS[pageType];
-    console.log('[navbar-editor] Current config loaded:', currentConfig);
-    
-    // If config was loaded from defaults, save it
-    if (!result[configKey]) {
-      console.log('[navbar-editor] No config found, saving defaults');
-      chrome.storage.local.set({ [configKey]: currentConfig }, () => {
-        console.log('[navbar-editor] Defaults saved successfully');
-      });
-    }
-    
     const container = document.getElementById(`${pageType === 'server' ? 'server' : 'other'}-sections`);
     container.innerHTML = '';
     
     currentConfig.sections.forEach((section, sIndex) => {
       container.appendChild(createSectionElement(section, sIndex));
     });
+    
+    // Add drop zone at the end for sections
+    const dropZone = document.createElement('div');
+    dropZone.className = 'section-drop-zone';
+    dropZone.style.minHeight = '20px';
+    dropZone.addEventListener('dragover', handleSectionDropZoneDragOver);
+    dropZone.addEventListener('drop', handleSectionDropZoneEnd);
+    dropZone.addEventListener('dragleave', handleDragLeave);
+    container.appendChild(dropZone);
   });
 }
 
@@ -421,7 +418,8 @@ function createSectionElement(section, sIndex) {
   div.addEventListener('dragleave', handleDragLeave);
   
   // Add drag event listeners for items
-  const items = div.querySelectorAll('.item');
+  const itemsContainer = div.querySelector('.items');
+  const items = itemsContainer.querySelectorAll('.item');
   items.forEach(item => {
     item.addEventListener('dragstart', handleItemDragStart);
     item.addEventListener('dragover', handleItemDragOver);
@@ -429,6 +427,16 @@ function createSectionElement(section, sIndex) {
     item.addEventListener('dragend', handleItemDragEnd);
     item.addEventListener('dragleave', handleDragLeave);
   });
+  
+  // Add drop zone at end of items list
+  const itemDropZone = document.createElement('div');
+  itemDropZone.className = 'item-drop-zone';
+  itemDropZone.style.minHeight = '10px';
+  itemDropZone.dataset.sectionIndex = sIndex;
+  itemDropZone.addEventListener('dragover', handleItemDropZoneDragOver);
+  itemDropZone.addEventListener('drop', handleItemDropZoneEnd);
+  itemDropZone.addEventListener('dragleave', handleDragLeave);
+  itemsContainer.appendChild(itemDropZone);
   
   return div;
 }
@@ -441,9 +449,15 @@ function handleSectionDragStart(e) {
   this.classList.add('dragging');
   e.dataTransfer.effectAllowed = 'move';
   e.dataTransfer.setData('text/html', this.innerHTML);
+  e.dataTransfer.setData('type', 'section');
 }
 
 function handleSectionDragOver(e) {
+  // Only allow section-to-section drops
+  if (!draggedSection || draggedItem) {
+    return;
+  }
+  
   if (e.preventDefault) {
     e.preventDefault();
   }
@@ -457,6 +471,11 @@ function handleSectionDragOver(e) {
 }
 
 function handleSectionDrop(e) {
+  // Only allow section-to-section drops
+  if (!draggedSection || draggedItem) {
+    return false;
+  }
+  
   if (e.stopPropagation) {
     e.stopPropagation();
   }
@@ -475,11 +494,51 @@ function handleSectionDrop(e) {
   return false;
 }
 
+function handleSectionDropZoneDragOver(e) {
+  // Only allow section-to-section drops
+  if (!draggedSection || draggedItem) {
+    return;
+  }
+  
+  if (e.preventDefault) {
+    e.preventDefault();
+  }
+  e.dataTransfer.dropEffect = 'move';
+  this.classList.add('drag-over');
+  
+  return false;
+}
+
+function handleSectionDropZoneEnd(e) {
+  // Only allow section-to-section drops
+  if (!draggedSection || draggedItem) {
+    return false;
+  }
+  
+  if (e.stopPropagation) {
+    e.stopPropagation();
+  }
+  
+  const draggedIndex = parseInt(draggedSection.dataset.sectionIndex);
+  
+  // Move to end
+  const [removed] = currentConfig.sections.splice(draggedIndex, 1);
+  currentConfig.sections.push(removed);
+  
+  saveConfig();
+  
+  return false;
+}
+
 function handleSectionDragEnd(e) {
   this.classList.remove('dragging');
   document.querySelectorAll('.section').forEach(section => {
     section.classList.remove('drag-over');
   });
+  document.querySelectorAll('.section-drop-zone').forEach(zone => {
+    zone.classList.remove('drag-over');
+  });
+  draggedSection = null;
 }
 
 // Item drag handlers
@@ -491,10 +550,16 @@ function handleItemDragStart(e) {
   draggedItemSection = this.closest('.section');
   this.classList.add('dragging');
   e.dataTransfer.effectAllowed = 'move';
+  e.dataTransfer.setData('type', 'item');
   e.stopPropagation(); // Prevent section drag
 }
 
 function handleItemDragOver(e) {
+  // Only allow item-to-item drops
+  if (!draggedItem || draggedSection) {
+    return;
+  }
+  
   if (e.preventDefault) {
     e.preventDefault();
   }
@@ -509,6 +574,11 @@ function handleItemDragOver(e) {
 }
 
 function handleItemDrop(e) {
+  // Only allow item-to-item drops
+  if (!draggedItem || draggedSection) {
+    return false;
+  }
+  
   if (e.stopPropagation) {
     e.stopPropagation();
   }
@@ -536,11 +606,57 @@ function handleItemDrop(e) {
   return false;
 }
 
+function handleItemDropZoneDragOver(e) {
+  // Only allow item-to-item drops
+  if (!draggedItem || draggedSection) {
+    return;
+  }
+  
+  if (e.preventDefault) {
+    e.preventDefault();
+  }
+  e.dataTransfer.dropEffect = 'move';
+  this.classList.add('drag-over');
+  
+  e.stopPropagation();
+  return false;
+}
+
+function handleItemDropZoneEnd(e) {
+  // Only allow item-to-item drops
+  if (!draggedItem || draggedSection) {
+    return false;
+  }
+  
+  if (e.stopPropagation) {
+    e.stopPropagation();
+  }
+  
+  const targetSectionIndex = parseInt(this.dataset.sectionIndex);
+  const draggedSectionIndex = parseInt(draggedItemSection.dataset.sectionIndex);
+  const draggedItemIndex = parseInt(draggedItem.dataset.itemIndex);
+  
+  // Remove from old position
+  const [removed] = currentConfig.sections[draggedSectionIndex].items.splice(draggedItemIndex, 1);
+  
+  // Add to end of target section
+  currentConfig.sections[targetSectionIndex].items.push(removed);
+  
+  saveConfig();
+  
+  return false;
+}
+
 function handleItemDragEnd(e) {
   this.classList.remove('dragging');
   document.querySelectorAll('.item').forEach(item => {
     item.classList.remove('drag-over');
   });
+  document.querySelectorAll('.item-drop-zone').forEach(zone => {
+    zone.classList.remove('drag-over');
+  });
+  draggedItem = null;
+  draggedItemSection = null;
 }
 
 function handleDragLeave(e) {
