@@ -318,6 +318,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   navbarTab.addEventListener('click', function() {
     activateTab('navbar');
+    // Automatically open the navbar editor in a new tab
+    chrome.tabs.create({ url: chrome.runtime.getURL('navbar-editor/navbar-editor.html') });
   });
 
   // Open navbar editor button
