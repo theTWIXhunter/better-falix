@@ -327,6 +327,13 @@ document.addEventListener('DOMContentLoaded', () => {
     chrome.tabs.create({ url: chrome.runtime.getURL('navbar-editor/navbar-editor.html') });
   });
 
+  // Navigation warning link
+  document.getElementById('navWarningLink').addEventListener('click', function(e) {
+    e.preventDefault();
+    activateTab('navbar');
+    chrome.tabs.create({ url: chrome.runtime.getURL('navbar-editor/navbar-editor.html') });
+  });
+
   // Theme selection logic
   function setActiveTheme(themeName) {
     document.querySelectorAll('.theme-select-btn').forEach(btn => {
