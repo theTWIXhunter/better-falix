@@ -386,6 +386,16 @@ function createSectionElement(section, sIndex) {
     <div class="section-header">
       <span class="drag-handle">☰</span>
       <span class="section-title">${section.name}</span>
+      <div class="section-controls">
+        <label class="section-control-label" title="Expanded by default">
+          <input type="checkbox" class="section-control-checkbox section-expanded-check" ${section.expanded ? 'checked' : ''} data-section-index="${sIndex}">
+          <span>Expanded</span>
+        </label>
+        <label class="section-control-label" title="Hide section header (show items only)">
+          <input type="checkbox" class="section-control-checkbox section-hide-header-check" ${section.hideHeader ? 'checked' : ''} data-section-index="${sIndex}">
+          <span>Hide Header</span>
+        </label>
+      </div>
       <div class="section-actions">
         <button class="btn btn-sm btn-secondary" data-action="add-item" data-section-index="${sIndex}">+ Item</button>
         <button class="btn btn-sm btn-secondary" data-action="edit-section" data-section-index="${sIndex}">Edit</button>
@@ -409,6 +419,22 @@ function createSectionElement(section, sIndex) {
       `).join('')}
     </div>
   `;
+  
+  // Add event listeners for inline controls
+  const expandedCheck = div.querySelector('.section-expanded-check');
+  const hideHeaderCheck = div.querySelector('.section-hide-header-check');
+  
+  expandedCheck.addEventListener('change', (e) => {
+    e.stopPropagation();
+    currentConfig.sections[sIndex].expanded = e.target.checked;
+    saveConfig();
+  });
+  
+  hideHeaderCheck.addEventListener('change', (e) => {
+    e.stopPropagation();
+    currentConfig.sections[sIndex].hideHeader = e.target.checked;
+    saveConfig();
+  });
   
   // Add drag event listeners for sections
   div.addEventListener('dragstart', handleSectionDragStart);
