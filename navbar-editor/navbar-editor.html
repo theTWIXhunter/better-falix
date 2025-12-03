@@ -71,6 +71,12 @@
       display: block;
     }
 
+    .tab-content-header {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 15px;
+    }
+
     .sections {
       display: flex;
       flex-direction: column;
@@ -88,6 +94,7 @@
       display: flex;
       align-items: center;
       gap: 12px;
+      flex-wrap: wrap;
     }
 
     .drag-handle {
@@ -128,6 +135,7 @@
     .section-actions {
       display: flex;
       gap: 8px;
+      flex-wrap: wrap;
     }
 
     .btn {
@@ -187,10 +195,12 @@
       align-items: center;
       gap: 10px;
       border: 1px solid #343a40;
+      flex-wrap: wrap;
     }
 
     .item-info {
       flex: 1;
+      min-width: 150px;
     }
 
     .item-name {
@@ -353,6 +363,33 @@
     .drag-handle:active {
       cursor: grabbing;
     }
+
+    @media (max-width: 768px) {
+      .section-header {
+        align-items: flex-start;
+      }
+
+      .section-controls {
+        flex-basis: 100%;
+        order: 3;
+        margin-top: 8px;
+        margin-right: 0;
+      }
+
+      .section-actions {
+        flex-basis: 100%;
+        order: 4;
+        margin-top: 8px;
+      }
+
+      .item {
+        align-items: flex-start;
+      }
+
+      .item > .btn {
+        flex-shrink: 0;
+      }
+    }
   </style>
 </head>
 <body>
@@ -366,13 +403,17 @@
     </div>
 
     <div id="server-pages" class="tab-content active">
+      <div class="tab-content-header">
+        <button class="btn btn-primary" data-action="add-section" data-page-type="server">+ Add Category</button>
+      </div>
       <div class="sections" id="server-sections"></div>
-      <button class="btn btn-primary add-section-btn" data-action="add-section" data-page-type="server">+ Add Category</button>
     </div>
 
     <div id="other-pages" class="tab-content">
+      <div class="tab-content-header">
+        <button class="btn btn-primary" data-action="add-section" data-page-type="other">+ Add Category</button>
+      </div>
       <div class="sections" id="other-sections"></div>
-      <button class="btn btn-primary add-section-btn" data-action="add-section" data-page-type="other">+ Add Category</button>
     </div>
 
     <div class="save-section">
