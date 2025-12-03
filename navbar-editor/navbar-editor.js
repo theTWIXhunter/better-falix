@@ -252,6 +252,13 @@ let scrollInterval = null;
 document.addEventListener('DOMContentLoaded', () => {
   loadConfigs();
   setupEventListeners();
+  
+  // Restore active tab
+  chrome.storage.local.get({ navbarEditorActiveTab: 'server' }, (result) => {
+    if (result.navbarEditorActiveTab === 'other') {
+      switchTab('other-pages');
+    }
+  });
 });
 
 function loadConfigs() {
@@ -400,6 +407,10 @@ function switchTab(tabName) {
   
   currentPageType = tabName === 'server-pages' ? 'server' : 'other';
   console.log('[navbar-editor] currentPageType set to:', currentPageType);
+  
+  // Save active tab
+  chrome.storage.local.set({ navbarEditorActiveTab: currentPageType });
+  
   renderSections(currentPageType);
 }
 
