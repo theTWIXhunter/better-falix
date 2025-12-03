@@ -884,7 +884,7 @@ function saveSectionModal() {
     currentConfig.sections[editingSection.index].hideHeader = hideHeader;
   }
   
-  saveConfig(true);
+  saveConfig(false); // Render sections immediately instead of silent save
   closeSectionModal();
 }
 
