@@ -129,10 +129,11 @@
       margin-left: auto;
       margin-right: 4px;
       flex-shrink: 0;
+      position: relative;
       filter: brightness(0) saturate(100%) invert(79%) sepia(66%) saturate(1582%) hue-rotate(359deg) brightness(103%) contrast(104%);
     }
     
-    .feature-warning-icon[data-tooltip]:hover::before {
+    .feature-warning-icon[data-tooltip]:hover::after {
       content: attr(data-tooltip);
       position: absolute;
       right: 0;
@@ -159,10 +160,11 @@
       margin-left: 4px;
       margin-right: 4px;
       flex-shrink: 0;
+      position: relative;
       filter: brightness(0) saturate(100%) invert(59%) sepia(11%) saturate(665%) hue-rotate(169deg) brightness(92%) contrast(88%);
     }
     
-    .feature-deprecated-icon[data-tooltip]:hover::before {
+    .feature-deprecated-icon[data-tooltip]:hover::after {
       content: attr(data-tooltip);
       position: absolute;
       right: 0;
