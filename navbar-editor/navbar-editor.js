@@ -243,6 +243,10 @@ let currentPageType = 'server';
 let currentConfig = null;
 let editingSection = null;
 let editingItem = null;
+let draggedSection = null;
+let draggedItem = null;
+let draggedItemSection = null;
+let scrollInterval = null;
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
@@ -295,6 +299,12 @@ function setupEventListeners() {
       case 'delete-section':
         deleteSection(e.target.dataset.sectionIndex);
         break;
+      case 'move-section-up':
+        moveSectionUp(e.target.closest('[data-action]').dataset.sectionIndex);
+        break;
+      case 'move-section-down':
+        moveSectionDown(e.target.closest('[data-action]').dataset.sectionIndex);
+        break;
       case 'add-item':
         addItem(e.target.dataset.sectionIndex);
         break;
@@ -303,6 +313,12 @@ function setupEventListeners() {
         break;
       case 'delete-item':
         deleteItem(e.target.dataset.sectionIndex, e.target.dataset.itemIndex);
+        break;
+      case 'move-item-up':
+        moveItemUp(e.target.closest('[data-action]').dataset.sectionIndex, e.target.closest('[data-action]').dataset.itemIndex);
+        break;
+      case 'move-item-down':
+        moveItemDown(e.target.closest('[data-action]').dataset.sectionIndex, e.target.closest('[data-action]').dataset.itemIndex);
         break;
       case 'close-section-modal':
         closeSectionModal();
@@ -339,6 +355,39 @@ function setupEventListeners() {
   
   // File import handler
   document.getElementById('importFile').addEventListener('change', handleFileImport);
+  
+  // Auto-scroll on drag
+  document.addEventListener('dragover', handleAutoScroll);
+}
+
+// Auto-scroll when dragging near edges
+function handleAutoScroll(e) {
+  if (!draggedSection && !draggedItem) return;
+  
+  const scrollThreshold = 100; // Distance from edge to trigger scroll
+  const scrollSpeed = 10; // Pixels to scroll per interval
+  
+  const viewportHeight = window.innerHeight;
+  const mouseY = e.clientY;
+  
+  // Clear existing interval
+  if (scrollInterval) {
+    clearInterval(scrollInterval);
+    scrollInterval = null;
+  }
+  
+  // Scroll up
+  if (mouseY < scrollThreshold) {
+    scrollInterval = setInterval(() => {
+      window.scrollBy(0, -scrollSpeed);
+    }, 16); // ~60fps
+  }
+  // Scroll down
+  else if (mouseY > viewportHeight - scrollThreshold) {
+    scrollInterval = setInterval(() => {
+      window.scrollBy(0, scrollSpeed);
+    }, 16);
+  }
 }
 
 function switchTab(tabName) {
@@ -383,6 +432,10 @@ function createSectionElement(section, sIndex) {
   div.draggable = true;
   div.dataset.sectionIndex = sIndex;
   
+  const totalSections = currentConfig.sections.length;
+  const isFirst = sIndex === 0;
+  const isLast = sIndex === totalSections - 1;
+  
   div.innerHTML = `
     <div class="section-header">
       <span class="drag-handle">☰</span>
@@ -397,6 +450,14 @@ function createSectionElement(section, sIndex) {
           <span>Hide Header</span>
         </label>
       </div>
+      <div class="reorder-buttons">
+        <button class="btn-reorder" data-action="move-section-up" data-section-index="${sIndex}" ${isFirst ? 'disabled' : ''} title="Move up">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path d="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2V448c0 17.7 14.3 32 32 32s32-14.3 32-32V141.2L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z"/></svg>
+        </button>
+        <button class="btn-reorder" data-action="move-section-down" data-section-index="${sIndex}" ${isLast ? 'disabled' : ''} title="Move down">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path d="M169.4 470.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 370.8 224 64c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 306.7L54.6 265.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"/></svg>
+        </button>
+      </div>
       <div class="section-actions">
         <button class="btn btn-sm btn-secondary" data-action="add-item" data-section-index="${sIndex}">+ Item</button>
         <button class="btn btn-sm btn-secondary" data-action="edit-section" data-section-index="${sIndex}">Edit</button>
@@ -404,7 +465,12 @@ function createSectionElement(section, sIndex) {
       </div>
     </div>
     <div class="items">
-      ${section.items.map((item, iIndex) => `
+      ${section.items.map((item, iIndex) => {
+        const totalItems = section.items.length;
+        const isFirstItem = iIndex === 0;
+        const isLastItem = iIndex === totalItems - 1;
+        
+        return `
         <div class="item" draggable="true" data-item-index="${iIndex}">
           <span class="drag-handle">☰</span>
           <svg class="item-icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="${item.iconViewBox || '0 0 512 512'}" width="20" height="20" style="flex-shrink: 0; margin-right: 12px;">
@@ -414,10 +480,19 @@ function createSectionElement(section, sIndex) {
             <div class="item-name">${item.name}</div>
             <div class="item-url">${item.url}</div>
           </div>
+          <div class="reorder-buttons">
+            <button class="btn-reorder" data-action="move-item-up" data-section-index="${sIndex}" data-item-index="${iIndex}" ${isFirstItem ? 'disabled' : ''} title="Move up">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path d="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2V448c0 17.7 14.3 32 32 32s32-14.3 32-32V141.2L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z"/></svg>
+            </button>
+            <button class="btn-reorder" data-action="move-item-down" data-section-index="${sIndex}" data-item-index="${iIndex}" ${isLastItem ? 'disabled' : ''} title="Move down">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path d="M169.4 470.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 370.8 224 64c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 306.7L54.6 265.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"/></svg>
+            </button>
+          </div>
           <button class="btn btn-sm btn-secondary" data-action="edit-item" data-section-index="${sIndex}" data-item-index="${iIndex}">Edit</button>
           <button class="btn btn-sm btn-danger" data-action="delete-item" data-section-index="${sIndex}" data-item-index="${iIndex}">Delete</button>
         </div>
-      `).join('')}
+      `;
+      }).join('')}
     </div>
   `;
   
@@ -469,8 +544,6 @@ function createSectionElement(section, sIndex) {
 }
 
 // Section drag handlers
-let draggedSection = null;
-
 function handleSectionDragStart(e) {
   draggedSection = this;
   this.classList.add('dragging');
@@ -565,13 +638,17 @@ function handleSectionDragEnd(e) {
   document.querySelectorAll('.section-drop-zone').forEach(zone => {
     zone.classList.remove('drag-over');
   });
+  
+  // Clear scroll interval
+  if (scrollInterval) {
+    clearInterval(scrollInterval);
+    scrollInterval = null;
+  }
+  
   draggedSection = null;
 }
 
 // Item drag handlers
-let draggedItem = null;
-let draggedItemSection = null;
-
 function handleItemDragStart(e) {
   draggedItem = this;
   draggedItemSection = this.closest('.section');
@@ -682,6 +759,13 @@ function handleItemDragEnd(e) {
   document.querySelectorAll('.item-drop-zone').forEach(zone => {
     zone.classList.remove('drag-over');
   });
+  
+  // Clear scroll interval
+  if (scrollInterval) {
+    clearInterval(scrollInterval);
+    scrollInterval = null;
+  }
+  
   draggedItem = null;
   draggedItemSection = null;
 }
@@ -903,5 +987,43 @@ function handleFileImport(event) {
   };
   
   reader.readAsText(file);
+}
+
+function moveSectionUp(index) {
+  const idx = parseInt(index);
+  if (idx === 0) return;
+  
+  const [section] = currentConfig.sections.splice(idx, 1);
+  currentConfig.sections.splice(idx - 1, 0, section);
+  saveConfig();
+}
+
+function moveSectionDown(index) {
+  const idx = parseInt(index);
+  if (idx === currentConfig.sections.length - 1) return;
+  
+  const [section] = currentConfig.sections.splice(idx, 1);
+  currentConfig.sections.splice(idx + 1, 0, section);
+  saveConfig();
+}
+
+function moveItemUp(sectionIndex, itemIndex) {
+  const sIdx = parseInt(sectionIndex);
+  const iIdx = parseInt(itemIndex);
+  if (iIdx === 0) return;
+  
+  const [item] = currentConfig.sections[sIdx].items.splice(iIdx, 1);
+  currentConfig.sections[sIdx].items.splice(iIdx - 1, 0, item);
+  saveConfig();
+}
+
+function moveItemDown(sectionIndex, itemIndex) {
+  const sIdx = parseInt(sectionIndex);
+  const iIdx = parseInt(itemIndex);
+  if (iIdx === currentConfig.sections[sIdx].items.length - 1) return;
+  
+  const [item] = currentConfig.sections[sIdx].items.splice(iIdx, 1);
+  currentConfig.sections[sIdx].items.splice(iIdx + 1, 0, item);
+  saveConfig();
 }
 
