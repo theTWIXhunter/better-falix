@@ -193,7 +193,8 @@ document.addEventListener('DOMContentLoaded', () => {
     hideTemplateButton: false,
     removeFileUploadLabel: false,
     showTicketId: false,
-    navbarEditorEnabled: false
+    navbarEditorEnabled: false,
+    popupActiveTab: 'features' // Add this line
 
   }, (data) => {
     updateToggleBtn(data.enabled);
@@ -205,6 +206,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const staffOnlySection = document.getElementById('staffOnlySection');
     if (staffOnlySection) {
       staffOnlySection.style.display = data.enableStaffFeatures ? 'block' : 'none';
+    }
+
+    // Restore active tab
+    if (data.popupActiveTab === 'themes') {
+      document.getElementById('features-tab').classList.remove('active');
+      document.getElementById('themes-tab').classList.add('active');
+      document.getElementById('features-content').style.display = 'none';
+      document.getElementById('themes-content').style.display = 'block';
+      document.getElementById('slider-indicator').style.left = '50%';
     }
   });
 
