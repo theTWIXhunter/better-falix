@@ -21,20 +21,19 @@
     }
 
     body {
-      font-family: 'Segoe UI', Arial, sans-serif;
       margin: 0;
-      padding: 20px;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: var(--falix-bg);
       color: var(--falix-text);
+      min-height: 100vh;
     }
 
     .container {
       max-width: 1200px;
       margin: 0 auto;
-      background: var(--falix-bg-light);
-      border-radius: 10px;
-      padding: 32px 28px 24px 28px;
-      box-shadow: var(--falix-shadow);
+      padding: 20px;
+      position: relative;
     }
 
     h1 {
@@ -373,8 +372,8 @@
       position: sticky;
       top: 0;
       background: var(--falix-bg);
-      padding: 15px 0;
-      margin-bottom: 20px;
+      padding: 15px 20px;
+      margin: -20px -20px 20px -20px;
       z-index: 100;
       border-bottom: 2px solid var(--falix-border);
       display: flex;
@@ -386,6 +385,19 @@
     .action-buttons .btn {
       flex: 0 1 auto;
       white-space: nowrap;
+      min-width: fit-content;
+    }
+
+    @media (max-width: 768px) {
+      .action-buttons {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .action-buttons .btn {
+        width: 100%;
+        text-align: center;
+      }
     }
   </style>
 </head>
