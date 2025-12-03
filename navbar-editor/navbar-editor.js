@@ -243,21 +243,26 @@ let currentPageType = 'server';
 let currentConfig = null;
 let editingSection = null;
 let editingItem = null;
-let draggedSection = null;
-let draggedItem = null;
-let draggedItemSection = null;
-let scrollInterval = null;
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
-  loadConfigs();
-  setupEventListeners();
-  
-  // Restore active tab
-  chrome.storage.local.get({ navbarEditorActiveTab: 'server' }, (result) => {
-    if (result.navbarEditorActiveTab === 'other') {
-      switchTab('other-pages');
+  // Load the last active tab from storage first
+  chrome.storage.local.get(['navbarEditorActiveTab'], (result) => {
+    if (result.navbarEditorActiveTab) {
+      const tabName = result.navbarEditorActiveTab;
+      currentPageType = tabName === 'server-pages' ? 'server' : 'other';
+      
+      // Update UI to show correct tab immediately (before loading configs)
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      
+      document.querySelector(`[data-tab="${tabName}"]`)?.classList.add('active');
+      document.getElementById(tabName)?.classList.add('active');
     }
+    
+    // Now load configs for the correct tab
+    loadConfigs();
+    setupEventListeners();
   });
 });
 
@@ -408,8 +413,8 @@ function switchTab(tabName) {
   currentPageType = tabName === 'server-pages' ? 'server' : 'other';
   console.log('[navbar-editor] currentPageType set to:', currentPageType);
   
-  // Save active tab
-  chrome.storage.local.set({ navbarEditorActiveTab: currentPageType });
+  // Save the active tab to storage
+  chrome.storage.local.set({ navbarEditorActiveTab: tabName });
   
   renderSections(currentPageType);
 }
