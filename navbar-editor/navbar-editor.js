@@ -244,6 +244,12 @@ let currentConfig = null;
 let editingSection = null;
 let editingItem = null;
 
+// Drag-and-drop variables
+let draggedSection = null;
+let draggedItem = null;
+let draggedItemSection = null;
+let scrollInterval = null;
+
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
   // Load the last active tab from storage first
@@ -385,7 +391,7 @@ function handleAutoScroll(e) {
   // Clear existing interval
   if (scrollInterval) {
     clearInterval(scrollInterval);
-    scrollInterval = null;
+       scrollInterval = null;
   }
   
   // Scroll up
