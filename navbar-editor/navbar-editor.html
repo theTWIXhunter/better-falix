@@ -5,45 +5,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Navbar Editor - Better-Falix</title>
   <style>
-    :root {
-      --falix-bg: #181c20;
-      --falix-bg-light: #23272b;
-      --falix-text: #fff;
-      --falix-text-muted: #b0b8c1;
-      --falix-primary: #0078d7;
-      --falix-primary-hover: #0063b1;
-      --falix-secondary: #343a40;
-      --falix-secondary-hover: #3e444a;
-      --falix-danger: #ef4444;
-      --falix-danger-hover: #b91c1c;
-      --falix-border: #343a40;
-      --falix-shadow: 0 2px 16px 0 rgba(0,0,0,0.13);
-    }
-
     body {
+      font-family: 'Segoe UI', Arial, sans-serif;
       margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: var(--falix-bg);
-      color: var(--falix-text);
-      min-height: 100vh;
+      padding: 20px;
+      background: #181c20;
+      color: #fff;
     }
 
     .container {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 20px;
-      position: relative;
+      background: #23272b;
+      border-radius: 10px;
+      padding: 32px 28px 24px 28px;
+      box-shadow: 0 2px 16px 0 rgba(0,0,0,0.13);
     }
 
     h1 {
       margin-bottom: 10px;
       font-size: 2em;
-      color: var(--falix-primary);
+      color: #0078d7;
     }
 
     .subtitle {
-      color: var(--falix-text-muted);
+      color: #b0b8c1;
       margin-bottom: 30px;
       font-size: 0.98em;
     }
@@ -52,14 +38,14 @@
       display: flex;
       gap: 10px;
       margin-bottom: 20px;
-      border-bottom: 2px solid var(--falix-border);
+      border-bottom: 2px solid #343a40;
     }
 
     .tab {
       padding: 12px 24px;
       background: transparent;
       border: none;
-      color: var(--falix-text-muted);
+      color: #b0b8c1;
       cursor: pointer;
       font-size: 14px;
       font-weight: 500;
@@ -69,12 +55,12 @@
     }
 
     .tab:hover {
-      color: var(--falix-text);
+      color: #fff;
     }
 
     .tab.active {
-      color: var(--falix-primary);
-      border-bottom-color: var(--falix-primary);
+      color: #3b82f6;
+      border-bottom-color: #3b82f6;
     }
 
     .tab-content {
@@ -92,10 +78,10 @@
     }
 
     .section {
-      background: var(--falix-bg);
+      background: #181c20;
       border-radius: 8px;
       padding: 15px;
-      border: 1px solid var(--falix-border);
+      border: 1px solid #343a40;
     }
 
     .section-header {
@@ -106,7 +92,7 @@
 
     .drag-handle {
       cursor: grab;
-      color: var(--falix-text-muted);
+      color: #b0b8c1;
       font-size: 18px;
     }
 
@@ -127,7 +113,7 @@
       align-items: center;
       gap: 6px;
       font-size: 0.9em;
-      color: var(--falix-text-muted);
+      color: #b0b8c1;
       cursor: pointer;
       user-select: none;
     }
@@ -136,7 +122,7 @@
       width: 16px;
       height: 16px;
       cursor: pointer;
-      accent-color: var(--falix-primary);
+      accent-color: #0078d7;
     }
 
     .section-actions {
@@ -160,30 +146,30 @@
     }
 
     .btn-primary {
-      background: var(--falix-primary);
+      background: #0078d7;
       color: white;
     }
 
     .btn-primary:hover {
-      background: var(--falix-primary-hover);
+      background: #0063b1;
     }
 
     .btn-secondary {
-      background: var(--falix-secondary);
-      color: var(--falix-text);
+      background: #343a40;
+      color: #fff;
     }
 
     .btn-secondary:hover {
-      background: var(--falix-secondary-hover);
+      background: #3e444a;
     }
 
     .btn-danger {
-      background: var(--falix-danger);
+      background: #ef4444;
       color: white;
     }
 
     .btn-danger:hover {
-      background: var(--falix-danger-hover);
+      background: #b91c1c;
     }
 
     .items {
@@ -194,13 +180,13 @@
     }
 
     .item {
-      background: var(--falix-bg-light);
+      background: #23272b;
       padding: 12px;
       border-radius: 6px;
       display: flex;
       align-items: center;
       gap: 10px;
-      border: 1px solid var(--falix-border);
+      border: 1px solid #343a40;
     }
 
     .item-info {
@@ -214,7 +200,7 @@
 
     .item-url {
       font-size: 12px;
-      color: var(--falix-text-muted);
+      color: #b0b8c1;
     }
 
     .add-section-btn {
@@ -239,21 +225,21 @@
     }
 
     .modal-content {
-      background: var(--falix-bg-light);
+      background: #23272b;
       padding: 24px;
       border-radius: 10px;
       width: 90%;
       max-width: 500px;
       max-height: 80vh;
       overflow-y: auto;
-      box-shadow: var(--falix-shadow);
+      box-shadow: 0 2px 16px 0 rgba(0,0,0,0.13);
     }
 
     .modal-title {
       font-size: 18px;
       font-weight: 600;
       margin-bottom: 20px;
-      color: var(--falix-primary);
+      color: #0078d7;
     }
 
     .form-group {
@@ -265,7 +251,7 @@
       margin-bottom: 6px;
       font-size: 13px;
       font-weight: 500;
-      color: var(--falix-text-muted);
+      color: #b0b8c1;
     }
 
     input[type="text"],
@@ -273,10 +259,10 @@
     textarea {
       width: 100%;
       padding: 10px;
-      background: var(--falix-bg);
+      background: #181c20;
       border: 1px solid #444;
       border-radius: 6px;
-      color: var(--falix-text);
+      color: #fff;
       font-size: 14px;
       box-sizing: border-box;
     }
@@ -285,7 +271,7 @@
     input[type="url"]:focus,
     textarea:focus {
       outline: none;
-      border-color: var(--falix-primary);
+      border-color: #0078d7;
     }
 
     textarea {
@@ -304,10 +290,10 @@
     .save-section {
       position: sticky;
       bottom: 0;
-      background: var(--falix-bg-light);
+      background: #23272b;
       padding: 20px 0;
       margin-top: 30px;
-      border-top: 2px solid var(--falix-border);
+      border-top: 2px solid #343a40;
       display: flex;
       gap: 10px;
       align-items: center;
@@ -315,7 +301,7 @@
 
     .helper-text {
       font-size: 12px;
-      color: var(--falix-text-muted);
+      color: #b0b8c1;
       margin-top: 4px;
     }
 
@@ -340,21 +326,21 @@
     }
 
     .section.drag-over {
-      border-top: 3px solid var(--falix-primary);
+      border-top: 3px solid #0078d7;
     }
 
     .item.drag-over {
-      border-top: 2px solid var(--falix-primary);
+      border-top: 2px solid #0078d7;
     }
 
     .section-drop-zone.drag-over {
-      border-top: 3px solid var(--falix-primary);
+      border-top: 3px solid #0078d7;
       background: rgba(0, 120, 215, 0.1);
       min-height: 30px !important;
     }
 
     .item-drop-zone.drag-over {
-      border-top: 2px solid var(--falix-primary);
+      border-top: 2px solid #0078d7;
       background: rgba(0, 120, 215, 0.1);
       min-height: 20px !important;
     }
@@ -367,43 +353,11 @@
     .drag-handle:active {
       cursor: grabbing;
     }
-
-    .action-buttons {
-      position: sticky;
-      top: 0;
-      background: var(--falix-bg);
-      padding: 15px 20px;
-      margin: -20px -20px 20px -20px;
-      z-index: 100;
-      border-bottom: 2px solid var(--falix-border);
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .action-buttons .btn {
-      flex: 0 1 auto;
-      white-space: nowrap;
-      min-width: fit-content;
-    }
-
-    @media (max-width: 768px) {
-      .action-buttons {
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      .action-buttons .btn {
-        width: 100%;
-        text-align: center;
-      }
-    }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Navbar Editor h1 test</h1>
+    <h1>Navbar Editor</h1>
     <p class="subtitle">Customize your navigation menu for different page types</p>
 
     <div class="tabs">
@@ -411,94 +365,92 @@
       <button class="tab" data-tab="other-pages">Other Pages</button>
     </div>
 
-    <div class="tab-content active" id="server-pages">
-      <div class="action-buttons">
-        <button class="btn btn-primary" data-action="add-section" data-page-type="server">+ Add Category</button>
-        <button class="btn btn-secondary" data-action="import">Import</button>
-        <button class="btn btn-secondary" data-action="export">Export</button>
-        <button class="btn btn-danger" data-action="reset">Reset to Default</button>
-      </div>
+    <div id="server-pages" class="tab-content active">
       <div class="sections" id="server-sections"></div>
+      <button class="btn btn-primary add-section-btn" data-action="add-section" data-page-type="server">+ Add Category</button>
     </div>
 
-    <div class="tab-content" id="other-pages">
-      <div class="action-buttons">
-        <button class="btn btn-primary" data-action="add-section" data-page-type="other">+ Add Category</button>
-        <button class="btn btn-secondary" data-action="import">Import</button>
-        <button class="btn btn-secondary" data-action="export">Export</button>
-        <button class="btn btn-danger" data-action="reset">Reset to Default</button>
-      </div>
+    <div id="other-pages" class="tab-content">
       <div class="sections" id="other-sections"></div>
+      <button class="btn btn-primary add-section-btn" data-action="add-section" data-page-type="other">+ Add Category</button>
     </div>
 
-    <!-- Section Modal -->
-    <div id="sectionModal" class="modal">
-      <div class="modal-content">
-        <h2 class="modal-title" id="sectionModalTitle">Edit Category</h2>
-        <div class="form-group">
-          <label>Category Name</label>
-          <input type="text" id="sectionName" placeholder="e.g., Servers">
-        </div>
-        <div class="form-group checkbox-group">
-          <input type="checkbox" id="sectionExpanded" checked>
-          <label for="sectionExpanded" style="margin: 0">Expanded by default</label>
-        </div>
-        <div class="form-group checkbox-group">
-          <input type="checkbox" id="sectionHideHeader">
-          <label for="sectionHideHeader" style="margin: 0">Hide category header (show items only)</label>
-        </div>
-        <div class="modal-actions">
-          <button class="btn btn-secondary" data-action="close-section-modal">Cancel</button>
-          <button class="btn btn-primary" data-action="save-section-modal">Save</button>
-        </div>
+    <div class="save-section">
+      <button class="btn btn-secondary" data-action="reset">Reset to Default</button>
+      <button class="btn btn-secondary" data-action="export">Export</button>
+      <button class="btn btn-secondary" data-action="import">Import</button>
+      <input type="file" id="importFile" accept=".json" style="display: none;">
+      <span style="color: #b0b8c1; font-size: 14px; margin-left: auto;">All changes are saved automatically</span>
+    </div>
+  </div>
+
+  <!-- Section Modal -->
+  <div id="sectionModal" class="modal">
+    <div class="modal-content">
+      <h2 class="modal-title" id="sectionModalTitle">Edit Category</h2>
+      <div class="form-group">
+        <label>Category Name</label>
+        <input type="text" id="sectionName" placeholder="e.g., Servers">
+      </div>
+      <div class="form-group checkbox-group">
+        <input type="checkbox" id="sectionExpanded" checked>
+        <label for="sectionExpanded" style="margin: 0">Expanded by default</label>
+      </div>
+      <div class="form-group checkbox-group">
+        <input type="checkbox" id="sectionHideHeader">
+        <label for="sectionHideHeader" style="margin: 0">Hide category header (show items only)</label>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" data-action="close-section-modal">Cancel</button>
+        <button class="btn btn-primary" data-action="save-section-modal">Save</button>
       </div>
     </div>
+  </div>
 
-    <!-- Export Modal -->
-    <div id="exportModal" class="modal">
-      <div class="modal-content">
-        <h2 class="modal-title">Export Configuration</h2>
-        <div class="form-group">
-          <label>What would you like to export?</label>
-          <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
-            <button class="btn btn-primary" data-action="export-current" style="width: 100%;">Export Current Page Only</button>
-            <button class="btn btn-primary" data-action="export-all" style="width: 100%;">Export All Configurations</button>
-          </div>
-        </div>
-        <div class="modal-actions" style="margin-top: 20px;">
-          <button class="btn btn-secondary" data-action="close-export-modal">Cancel</button>
+  <!-- Export Modal -->
+  <div id="exportModal" class="modal">
+    <div class="modal-content">
+      <h2 class="modal-title">Export Configuration</h2>
+      <div class="form-group">
+        <label>What would you like to export?</label>
+        <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
+          <button class="btn btn-primary" data-action="export-current" style="width: 100%;">Export Current Page Only</button>
+          <button class="btn btn-primary" data-action="export-all" style="width: 100%;">Export All Configurations</button>
         </div>
       </div>
+      <div class="modal-actions" style="margin-top: 20px;">
+        <button class="btn btn-secondary" data-action="close-export-modal">Cancel</button>
+      </div>
     </div>
+  </div>
 
-    <!-- Item Modal -->
-    <div id="itemModal" class="modal">
-      <div class="modal-content">
-        <h2 class="modal-title" id="itemModalTitle">Edit Item</h2>
-        <div class="form-group">
-          <label>Item Name</label>
-          <input type="text" id="itemName" placeholder="e.g., Server List">
-        </div>
-        <div class="form-group">
-          <label>URL</label>
-          <input type="text" id="itemUrl" placeholder="e.g., /server/console">
-        </div>
-        <div class="form-group">
-          <label>Icon SVG Path (d attribute)</label>
-          <textarea id="itemIconPath" placeholder="M40 48C26.7 48 16 58.7..."></textarea>
-        </div>
-        <div class="form-group">
-          <label>Icon ViewBox (optional)</label>
-          <input type="text" id="itemIconViewBox" placeholder="0 0 512 512">
-        </div>
-        <div class="form-group">
-          <label>Target (optional)</label>
-          <input type="text" id="itemTarget" placeholder="_blank for new tab">
-        </div>
-        <div class="modal-actions">
-          <button class="btn btn-secondary" data-action="close-item-modal">Cancel</button>
-          <button class="btn btn-primary" data-action="save-item-modal">Save</button>
-        </div>
+  <!-- Item Modal -->
+  <div id="itemModal" class="modal">
+    <div class="modal-content">
+      <h2 class="modal-title" id="itemModalTitle">Edit Item</h2>
+      <div class="form-group">
+        <label>Item Name</label>
+        <input type="text" id="itemName" placeholder="e.g., Server List">
+      </div>
+      <div class="form-group">
+        <label>URL</label>
+        <input type="text" id="itemUrl" placeholder="e.g., /server/console">
+      </div>
+      <div class="form-group">
+        <label>Icon SVG Path (d attribute)</label>
+        <textarea id="itemIconPath" placeholder="M40 48C26.7 48 16 58.7..."></textarea>
+      </div>
+      <div class="form-group">
+        <label>Icon ViewBox (optional)</label>
+        <input type="text" id="itemIconViewBox" placeholder="0 0 512 512">
+      </div>
+      <div class="form-group">
+        <label>Target (optional)</label>
+        <input type="text" id="itemTarget" placeholder="_blank for new tab">
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" data-action="close-item-modal">Cancel</button>
+        <button class="btn btn-primary" data-action="save-item-modal">Save</button>
       </div>
     </div>
   </div>
