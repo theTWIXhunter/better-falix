@@ -382,6 +382,9 @@ function renderSections(pageType) {
 function createSectionElement(section, sIndex) {
   const div = document.createElement('div');
   div.className = 'section';
+  div.draggable = true;
+  div.dataset.sectionIndex = sIndex;
+  
   div.innerHTML = `
     <div class="section-header">
       <span class="drag-handle">☰</span>
@@ -394,7 +397,7 @@ function createSectionElement(section, sIndex) {
     </div>
     <div class="items">
       ${section.items.map((item, iIndex) => `
-        <div class="item">
+        <div class="item" draggable="true" data-item-index="${iIndex}">
           <span class="drag-handle">☰</span>
           <div class="item-info">
             <!-- SVG preview -->
@@ -412,7 +415,139 @@ function createSectionElement(section, sIndex) {
       `).join('')}
     </div>
   `;
+  
+  // Add drag event listeners for sections
+  div.addEventListener('dragstart', handleSectionDragStart);
+  div.addEventListener('dragover', handleSectionDragOver);
+  div.addEventListener('drop', handleSectionDrop);
+  div.addEventListener('dragend', handleSectionDragEnd);
+  div.addEventListener('dragleave', handleDragLeave);
+  
+  // Add drag event listeners for items
+  const items = div.querySelectorAll('.item');
+  items.forEach(item => {
+    item.addEventListener('dragstart', handleItemDragStart);
+    item.addEventListener('dragover', handleItemDragOver);
+    item.addEventListener('drop', handleItemDrop);
+    item.addEventListener('dragend', handleItemDragEnd);
+    item.addEventListener('dragleave', handleDragLeave);
+  });
+  
   return div;
+}
+
+// Section drag handlers
+let draggedSection = null;
+
+function handleSectionDragStart(e) {
+  draggedSection = this;
+  this.classList.add('dragging');
+  e.dataTransfer.effectAllowed = 'move';
+  e.dataTransfer.setData('text/html', this.innerHTML);
+}
+
+function handleSectionDragOver(e) {
+  if (e.preventDefault) {
+    e.preventDefault();
+  }
+  e.dataTransfer.dropEffect = 'move';
+  
+  if (this !== draggedSection && this.classList.contains('section')) {
+    this.classList.add('drag-over');
+  }
+  
+  return false;
+}
+
+function handleSectionDrop(e) {
+  if (e.stopPropagation) {
+    e.stopPropagation();
+  }
+  
+  if (draggedSection !== this && this.classList.contains('section')) {
+    const draggedIndex = parseInt(draggedSection.dataset.sectionIndex);
+    const targetIndex = parseInt(this.dataset.sectionIndex);
+    
+    // Reorder sections in config
+    const [removed] = currentConfig.sections.splice(draggedIndex, 1);
+    currentConfig.sections.splice(targetIndex, 0, removed);
+    
+    saveConfig();
+  }
+  
+  return false;
+}
+
+function handleSectionDragEnd(e) {
+  this.classList.remove('dragging');
+  document.querySelectorAll('.section').forEach(section => {
+    section.classList.remove('drag-over');
+  });
+}
+
+// Item drag handlers
+let draggedItem = null;
+let draggedItemSection = null;
+
+function handleItemDragStart(e) {
+  draggedItem = this;
+  draggedItemSection = this.closest('.section');
+  this.classList.add('dragging');
+  e.dataTransfer.effectAllowed = 'move';
+  e.stopPropagation(); // Prevent section drag
+}
+
+function handleItemDragOver(e) {
+  if (e.preventDefault) {
+    e.preventDefault();
+  }
+  e.dataTransfer.dropEffect = 'move';
+  
+  if (this !== draggedItem && this.classList.contains('item')) {
+    this.classList.add('drag-over');
+  }
+  
+  e.stopPropagation(); // Prevent section drag over
+  return false;
+}
+
+function handleItemDrop(e) {
+  if (e.stopPropagation) {
+    e.stopPropagation();
+  }
+  
+  if (draggedItem !== this && this.classList.contains('item')) {
+    const draggedSectionIndex = parseInt(draggedItemSection.dataset.sectionIndex);
+    const targetSectionIndex = parseInt(this.closest('.section').dataset.sectionIndex);
+    const draggedItemIndex = parseInt(draggedItem.dataset.itemIndex);
+    const targetItemIndex = parseInt(this.dataset.itemIndex);
+    
+    // Check if dragging within same section or to different section
+    if (draggedSectionIndex === targetSectionIndex) {
+      // Reorder within same section
+      const [removed] = currentConfig.sections[draggedSectionIndex].items.splice(draggedItemIndex, 1);
+      currentConfig.sections[targetSectionIndex].items.splice(targetItemIndex, 0, removed);
+    } else {
+      // Move to different section
+      const [removed] = currentConfig.sections[draggedSectionIndex].items.splice(draggedItemIndex, 1);
+      currentConfig.sections[targetSectionIndex].items.splice(targetItemIndex, 0, removed);
+    }
+    
+    saveConfig();
+  }
+  
+  return false;
+}
+
+function handleItemDragEnd(e) {
+  this.classList.remove('dragging');
+  document.querySelectorAll('.item').forEach(item => {
+    item.classList.remove('drag-over');
+  });
+}
+
+function handleDragLeave(e) {
+  this.classList.remove('drag-over');
 }
 
 function addSection(pageType) {
