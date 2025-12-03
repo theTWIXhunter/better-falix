@@ -264,6 +264,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Slider logic with animation and tab memory
   const featuresTab = document.getElementById('features-tab');
   const themesTab = document.getElementById('themes-tab');
+  const navbarTab = document.getElementById('navbar-tab');
   const featuresContent = document.getElementById('features-content');
   const themesContent = document.getElementById('themes-content');
   const sliderIndicator = document.getElementById('slider-indicator');
@@ -272,15 +273,21 @@ document.addEventListener('DOMContentLoaded', () => {
     if (tab === 'features') {
       featuresTab.classList.add('active');
       themesTab.classList.remove('active');
+      navbarTab.classList.remove('active');
       featuresContent.style.display = '';
       themesContent.style.display = 'none';
       sliderIndicator.style.left = '0%';
-    } else {
+    } else if (tab === 'themes') {
       themesTab.classList.add('active');
       featuresTab.classList.remove('active');
+      navbarTab.classList.remove('active');
       featuresContent.style.display = 'none';
       themesContent.style.display = '';
       sliderIndicator.style.left = '50%';
+    } else if (tab === 'navbar') {
+      // Open navbar editor in new tab
+      chrome.tabs.create({ url: chrome.runtime.getURL('navbar-editor/navbar-editor.html') });
+      return;
     }
     if (save) {
       chrome.storage.sync.set({ popupActiveTab: tab });
@@ -300,6 +307,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   themesTab.addEventListener('click', function() {
     activateTab('themes');
+  });
+
+  navbarTab.addEventListener('click', function() {
+    // Open navbar editor in new tab
+    chrome.tabs.create({ url: chrome.runtime.getURL('navbar-editor/navbar-editor.html') });
   });
 
   // Theme selection logic
