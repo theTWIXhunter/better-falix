@@ -25,7 +25,7 @@ chrome.storage.sync.get({ enabled: true, navbarEditorEnabled: false }, (data) =>
 });
 
 function applyNavbarConfig(config) {
-  const navContainer = document.querySelector('.navbar-nav-container');
+  const navContainer = document.querySelector('.navbar-nav-container') || document.querySelector('.menu-scroll-container');
   if (!navContainer) {
     console.log('[better-falix] navbar-editor: Navbar container not found, retrying...');
     setTimeout(() => applyNavbarConfig(config), 500);
