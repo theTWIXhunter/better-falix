@@ -399,15 +399,12 @@ function createSectionElement(section, sIndex) {
       ${section.items.map((item, iIndex) => `
         <div class="item" draggable="true" data-item-index="${iIndex}">
           <span class="drag-handle">☰</span>
+          <svg class="item-icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="${item.iconViewBox || '0 0 512 512'}" width="20" height="20" style="flex-shrink: 0; margin-right: 12px;">
+            <path fill="currentColor" d="${item.iconPath}"></path>
+          </svg>
           <div class="item-info">
-            <!-- SVG preview -->
-            <svg class="item-icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="${item.iconViewBox || '0 0 512 512'}" width="20" height="20" style="flex: none; margin-right:10px;">
-              <path fill="currentColor" d="${item.iconPath}"></path>
-            </svg>
-            <div style="display:flex;flex-direction:column;">
-              <div class="item-name">${item.name}</div>
-              <div class="item-url">${item.url}</div>
-            </div>
+            <div class="item-name">${item.name}</div>
+            <div class="item-url">${item.url}</div>
           </div>
           <button class="btn btn-sm btn-secondary" data-action="edit-item" data-section-index="${sIndex}" data-item-index="${iIndex}">Edit</button>
           <button class="btn btn-sm btn-danger" data-action="delete-item" data-section-index="${sIndex}" data-item-index="${iIndex}">Delete</button>
