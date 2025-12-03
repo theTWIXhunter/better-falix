@@ -36,6 +36,13 @@ Better Falix is a browser extension that enhances the FalixNodes client-side exp
 
 ### Navigation
 
+- **Custom Navbar Editor:** Customize navbar sections and items with the visual editor. Features include:
+  - Drag and drop reordering of sections and items
+  - Icon picker with common Font Awesome icons
+  - Advanced custom SVG path support for custom icons
+  - Per-section expanded/collapsed state control
+  - Option to hide section headers
+  - Export/import configurations for backup or sharing
 - **Rename Config to Properties:** Renames the "Config" navigation option to "Properties" in the Minecraft category for clarity.
 - **Rename Addons to Mods:** Renames the "Addons" navigation option to "Mods" in the Minecraft category for clarity.
 - **Split Addons Tabs:** Splits the addons tab back into separate plugins, mods, modpacks, and datapacks tabs on server pages.

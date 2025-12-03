@@ -403,6 +403,110 @@
       cursor: grabbing;
     }
 
+    .icon-picker {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+      gap: 8px;
+      margin: 10px 0;
+      max-height: 200px;
+      overflow-y: auto;
+      padding: 10px;
+      background: #181c20;
+      border: 1px solid #444;
+      border-radius: 6px;
+    }
+
+    .icon-option {
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #23272b;
+      border: 2px solid #444;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .icon-option:hover {
+      background: #343a40;
+      border-color: #0078d7;
+    }
+
+    .icon-option.selected {
+      background: #0078d7;
+      border-color: #0078d7;
+    }
+
+    .icon-option svg {
+      width: 24px;
+      height: 24px;
+      fill: #b0b8c1;
+    }
+
+    .icon-option.selected svg {
+      fill: #fff;
+    }
+
+    .advanced-toggle {
+      background: #343a40;
+      color: #b0b8c1;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 12px;
+      cursor: pointer;
+      font-size: 13px;
+      margin-top: 10px;
+      width: 100%;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.2s;
+    }
+
+    .advanced-toggle:hover {
+      background: #3e444a;
+      color: #fff;
+    }
+
+    .advanced-toggle::after {
+      content: '▼';
+      font-size: 10px;
+      transition: transform 0.2s;
+    }
+
+    .advanced-toggle.open::after {
+      transform: rotate(180deg);
+    }
+
+    .advanced-section {
+      display: none;
+      margin-top: 10px;
+    }
+
+    .advanced-section.open {
+      display: block;
+    }
+
+    .icon-search {
+      width: 100%;
+      padding: 8px 12px;
+      background: #181c20;
+      border: 1px solid #444;
+      border-radius: 6px;
+      color: #fff;
+      font-size: 13px;
+      margin-bottom: 10px;
+      box-sizing: border-box;
+    }
+
+    .icon-search:focus {
+      outline: none;
+      border-color: #0078d7;
+    }
+
     @media (max-width: 768px) {
       .section-header {
         align-items: flex-start;
@@ -521,17 +625,30 @@
         <input type="text" id="itemUrl" placeholder="e.g., /server/console">
       </div>
       <div class="form-group">
-        <label>Icon SVG Path (d attribute)</label>
-        <textarea id="itemIconPath" placeholder="M40 48C26.7 48 16 58.7..."></textarea>
-      </div>
-      <div class="form-group">
-        <label>Icon ViewBox (optional)</label>
-        <input type="text" id="itemIconViewBox" placeholder="0 0 512 512">
-      </div>
-      <div class="form-group">
         <label>Target (optional)</label>
         <input type="text" id="itemTarget" placeholder="_blank for new tab">
       </div>
+      
+      <div class="form-group">
+        <label>Choose Icon</label>
+        <input type="text" class="icon-search" id="iconSearch" placeholder="Search icons...">
+        <div class="icon-picker" id="iconPicker"></div>
+      </div>
+
+      <button class="advanced-toggle" id="advancedToggle">
+        Advanced (Custom SVG)
+      </button>
+      <div class="advanced-section" id="advancedSection">
+        <div class="form-group">
+          <label>Icon SVG Path (d attribute)</label>
+          <textarea id="itemIconPath" placeholder="M40 48C26.7 48 16 58.7..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Icon ViewBox (optional)</label>
+          <input type="text" id="itemIconViewBox" placeholder="0 0 512 512">
+        </div>
+      </div>
+
       <div class="modal-actions">
         <button class="btn btn-secondary" data-action="close-item-modal">Cancel</button>
         <button class="btn btn-primary" data-action="save-item-modal">Save</button>
