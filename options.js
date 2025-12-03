@@ -278,6 +278,15 @@ if (replaceFalixLogoChoice) {
   });
 }
 
+const navbarEditorToggle = document.getElementById('navbarEditorEnabled');
+if (navbarEditorToggle) {
+  navbarEditorToggle.addEventListener('click', function() {
+    const state = this.getAttribute('aria-pressed') !== 'true';
+    setToggleState(this, state);
+    saveSetting('navbarEditorEnabled', state);
+  });
+}
+
 
 // --- Feature logic for reorder and editor height ---
 function applyCustomServerOrder() {
