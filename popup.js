@@ -267,6 +267,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const navbarTab = document.getElementById('navbar-tab');
   const featuresContent = document.getElementById('features-content');
   const themesContent = document.getElementById('themes-content');
+  const navbarContent = document.getElementById('navbar-content');
   const sliderIndicator = document.getElementById('slider-indicator');
 
   function activateTab(tab, save = true) {
@@ -276,6 +277,7 @@ document.addEventListener('DOMContentLoaded', () => {
       navbarTab.classList.remove('active');
       featuresContent.style.display = '';
       themesContent.style.display = 'none';
+      navbarContent.style.display = 'none';
       sliderIndicator.style.left = '0%';
     } else if (tab === 'themes') {
       themesTab.classList.add('active');
@@ -283,11 +285,16 @@ document.addEventListener('DOMContentLoaded', () => {
       navbarTab.classList.remove('active');
       featuresContent.style.display = 'none';
       themesContent.style.display = '';
-      sliderIndicator.style.left = '50%';
+      navbarContent.style.display = 'none';
+      sliderIndicator.style.left = '33.333%';
     } else if (tab === 'navbar') {
-      // Open navbar editor in new tab
-      chrome.tabs.create({ url: chrome.runtime.getURL('navbar-editor/navbar-editor.html') });
-      return;
+      navbarTab.classList.add('active');
+      featuresTab.classList.remove('active');
+      themesTab.classList.remove('active');
+      featuresContent.style.display = 'none';
+      themesContent.style.display = 'none';
+      navbarContent.style.display = '';
+      sliderIndicator.style.left = '66.666%';
     }
     if (save) {
       chrome.storage.sync.set({ popupActiveTab: tab });
@@ -310,7 +317,11 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   navbarTab.addEventListener('click', function() {
-    // Open navbar editor in new tab
+    activateTab('navbar');
+  });
+
+  // Open navbar editor button
+  document.getElementById('openNavbarEditor').addEventListener('click', function() {
     chrome.tabs.create({ url: chrome.runtime.getURL('navbar-editor/navbar-editor.html') });
   });
 
