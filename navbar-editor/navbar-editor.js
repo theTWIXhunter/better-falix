@@ -152,7 +152,7 @@ const DEFAULT_CONFIGS = {
             name: 'Knowledge Base',
             url: '#',
             iconPath: 'M96 0C43 0 0 43 0 96L0 416c0 53 43 96 96 96l288 0 32 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l0-64c17.7 0 32-14.3 32-32l0-320c0-17.7-14.3-32-32-32L384 0 96 0zm0 384l256 0 0 64L96 448c-17.7 0-32-14.3-32-32s14.3-32 32-32zm32-240c0-8.8 7.2-16 16-16l192 0c8.8 0 16 7.2 16 16s-7.2 16-16 16l-192 0c-8.8 0-16-7.2-16-16zm16 48l192 0c8.8 0 16 7.2 16 16s-7.2 16-16 16l-192 0c-8.8 0-16-7.2-16-16s7.2-16 16-16z',
-            iconViewBox: '0 0 448 512'
+            iconViewBox: 'M0 0h384v512H0z'
           }
         ]
       }
@@ -397,8 +397,14 @@ function createSectionElement(section, sIndex) {
         <div class="item">
           <span class="drag-handle">☰</span>
           <div class="item-info">
-            <div class="item-name">${item.name}</div>
-            <div class="item-url">${item.url}</div>
+            <!-- SVG preview -->
+            <svg class="item-icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="${item.iconViewBox || '0 0 512 512'}" width="20" height="20" style="flex: none; margin-right:10px;">
+              <path fill="currentColor" d="${item.iconPath}"></path>
+            </svg>
+            <div style="display:flex;flex-direction:column;">
+              <div class="item-name">${item.name}</div>
+              <div class="item-url">${item.url}</div>
+            </div>
           </div>
           <button class="btn btn-sm btn-secondary" data-action="edit-item" data-section-index="${sIndex}" data-item-index="${iIndex}">Edit</button>
           <button class="btn btn-sm btn-danger" data-action="delete-item" data-section-index="${sIndex}" data-item-index="${iIndex}">Delete</button>
