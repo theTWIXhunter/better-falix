@@ -269,12 +269,12 @@ const COMMON_ICONS = {
 
 
 // Check if navbar editor is enabled
-function checkNavbarEditorEnabled() {
-  chrome.storage.sync.get({ navbarEditorEnabled: false }, (data) => {
+function checknavbarEditorV2Enabled() {
+  chrome.storage.sync.get({ navbarEditorV2Enabled: false }, (data) => {
     const warningBanner = document.getElementById('disabledWarning');
     const container = document.querySelector('.container');
     
-    if (!data.navbarEditorEnabled) {
+    if (!data.navbarEditorV2Enabled) {
       // Show warning banner
       if (warningBanner) {
         warningBanner.style.display = 'block';
@@ -304,7 +304,7 @@ let scrollInterval = null;
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
-  checkNavbarEditorEnabled();
+  checknavbarEditorV2Enabled();
   // Load the last active tab from storage first
   chrome.storage.local.get(['navbarEditorActiveTab'], (result) => {
     if (result.navbarEditorActiveTab) {
@@ -359,12 +359,12 @@ function setupEventListeners() {
   const enableFeatureBtn = document.getElementById('enableFeatureBtn');
   if (enableFeatureBtn) {
     enableFeatureBtn.addEventListener('click', () => {
-      chrome.storage.sync.set({ navbarEditorEnabled: true }, () => {
+      chrome.storage.sync.set({ navbarEditorV2Enabled: true }, () => {
         if (chrome.runtime.lastError) {
           console.error('Failed to enable navbar editor:', chrome.runtime.lastError);
           return;
         }
-        checkNavbarEditorEnabled();
+        checknavbarEditorV2Enabled();
         console.log('Navbar editor enabled successfully');
       });
     });
