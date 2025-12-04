@@ -1,7 +1,7 @@
 console.log('[better-falix] navbar-editor: Script loading');
 
-chrome.storage.sync.get({ enabled: true, navbarEditorEnabled: false }, (data) => {
-  if (!data.enabled || !data.navbarEditorEnabled) {
+chrome.storage.sync.get({ enabled: true, navbarEditorV2Enabled: false }, (data) => {
+  if (!data.enabled || !data.navbarEditorV2Enabled) {
     console.log('[better-falix] navbar-editor: Script disabled');
     return;
   }

@@ -278,12 +278,12 @@ if (replaceFalixLogoChoice) {
   });
 }
 
-const navbarEditorToggle = document.getElementById('navbarEditorEnabled');
+const navbarEditorToggle = document.getElementById('navbarEditorV2Enabled');
 if (navbarEditorToggle) {
   navbarEditorToggle.addEventListener('click', function() {
     const state = this.getAttribute('aria-pressed') !== 'true';
     setToggleState(this, state);
-    saveSetting('navbarEditorEnabled', state);
+    saveSetting('navbarEditorV2Enabled', state);
   });
 }
 
