@@ -1,4 +1,4 @@
-# Better Falix 1.5.0
+# Better Falix 1.5.1
 
 Better Falix is a browser extension that enhances the FalixNodes client-side experience by allowing you to customize and improve the website's navigation and interface.
 

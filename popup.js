@@ -194,7 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
     removeFileUploadLabel: false,
     showTicketId: false,
     navbarEditorEnabled: true,
-    popupActiveTab: 'features' // Add this line
+    popupActiveTab: 'features'
 
   }, (data) => {
     updateToggleBtn(data.enabled);

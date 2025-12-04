@@ -537,9 +537,39 @@
         flex-shrink: 0;
       }
     }
+
+    /* Warning banner styles */
+    #disabledWarning {
+      display: none;
+      background: #fef3c7;
+      color: #92400e;
+      border-bottom: 2px solid #fbbf24;
+      padding: 14px 20px;
+      font-size: 14px;
+      font-weight: 500;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    #enableFromWarning {
+      margin-left: 12px;
+      background: #f59e0b;
+      color: white;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 600;
+    }
   </style>
 </head>
 <body>
+  <!-- Warning banner for when feature is disabled -->
+  <div id="disabledWarning">
+    ⚠️ Custom Navbar Editor is currently disabled. Changes will not take effect until you enable it in the extension popup or settings.
+    <button id="enableFromWarning">Enable Now</button>
+  </div>
+
   <div class="container">
     <h1>Navbar Editor</h1>
     <p class="subtitle">Customize your navigation menu for different page types</p>
