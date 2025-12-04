@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Better-Falix",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "A browser extension that enhances the Falixnodes client experience by adding custom features and improvements.",
   "icons": {
     "16": "assets/icons/icon16.png",
@@ -41,6 +41,11 @@
 
 
   "content_scripts": [ 
+    {
+      "matches": ["https://client.falixnodes.net/*"],
+      "js": ["navbar-editor/apply-navbar.js"],
+      "run_at": "document_start"
+    },
     {
       "matches": ["https://client.falixnodes.net/"],
       "js": ["features/general/custom-server-order/index.js"],
@@ -150,11 +155,6 @@
 
     {
       "matches": ["https://client.falixnodes.net/server/*"],
-      "js": ["features/archived/remove-external-start-nav/index.js"],
-      "run_at": "document_idle"
-    },
-    {
-      "matches": ["https://client.falixnodes.net/server/*"],
       "js": ["features/navigation/rename-config-to-properties/index.js"],
       "run_at": "document_idle"
     },
@@ -166,11 +166,6 @@
     {
       "matches": ["https://client.falixnodes.net/server/*"],
       "js": ["features/navigation/split-addons-tabs/index.js"],
-      "run_at": "document_idle"
-    },
-    {
-      "matches": ["https://client.falixnodes.net/server/*"],
-      "js": ["features/navigation/add-versions-nav/index.js"],
       "run_at": "document_idle"
     },
     {
@@ -236,50 +231,6 @@
 
 
     {
-      "matches": ["https://client.falixnodes.net/*"],
-      "js": ["features/staff-only/move-admin-nav/index.js"],
-      "run_at": "document_idle"
-    },
-    {
-      "matches": ["https://client.falixnodes.net/"],
-      "js": ["features/staff-only/admin-panel-index-redirect/index.js"],
-      "run_at": "document_idle"
-    },
-    {
-      "matches": ["https://client.falixnodes.net/admin/ListTickets"],
-      "js": ["features/staff-only/remove-premium-row/index.js"],
-      "run_at": "document_idle"
-    },
-    {
-      "matches": ["https://client.falixnodes.net/admin/ListTickets"],
-      "js": ["features/staff-only/shorten-reply-status/index.js"],
-      "run_at": "document_idle"
-    },
-    {
-      "matches": ["https://client.falixnodes.net/"],
-      "js": ["features/staff-only/add-admin-pages-category/index.js"],
-      "run_at": "document_idle"
-    },
-    {
-      "matches": ["https://client.falixnodes.net/admin/*"],
-      "js": ["features/staff-only/duplicate-admin-buttons/index.js"],
-      "run_at": "document_idle"
-    },
-    {
-      "matches": ["https://client.falixnodes.net/support/viewticket.php*"],
-      "js": ["features/staff-only/copy-all-support-info/index.js"],
-      "run_at": "document_idle"
-    },
-    {
-      "matches": ["https://client.falixnodes.net/admin/ListTickets*", "https://client.falixnodes.net/support/viewticket.php*"],
-      "js": ["features/staff-only/accurate-pending-name/index.js"],
-      "run_at": "document_idle"
-    },
-
-
-
-
-    {
       "matches": ["https://client.falixnodes.net/server/*"],
       "js": ["features/archived/legacy-server-name-button/index.js"],
       "run_at": "document_idle"
@@ -328,6 +279,16 @@
       "matches": ["https://client.falixnodes.net/server/*"],
       "js": ["features/archived/remove-console-files-category/index.js"],
       "run_at": "document_start"
+    },
+    {
+      "matches": ["https://client.falixnodes.net/server/*"],
+      "js": ["features/archived/add-versions-nav/index.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://client.falixnodes.net/server/*"],
+      "js": ["features/archived/remove-external-start-nav/index.js"],
+      "run_at": "document_idle"
     },
 
 

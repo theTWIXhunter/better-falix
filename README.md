@@ -1,8 +1,18 @@
-# Better Falix 1.4.0
+# Better Falix 1.5.0
 
 Better Falix is a browser extension that enhances the FalixNodes client-side experience by allowing you to customize and improve the website's navigation and interface.
 
 **Any questions? Join our discord server here:** https://discord.gg/EXm6uWcCeV
+
+## Custom Navbar Editor (NEW!)
+Customize navbar sections and items with the visual editor. Features include:
+  - Drag and drop reordering of sections and items
+  - Icon picker with common Font Awesome icons
+  - Advanced custom SVG path support for custom icons
+  - Per-section expanded/collapsed state control
+  - Option to hide section headers
+  - Export/import configurations for backup or sharing
+
 
 ## Features
 
@@ -35,6 +45,7 @@ Better Falix is a browser extension that enhances the FalixNodes client-side exp
 - **Better Editor Fullscreen:** Hide editor header and breadcrumb when using built-in fullscreen mode.
 
 ### Navigation
+these features have been deprecated and will be removed in 1.6.0, use the navbar editor for more customizable options.
 
 - **Rename Config to Properties:** Renames the "Config" navigation option to "Properties" in the Minecraft category for clarity.
 - **Rename Addons to Mods:** Renames the "Addons" navigation option to "Mods" in the Minecraft category for clarity.

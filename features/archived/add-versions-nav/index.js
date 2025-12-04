@@ -1,8 +1,8 @@
 // [better-falix] add-versions-nav: Script loading
 console.log('[better-falix] add-versions-nav: Script loading');
 
-chrome.storage.sync.get({ addVersionsNav: false, enabled: true }, (data) => {
-  if (!data.enabled || !data.addVersionsNav) {
+chrome.storage.sync.get({ ARCHIVED_addVersionsNav: false, enabled: true }, (data) => {
+  if (!data.enabled || !data.ARCHIVED_addVersionsNav) {
     console.log('[better-falix] add-versions-nav: Script disabled');
     return;
   }
@@ -69,7 +69,7 @@ chrome.storage.sync.get({ addVersionsNav: false, enabled: true }, (data) => {
 
   // Run after DOM is loaded
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', addVersionsNavItem);
+    document.addEventListener('DOMContentLoaded', ARCHIVED_addVersionsNavItem);
   } else {
     addVersionsNavItem();
   }

@@ -51,7 +51,7 @@ const featureIds = [
   'splitAddonsTabs',
   'renameConfigToProperties',
   'renameAddonsToMods',
-  'addVersionsNav',
+  'ARCHIVED_addVersionsNav',
   'ARCHIVED_hideClosedTickets',
   'removeLogsContainer',
   'redactedContentSubtle',
@@ -73,7 +73,8 @@ const featureIds = [
   'iKnowMarkdown',
   'hideTemplateButton',
   'removeFileUploadLabel',
-  'showTicketId'
+  'showTicketId',
+  'navbarEditorEnabled'
 ];
 
 function setFeatureBtnState(btn, enabled) {
@@ -138,7 +139,6 @@ function setThemesListEnabled(enabled) {
 document.addEventListener('DOMContentLoaded', () => {
   chrome.storage.sync.get({
     enabled: false,
-    enableStaffFeatures: false,
     hideConsoleTabs: false,
     replaceAccountCategory: false,
     ARCHIVED_moveBackupsNav: false,
@@ -185,14 +185,16 @@ document.addEventListener('DOMContentLoaded', () => {
     splitAddonsTabs: false,
     renameConfigToProperties: false,
     renameAddonsToMods: false,
-    addVersionsNav: false,
+    ARCHIVED_addVersionsNav: false,
     ARCHIVED_hideClosedTickets: false,
     copyAllSupportInfo: false,
     compactReplyBox: false,
     iKnowMarkdown: false,
     hideTemplateButton: false,
     removeFileUploadLabel: false,
-    showTicketId: false
+    showTicketId: false,
+    navbarEditorEnabled: true,
+    popupActiveTab: 'features' // Add this line
 
   }, (data) => {
     updateToggleBtn(data.enabled);
@@ -204,6 +206,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const staffOnlySection = document.getElementById('staffOnlySection');
     if (staffOnlySection) {
       staffOnlySection.style.display = data.enableStaffFeatures ? 'block' : 'none';
+    }
+
+    // Restore active tab
+    if (data.popupActiveTab === 'themes') {
+      document.getElementById('features-tab').classList.remove('active');
+      document.getElementById('themes-tab').classList.add('active');
+      document.getElementById('features-content').style.display = 'none';
+      document.getElementById('themes-content').style.display = 'block';
+      document.getElementById('slider-indicator').style.left = '50%';
     }
   });
 
@@ -253,23 +264,37 @@ document.addEventListener('DOMContentLoaded', () => {
   // Slider logic with animation and tab memory
   const featuresTab = document.getElementById('features-tab');
   const themesTab = document.getElementById('themes-tab');
+  const navbarTab = document.getElementById('navbar-tab');
   const featuresContent = document.getElementById('features-content');
   const themesContent = document.getElementById('themes-content');
+  const navbarContent = document.getElementById('navbar-content');
   const sliderIndicator = document.getElementById('slider-indicator');
 
   function activateTab(tab, save = true) {
     if (tab === 'features') {
       featuresTab.classList.add('active');
       themesTab.classList.remove('active');
+      navbarTab.classList.remove('active');
       featuresContent.style.display = '';
       themesContent.style.display = 'none';
+      navbarContent.style.display = 'none';
       sliderIndicator.style.left = '0%';
-    } else {
+    } else if (tab === 'themes') {
       themesTab.classList.add('active');
       featuresTab.classList.remove('active');
+      navbarTab.classList.remove('active');
       featuresContent.style.display = 'none';
       themesContent.style.display = '';
-      sliderIndicator.style.left = '50%';
+      navbarContent.style.display = 'none';
+      sliderIndicator.style.left = '33.333%';
+    } else if (tab === 'navbar') {
+      navbarTab.classList.add('active');
+      featuresTab.classList.remove('active');
+      themesTab.classList.remove('active');
+      featuresContent.style.display = 'none';
+      themesContent.style.display = 'none';
+      navbarContent.style.display = '';
+      sliderIndicator.style.left = '66.666%';
     }
     if (save) {
       chrome.storage.sync.set({ popupActiveTab: tab });
@@ -289,6 +314,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
   themesTab.addEventListener('click', function() {
     activateTab('themes');
+  });
+
+  navbarTab.addEventListener('click', function() {
+    activateTab('navbar');
+    // Automatically open the navbar editor in a new tab
+    chrome.tabs.create({ url: chrome.runtime.getURL('navbar-editor/navbar-editor.html') });
+  });
+
+  // Open navbar editor button
+  document.getElementById('openNavbarEditor').addEventListener('click', function() {
+    chrome.tabs.create({ url: chrome.runtime.getURL('navbar-editor/navbar-editor.html') });
+  });
+
+  // Navigation warning link
+  document.getElementById('navWarningLink').addEventListener('click', function(e) {
+    e.preventDefault();
+    activateTab('navbar');
+    chrome.tabs.create({ url: chrome.runtime.getURL('navbar-editor/navbar-editor.html') });
   });
 
   // Theme selection logic

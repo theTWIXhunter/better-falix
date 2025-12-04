@@ -52,17 +52,17 @@ function addCopyAllButton() {
 
     console.log('[better-falix] copy-all-support-info: Server display found', serverDisplay);
 
-    // Extract server ID from the link
-    const serverLink = serverDisplay.querySelector('a[href*="/admin/ViewServer?id="]');
+    // Extract server ID from the text content (format: "Server #12345")
+    const serverText = serverDisplay.querySelector('#serverText');
     
-    if (!serverLink) {
-        console.log('[better-falix] copy-all-support-info: Server link not found. HTML:', serverDisplay.innerHTML);
+    if (!serverText) {
+        console.log('[better-falix] copy-all-support-info: Server text not found. HTML:', serverDisplay.innerHTML);
         return;
     }
     
-    console.log('[better-falix] copy-all-support-info: Server link found', serverLink.href);
+    console.log('[better-falix] copy-all-support-info: Server text found', serverText.textContent);
     
-    const serverIdMatch = serverLink.href.match(/id=(\d+)/);
+    const serverIdMatch = serverText.textContent.match(/Server #(\d+)/);
     const serverId = serverIdMatch ? serverIdMatch[1] : '';
     
     // Extract PIN from the server-pin-badge
@@ -84,9 +84,9 @@ function addCopyAllButton() {
     
     // Create the formatted support information
     const supportInfo = `Support Information:
-Support ID: [${serverId}](<https://client.falixnodes.net/admin/ViewServer?id=${serverId}>)
+Support ID: ${serverId}
 Support PIN: ${pin}
-Ticket: [Support-center-${ticketId}](<https://client.falixnodes.net/support/viewticket.php?id=${ticketId}>)`;
+Ticket: Support-center-${ticketId}`;
 
     // Create the button with styling to match the new server display
     const copyAllBtn = document.createElement('span');

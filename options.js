@@ -53,9 +53,6 @@ chrome.storage.sync.get(null, data => {
   const replaceSupportModalToggle = document.getElementById('replaceSupportModal');
   if (replaceSupportModalToggle) setToggleState(replaceSupportModalToggle, !!data.replaceSupportModal);
   
-  const enableStaffFeaturesToggle = document.getElementById('enableStaffFeatures');
-  if (enableStaffFeaturesToggle) setToggleState(enableStaffFeaturesToggle, !!data.enableStaffFeatures);
-  
   const replaceFalixLogoToggle = document.getElementById('replaceFalixLogo');
   if (replaceFalixLogoToggle) setToggleState(replaceFalixLogoToggle, !!data.replaceFalixLogo);
   
@@ -77,6 +74,13 @@ const themeSelect = document.getElementById('theme');
 if (themeSelect) {
   themeSelect.addEventListener('change', function() {
     saveSetting('theme', this.value);
+  });
+}
+
+const openNavbarEditorBtn = document.getElementById('openNavbarEditor');
+if (openNavbarEditorBtn) {
+  openNavbarEditorBtn.addEventListener('click', function() {
+    chrome.tabs.create({ url: chrome.runtime.getURL('navbar-editor/navbar-editor.html') });
   });
 }
 
@@ -271,6 +275,15 @@ const replaceFalixLogoChoice = document.getElementById('replaceFalixLogoChoice')
 if (replaceFalixLogoChoice) {
   replaceFalixLogoChoice.addEventListener('change', function() {
     saveSetting('replaceFalixLogoChoice', this.value);
+  });
+}
+
+const navbarEditorToggle = document.getElementById('navbarEditorEnabled');
+if (navbarEditorToggle) {
+  navbarEditorToggle.addEventListener('click', function() {
+    const state = this.getAttribute('aria-pressed') !== 'true';
+    setToggleState(this, state);
+    saveSetting('navbarEditorEnabled', state);
   });
 }
 
