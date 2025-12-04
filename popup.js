@@ -193,7 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
     hideTemplateButton: false,
     removeFileUploadLabel: false,
     showTicketId: false,
-    navbarEditorEnabled: false,
+    navbarEditorEnabled: true,
     popupActiveTab: 'features' // Add this line
 
   }, (data) => {
