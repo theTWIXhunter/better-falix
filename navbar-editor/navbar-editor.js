@@ -360,7 +360,12 @@ function setupEventListeners() {
   if (enableFeatureBtn) {
     enableFeatureBtn.addEventListener('click', () => {
       chrome.storage.sync.set({ navbarEditorEnabled: true }, () => {
+        if (chrome.runtime.lastError) {
+          console.error('Failed to enable navbar editor:', chrome.runtime.lastError);
+          return;
+        }
         checkNavbarEditorEnabled();
+        console.log('Navbar editor enabled successfully');
       });
     });
   }
