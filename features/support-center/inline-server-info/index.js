@@ -224,14 +224,19 @@ function replaceButtonWithInfo(serverInfo) {
 
     // Copy all button
     const copyAllButton = document.createElement('button');
-    copyAllButton.textContent = 'Copy All';
-    copyAllButton.style.cssText = 'background: rgba(34, 197, 94, 0.15); color: rgba(34, 197, 94, 0.9); border: 1px solid rgba(34, 197, 94, 0.3); padding: 2px 8px; border-radius: 4px; cursor: pointer; font-size: 0.85em; font-weight: 500; transition: all 0.2s;';
+    copyAllButton.innerHTML = `Copy All <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 4px; vertical-align: middle;">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+    </svg>`;
+    copyAllButton.style.cssText = 'background: rgba(34, 197, 94, 0.15); color: rgba(34, 197, 94, 0.9); border: 1px solid rgba(34, 197, 94, 0.3); padding: 2px 8px; border-radius: 4px; cursor: pointer; font-size: 0.85em; font-weight: 500; display: inline-flex; align-items: center; transition: all 0.2s;';
     copyAllButton.title = 'Copy all server info';
     copyAllButton.onclick = (e) => {
         e.preventDefault();
         const ticketId = getTicketIdFromUrl();
+        const fullServerUrl = `https://client.falixnodes.net${serverInfo.serverHref}`;
         const markdownText = `SupportID: ${serverInfo.serverId}
 SupportPIN: ${serverInfo.pin}
+Server: [Server #${serverInfo.serverId}](${fullServerUrl})
 Ticket: [Support-center-#${ticketId}](https://client.falixnodes.net/support/viewticket.php?id=${ticketId})`;
         copyToClipboard(markdownText);
         showCopyFeedback(copyAllButton, 'All info copied!');
@@ -243,20 +248,15 @@ Ticket: [Support-center-#${ticketId}](https://client.falixnodes.net/support/view
         copyAllButton.style.background = 'rgba(34, 197, 94, 0.15)';
     };
 
-    // Add separator dots
-    const separator1 = document.createElement('span');
-    separator1.textContent = '•';
-    separator1.style.cssText = 'color: rgba(255, 255, 255, 0.3); font-size: 0.8em;';
-
-    const separator2 = document.createElement('span');
-    separator2.textContent = '•';
-    separator2.style.cssText = 'color: rgba(255, 255, 255, 0.3); font-size: 0.8em;';
-
     // Assemble the inline display
     inlineDisplay.appendChild(serverLink);
-    inlineDisplay.appendChild(separator1);
     inlineDisplay.appendChild(pinButton);
-    inlineDisplay.appendChild(separator2);
+    
+    // Add spacing before Copy All
+    const spacer = document.createElement('span');
+    spacer.style.cssText = 'display: inline-block; width: 8px;';
+    inlineDisplay.appendChild(spacer);
+    
     inlineDisplay.appendChild(copyAllButton);
 
     // Replace the original button
@@ -299,11 +299,11 @@ function fallbackCopy(text) {
 }
 
 function showCopyFeedback(button, message) {
-    const originalText = button.textContent;
-    button.textContent = message;
+    const originalHTML = button.innerHTML;
+    button.innerHTML = message;
     button.style.pointerEvents = 'none';
     setTimeout(() => {
-        button.textContent = originalText;
+        button.innerHTML = originalHTML;
         button.style.pointerEvents = 'auto';
     }, 1500);
 }
