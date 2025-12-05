@@ -13,20 +13,35 @@ chrome.storage.sync.get({ inlineServerInfo: false, enabled: true }, (data) => {
 });
 
 function waitForServerButton() {
-    const serverButton = document.getElementById('serversModalBtn');
-    if (serverButton) {
-        console.log('[better-falix] inline-server-info: Server button found');
-        checkAndReplaceServerButton();
+    console.log('[better-falix] inline-server-info: Waiting for server button with valid count...');
+    
+    const checkServerButton = () => {
+        const serverButton = document.getElementById('serversModalBtn');
+        const serverCountText = document.getElementById('serverCountText');
+        
+        if (serverButton && serverCountText) {
+            const countText = serverCountText.textContent.trim();
+            const serverCount = parseInt(countText.match(/\d+/)?.[0] || '0');
+            
+            // Make sure the count has been updated (not 0 or empty)
+            if (countText && countText !== '0 Servers' && serverCount > 0) {
+                console.log('[better-falix] inline-server-info: Server button found with count:', countText);
+                checkAndReplaceServerButton();
+                return true;
+            }
+        }
+        return false;
+    };
+
+    // Try immediately
+    if (checkServerButton()) {
         return;
     }
 
-    console.log('[better-falix] inline-server-info: Waiting for server button...');
+    // If not ready, observe for changes
     const observer = new MutationObserver(() => {
-        const btn = document.getElementById('serversModalBtn');
-        if (btn) {
-            console.log('[better-falix] inline-server-info: Server button detected');
+        if (checkServerButton()) {
             observer.disconnect();
-            checkAndReplaceServerButton();
         }
     });
 
