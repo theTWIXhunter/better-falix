@@ -1,15 +1,16 @@
-console.log('[better-falix] inline-server-info: Script loaded');
+// [better-falix] inline-server-info: Script loading
+console.log('[better-falix] inline-server-info: Script loading');
 
-chrome.storage.sync.get(['inlineSingleServer'], function(result) {
-    if (result.inlineSingleServer) {
-        console.log('[better-falix] inline-server-info: Feature enabled');
-        waitForServerButton();
-    } else {
-        console.log('[better-falix] inline-server-info: Feature disabled');
-    }
-});
+chrome.storage.sync.get({ inlineServerInfo: false, enabled: true }, (data) => {
+  if (!data.enabled || !data.inlineServerInfo) {
+    console.log('[better-falix] inline-server-info: Script disabled');
+    return;
+  }
+  console.log('[better-falix] inline-server-info: Script enabled');
+
   //  --------- START FEATURE ----------
-
+  waitForServerButton();
+});
 
 function waitForServerButton() {
     const serverButton = document.getElementById('serversModalBtn');
