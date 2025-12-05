@@ -89,7 +89,7 @@ function getServerInfoFromModal() {
     }
 
     // Hide the modal before opening
-    modal.style.display = 'none';
+    modal.style.display = 'none !important';
 
     // Set up observer before triggering modal
     console.log('[better-falix] inline-server-info: Setting up modal observer and triggering modal open...');
