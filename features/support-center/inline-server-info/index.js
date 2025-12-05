@@ -141,8 +141,22 @@ function getServerInfoFromModal() {
 }
 
 function extractServerInfo(modalBody) {
-    const serverLink = modalBody.querySelector('a[href*="/staff/ViewServer"]');
-    const pinElement = modalBody.querySelector('div[style*="font-size: 0.8rem"]');
+    // Try multiple selectors for server link
+    const serverLink = modalBody.querySelector('a[href*="ViewServer"]') ||
+                       modalBody.querySelector('a[target="_blank"]');
+    
+    // Look for PIN in various ways
+    const pinElement = modalBody.querySelector('div[style*="font-size: 0.8rem"]') ||
+                       Array.from(modalBody.querySelectorAll('div')).find(el => el.textContent.includes('PIN:'));
+
+    console.log('[better-falix] inline-server-info: Extraction attempt - serverLink:', !!serverLink, 'pinElement:', !!pinElement);
+    
+    if (serverLink) {
+        console.log('[better-falix] inline-server-info: Server link found:', serverLink.href, serverLink.textContent);
+    }
+    if (pinElement) {
+        console.log('[better-falix] inline-server-info: PIN element found:', pinElement.textContent);
+    }
 
     if (!serverLink || !pinElement) {
         return null;
@@ -151,6 +165,8 @@ function extractServerInfo(modalBody) {
     const staffLink = serverLink.href;
     const serverIdMatch = serverLink.textContent.match(/Server #(\d+)/);
     const pinMatch = pinElement.textContent.match(/PIN:\s*(\d+)/);
+
+    console.log('[better-falix] inline-server-info: Server ID match:', serverIdMatch?.[1], 'PIN match:', pinMatch?.[1]);
 
     if (!serverIdMatch || !pinMatch) {
         return null;
