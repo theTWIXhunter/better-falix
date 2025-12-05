@@ -234,9 +234,8 @@ function replaceButtonWithInfo(serverInfo) {
         e.preventDefault();
         const ticketId = getTicketIdFromUrl();
         const fullServerUrl = `https://client.falixnodes.net${serverInfo.serverHref}`;
-        const markdownText = `SupportID: ${serverInfo.serverId}
-SupportPIN: ${serverInfo.pin}
-Server: [Server #${serverInfo.serverId}](${fullServerUrl})
+        const markdownText = `SupportID: [${serverInfo.serverId}](${fullServerUrl})
+SupportPIN: [${serverInfo.pin}]
 Ticket: [Support-center-#${ticketId}](https://client.falixnodes.net/support/viewticket.php?id=${ticketId})`;
         copyToClipboard(markdownText);
         showCopyFeedback(copyAllButton, 'All info copied!');
