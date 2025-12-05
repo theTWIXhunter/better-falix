@@ -114,24 +114,13 @@ function getServerInfoFromModal() {
             foundInfo = true;
             observer.disconnect();
             
-            // Close the modal manually
-            modal.classList.remove('show');
-            modal.style.display = 'none';
-            modal.setAttribute('aria-hidden', 'true');
-            modal.removeAttribute('aria-modal');
-            
-            // Remove backdrop
-            const backdrop = document.querySelector('.modal-backdrop');
-            if (backdrop) {
-                backdrop.remove();
+            // Close the modal using Bootstrap's modal API
+            const bsModal = bootstrap.Modal.getInstance(modal);
+            if (bsModal) {
+                bsModal.hide();
             }
             
-            // Remove modal-open class from body
-            document.body.classList.remove('modal-open');
-            document.body.style.removeProperty('overflow');
-            document.body.style.removeProperty('padding-right');
-            
-            // Restore modal visibility properties
+            // Restore modal visibility
             modal.style.removeProperty('opacity');
             modal.style.removeProperty('visibility');
             modal.style.removeProperty('pointer-events');
@@ -163,24 +152,13 @@ function getServerInfoFromModal() {
             console.log('[better-falix] inline-server-info: Timeout waiting for modal content after', attemptCount, 'mutations');
             console.log('[better-falix] inline-server-info: Modal body content:', modalBody.innerHTML.substring(0, 200));
             
-            // Close the modal manually if it's still open
-            modal.classList.remove('show');
-            modal.style.display = 'none';
-            modal.setAttribute('aria-hidden', 'true');
-            modal.removeAttribute('aria-modal');
-            
-            // Remove backdrop
-            const backdrop = document.querySelector('.modal-backdrop');
-            if (backdrop) {
-                backdrop.remove();
+            // Close the modal if it's still open
+            const bsModal = bootstrap.Modal.getInstance(modal);
+            if (bsModal) {
+                bsModal.hide();
             }
             
-            // Remove modal-open class from body
-            document.body.classList.remove('modal-open');
-            document.body.style.removeProperty('overflow');
-            document.body.style.removeProperty('padding-right');
-            
-            // Restore modal visibility properties
+            // Restore modal visibility
             modal.style.removeProperty('opacity');
             modal.style.removeProperty('visibility');
             modal.style.removeProperty('pointer-events');
