@@ -138,6 +138,13 @@ function getServerInfoFromModal() {
 
     // Trigger the modal to open
     serverButton.click();
+    
+    // Force hide modal immediately after click (Bootstrap may override our styles)
+    setTimeout(() => {
+        modal.style.setProperty('opacity', '0', 'important');
+        modal.style.setProperty('visibility', 'hidden', 'important');
+        modal.style.setProperty('pointer-events', 'none', 'important');
+    }, 0);
 
     setTimeout(() => {
         if (!foundInfo) {
