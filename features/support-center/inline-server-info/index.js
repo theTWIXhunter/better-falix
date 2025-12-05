@@ -142,8 +142,7 @@ function getServerInfoFromModal() {
 
 function extractServerInfo(modalBody) {
     // Try multiple selectors for server link
-    const serverLink = modalBody.querySelector('a[href*="ViewServer"]') ||
-                       modalBody.querySelector('a[target="_blank"]');
+    const serverLink = modalBody.querySelector('a[target="_blank"]');
     
     // Look for PIN in various ways
     const pinElement = modalBody.querySelector('div[style*="font-size: 0.8rem"]') ||
@@ -162,19 +161,22 @@ function extractServerInfo(modalBody) {
         return null;
     }
 
-    const staffLink = serverLink.href;
-    const serverIdMatch = serverLink.textContent.match(/Server #(\d+)/);
+    // Extract server ID from URL (e.g., "ViewServer?id=1926444")
+    const urlIdMatch = serverLink.href.match(/[?&]id=(\d+)/);
+    // Also try to get it from text like "Server #123"
+    const textIdMatch = serverLink.textContent.match(/Server #(\d+)/);
+    const serverId = urlIdMatch?.[1] || textIdMatch?.[1];
+    
     const pinMatch = pinElement.textContent.match(/PIN:\s*(\d+)/);
 
-    console.log('[better-falix] inline-server-info: Server ID match:', serverIdMatch?.[1], 'PIN match:', pinMatch?.[1]);
+    console.log('[better-falix] inline-server-info: Server ID (from URL):', urlIdMatch?.[1], '(from text):', textIdMatch?.[1], 'PIN match:', pinMatch?.[1]);
 
-    if (!serverIdMatch || !pinMatch) {
+    if (!serverId || !pinMatch) {
         return null;
     }
 
     return {
-        serverId: serverIdMatch[1],
-        staffLink: staffLink,
+        serverId: serverId,
         pin: pinMatch[1]
     };
 }
@@ -193,9 +195,9 @@ function replaceButtonWithInfo(serverInfo) {
     inlineDisplay.className = 'participants-display inline-server-info';
     inlineDisplay.style.cssText = 'padding: 0.25rem 0.6rem; display: inline-flex; align-items: center; gap: 8px; flex-wrap: wrap;';
 
-    // Server link
+    // Server link - reconstruct URL from ID only
     const serverLink = document.createElement('a');
-    serverLink.href = serverInfo.staffLink;
+    serverLink.href = `?id=${serverInfo.serverId}`;
     serverLink.target = '_blank';
     serverLink.textContent = `Server #${serverInfo.serverId}`;
     serverLink.style.cssText = 'color: rgba(59, 130, 246, 0.9); text-decoration: none; font-weight: 500;';
@@ -227,7 +229,7 @@ function replaceButtonWithInfo(serverInfo) {
     copyAllButton.onclick = (e) => {
         e.preventDefault();
         const ticketId = getTicketIdFromUrl();
-        const markdownText = `SupportID: [${serverInfo.serverId}](${serverInfo.staffLink})
+        const markdownText = `SupportID: ${serverInfo.serverId}
 SupportPIN: ${serverInfo.pin}
 Ticket: [Support-center-#${ticketId}](https://client.falixnodes.net/support/viewticket.php?id=${ticketId})`;
         copyToClipboard(markdownText);
