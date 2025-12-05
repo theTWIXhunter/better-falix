@@ -81,11 +81,15 @@ function checkAndReplaceServerButton() {
 function getServerInfoFromModal() {
     const modalBody = document.getElementById('serversModalBody');
     const serverButton = document.getElementById('serversModalBtn');
+    const modal = document.getElementById('serversModal');
     
-    if (!modalBody || !serverButton) {
-        console.log('[better-falix] inline-server-info: Modal body or button not found');
+    if (!modalBody || !serverButton || !modal) {
+        console.log('[better-falix] inline-server-info: Modal body, button, or modal element not found');
         return;
     }
+
+    // Hide the modal before opening
+    modal.style.display = 'none';
 
     // Set up observer before triggering modal
     console.log('[better-falix] inline-server-info: Setting up modal observer and triggering modal open...');
@@ -110,6 +114,9 @@ function getServerInfoFromModal() {
             if (closeButton) {
                 closeButton.click();
             }
+            
+            // Restore modal visibility
+            modal.style.display = '';
             
             replaceButtonWithInfo(info);
         } else {
@@ -136,6 +143,9 @@ function getServerInfoFromModal() {
             if (closeButton) {
                 closeButton.click();
             }
+            
+            // Restore modal visibility
+            modal.style.display = '';
         }
     }, 5000);
 }
