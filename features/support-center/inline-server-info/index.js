@@ -88,8 +88,13 @@ function getServerInfoFromModal() {
         return;
     }
 
-    // Hide the modal before opening
-    modal.style.display = 'none !important';
+    // Hide the modal before opening using opacity and pointer-events
+    const originalOpacity = modal.style.opacity;
+    const originalPointerEvents = modal.style.pointerEvents;
+    const originalVisibility = modal.style.visibility;
+    modal.style.opacity = '0';
+    modal.style.pointerEvents = 'none';
+    modal.style.visibility = 'hidden';
 
     // Set up observer before triggering modal
     console.log('[better-falix] inline-server-info: Setting up modal observer and triggering modal open...');
@@ -116,7 +121,9 @@ function getServerInfoFromModal() {
             }
             
             // Restore modal visibility
-            modal.style.display = '';
+            modal.style.opacity = originalOpacity;
+            modal.style.pointerEvents = originalPointerEvents;
+            modal.style.visibility = originalVisibility;
             
             replaceButtonWithInfo(info);
         } else {
@@ -145,7 +152,9 @@ function getServerInfoFromModal() {
             }
             
             // Restore modal visibility
-            modal.style.display = '';
+            modal.style.opacity = originalOpacity;
+            modal.style.pointerEvents = originalPointerEvents;
+            modal.style.visibility = originalVisibility;
         }
     }, 5000);
 }
