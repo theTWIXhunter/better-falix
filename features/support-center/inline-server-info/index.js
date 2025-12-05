@@ -64,27 +64,33 @@ function checkAndReplaceServerButton() {
 }
 
 function getServerInfoFromModal() {
-    // Wait for modal body to be populated
     const modalBody = document.getElementById('serversModalBody');
-    if (!modalBody) {
-        console.log('[better-falix] inline-server-info: Modal body not found');
+    const serverButton = document.getElementById('serversModalBtn');
+    
+    if (!modalBody || !serverButton) {
+        console.log('[better-falix] inline-server-info: Modal body or button not found');
         return;
     }
 
-    // Try to get server info immediately
-    const serverInfo = extractServerInfo(modalBody);
-    if (serverInfo) {
-        replaceButtonWithInfo(serverInfo);
-        return;
-    }
-
-    // If not found, observe for changes
-    console.log('[better-falix] inline-server-info: Observing modal for server info...');
+    // Set up observer before triggering modal
+    console.log('[better-falix] inline-server-info: Setting up modal observer and triggering modal open...');
+    
+    let foundInfo = false;
     const observer = new MutationObserver(() => {
+        if (foundInfo) return;
+        
         const info = extractServerInfo(modalBody);
         if (info) {
             console.log('[better-falix] inline-server-info: Server info found in modal');
+            foundInfo = true;
             observer.disconnect();
+            
+            // Close the modal
+            const closeButton = document.querySelector('#serversModal .btn-close');
+            if (closeButton) {
+                closeButton.click();
+            }
+            
             replaceButtonWithInfo(info);
         }
     });
@@ -94,10 +100,21 @@ function getServerInfoFromModal() {
         subtree: true
     });
 
+    // Trigger the modal to open
+    serverButton.click();
+
     setTimeout(() => {
-        observer.disconnect();
-        console.log('[better-falix] inline-server-info: Timeout waiting for modal content');
-    }, 5000);
+        if (!foundInfo) {
+            observer.disconnect();
+            console.log('[better-falix] inline-server-info: Timeout waiting for modal content');
+            
+            // Close the modal if it's still open
+            const closeButton = document.querySelector('#serversModal .btn-close');
+            if (closeButton) {
+                closeButton.click();
+            }
+        }
+    }, 3000);
 }
 
 function extractServerInfo(modalBody) {
