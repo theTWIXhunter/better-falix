@@ -49,9 +49,10 @@ function checkAndReplaceServerButton() {
     }
 
     const countText = serverCountText.textContent.trim();
-    const serverCount = parseInt(countText);
+    // Extract just the number from text like "1 Server" or "2 Servers"
+    const serverCount = parseInt(countText.match(/\d+/)?.[0] || '0');
 
-    console.log('[better-falix] inline-server-info: Server count:', serverCount);
+    console.log('[better-falix] inline-server-info: Server count text:', countText, '| Parsed count:', serverCount);
 
     if (serverCount !== 1) {
         console.log('[better-falix] inline-server-info: Not exactly 1 server, skipping');
