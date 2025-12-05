@@ -141,17 +141,16 @@ function getServerInfoFromModal() {
 }
 
 function extractServerInfo(modalBody) {
-    // Try multiple selectors for server link
-    const serverLink = modalBody.querySelector('a[target="_blank"]');
+    // Find the link with target="_blank" that contains the server ID
+    const serverLink = modalBody.querySelector('a[target="_blank"][href*="?id="]');
     
-    // Look for PIN in various ways
-    const pinElement = modalBody.querySelector('div[style*="font-size: 0.8rem"]') ||
-                       Array.from(modalBody.querySelectorAll('div')).find(el => el.textContent.includes('PIN:'));
+    // Look for PIN element
+    const pinElement = Array.from(modalBody.querySelectorAll('div')).find(el => el.textContent.includes('PIN:'));
 
     console.log('[better-falix] inline-server-info: Extraction attempt - serverLink:', !!serverLink, 'pinElement:', !!pinElement);
     
     if (serverLink) {
-        console.log('[better-falix] inline-server-info: Server link found:', serverLink.href, serverLink.textContent);
+        console.log('[better-falix] inline-server-info: Server link found - href:', serverLink.getAttribute('href'));
     }
     if (pinElement) {
         console.log('[better-falix] inline-server-info: PIN element found:', pinElement.textContent);
@@ -161,22 +160,21 @@ function extractServerInfo(modalBody) {
         return null;
     }
 
-    // Extract server ID from URL (e.g., "ViewServer?id=1926444")
-    const urlIdMatch = serverLink.href.match(/[?&]id=(\d+)/);
-    // Also try to get it from text like "Server #123"
-    const textIdMatch = serverLink.textContent.match(/Server #(\d+)/);
-    const serverId = urlIdMatch?.[1] || textIdMatch?.[1];
+    // Get the href attribute (relative path) and extract ID from it
+    const href = serverLink.getAttribute('href');
+    const idMatch = href.match(/[?&]id=(\d+)/);
     
     const pinMatch = pinElement.textContent.match(/PIN:\s*(\d+)/);
 
-    console.log('[better-falix] inline-server-info: Server ID (from URL):', urlIdMatch?.[1], '(from text):', textIdMatch?.[1], 'PIN match:', pinMatch?.[1]);
+    console.log('[better-falix] inline-server-info: Server ID from href:', idMatch?.[1], 'PIN match:', pinMatch?.[1]);
 
-    if (!serverId || !pinMatch) {
+    if (!idMatch || !pinMatch) {
         return null;
     }
 
     return {
-        serverId: serverId,
+        serverId: idMatch[1],
+        serverHref: href,
         pin: pinMatch[1]
     };
 }
@@ -195,9 +193,9 @@ function replaceButtonWithInfo(serverInfo) {
     inlineDisplay.className = 'participants-display inline-server-info';
     inlineDisplay.style.cssText = 'padding: 0.25rem 0.6rem; display: inline-flex; align-items: center; gap: 8px; flex-wrap: wrap;';
 
-    // Server link - reconstruct URL from ID only
+    // Server link - use the href from modal
     const serverLink = document.createElement('a');
-    serverLink.href = `?id=${serverInfo.serverId}`;
+    serverLink.href = serverInfo.serverHref;
     serverLink.target = '_blank';
     serverLink.textContent = `Server #${serverInfo.serverId}`;
     serverLink.style.cssText = 'color: rgba(59, 130, 246, 0.9); text-decoration: none; font-weight: 500;';
