@@ -74,6 +74,7 @@ const featureIds = [
   'hideTemplateButton',
   'removeFileUploadLabel',
   'showTicketId',
+  'inlineSingleServer',
   'navbarEditorV2Enabled'
 ];
 
@@ -193,6 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
     hideTemplateButton: false,
     removeFileUploadLabel: false,
     showTicketId: false,
+    inlineSingleServer: false,
     navbarEditorV2Enabled: true,
     popupActiveTab: 'features'
 
