@@ -203,34 +203,24 @@ function replaceButtonWithInfo(serverInfo) {
     serverLink.onmouseout = () => serverLink.style.textDecoration = 'none';
 
     // PIN display with copy button
-    const pinContainer = document.createElement('span');
-    pinContainer.style.cssText = 'display: inline-flex; align-items: center; gap: 4px;';
-
-    const pinText = document.createElement('span');
-    pinText.textContent = serverInfo.pin;
-    pinText.style.cssText = 'color: rgba(249, 115, 22, 0.9); font-weight: 500; font-size: 0.9em;';
-
-    const pinCopyButton = document.createElement('button');
-    pinCopyButton.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    const pinButton = document.createElement('button');
+    pinButton.innerHTML = `${serverInfo.pin} <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 4px; vertical-align: middle;">
         <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
         <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
     </svg>`;
-    pinCopyButton.style.cssText = 'background: rgba(249, 115, 22, 0.15); color: rgba(249, 115, 22, 0.9); border: 1px solid rgba(249, 115, 22, 0.3); padding: 2px 4px; border-radius: 4px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: all 0.2s;';
-    pinCopyButton.title = 'Copy PIN';
-    pinCopyButton.onclick = (e) => {
+    pinButton.style.cssText = 'background: rgba(249, 115, 22, 0.15); color: rgba(249, 115, 22, 0.9); border: 1px solid rgba(249, 115, 22, 0.3); padding: 2px 8px; border-radius: 4px; cursor: pointer; font-size: 0.85em; font-weight: 500; display: inline-flex; align-items: center; transition: all 0.2s;';
+    pinButton.title = 'Click to copy PIN';
+    pinButton.onclick = (e) => {
         e.preventDefault();
         copyToClipboard(serverInfo.pin);
-        showCopyFeedback(pinCopyButton, 'PIN copied!');
+        showCopyFeedback(pinButton, 'PIN copied!');
     };
-    pinCopyButton.onmouseover = () => {
-        pinCopyButton.style.background = 'rgba(249, 115, 22, 0.25)';
+    pinButton.onmouseover = () => {
+        pinButton.style.background = 'rgba(249, 115, 22, 0.25)';
     };
-    pinCopyButton.onmouseout = () => {
-        pinCopyButton.style.background = 'rgba(249, 115, 22, 0.15)';
+    pinButton.onmouseout = () => {
+        pinButton.style.background = 'rgba(249, 115, 22, 0.15)';
     };
-
-    pinContainer.appendChild(pinText);
-    pinContainer.appendChild(pinCopyButton);
 
     // Copy all button
     const copyAllButton = document.createElement('button');
@@ -265,7 +255,7 @@ Ticket: [Support-center-#${ticketId}](https://client.falixnodes.net/support/view
     // Assemble the inline display
     inlineDisplay.appendChild(serverLink);
     inlineDisplay.appendChild(separator1);
-    inlineDisplay.appendChild(pinContainer);
+    inlineDisplay.appendChild(pinButton);
     inlineDisplay.appendChild(separator2);
     inlineDisplay.appendChild(copyAllButton);
 
