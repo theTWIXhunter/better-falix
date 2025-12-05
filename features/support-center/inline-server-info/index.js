@@ -114,16 +114,16 @@ function getServerInfoFromModal() {
             foundInfo = true;
             observer.disconnect();
             
-            // Close the modal
-            const closeButton = document.querySelector('#serversModal .btn-close');
-            if (closeButton) {
-                closeButton.click();
+            // Close the modal using Bootstrap's modal API
+            const bsModal = bootstrap.Modal.getInstance(modal);
+            if (bsModal) {
+                bsModal.hide();
             }
             
             // Restore modal visibility
-            modal.style.opacity = originalOpacity;
-            modal.style.pointerEvents = originalPointerEvents;
-            modal.style.visibility = originalVisibility;
+            modal.style.removeProperty('opacity');
+            modal.style.removeProperty('visibility');
+            modal.style.removeProperty('pointer-events');
             
             replaceButtonWithInfo(info);
         } else {
@@ -153,15 +153,15 @@ function getServerInfoFromModal() {
             console.log('[better-falix] inline-server-info: Modal body content:', modalBody.innerHTML.substring(0, 200));
             
             // Close the modal if it's still open
-            const closeButton = document.querySelector('#serversModal .btn-close');
-            if (closeButton) {
-                closeButton.click();
+            const bsModal = bootstrap.Modal.getInstance(modal);
+            if (bsModal) {
+                bsModal.hide();
             }
             
             // Restore modal visibility
-            modal.style.opacity = originalOpacity;
-            modal.style.pointerEvents = originalPointerEvents;
-            modal.style.visibility = originalVisibility;
+            modal.style.removeProperty('opacity');
+            modal.style.removeProperty('visibility');
+            modal.style.removeProperty('pointer-events');
         }
     }, 5000);
 }
