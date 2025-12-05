@@ -91,12 +91,17 @@ function getServerInfoFromModal() {
     console.log('[better-falix] inline-server-info: Setting up modal observer and triggering modal open...');
     
     let foundInfo = false;
+    let attemptCount = 0;
+    
     const observer = new MutationObserver(() => {
         if (foundInfo) return;
         
+        attemptCount++;
+        console.log('[better-falix] inline-server-info: Modal mutation detected, attempt', attemptCount);
+        
         const info = extractServerInfo(modalBody);
         if (info) {
-            console.log('[better-falix] inline-server-info: Server info found in modal');
+            console.log('[better-falix] inline-server-info: Server info found in modal:', info);
             foundInfo = true;
             observer.disconnect();
             
@@ -107,6 +112,8 @@ function getServerInfoFromModal() {
             }
             
             replaceButtonWithInfo(info);
+        } else {
+            console.log('[better-falix] inline-server-info: Server info not yet complete in modal');
         }
     });
 
@@ -121,7 +128,8 @@ function getServerInfoFromModal() {
     setTimeout(() => {
         if (!foundInfo) {
             observer.disconnect();
-            console.log('[better-falix] inline-server-info: Timeout waiting for modal content');
+            console.log('[better-falix] inline-server-info: Timeout waiting for modal content after', attemptCount, 'mutations');
+            console.log('[better-falix] inline-server-info: Modal body content:', modalBody.innerHTML.substring(0, 200));
             
             // Close the modal if it's still open
             const closeButton = document.querySelector('#serversModal .btn-close');
@@ -129,7 +137,7 @@ function getServerInfoFromModal() {
                 closeButton.click();
             }
         }
-    }, 3000);
+    }, 5000);
 }
 
 function extractServerInfo(modalBody) {
