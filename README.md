@@ -69,23 +69,6 @@ Note: this category isn't visible by default, you can enable "staff features" in
 - **Remove File Upload Label:** Removes the file upload label from ticket reply box.
 - **Show Ticket ID in Title:** Adds the ticket ID to the start of the ticket title (e.g., '#123 - Title') for easier identification.
 
-### Archived features
-
-Warning: These features are archived, this is either because they are replaced or because they got implemented into the native page.
-Enabling these features might cause issues or incompatibilities with other plugins or native features.
-
-- **Move "Backups" to Server Settings:** Relocate the "Backups" navigation item to the Server Settings section (implemented in normal Falix).
-- **Move "Monitoring" to Server Settings:** Move the "Monitoring" navigation item to the Server Settings section (implemented in normal Falix).
-- **Move "Logs" to Server Settings:** Move the "Logs" navigation item to the Server Settings section (implemented in normal Falix).
-- **Remove Navbar Support Links:** Optionally remove support-related links from the navbar (implemented in normal Falix).
-- **Remove "Console" and "Files" categories:** Remove "Console" and "Files" categories (keep items) (implemented in normal Falix).
-- **Editor Fullscreen**: Adds a button to the file editor toolbar that allows you to make the editor and toolbar take up the entire browser window (added to falix itself).
-- **Server Name Button:** Makes the server name in the navbar clickable and redirect you to the main page (added to falix itself).
-- **Collapsible Log Analysis:** Add a collapse/expand button to the Log Analysis section (added to falix itself).
-- **Editor Wrapper Height:** Sets the file editor height to 600px (new height can be configured in the config) (the issue this was fixing got solved).
-- **Remove "Remote Startup" Nav Item:** Hide the "Remote Startup" navigation item from the sidebar (removed from the navbar by default now).
-- **Hide Closed Tickets toggle:** Removed because of vanilla change
-
 ## Usage
 
 1. **Install the Extension:**  
