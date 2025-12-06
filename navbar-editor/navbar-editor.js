@@ -1172,7 +1172,9 @@ function handleFileImport(event) {
           navbarConfigOther: importData.navbarConfigOther
         }, () => {
           alert('All configurations imported successfully!');
-          loadConfigs();
+          // Render both tabs to update UI for both
+          renderSections('server');
+          renderSections('other');
         });
       } else {
         alert('Invalid configuration file format.');
