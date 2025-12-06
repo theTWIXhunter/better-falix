@@ -130,9 +130,13 @@ function getServerInfoFromModal() {
             observer.disconnect();
             
             // Close the modal using Bootstrap's modal API
-            const bsModal = bootstrap.Modal.getInstance(modal);
-            if (bsModal) {
-                bsModal.hide();
+            try {
+                const bsModal = bootstrap.Modal.getInstance(modal);
+                if (bsModal) {
+                    bsModal.hide();
+                }
+            } catch (e) {
+                console.log('[better-falix] inline-server-info: Bootstrap modal close failed (not critical):', e.message);
             }
             
             // Restore modal visibility
@@ -168,9 +172,13 @@ function getServerInfoFromModal() {
             console.log('[better-falix] inline-server-info: Modal body content:', modalBody.innerHTML.substring(0, 200));
             
             // Close the modal if it's still open
-            const bsModal = bootstrap.Modal.getInstance(modal);
-            if (bsModal) {
-                bsModal.hide();
+            try {
+                const bsModal = bootstrap.Modal.getInstance(modal);
+                if (bsModal) {
+                    bsModal.hide();
+                }
+            } catch (e) {
+                console.log('[better-falix] inline-server-info: Bootstrap modal close failed (not critical):', e.message);
             }
             
             // Restore modal visibility
