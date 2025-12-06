@@ -343,4 +343,32 @@ document.addEventListener('DOMContentLoaded', () => {
     archivedSection.style.display = isHidden ? 'block' : 'none';
     toggleArchivedBtn.textContent = isHidden ? 'Hide Archived Features' : 'Show Archived Features';
   });
+
+  // Enable All button logic
+  document.querySelectorAll('.enable-all-btn').forEach(enableAllBtn => {
+    enableAllBtn.addEventListener('click', function() {
+      const category = this.dataset.category;
+      const featureList = document.querySelector(`.feature-list[data-category="${category}"]`);
+      
+      if (!featureList) return;
+      
+      // Get all feature buttons in this category
+      const featureButtons = featureList.querySelectorAll('.feature-btn');
+      const featuresToEnable = {};
+      
+      // Enable all features in this category
+      featureButtons.forEach(btn => {
+        if (!btn.disabled) {
+          const featureId = btn.id;
+          featuresToEnable[featureId] = true;
+          setFeatureBtnState(btn, true);
+        }
+      });
+      
+      // Save all changes at once
+      chrome.storage.sync.set(featuresToEnable, () => {
+        console.log(`Enabled all features in ${category} category`);
+      });
+    });
+  });
 });
