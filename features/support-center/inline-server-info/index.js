@@ -139,11 +139,6 @@ function getServerInfoFromModal() {
                 console.log('[better-falix] inline-server-info: Bootstrap modal close failed (not critical):', e.message);
             }
             
-            // Restore modal visibility
-            modal.style.removeProperty('opacity');
-            modal.style.removeProperty('visibility');
-            modal.style.removeProperty('pointer-events');
-            
             replaceButtonWithInfo(info);
         } else {
             console.log('[better-falix] inline-server-info: Server info not yet complete in modal');
@@ -180,11 +175,6 @@ function getServerInfoFromModal() {
             } catch (e) {
                 console.log('[better-falix] inline-server-info: Bootstrap modal close failed (not critical):', e.message);
             }
-            
-            // Restore modal visibility
-            modal.style.removeProperty('opacity');
-            modal.style.removeProperty('visibility');
-            modal.style.removeProperty('pointer-events');
         }
     }, 5000);
 }
