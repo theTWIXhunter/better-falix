@@ -25,8 +25,6 @@ const featureIds = [
   'removeSftpUpload',
   'replaceConnectTab',
   'removeExitDiscount',
-  'itsJustPaper',
-  'itsJustGeyser',
   'navbarHover',
   'replaceSupportModal',
   'replaceCpuWithNode',
