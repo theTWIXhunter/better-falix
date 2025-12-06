@@ -232,12 +232,12 @@
       "run_at": "document_idle"
     },
     {
-      "matches": ["https://admin.falixnodes.net/support-center/*"],
+      "matches": ["https://admin.falixnodes.net/support/viewticket.php*"],
       "js": ["features/support-center/inline-server-info/index.js"],
       "run_at": "document_idle"
     },
     {
-      "matches": ["https://admin.falixnodes.net/support-center/*"],
+      "matches": ["https://admin.falixnodes.net/support/viewticket.php*"],
       "js": ["features/support-center/hide-participants/index.js"],
       "run_at": "document_idle"
     },
