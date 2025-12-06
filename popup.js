@@ -76,8 +76,7 @@ const featureIds = [
   'showTicketId',
   'inlineServerInfo',
   'navbarEditorV2Enabled',
-  'timeFormat24h',
-  'hideParticipants'
+  'timeFormat24h'
 ];
 
 function setFeatureBtnState(btn, enabled) {
@@ -199,7 +198,6 @@ document.addEventListener('DOMContentLoaded', () => {
     inlineServerInfo: false,
     navbarEditorV2Enabled: true,
     timeFormat24h: false,
-    hideParticipants: false,
     popupActiveTab: 'features'
 
   }, (data) => {
