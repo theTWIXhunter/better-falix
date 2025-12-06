@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Better-Falix",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "A browser extension that enhances the Falixnodes client experience by adding custom features and improvements.",
   "icons": {
     "16": "assets/icons/icon16.png",
