@@ -87,7 +87,7 @@
       "run_at": "document_start"
     },
     {
-      "matches": ["*://*/*"],
+      "matches": ["https://client.falixnodes.net*"],
       "js": ["features/general/24h-time-format/index.js"],
       "run_at": "document_idle"
     },
