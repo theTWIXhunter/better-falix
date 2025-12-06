@@ -344,7 +344,7 @@ document.addEventListener('DOMContentLoaded', () => {
     toggleArchivedBtn.textContent = isHidden ? 'Hide Archived Features' : 'Show Archived Features';
   });
 
-  // Enable All button logic
+  // Enable All / Disable All button logic
   document.querySelectorAll('.enable-all-btn').forEach(enableAllBtn => {
     enableAllBtn.addEventListener('click', function() {
       const category = this.dataset.category;
@@ -354,21 +354,70 @@ document.addEventListener('DOMContentLoaded', () => {
       
       // Get all feature buttons in this category
       const featureButtons = featureList.querySelectorAll('.feature-btn');
-      const featuresToEnable = {};
       
-      // Enable all features in this category
+      // Check if all features are currently enabled
+      let allEnabled = true;
       featureButtons.forEach(btn => {
-        if (!btn.disabled) {
-          const featureId = btn.id;
-          featuresToEnable[featureId] = true;
-          setFeatureBtnState(btn, true);
+        if (!btn.disabled && btn.getAttribute('aria-pressed') !== 'true') {
+          allEnabled = false;
         }
       });
       
+      // Toggle all features based on current state
+      const newState = !allEnabled;
+      const featuresToUpdate = {};
+      
+      featureButtons.forEach(btn => {
+        if (!btn.disabled) {
+          const featureId = btn.id;
+          featuresToUpdate[featureId] = newState;
+          setFeatureBtnState(btn, newState);
+        }
+      });
+      
+      // Update button text
+      this.textContent = newState ? 'Disable All' : 'Enable All';
+      
       // Save all changes at once
-      chrome.storage.sync.set(featuresToEnable, () => {
-        console.log(`Enabled all features in ${category} category`);
+      chrome.storage.sync.set(featuresToUpdate, () => {
+        console.log(`${newState ? 'Enabled' : 'Disabled'} all features in ${category} category`);
       });
     });
+  });
+
+  // Update Enable/Disable All button text based on feature states
+  function updateEnableAllButtons() {
+    document.querySelectorAll('.enable-all-btn').forEach(btn => {
+      const category = btn.dataset.category;
+      const featureList = document.querySelector(`.feature-list[data-category="${category}"]`);
+      
+      if (!featureList) return;
+      
+      const featureButtons = featureList.querySelectorAll('.feature-btn');
+      let allEnabled = true;
+      
+      featureButtons.forEach(featureBtn => {
+        if (!featureBtn.disabled && featureBtn.getAttribute('aria-pressed') !== 'true') {
+          allEnabled = false;
+        }
+      });
+      
+      btn.textContent = allEnabled ? 'Disable All' : 'Enable All';
+    });
+  }
+
+  // Call updateEnableAllButtons when features are loaded
+  chrome.storage.sync.get(null, (data) => {
+    updateEnableAllButtons();
+  });
+
+  // Also update when individual features are toggled
+  featureIds.forEach(id => {
+    const btn = document.getElementById(id);
+    if (btn) {
+      btn.addEventListener('click', function() {
+        setTimeout(updateEnableAllButtons, 50);
+      });
+    }
   });
 });
