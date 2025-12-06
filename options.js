@@ -305,27 +305,35 @@ function applyCustomServerOrder() {
     if (!serversContainer) return;
     const serverRows = Array.from(serversContainer.querySelectorAll('.server-row'));
     if (!serverRows.length) return;
-    const nameToRow = {};
+    const nameToElement = {};
     serverRows.forEach(row => {
       const nameEl = row.querySelector('.server-name');
-      if (nameEl) nameToRow[nameEl.textContent.trim()] = row;
+      if (nameEl) {
+        const name = nameEl.textContent.trim();
+        // Check if the row is wrapped in an <a> tag
+        const wrapper = row.parentElement.tagName === 'A' ? row.parentElement : row;
+        nameToElement[name] = wrapper;
+      }
     });
-    serverRows.forEach(row => {
-      if (row.parentNode === serversContainer) {
-        serversContainer.removeChild(row);
+    // Get all elements to move (either <a> wrappers or server-rows)
+    const elementsToMove = Object.values(nameToElement);
+    elementsToMove.forEach(element => {
+      if (element.parentNode === serversContainer) {
+        serversContainer.removeChild(element);
       }
     });
     orderList.forEach(name => {
-      if (nameToRow[name]) {
-        nameToRow[name].style.marginBottom = '16px';
-        serversContainer.appendChild(nameToRow[name]);
+      if (nameToElement[name]) {
+        nameToElement[name].style.marginBottom = '16px';
+        serversContainer.appendChild(nameToElement[name]);
       }
     });
-    serverRows.forEach(row => {
-      const name = row.querySelector('.server-name')?.textContent.trim();
+    elementsToMove.forEach(element => {
+      const row = element.tagName === 'A' ? element.querySelector('.server-row') : element;
+      const name = row?.querySelector('.server-name')?.textContent.trim();
       if (name && !orderList.includes(name)) {
-        row.style.marginBottom = '16px';
-        serversContainer.appendChild(row);
+        element.style.marginBottom = '16px';
+        serversContainer.appendChild(element);
       }
     });
   });
