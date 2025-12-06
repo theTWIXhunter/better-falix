@@ -290,11 +290,6 @@ Ticket: [Support-center-#${ticketId}](<https://client.falixnodes.net/support/vie
     inlineDisplay.appendChild(serverLink);
     inlineDisplay.appendChild(pinButton);
     
-    // Add spacing before Copy All
-    const spacer = document.createElement('span');
-    spacer.style.cssText = 'display: inline-block; width: 8px;';
-    inlineDisplay.appendChild(spacer);
-    
     inlineDisplay.appendChild(copyAllButton);
 
     // Replace the original button
