@@ -232,8 +232,13 @@
       "run_at": "document_idle"
     },
     {
-      "matches": ["https://client.falixnodes.net/support/viewticket.php*"],
+      "matches": ["https://admin.falixnodes.net/support-center/*"],
       "js": ["features/support-center/inline-server-info/index.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://admin.falixnodes.net/support-center/*"],
+      "js": ["features/support-center/hide-participants/index.js"],
       "run_at": "document_idle"
     },
 
