@@ -15,6 +15,20 @@ chrome.storage.sync.get({ inlineServerInfo: false, enabled: true }, (data) => {
 function waitForServerButton() {
     console.log('[better-falix] inline-server-info: Waiting for server button with valid count...');
     
+    let timeoutId = null;
+    let observer = null;
+    
+    const cleanup = () => {
+        if (observer) {
+            observer.disconnect();
+            observer = null;
+        }
+        if (timeoutId) {
+            clearTimeout(timeoutId);
+            timeoutId = null;
+        }
+    };
+    
     const checkServerButton = () => {
         const serverButton = document.getElementById('serversModalBtn');
         const serverCountText = document.getElementById('serverCountText');
@@ -26,6 +40,7 @@ function waitForServerButton() {
             // Make sure the count has been updated (not 0 or empty)
             if (countText && countText !== '0 Servers' && serverCount > 0) {
                 console.log('[better-falix] inline-server-info: Server button found with count:', countText);
+                cleanup();
                 checkAndReplaceServerButton();
                 return true;
             }
@@ -39,9 +54,9 @@ function waitForServerButton() {
     }
 
     // If not ready, observe for changes
-    const observer = new MutationObserver(() => {
+    observer = new MutationObserver(() => {
         if (checkServerButton()) {
-            observer.disconnect();
+            cleanup();
         }
     });
 
@@ -50,8 +65,8 @@ function waitForServerButton() {
         subtree: true
     });
 
-    setTimeout(() => {
-        observer.disconnect();
+    timeoutId = setTimeout(() => {
+        cleanup();
         console.log('[better-falix] inline-server-info: Timeout waiting for server button');
     }, 10000);
 }
