@@ -88,9 +88,14 @@ function createNavItem(item) {
   const targetAttr = item.target ? `target="${item.target}"` : '';
   const viewBox = item.iconViewBox || '0 0 512 512';
   
+  // Check if the current page matches this nav item
+  const currentPath = window.location.pathname;
+  const isActive = currentPath === item.url || currentPath.startsWith(item.url + '/');
+  const activeClass = isActive ? ' active' : '';
+  
   return `
     <li class="nav-item" role="listitem">
-      <a class="nav-link" href="${item.url}" aria-label="${item.name}" ${targetAttr}>
+      <a class="nav-link${activeClass}" href="${item.url}" aria-label="${item.name}" ${targetAttr}>
         <svg class="svg-inline--fa" aria-hidden="true" focusable="false" 
              xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox}">
           <path fill="currentColor" d="${item.iconPath}"></path>
