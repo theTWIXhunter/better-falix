@@ -75,7 +75,8 @@ const featureIds = [
   'removeFileUploadLabel',
   'showTicketId',
   'inlineServerInfo',
-  'navbarEditorV2Enabled'
+  'navbarEditorV2Enabled',
+  'timeFormat24h'
 ];
 
 function setFeatureBtnState(btn, enabled) {
@@ -196,6 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
     showTicketId: false,
     inlineServerInfo: false,
     navbarEditorV2Enabled: true,
+    timeFormat24h: false,
     popupActiveTab: 'features'
 
   }, (data) => {
