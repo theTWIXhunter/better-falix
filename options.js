@@ -58,6 +58,9 @@ chrome.storage.sync.get(null, data => {
   
   const replaceFalixLogoChoice = document.getElementById('replaceFalixLogoChoice');
   if (replaceFalixLogoChoice) replaceFalixLogoChoice.value = data.replaceFalixLogoChoice || 'better-falix_normal_logo';
+  
+  const navbarEditorV2Toggle = document.getElementById('navbarEditorV2Enabled');
+  if (navbarEditorV2Toggle) setToggleState(navbarEditorV2Toggle, !!data.navbarEditorV2Enabled);
 });
 
 // General toggles - only add listeners if elements exist
