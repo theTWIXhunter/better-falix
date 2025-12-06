@@ -316,11 +316,17 @@ function applyCustomServerOrder() {
       }
     });
     orderList.forEach(name => {
-      if (nameToRow[name]) serversContainer.appendChild(nameToRow[name]);
+      if (nameToRow[name]) {
+        nameToRow[name].style.marginBottom = '16px';
+        serversContainer.appendChild(nameToRow[name]);
+      }
     });
     serverRows.forEach(row => {
       const name = row.querySelector('.server-name')?.textContent.trim();
-      if (name && !orderList.includes(name)) serversContainer.appendChild(row);
+      if (name && !orderList.includes(name)) {
+        row.style.marginBottom = '16px';
+        serversContainer.appendChild(row);
+      }
     });
   });
 }

@@ -77,6 +77,7 @@ chrome.storage.sync.get({ customServerOrder: false, customServerOrder_list: '', 
     // Re-insert in desired order
     orderList.forEach(name => {
       if (nameToRow[name]) {
+        nameToRow[name].style.marginBottom = '16px';
         serversContainer.appendChild(nameToRow[name]);
         console.log('[better-falix] custom-server-order: Moved', name, 'to position');
       }
@@ -86,6 +87,7 @@ chrome.storage.sync.get({ customServerOrder: false, customServerOrder_list: '', 
     serverRows.forEach(row => {
       const name = row.querySelector('.server-name')?.textContent.trim();
       if (name && !orderList.includes(name)) {
+        row.style.marginBottom = '16px';
         serversContainer.appendChild(row);
         console.log('[better-falix] custom-server-order: Appended unordered server:', name);
       }
