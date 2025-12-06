@@ -68,7 +68,11 @@ chrome.storage.sync.get({ customServerOrder: false, customServerOrder_list: '', 
     }
 
     // Remove all server rows from the DOM
-    serverRows.forEach(row => serversContainer.removeChild(row));
+    serverRows.forEach(row => {
+      if (row.parentNode === serversContainer) {
+        serversContainer.removeChild(row);
+      }
+    });
 
     // Re-insert in desired order
     orderList.forEach(name => {

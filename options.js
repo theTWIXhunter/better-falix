@@ -310,7 +310,11 @@ function applyCustomServerOrder() {
       const nameEl = row.querySelector('.server-name');
       if (nameEl) nameToRow[nameEl.textContent.trim()] = row;
     });
-    serverRows.forEach(row => serversContainer.removeChild(row));
+    serverRows.forEach(row => {
+      if (row.parentNode === serversContainer) {
+        serversContainer.removeChild(row);
+      }
+    });
     orderList.forEach(name => {
       if (nameToRow[name]) serversContainer.appendChild(nameToRow[name]);
     });
