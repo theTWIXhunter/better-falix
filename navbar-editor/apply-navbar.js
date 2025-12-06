@@ -90,7 +90,19 @@ function createNavItem(item) {
   
   // Check if the current page matches this nav item
   const currentPath = window.location.pathname;
-  const isActive = currentPath === item.url || currentPath.startsWith(item.url + '/');
+  let isActive = false;
+  
+  // Handle server pages with ID in URL (e.g., /server/12345/console)
+  if (item.url.startsWith('/server/') && currentPath.startsWith('/server/')) {
+    // Extract the page name from item URL (e.g., "console" from "/server/console")
+    const itemPage = item.url.replace('/server/', '');
+    // Check if current path ends with the same page (e.g., "/server/12345/console" ends with "console")
+    isActive = currentPath.endsWith('/' + itemPage) || currentPath.includes('/server/' + itemPage);
+  } else {
+    // For non-server pages, use exact or prefix match
+    isActive = currentPath === item.url || currentPath.startsWith(item.url + '/');
+  }
+  
   const activeClass = isActive ? ' active' : '';
   
   return `
