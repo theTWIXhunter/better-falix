@@ -12,7 +12,7 @@ chrome.storage.sync.get({ hideParticipants: false, enabled: true }, (data) => {
 
   function hideParticipantsDisplay() {
     const participantsDisplay = document.getElementById('participantsDisplay');
-    if (participantsDisplay) {
+    if (participantsDisplay && participantsDisplay.style.display !== 'none') {
       participantsDisplay.style.display = 'none';
       
       // Find and hide the bullet separator right after it
@@ -24,30 +24,19 @@ chrome.storage.sync.get({ hideParticipants: false, enabled: true }, (data) => {
         nextElement.style.display = 'none';
         console.log('[Better-Falix] hide-participants: Participants display and separator hidden');
       } else {
-        console.log('[Better-Falix] hide-participants: Participants display hidden');
+        console.log('[Better-Falix] hide-participants: Participants display hidden (no separator found)');
       }
+      return true;
     }
+    return false;
   }
 
-  // Wait for the page to be ready and then hide the participants display
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', hideParticipantsDisplay);
-  } else {
+  // Initial attempt
+  hideParticipantsDisplay();
+
+  // Watch for dynamic changes - the element is loaded after page load
+  const observer = new MutationObserver(() => {
     hideParticipantsDisplay();
-  }
-
-  // Watch for dynamic changes in case the element is added later
-  const observer = new MutationObserver((mutations) => {
-    for (let mutation of mutations) {
-      for (let node of mutation.addedNodes) {
-        if (node.nodeType === Node.ELEMENT_NODE) {
-          if (node.id === 'participantsDisplay' || node.querySelector('#participantsDisplay')) {
-            hideParticipantsDisplay();
-            break;
-          }
-        }
-      }
-    }
   });
 
   observer.observe(document.body, {
