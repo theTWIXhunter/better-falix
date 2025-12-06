@@ -74,7 +74,8 @@ const featureIds = [
   'hideTemplateButton',
   'removeFileUploadLabel',
   'showTicketId',
-  'navbarEditorEnabled'
+  'inlineServerInfo',
+  'navbarEditorV2Enabled'
 ];
 
 function setFeatureBtnState(btn, enabled) {
@@ -193,8 +194,9 @@ document.addEventListener('DOMContentLoaded', () => {
     hideTemplateButton: false,
     removeFileUploadLabel: false,
     showTicketId: false,
-    navbarEditorEnabled: true,
-    popupActiveTab: 'features' // Add this line
+    inlineServerInfo: false,
+    navbarEditorV2Enabled: true,
+    popupActiveTab: 'features'
 
   }, (data) => {
     updateToggleBtn(data.enabled);

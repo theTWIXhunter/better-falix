@@ -537,9 +537,43 @@
         flex-shrink: 0;
       }
     }
+
+    /* Warning banner styles */
+    #disabledWarning {
+      display: none;
+      background: #fef3c7;
+      color: #92400e;
+      border-bottom: 2px solid #fbbf24;
+      padding: 14px 20px;
+      font-size: 14px;
+      font-weight: 500;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    #enableFromWarning {
+      margin-left: 12px;
+      background: #f59e0b;
+      color: white;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 600;
+    }
   </style>
 </head>
 <body>
+  <!-- Warning Banner (hidden by default) -->
+  <div id="disabledWarning" style="display: none; background: #fff3cd; color: #856404; border-bottom: 2px solid #ffc107; padding: 16px 24px; text-align: center; font-size: 15px; line-height: 1.5;">
+    <strong>⚠️ Custom Navbar Editor is currently disabled.</strong><br>
+    The editor is disabled by default to save resources or has been turned off in your settings. To enable it, please click the button below or go to your <a href="/settings" style="color: #0d6efd; text-decoration: underline;">settings page</a>.
+    <button id="enableFeatureBtn" style="background: #0078d7; color: white; border: none; border-radius: 6px; padding: 8px 20px; margin-left: 16px; cursor: pointer; font-weight: 600; font-size: 14px; transition: background 0.2s;">
+      Enable Custom Navbar Editor
+    </button>
+  </div>
+
+  <!-- Existing content -->
   <div class="container">
     <h1>Navbar Editor</h1>
     <p class="subtitle">Customize your navigation menu for different page types</p>

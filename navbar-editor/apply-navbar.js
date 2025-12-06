@@ -1,7 +1,7 @@
 console.log('[better-falix] navbar-editor: Script loading');
 
-chrome.storage.sync.get({ enabled: true, navbarEditorEnabled: false }, (data) => {
-  if (!data.enabled || !data.navbarEditorEnabled) {
+chrome.storage.sync.get({ enabled: true, navbarEditorV2Enabled: false }, (data) => {
+  if (!data.enabled || !data.navbarEditorV2Enabled) {
     console.log('[better-falix] navbar-editor: Script disabled');
     return;
   }
@@ -88,9 +88,26 @@ function createNavItem(item) {
   const targetAttr = item.target ? `target="${item.target}"` : '';
   const viewBox = item.iconViewBox || '0 0 512 512';
   
+  // Check if the current page matches this nav item
+  const currentPath = window.location.pathname;
+  let isActive = false;
+  
+  // Handle server pages with ID in URL (e.g., /server/12345/console)
+  if (item.url.startsWith('/server/') && currentPath.startsWith('/server/')) {
+    // Extract the page name from item URL (e.g., "console" from "/server/console")
+    const itemPage = item.url.replace('/server/', '');
+    // Check if current path ends with the same page (e.g., "/server/12345/console" ends with "console")
+    isActive = currentPath.endsWith('/' + itemPage) || currentPath.includes('/server/' + itemPage);
+  } else {
+    // For non-server pages, use exact or prefix match
+    isActive = currentPath === item.url || currentPath.startsWith(item.url + '/');
+  }
+  
+  const activeClass = isActive ? ' active' : '';
+  
   return `
     <li class="nav-item" role="listitem">
-      <a class="nav-link" href="${item.url}" aria-label="${item.name}" ${targetAttr}>
+      <a class="nav-link${activeClass}" href="${item.url}" aria-label="${item.name}" ${targetAttr}>
         <svg class="svg-inline--fa" aria-hidden="true" focusable="false" 
              xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox}">
           <path fill="currentColor" d="${item.iconPath}"></path>

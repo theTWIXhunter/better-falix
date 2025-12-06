@@ -58,6 +58,9 @@ chrome.storage.sync.get(null, data => {
   
   const replaceFalixLogoChoice = document.getElementById('replaceFalixLogoChoice');
   if (replaceFalixLogoChoice) replaceFalixLogoChoice.value = data.replaceFalixLogoChoice || 'better-falix_normal_logo';
+  
+  const navbarEditorV2Toggle = document.getElementById('navbarEditorV2Enabled');
+  if (navbarEditorV2Toggle) setToggleState(navbarEditorV2Toggle, !!data.navbarEditorV2Enabled);
 });
 
 // General toggles - only add listeners if elements exist
@@ -278,12 +281,12 @@ if (replaceFalixLogoChoice) {
   });
 }
 
-const navbarEditorToggle = document.getElementById('navbarEditorEnabled');
+const navbarEditorToggle = document.getElementById('navbarEditorV2Enabled');
 if (navbarEditorToggle) {
   navbarEditorToggle.addEventListener('click', function() {
     const state = this.getAttribute('aria-pressed') !== 'true';
     setToggleState(this, state);
-    saveSetting('navbarEditorEnabled', state);
+    saveSetting('navbarEditorV2Enabled', state);
   });
 }
 
@@ -302,18 +305,36 @@ function applyCustomServerOrder() {
     if (!serversContainer) return;
     const serverRows = Array.from(serversContainer.querySelectorAll('.server-row'));
     if (!serverRows.length) return;
-    const nameToRow = {};
+    const nameToElement = {};
     serverRows.forEach(row => {
       const nameEl = row.querySelector('.server-name');
-      if (nameEl) nameToRow[nameEl.textContent.trim()] = row;
+      if (nameEl) {
+        const name = nameEl.textContent.trim();
+        // Check if the row is wrapped in an <a> tag
+        const wrapper = row.parentElement.tagName === 'A' ? row.parentElement : row;
+        nameToElement[name] = wrapper;
+      }
     });
-    serverRows.forEach(row => serversContainer.removeChild(row));
+    // Get all elements to move (either <a> wrappers or server-rows)
+    const elementsToMove = Object.values(nameToElement);
+    elementsToMove.forEach(element => {
+      if (element.parentNode === serversContainer) {
+        serversContainer.removeChild(element);
+      }
+    });
     orderList.forEach(name => {
-      if (nameToRow[name]) serversContainer.appendChild(nameToRow[name]);
+      if (nameToElement[name]) {
+        nameToElement[name].style.marginBottom = '16px';
+        serversContainer.appendChild(nameToElement[name]);
+      }
     });
-    serverRows.forEach(row => {
-      const name = row.querySelector('.server-name')?.textContent.trim();
-      if (name && !orderList.includes(name)) serversContainer.appendChild(row);
+    elementsToMove.forEach(element => {
+      const row = element.tagName === 'A' ? element.querySelector('.server-row') : element;
+      const name = row?.querySelector('.server-name')?.textContent.trim();
+      if (name && !orderList.includes(name)) {
+        element.style.marginBottom = '16px';
+        serversContainer.appendChild(element);
+      }
     });
   });
 }

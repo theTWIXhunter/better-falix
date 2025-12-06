@@ -38,14 +38,16 @@ chrome.storage.sync.get({ customServerOrder: false, customServerOrder_list: '', 
 
     console.log('[better-falix] custom-server-order: Found', serverRows.length, 'server rows');
 
-    // Map: server name -> server-row element
-    const nameToRow = {};
+    // Map: server name -> wrapper element (either <a> or server-row)
+    const nameToElement = {};
     const foundNames = [];
     serverRows.forEach(row => {
       const nameEl = row.querySelector('.server-name');
       if (nameEl) {
         const name = nameEl.textContent.trim();
-        nameToRow[name] = row;
+        // Check if the row is wrapped in an <a> tag
+        const wrapper = row.parentElement.tagName === 'A' ? row.parentElement : row;
+        nameToElement[name] = wrapper;
         foundNames.push(name);
       }
     });
@@ -54,8 +56,8 @@ chrome.storage.sync.get({ customServerOrder: false, customServerOrder_list: '', 
     console.log('[better-falix] custom-server-order: Looking for:', orderList);
 
     // Check which names from order list are actually found
-    const matchedNames = orderList.filter(name => nameToRow[name]);
-    const unmatchedNames = orderList.filter(name => !nameToRow[name]);
+    const matchedNames = orderList.filter(name => nameToElement[name]);
+    const unmatchedNames = orderList.filter(name => !nameToElement[name]);
     
     console.log('[better-falix] custom-server-order: Matched names:', matchedNames);
     if (unmatchedNames.length > 0) {
@@ -67,22 +69,32 @@ chrome.storage.sync.get({ customServerOrder: false, customServerOrder_list: '', 
       return;
     }
 
-    // Remove all server rows from the DOM
-    serverRows.forEach(row => serversContainer.removeChild(row));
+    // Get all elements to move (either <a> wrappers or server-rows)
+    const elementsToMove = Object.values(nameToElement);
+    
+    // Remove all elements from the DOM
+    elementsToMove.forEach(element => {
+      if (element.parentNode === serversContainer) {
+        serversContainer.removeChild(element);
+      }
+    });
 
     // Re-insert in desired order
     orderList.forEach(name => {
-      if (nameToRow[name]) {
-        serversContainer.appendChild(nameToRow[name]);
+      if (nameToElement[name]) {
+        nameToElement[name].style.marginBottom = '16px';
+        serversContainer.appendChild(nameToElement[name]);
         console.log('[better-falix] custom-server-order: Moved', name, 'to position');
       }
     });
 
     // Append any remaining servers not in the list (keep their original order)
-    serverRows.forEach(row => {
-      const name = row.querySelector('.server-name')?.textContent.trim();
+    elementsToMove.forEach(element => {
+      const row = element.tagName === 'A' ? element.querySelector('.server-row') : element;
+      const name = row?.querySelector('.server-name')?.textContent.trim();
       if (name && !orderList.includes(name)) {
-        serversContainer.appendChild(row);
+        element.style.marginBottom = '16px';
+        serversContainer.appendChild(element);
         console.log('[better-falix] custom-server-order: Appended unordered server:', name);
       }
     });
