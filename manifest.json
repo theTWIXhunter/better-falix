@@ -68,7 +68,7 @@
     },
     {
       "matches": ["https://client.falixnodes.net/*"],
-      "js": ["features/general/remove-language-selector/index.js"],
+      "js": ["features/general/remove-navbar-footer-buttons/index.js"],
       "run_at": "document_idle"
     },
     {
