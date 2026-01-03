@@ -195,7 +195,7 @@ function extractServerInfo(modalBody) {
         console.log('[better-falix] inline-server-info: PIN element found:', pinElement.textContent);
     }
 
-    if (!serverLink || !pinElement) {
+    if (!serverLink) {
         return null;
     }
 
@@ -203,18 +203,18 @@ function extractServerInfo(modalBody) {
     const href = serverLink.getAttribute('href');
     const idMatch = href.match(/[?&]id=(\d+)/);
     
-    const pinMatch = pinElement.textContent.match(/PIN:\s*(\d+)/);
+    const pinMatch = pinElement ? pinElement.textContent.match(/PIN:\s*(\d+)/) : null;
 
     console.log('[better-falix] inline-server-info: Server ID from href:', idMatch?.[1], 'PIN match:', pinMatch?.[1]);
 
-    if (!idMatch || !pinMatch) {
+    if (!idMatch) {
         return null;
     }
 
     return {
         serverId: idMatch[1],
         serverHref: href,
-        pin: pinMatch[1]
+        pin: pinMatch?.[1] || null
     };
 }
 
@@ -243,22 +243,31 @@ function replaceButtonWithInfo(serverInfo) {
 
     // PIN display with copy button
     const pinButton = document.createElement('button');
-    pinButton.innerHTML = `${serverInfo.pin} <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 4px; vertical-align: middle;">
+    const isDeleted = !serverInfo.pin;
+    const pinText = isDeleted ? 'DELETED' : serverInfo.pin;
+    const pinColor = isDeleted ? 'rgba(239, 68, 68, 0.9)' : 'rgba(249, 115, 22, 0.9)';
+    const pinBg = isDeleted ? 'rgba(239, 68, 68, 0.15)' : 'rgba(249, 115, 22, 0.15)';
+    const pinBorder = isDeleted ? 'rgba(239, 68, 68, 0.3)' : 'rgba(249, 115, 22, 0.3)';
+    const pinBgHover = isDeleted ? 'rgba(239, 68, 68, 0.25)' : 'rgba(249, 115, 22, 0.25)';
+    
+    pinButton.innerHTML = `${pinText} <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 4px; vertical-align: middle;">
         <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
         <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
     </svg>`;
-    pinButton.style.cssText = 'background: rgba(249, 115, 22, 0.15); color: rgba(249, 115, 22, 0.9); border: 1px solid rgba(249, 115, 22, 0.3); padding: 2px 8px; border-radius: 4px; cursor: pointer; font-size: 0.85em; font-weight: 500; display: inline-flex; align-items: center; transition: all 0.2s;';
-    pinButton.title = 'Click to copy PIN';
+    pinButton.style.cssText = `background: ${pinBg}; color: ${pinColor}; border: 1px solid ${pinBorder}; padding: 2px 8px; border-radius: 4px; cursor: pointer; font-size: 0.85em; font-weight: 500; display: inline-flex; align-items: center; transition: all 0.2s;`;
+    pinButton.title = isDeleted ? 'PIN deleted' : 'Click to copy PIN';
     pinButton.onclick = (e) => {
         e.preventDefault();
-        copyToClipboard(serverInfo.pin);
-        showCopyFeedback(pinButton, 'PIN copied!');
+        if (!isDeleted) {
+            copyToClipboard(serverInfo.pin);
+            showCopyFeedback(pinButton, 'PIN copied!');
+        }
     };
     pinButton.onmouseover = () => {
-        pinButton.style.background = 'rgba(249, 115, 22, 0.25)';
+        pinButton.style.background = pinBgHover;
     };
     pinButton.onmouseout = () => {
-        pinButton.style.background = 'rgba(249, 115, 22, 0.15)';
+        pinButton.style.background = pinBg;
     };
 
     // Copy all button
@@ -273,8 +282,9 @@ function replaceButtonWithInfo(serverInfo) {
         e.preventDefault();
         const ticketId = getTicketIdFromUrl();
         const fullServerUrl = `https://client.falixnodes.net${serverInfo.serverHref}`;
+        const pinText = serverInfo.pin || 'DELETED';
         const markdownText = `SupportID: [${serverInfo.serverId}](<${fullServerUrl}>)
-SupportPIN: ${serverInfo.pin}
+SupportPIN: ${pinText}
 Ticket: [Support-center-#${ticketId}](<https://client.falixnodes.net/support/viewticket.php?id=${ticketId}>)`;
         copyToClipboard(markdownText);
         showCopyFeedback(copyAllButton, 'All info copied!');
@@ -289,11 +299,6 @@ Ticket: [Support-center-#${ticketId}](<https://client.falixnodes.net/support/vie
     // Assemble the inline display
     inlineDisplay.appendChild(serverLink);
     inlineDisplay.appendChild(pinButton);
-    
-    // Add spacing before Copy All
-    const spacer = document.createElement('span');
-    spacer.style.cssText = 'display: inline-block; width: 8px;';
-    inlineDisplay.appendChild(spacer);
     
     inlineDisplay.appendChild(copyAllButton);
 

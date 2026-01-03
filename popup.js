@@ -22,18 +22,9 @@ const toggleBtn = document.getElementById('toggle');
 const featureIds = [
   'hideConsoleTabs',
   'replaceAccountCategory',
-  'ARCHIVED_moveBackupsNav',
-  'ARCHIVED_moveMonitoringNav',
-  'ARCHIVED_moveLogsNav',
-  'ARCHIVED_removeExternalStartNav',
-  'ARCHIVED_removeNavbarSupportLinks',
-  'ARCHIVED_removeConsoleFilesCategory',
   'removeSftpUpload',
   'replaceConnectTab',
   'removeExitDiscount',
-  'itsJustPaper',
-  'itsJustGeyser',
-  'ARCHIVED_serverNameButton',
   'navbarHover',
   'replaceSupportModal',
   'replaceCpuWithNode',
@@ -41,9 +32,7 @@ const featureIds = [
   'removePlayerManagement',
   'removePremiumTransfer',
   'uploadCreateHover',
-  'ARCHIVED_editorWrapperHeight',
   'customServerOrder',
-  'ARCHIVED_editorFullscreen',
   'removeServerSearch',
   'hideSupportCategory',
   'removeLanguageSelector',
@@ -51,11 +40,8 @@ const featureIds = [
   'splitAddonsTabs',
   'renameConfigToProperties',
   'renameAddonsToMods',
-  'ARCHIVED_addVersionsNav',
-  'ARCHIVED_hideClosedTickets',
   'removeLogsContainer',
   'redactedContentSubtle',
-  'ARCHIVED_collapsibleLogAnalysis',
   'betterEditorFullscreen',
   'coloredLogMessages',
   'autoCollapseLogAnalysis',
@@ -75,7 +61,9 @@ const featureIds = [
   'removeFileUploadLabel',
   'showTicketId',
   'inlineServerInfo',
-  'navbarEditorV2Enabled'
+  'navbarEditorV2Enabled',
+  'timeFormat24h',
+  'hideParticipants'
 ];
 
 function setFeatureBtnState(btn, enabled) {
@@ -142,32 +130,22 @@ document.addEventListener('DOMContentLoaded', () => {
     enabled: false,
     hideConsoleTabs: false,
     replaceAccountCategory: false,
-    ARCHIVED_moveBackupsNav: false,
-    ARCHIVED_moveMonitoringNav: false,
-    ARCHIVED_moveLogsNav: false,
-    ARCHIVED_removeExternalStartNav: false,
-    ARCHIVED_removeNavbarSupportLinks: false,
-    ARCHIVED_removeConsoleFilesCategory: false,
     removeSftpUpload: false,
     replaceConnectTab: false,
     removeExitDiscount: false,
     itsJustPaper: false,
     itsJustGeyser: false,
-    ARCHIVED_serverNameButton: false,
     navbarHover: false,
     replaceSupportModal: false,
     replaceCpuWithNode: false,
     removeMaxPlayers: false,
     removePlayerManagement: false,
     uploadCreateHover: false,
-    ARCHIVED_editorWrapperHeight: false,
     customServerOrder: false,
-    ARCHIVED_editorFullscreen: false,
     removeServerSearch: false,
     removeLogsContainer: false,
     removePremiumTransfer: false,
     redactedContentSubtle: false,
-    ARCHIVED_collapsibleLogAnalysis: false,
     betterEditorFullscreen: false,
     coloredLogMessages: false,
     autoCollapseLogAnalysis: false,
@@ -186,8 +164,6 @@ document.addEventListener('DOMContentLoaded', () => {
     splitAddonsTabs: false,
     renameConfigToProperties: false,
     renameAddonsToMods: false,
-    ARCHIVED_addVersionsNav: false,
-    ARCHIVED_hideClosedTickets: false,
     copyAllSupportInfo: false,
     compactReplyBox: false,
     iKnowMarkdown: false,
@@ -196,6 +172,8 @@ document.addEventListener('DOMContentLoaded', () => {
     showTicketId: false,
     inlineServerInfo: false,
     navbarEditorV2Enabled: true,
+    timeFormat24h: false,
+    hideParticipants: false,
     popupActiveTab: 'features'
 
   }, (data) => {
@@ -364,5 +342,82 @@ document.addEventListener('DOMContentLoaded', () => {
     const isHidden = archivedSection.style.display === 'none';
     archivedSection.style.display = isHidden ? 'block' : 'none';
     toggleArchivedBtn.textContent = isHidden ? 'Hide Archived Features' : 'Show Archived Features';
+  });
+
+  // Enable All / Disable All button logic
+  document.querySelectorAll('.enable-all-btn').forEach(enableAllBtn => {
+    enableAllBtn.addEventListener('click', function() {
+      const category = this.dataset.category;
+      const featureList = document.querySelector(`.feature-list[data-category="${category}"]`);
+      
+      if (!featureList) return;
+      
+      // Get all feature buttons in this category
+      const featureButtons = featureList.querySelectorAll('.feature-btn');
+      
+      // Check if all features are currently enabled
+      let allEnabled = true;
+      featureButtons.forEach(btn => {
+        if (!btn.disabled && btn.getAttribute('aria-pressed') !== 'true') {
+          allEnabled = false;
+        }
+      });
+      
+      // Toggle all features based on current state
+      const newState = !allEnabled;
+      const featuresToUpdate = {};
+      
+      featureButtons.forEach(btn => {
+        if (!btn.disabled) {
+          const featureId = btn.id;
+          featuresToUpdate[featureId] = newState;
+          setFeatureBtnState(btn, newState);
+        }
+      });
+      
+      // Update button text
+      this.textContent = newState ? 'Disable All' : 'Enable All';
+      
+      // Save all changes at once
+      chrome.storage.sync.set(featuresToUpdate, () => {
+        console.log(`${newState ? 'Enabled' : 'Disabled'} all features in ${category} category`);
+      });
+    });
+  });
+
+  // Update Enable/Disable All button text based on feature states
+  function updateEnableAllButtons() {
+    document.querySelectorAll('.enable-all-btn').forEach(btn => {
+      const category = btn.dataset.category;
+      const featureList = document.querySelector(`.feature-list[data-category="${category}"]`);
+      
+      if (!featureList) return;
+      
+      const featureButtons = featureList.querySelectorAll('.feature-btn');
+      let allEnabled = true;
+      
+      featureButtons.forEach(featureBtn => {
+        if (!featureBtn.disabled && featureBtn.getAttribute('aria-pressed') !== 'true') {
+          allEnabled = false;
+        }
+      });
+      
+      btn.textContent = allEnabled ? 'Disable All' : 'Enable All';
+    });
+  }
+
+  // Call updateEnableAllButtons when features are loaded
+  chrome.storage.sync.get(null, (data) => {
+    updateEnableAllButtons();
+  });
+
+  // Also update when individual features are toggled
+  featureIds.forEach(id => {
+    const btn = document.getElementById(id);
+    if (btn) {
+      btn.addEventListener('click', function() {
+        setTimeout(updateEnableAllButtons, 50);
+      });
+    }
   });
 });

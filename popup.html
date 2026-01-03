@@ -77,6 +77,29 @@
       letter-spacing: 0.5px;
       border-left: 3px solid var(--falix-accent);
       padding-left: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .enable-all-btn {
+      background: var(--falix-accent);
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 4px 10px;
+      font-size: 0.8em;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s, opacity 0.2s;
+      opacity: 0.85;
+      letter-spacing: 0.3px;
+    }
+    .enable-all-btn:hover {
+      background: var(--falix-accent-hover);
+      opacity: 1;
+    }
+    .enable-all-btn:active {
+      transform: scale(0.96);
     }
     .feature-list {
       background: var(--falix-panel);
@@ -260,8 +283,8 @@
     /* Settings link styles */
     .settings-link {
       position: absolute;
-      top: 30px;
-      right: 14px;
+      top: 34px;
+      right: 20px;
       background: none;
       border: none;
       cursor: pointer;
@@ -462,8 +485,11 @@
       <!-- FEATURES TAB CONTENT -->
       <div id="features-content">
         <!-- General Features -->
-        <div class="category">General</div>
-        <div class="feature-list">
+        <div class="category">
+          <span>General</span>
+          <button class="enable-all-btn" data-category="general">Enable All</button>
+        </div>
+        <div class="feature-list" data-category="general">
           <div class="feature-row">
             <span class="feature-label" data-tooltip="Reorder your server list in any way you want. (See settings)">Custom Server Order</span>
             <svg class="feature-settings-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" title="Open settings for this feature"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6c-4.4 11.9-9.7 23.3-15.8 34.3l-4.7 8.1c-6.6 11-14 21.4-22.1 31.2c-5.9 7.2-15.7 9.6-24.5 6.8l-55.7-17.7c-13.4 10.3-28.2 18.9-44 25.4l-12.5 57.1c-2 9.1-9 16.3-18.2 17.8c-13.8 2.3-28 3.5-42.5 3.5s-28.7-1.2-42.5-3.5c-9.2-1.5-16.2-8.7-18.2-17.8l-12.5-57.1c-15.8-6.5-30.6-15.1-44-25.4L83.1 425.9c-8.8 2.8-18.6 .3-24.5-6.8c-8.1-9.8-15.5-20.2-22.1-31.2l-4.7-8.1c-6.1-11-11.4-22.4-15.8-34.3c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4C64.6 273.1 64 264.6 64 256s.6-17.1 1.7-25.4L22.4 191.2c-6.9-6.2-9.6-15.9-6.4-24.6c4.4-11.9 9.7-23.3 15.8-34.3l4.7-8.1c6.6-11 14-21.4 22.1-31.2c5.9-7.2 15.7-9.6 24.5-6.8l55.7 17.7c13.4-10.3 28.2-18.9 44-25.4l12.5-57.1c2-9.1 9-16.3 18.2-17.8C227.3 1.2 241.5 0 256 0s28.7 1.2 42.5 3.5c9.2 1.5 16.2 8.7 18.2 17.8l12.5 57.1c15.8 6.5 30.6 15.1 44 25.4l55.7-17.7c8.8-2.8 18.6-.3 24.5 6.8c8.1 9.8 15.5 20.2 22.1 31.2l4.7 8.1c6.1 11 11.4 22.4 15.8 34.3zM256 336a80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg>
@@ -483,31 +509,30 @@
             <button class="feature-btn" id="removeExitDiscount" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
           </div>
           <div class="feature-row">
-            <span class="feature-label" data-tooltip="Renames 'Craftbukkit / Spigot / PaperSpigot' to 'Paper' in the server type dropdown for clarity.">it's just Paper</span>
-            <button class="feature-btn" id="itsJustPaper" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
-          </div>
-            <div class="feature-row">
-            <span class="feature-label" data-tooltip="Renames 'Java + Bedrock Support (Geyser)' in the server type dropdown for clarity.">it's just Geyser</span>
-            <button class="feature-btn" id="itsJustGeyser" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
-          </div>
-          <div class="feature-row">
             <span class="feature-label" data-tooltip="Remove the Server Search bar from the main page.">Remove Server search bar</span>
             <button class="feature-btn" id="removeServerSearch" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
           </div>
           <div class="feature-row">
-            <span class="feature-label" data-tooltip="Removes the language selector from the navbar on all pages.">Remove Language Selector</span>
+            <span class="feature-label" data-tooltip="Removes the language selector and customize button from the navbar footer on all pages.">Remove Navbar Footer Buttons</span>
             <button class="feature-btn" id="removeLanguageSelector" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
-          </div>
+          </div>                  <!-- This uses the old ID to make sure that the old saves still work -->
           <div class="feature-row">
             <span class="feature-label" data-tooltip="Replace the Falix logo (falix.svg) with a custom logo of your choice.">Replace Falix Logo</span>
             <svg class="feature-settings-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" title="Open settings for this feature"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6c-4.4 11.9-9.7 23.3-15.8 34.3l-4.7 8.1c-6.6 11-14 21.4-22.1 31.2c-5.9 7.2-15.7 9.6-24.5 6.8l-55.7-17.7c-13.4 10.3-28.2 18.9-44 25.4l-12.5 57.1c-2 9.1-9 16.3-18.2 17.8c-13.8 2.3-28 3.5-42.5 3.5s-28.7-1.2-42.5-3.5c-9.2-1.5-16.2-8.7-18.2-17.8l-12.5-57.1c-15.8-6.5-30.6-15.1-44-25.4L83.1 425.9c-8.8 2.8-18.6 .3-24.5-6.8c-8.1-9.8-15.5-20.2-22.1-31.2l-4.7-8.1c-6.1-11-11.4-22.4-15.8-34.3c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4C64.6 273.1 64 264.6 64 256s.6-17.1 1.7-25.4L22.4 191.2c-6.9-6.2-9.6-15.9-6.4-24.6c4.4-11.9 9.7-23.3 15.8-34.3l4.7-8.1c6.6-11 14-21.4 22.1-31.2c5.9-7.2 15.7-9.6 24.5-6.8l55.7 17.7c13.4-10.3 28.2-18.9 44-25.4l12.5-57.1c2-9.1 9-16.3 18.2-17.8C227.3 1.2 241.5 0 256 0s28.7 1.2 42.5 3.5c9.2 1.5 16.2 8.7 18.2 17.8l12.5 57.1c15.8 6.5 30.6 15.1 44 25.4l55.7-17.7c8.8-2.8 18.6-.3 24.5 6.8c8.1 9.8 15.5 20.2 22.1 31.2l4.7 8.1c6.1 11 11.4 22.4 15.8 34.3zM256 336a80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg>
             <button class="feature-btn" id="replaceFalixLogo" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
           </div>
+          <div class="feature-row">
+            <span class="feature-label" data-tooltip="Converts 12-hour time format (AM/PM) to 24-hour format across all sites.">24-Hour Time Format</span>
+            <button class="feature-btn" id="timeFormat24h" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+          </div>
         </div>
 
         <!-- Console Features -->
-        <div class="category">Console</div>
-        <div class="feature-list">
+        <div class="category">
+          <span>Console</span>
+          <button class="enable-all-btn" data-category="console">Enable All</button>
+        </div>
+        <div class="feature-list" data-category="console">
           <div class="feature-row">
             <span class="feature-label" data-tooltip="Optionally hide unnecessary console tabs for a cleaner interface.">Hide Console Tabs</span>
             <button class="feature-btn" id="hideConsoleTabs" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
@@ -539,8 +564,11 @@
         </div>
 
         <!-- Filemanager Features -->
-        <div class="category">Filemanager</div>
-        <div class="feature-list">
+        <div class="category">
+          <span>Filemanager</span>
+          <button class="enable-all-btn" data-category="filemanager">Enable All</button>
+        </div>
+        <div class="feature-list" data-category="filemanager">
           <div class="feature-row">
             <span class="feature-label" data-tooltip="Removes the SFTP info and its divider from the upload button dropdown for a cleaner UI.">Remove SFTP info from upload</span>
             <button class="feature-btn" id="removeSftpUpload" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
@@ -557,11 +585,14 @@
         </div>
 
         <!-- Navigation Features -->
-        <div class="category">Navigation</div>
+        <div class="category">
+          <span>Navigation</span>
+          <button class="enable-all-btn" data-category="navigation">Enable All</button>
+        </div>
         <div style="background:#fff3cd; color:#856404; border:1px solid #ffeeba; border-radius:6px; padding:10px 14px; margin-bottom:12px; font-size:0.92em;">
           <b>These features have been deprecated</b> Use the <a href="#" id="navWarningLink" style="color:#7c3aed; text-decoration:underline; font-weight:600;">Custom Navbar Editor</a> for more powerful navigation customization!
         </div>
-        <div class="feature-list">
+        <div class="feature-list" data-category="navigation">
           <div class="feature-row">
             <span class="feature-label" data-tooltip="Renames the 'Config' navigation option to 'Properties' in the Minecraft category for clarity.">Rename Config to Properties</span>
             <svg class="feature-deprecated-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-tooltip="⚠️ Deprecated: Use Custom Navbar Editor instead"><path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/></svg>
@@ -589,8 +620,11 @@
         </div>
 
         <!-- Logs sharing -->
-        <div class="category">Logs sharing</div>
-        <div class="feature-list">
+        <div class="category">
+          <span>Logs sharing</span>
+          <button class="enable-all-btn" data-category="logs">Enable All</button>
+        </div>
+        <div class="feature-list" data-category="logs">
           <div class="feature-row">
             <span class="feature-label" data-tooltip="Removes the scrollable container around the shared logs box.">Remove Logs container</span>
             <button class="feature-btn" id="removeLogsContainer" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
@@ -611,8 +645,11 @@
 
         <!-- Support Center -->
         <div id="supportCenterSection">
-          <div class="category">Support Center</div>
-          <div class="feature-list">
+          <div class="category">
+            <span>Support Center</span>
+            <button class="enable-all-btn" data-category="support">Enable All</button>
+          </div>
+          <div class="feature-list" data-category="support">
             <div class="feature-row">
               <span class="feature-label" data-tooltip="removes the  unnecessarily bulky write a reply headers from the message box in the support center chat..">Hide Write a Reply Header</span>
               <button class="feature-btn" id="hideWriteAReplyHeader" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
@@ -637,6 +674,10 @@
               <span class="feature-label" data-tooltip="When only 1 server is attached, displays server ID, PIN, and copy buttons inline instead of the modal button.">Inline Server Info</span>
               <button class="feature-btn" id="inlineServerInfo" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
             </div>
+            <div class="feature-row">
+              <span class="feature-label" data-tooltip="Hides the participants display and separator from ticket header.">Hide Participants Display</span>
+              <button class="feature-btn" id="hideParticipants" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+            </div>
           </div>
         </div>
 
@@ -649,71 +690,15 @@
 
         <!-- Archived Features (hidden by default) -->
         <div id="archivedFeaturesSection" style="display: none;">
-          <div class="category">Archived Features</div>
+          <div class="category">
+            <span>Archived Features</span>
+            <button class="enable-all-btn" data-category="archived">Enable All</button>
+          </div>
         <div style="max-width:480px ; background:#fff3cd; color:#856404; border:1px solid #ffeeba; border-radius:8px; padding:12px 16px; margin-bottom:18px; font-size:0.98em;">
           <b>Warning:</b> These features are archived, this is either because they are replaced, broken or because they got implemented into the native page. <br> Enabling these features might cause issues or incompatibilities with other plugins or native features.
         </div>
           <div class="feature-list">
-              <div class="feature-row">
-                <span class="feature-label" data-tooltip="Adds a Versions link to the Minecraft section of the navbar for quick access to server version changes.">Add Versions Nav</span>
-                <svg class="feature-deprecated-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-tooltip="⚠️ Archived: Feature doesn't work - versions page got removed completely"><path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/></svg>
-                <button class="feature-btn" id="ARCHIVED_addVersionsNav" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
-              </div>
-              <div class="feature-row">
-                <span class="feature-label" data-tooltip="Relocate the 'Backups' navigation item to the Server Settings section.">Move "Backups" to Server Settings</span>
-                <svg class="feature-deprecated-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-tooltip="⚠️ Archived: Feature isn't needed - implemented in Falix"><path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/></svg>
-                <button class="feature-btn" id="ARCHIVED_moveBackupsNav" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
-              </div>
-              <div class="feature-row">
-                <span class="feature-label" data-tooltip="Move the 'Monitoring' navigation item to the Server Settings section.">Move "Monitoring" to Server Settings</span>
-                <svg class="feature-deprecated-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-tooltip="⚠️ Archived: Feature isn't needed - implemented in Falix"><path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/></svg>
-                <button class="feature-btn" id="ARCHIVED_moveMonitoringNav" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
-              </div>
-              <div class="feature-row">
-                <span class="feature-label" data-tooltip="Move the 'Logs' navigation item to the Server Settings section.">Move "Logs" to Server Settings</span>
-                <svg class="feature-deprecated-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-tooltip="⚠️ Archived: Feature isn't needed - implemented in Falix"><path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/></svg>
-                <button class="feature-btn" id="ARCHIVED_moveLogsNav" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
-              </div>
-              <div class="feature-row">
-                <span class="feature-label" data-tooltip="Optionally remove support-related links from the navbar.">Remove Navbar Support Links</span>
-                <svg class="feature-deprecated-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-tooltip="⚠️ Archived: Feature isn't needed - implemented in Falix"><path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/></svg>
-                <button class="feature-btn" id="ARCHIVED_removeNavbarSupportLinks" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
-              </div> 
-              <div class="feature-row">
-                <span class="feature-label" data-tooltip="Remove 'Console' and 'Files' categories (keep items).">Remove "Console" and "Files" categories</span>
-                <svg class="feature-deprecated-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-tooltip="⚠️ Archived: Feature isn't needed - implemented in Falix"><path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/></svg>
-                <button class="feature-btn" id="ARCHIVED_removeConsoleFilesCategory" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
-              </div>
-              <div class="feature-row">
-                <span class="feature-label" data-tooltip="Adds a fullscreen button to the file editor.">Editor Fullscreen</span>
-                <svg class="feature-deprecated-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-tooltip="⚠️ Archived: Feature doesn't work - editor got replcaced, use better-fullscreen"><path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/></svg>
-                <button class="feature-btn" id="ARCHIVED_editorFullscreen" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
-              </div>
-               <div class="feature-row">
-                <span class="feature-label" data-tooltip="Makes the server name in the navbar clickable and redirect you to the main page.">Server Name Button</span>
-                <svg class="feature-deprecated-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-tooltip="⚠️ Archived: Feature doesn't work - servername card is now a server thing"><path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/></svg>
-                <button class="feature-btn" id="ARCHIVED_serverNameButton" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
-              </div>
-              <div class="feature-row">
-                <span class="feature-label" data-tooltip="Add a collapse/expand button to the Log Analysis section.">Collapsible Log Analysis</span>
-                <svg class="feature-deprecated-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-tooltip="⚠️ Archived: Feature doesn't work - implemented in Falix"><path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-24-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/></svg>
-                <button class="feature-btn" id="ARCHIVED_collapsibleLogAnalysis" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
-              </div>
-              <div class="feature-row">
-               <span class="feature-label" data-tooltip="Makes the file editor 600px Height">Editor Wrapper Height</span>
-               <svg class="feature-deprecated-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-tooltip="⚠️ Archived: Feature doesn't work - issue was fixed in falix"><path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/></svg>
-               <button class="feature-btn" id="ARCHIVED_editorWrapperHeight" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
-              </div>
-              <div class="feature-row">
-               <span class="feature-label" data-tooltip="Hide the 'Remote Startup' navigation item from the sidebar.">Remove "Remote Startup" nav item</span>
-               <svg class="feature-deprecated-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-tooltip="⚠️ Archived: Feature doesn't work - removed from navbar by default"><path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/></svg>
-               <button class="feature-btn" id="ARCHIVED_removeExternalStartNav" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
-              </div>
-              <div class="feature-row">
-               <span class="feature-label" data-tooltip="Adds a toggle to hide closed tickets in the ticket list.">Hide Closed Tickets toggle</span>
-               <svg class="feature-deprecated-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-tooltip="⚠️ Archived: Feature doesn't work - inplemented in Falix"><path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/></svg>
-               <button class="feature-btn" id="ARCHIVED_hideClosedTickets" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
-              </div>
+              There are no archived features at the moment.
           </div>
         </div>
       </div>

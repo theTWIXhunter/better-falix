@@ -52,16 +52,6 @@
       "run_at": "document_idle"
     },
     {
-      "matches": ["https://client.falixnodes.net/server/versions*"],
-      "js": ["features/general/itsjust-geyser/index.js"],
-      "run_at": "document_idle"
-    },
-    {
-      "matches": ["https://client.falixnodes.net/server/versions*"],
-      "js": ["features/general/itsjust-paper/index.js"],
-      "run_at": "document_idle"
-    },
-    {
       "matches": ["https://client.falixnodes.net/*"],
       "js": ["features/general/navbarhover/index.js"],
       "run_at": "document_idle"
@@ -78,13 +68,18 @@
     },
     {
       "matches": ["https://client.falixnodes.net/*"],
-      "js": ["features/general/remove-language-selector/index.js"],
+      "js": ["features/general/remove-navbar-footer-buttons/index.js"],
       "run_at": "document_idle"
     },
     {
       "matches": ["https://client.falixnodes.net/*", "https://falixnodes.net/*", "https://kb.falixnodes.net/*"],
       "js": ["features/general/replace-falix-logo/index.js"],
       "run_at": "document_start"
+    },
+    {
+      "matches": ["https://client.falixnodes.net/*"],
+      "js": ["features/general/24h-time-format/index.js"],
+      "run_at": "document_idle"
     },
     {
       "matches": ["https://client.falixnodes.net/*"],
@@ -231,68 +226,9 @@
       "js": ["features/support-center/inline-server-info/index.js"],
       "run_at": "document_idle"
     },
-
-
-
-
     {
-      "matches": ["https://client.falixnodes.net/server/*"],
-      "js": ["features/archived/legacy-server-name-button/index.js"],
-      "run_at": "document_idle"
-    },  
-    {
-      "matches": ["https://client.falixnodes.net/server/edit*"],
-      "js": ["features/archived/legacy-editor-fullscreen/index.js"],
-      "run_at": "document_idle"
-    },
-    {
-      "matches": ["https://client.falixnodes.net/shared-logs/*"],
-      "js": ["features/archived/legacy-collapsible-log-analysis/index.js"],
-      "run_at": "document_idle"
-    },
-    {
-      "matches": ["https://client.falixnodes.net/server/edit*"],
-      "js": ["features/archived/editor-wrapper-height/index.js"],
-      "run_at": "document_idle"
-    },
-    {
-      "matches": ["https://client.falixnodes.net/admin/ListTickets*"],
-      "js": ["features/archived/hide-closed-tickets/index.js"],
-      "run_at": "document_idle"
-    },
-    {
-      "matches": ["https://client.falixnodes.net/server/*"],
-      "js": ["features/archived/move-backups-nav/index.js"],
-      "run_at": "document_idle"
-    },
-    {
-      "matches": ["https://client.falixnodes.net/server/*"],
-      "js": ["features/archived/move-monitoring-nav/index.js"],
-      "run_at": "document_idle"
-    },
-    {
-      "matches": ["https://client.falixnodes.net/server/*"],
-      "js": ["features/archived/move-logs-nav/index.js"],
-      "run_at": "document_idle"
-    },
-    {
-      "matches": ["https://client.falixnodes.net/*"],
-      "js": ["features/archived/remove-navbar-support-links/index.js"],
-      "run_at": "document_idle"
-    },
-    {
-      "matches": ["https://client.falixnodes.net/server/*"],
-      "js": ["features/archived/remove-console-files-category/index.js"],
-      "run_at": "document_start"
-    },
-    {
-      "matches": ["https://client.falixnodes.net/server/*"],
-      "js": ["features/archived/add-versions-nav/index.js"],
-      "run_at": "document_idle"
-    },
-    {
-      "matches": ["https://client.falixnodes.net/server/*"],
-      "js": ["features/archived/remove-external-start-nav/index.js"],
+      "matches": ["https://client.falixnodes.net/support/viewticket.php*"],
+      "js": ["features/support-center/hide-participants/index.js"],
       "run_at": "document_idle"
     },
 
