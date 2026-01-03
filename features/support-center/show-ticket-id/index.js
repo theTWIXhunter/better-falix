@@ -28,6 +28,11 @@ chrome.storage.sync.get({ showTicketId: false, enabled: true }, (data) => {
       return;
     }
 
+    // Skip if this h2 is inside a modal (like the rename modal)
+    if (titleElement.closest('.modal')) {
+      return;
+    }
+
     // Check if we've already added the ticket ID
     if (titleElement.textContent.trim().startsWith('#')) {
       return;
