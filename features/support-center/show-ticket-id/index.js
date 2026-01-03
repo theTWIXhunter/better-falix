@@ -20,16 +20,11 @@ chrome.storage.sync.get({ showTicketId: false, enabled: true }, (data) => {
       return;
     }
 
-    // Find the ticket title h2 element
-    const titleElement = document.querySelector('h2.mb-0');
+    // Find the ticket title element by ID
+    const titleElement = document.getElementById('ticketSubject');
     
     if (!titleElement) {
       console.log('[better-falix] show-ticket-id: Title element not found');
-      return;
-    }
-
-    // Skip if this h2 is inside a modal (like the rename modal)
-    if (titleElement.closest('.modal')) {
       return;
     }
 
