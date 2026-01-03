@@ -28,6 +28,11 @@ chrome.storage.sync.get({ showTicketId: false, enabled: true }, (data) => {
       return;
     }
 
+    // Don't modify if this is inside the new ticket subject input
+    if (titleElement.closest('#newTicketSubject')) {
+      return;
+    }
+
     // Check if we've already added the ticket ID
     if (titleElement.textContent.trim().startsWith('#')) {
       return;

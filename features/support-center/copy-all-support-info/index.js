@@ -67,14 +67,25 @@ function addCopyAllButton() {
     
     // Extract PIN from the server-pin-badge
     const pinBadge = serverDisplay.querySelector('.server-pin-badge');
+    let pin = '';
+    let isPinDeleted = false;
+    
     if (!pinBadge) {
         console.log('[better-falix] copy-all-support-info: PIN badge not found');
-        return;
+        // If we have a server ID but no PIN, mark PIN as deleted
+        if (serverId) {
+            pin = 'deleted';
+            isPinDeleted = true;
+            console.log('[better-falix] copy-all-support-info: PIN marked as deleted');
+        } else {
+            // No server ID and no PIN, exit
+            return;
+        }
+    } else {
+        // Extract PIN from the text content (format: "PIN: 5665")
+        const pinMatch = pinBadge.textContent.match(/PIN:\s*(\d+)/);
+        pin = pinMatch ? pinMatch[1] : '';
     }
-    
-    // Extract PIN from the text content (format: "PIN: 5665")
-    const pinMatch = pinBadge.textContent.match(/PIN:\s*(\d+)/);
-    const pin = pinMatch ? pinMatch[1] : '';
     
     console.log('[better-falix] copy-all-support-info: Server ID:', serverId, 'PIN:', pin);
     
@@ -91,9 +102,12 @@ Ticket: Support-center-${ticketId}`;
     // Create the button with styling to match the new server display
     const copyAllBtn = document.createElement('span');
     copyAllBtn.className = 'server-pin-badge';
+    
+    // Set button color based on whether PIN is deleted
+    const buttonColor = isPinDeleted ? 'danger' : 'info';
     copyAllBtn.style.cssText = `
-        background: rgba(var(--falcon-info-rgb), 0.15);
-        color: rgb(var(--falcon-info-rgb));
+        background: rgba(var(--falcon-${buttonColor}-rgb), 0.15);
+        color: rgb(var(--falcon-${buttonColor}-rgb));
         padding: 0.2rem 0.5rem;
         border-radius: 4px;
         font-size: 0.75rem;
