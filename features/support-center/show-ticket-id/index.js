@@ -29,15 +29,24 @@ chrome.storage.sync.get({ showTicketId: false, enabled: true }, (data) => {
     }
 
     // Check if we've already added the ticket ID
-    if (titleElement.textContent.trim().startsWith('#')) {
+    if (titleElement.hasAttribute('data-ticket-id')) {
       return;
     }
 
-    // Get the current title text
-    const currentTitle = titleElement.textContent.trim();
+    // Add ticket ID using CSS ::before pseudo-element to avoid modifying textContent
+    titleElement.setAttribute('data-ticket-id', ticketId);
     
-    // Update the title with ticket ID
-    titleElement.textContent = `#${ticketId} - ${currentTitle}`;
+    // Inject CSS to display the ticket ID
+    if (!document.getElementById('better-falix-ticket-id-style')) {
+      const style = document.createElement('style');
+      style.id = 'better-falix-ticket-id-style';
+      style.textContent = `
+        #ticketSubject[data-ticket-id]::before {
+          content: '#' attr(data-ticket-id) ' - ';
+        }
+      `;
+      document.head.appendChild(style);
+    }
     
     console.log('[better-falix] show-ticket-id: Added ticket ID to title');
   }
