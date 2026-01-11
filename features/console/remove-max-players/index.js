@@ -35,6 +35,8 @@ chrome.storage.sync.get({ removeMaxPlayers: false, enabled: true }, (data) => {
       style.textContent = `
         .server-info-container {
           grid-auto-rows: min-content !important;
+          height: auto !important;
+          min-height: unset !important;
         }
         .compact-info-card {
           height: auto !important;
