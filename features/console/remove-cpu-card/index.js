@@ -22,11 +22,19 @@ chrome.storage.sync.get({ removeCpuCard: false, enabled: true }, (data) => {
       const headerText = card.querySelector('.compact-info-header');
       
       if (headerText && headerText.textContent.trim().toUpperCase().includes('CPU')) {
-        card.style.display = 'none';
+        card.remove();
         removed = true;
-        console.log('[better-falix] remove-cpu-card: Hid CPU card at index', index);
+        console.log('[better-falix] remove-cpu-card: Removed CPU card at index', index);
       }
     });
+
+    if (removed) {
+      // Force the container to recalculate its layout
+      const container = document.querySelector('.server-info-container');
+      if (container) {
+        container.style.display = 'grid';
+      }
+    }
 
     if (!removed) {
       console.log('[better-falix] remove-cpu-card: CPU card not found');
