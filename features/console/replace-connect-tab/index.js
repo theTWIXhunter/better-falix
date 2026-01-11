@@ -124,11 +124,23 @@ chrome.storage.sync.get({ enabled: true, replaceConnectTab: false }, (data) => {
     
     // Add Dynamic IP box
     if (dynamicIp && port) {
+      // Check if node is an IPv4 address (format: xxx.xxx.xxx.xxx)
+      const isIPv4 = /^(\d{1,3}\.){3}\d{1,3}$/.test(dynamicIp);
       // Check if node matches EUX-O pattern (e.g., EU4-O, EU5-O)
       const isEUXONode = /^EU\d+-O$/i.test(dynamicIp);
-      const fullDynamicIp = isEUXONode 
-        ? `host.falixserver.net:${port}`
-        : `${dynamicIp}.falixserver.net:${port}`;
+      
+      let fullDynamicIp;
+      if (isIPv4) {
+        // If it's an IPv4 address, use it directly with the port
+        fullDynamicIp = `${dynamicIp}:${port}`;
+      } else if (isEUXONode) {
+        // If it's an EUX-O node, use host.falixserver.net
+        fullDynamicIp = `host.falixserver.net:${port}`;
+      } else {
+        // Otherwise, append .falixserver.net
+        fullDynamicIp = `${dynamicIp}.falixserver.net:${port}`;
+      }
+      
       javaSteps.appendChild(createAddressBox('DYNAMIC IP:', fullDynamicIp, fullDynamicIp));
     }
   }
