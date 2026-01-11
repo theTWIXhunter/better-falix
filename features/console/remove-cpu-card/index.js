@@ -28,6 +28,21 @@ chrome.storage.sync.get({ removeCpuCard: false, enabled: true }, (data) => {
       }
     });
 
+    if (removed) {
+      // Inject CSS to fix grid layout and prevent card expansion
+      const style = document.createElement('style');
+      style.textContent = `
+        .server-info-container {
+          grid-auto-rows: min-content !important;
+        }
+        .compact-info-card {
+          height: auto !important;
+          min-height: unset !important;
+        }
+      `;
+      document.head.appendChild(style);
+    }
+
     if (!removed) {
       console.log('[better-falix] remove-cpu-card: CPU card not found');
     }
