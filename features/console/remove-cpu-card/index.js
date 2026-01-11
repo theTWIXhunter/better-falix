@@ -28,14 +28,6 @@ chrome.storage.sync.get({ removeCpuCard: false, enabled: true }, (data) => {
       }
     });
 
-    if (removed) {
-      // Force the container to recalculate its layout
-      const container = document.querySelector('.server-info-container');
-      if (container) {
-        container.style.display = 'grid';
-      }
-    }
-
     if (!removed) {
       console.log('[better-falix] remove-cpu-card: CPU card not found');
     }

@@ -15,8 +15,6 @@ chrome.storage.sync.get({ removeMaxPlayers: false, enabled: true }, (data) => {
     const infoCards = document.querySelectorAll('.compact-info-card');
     //console.log('[better-falix] Remove Max Players: Found', infoCards.length, 'compact info cards');
     
-    let removed = false;
-    
     // Look through all cards to find the one with "Max Players" header
     infoCards.forEach((card, index) => {
       const headerText = card.querySelector('.compact-info-header');
@@ -24,18 +22,9 @@ chrome.storage.sync.get({ removeMaxPlayers: false, enabled: true }, (data) => {
       if (headerText && headerText.textContent && headerText.textContent.trim().toLowerCase().includes('max players')) {
         //console.log('[better-falix] Remove Max Players: Found Max Players card at index', index);
         card.remove();
-        removed = true;
         //console.log('[better-falix] Remove Max Players: Successfully removed Max Players card');
       }
     });
-    
-    if (removed) {
-      // Force the container to recalculate its layout
-      const container = document.querySelector('.server-info-container');
-      if (container) {
-        container.style.display = 'grid';
-      }
-    }
   }
 
   // Wait for the page to load and then remove the Max Players card
