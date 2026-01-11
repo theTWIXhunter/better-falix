@@ -107,7 +107,7 @@
     },
     {
       "matches": ["https://client.falixnodes.net/server/console*", "https://client.falixnodes.net/server/*/console*"],
-      "js": ["features/console/replace-cpu-with-node/index.js"],
+      "js": ["features/console/replace-location-with-node/index.js"],
       "run_at": "document_idle"
     },
     {
