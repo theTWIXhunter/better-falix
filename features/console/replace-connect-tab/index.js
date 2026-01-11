@@ -59,29 +59,26 @@ chrome.storage.sync.get({ enabled: true, replaceConnectTab: false }, (data) => {
       }
     }
     
-    // Extract NODE (dynamic IP) from support info
+    // Extract dynamic IP from the connect modal itself
     let dynamicIp = '';
-    const supportInfoElements = document.querySelectorAll('.support-info-value');
-    for (const element of supportInfoElements) {
-      const text = element.textContent || '';
-      // Check if it contains "NODE:" text
-      if (text.includes('NODE:')) {
-        // Try to get from .support-info-text (with replace-support-modal enabled)
-        const supportInfoText = element.querySelector('.support-info-text');
-        let nodeText = '';
-        if (supportInfoText) {
-          nodeText = supportInfoText.textContent.trim();
-        } else {
-          // Fallback: extract from the full text (without replace-support-modal)
-          // Text format: "NODE: node123 - CPU: 4 vCores"
-          const match = text.match(/NODE:\s*([^\s-]+)/);
-          if (match) {
-            nodeText = match[1];
-          }
+    
+    // First, try to get it from Java Edition's "Dynamic IP:" section
+    const javaAltBox = javaSteps.querySelector('.connect-address-box.connect-address-alt .connect-address-text');
+    if (javaAltBox) {
+      dynamicIp = javaAltBox.textContent.trim();
+    }
+    
+    // If not found in Java, try Bedrock Edition's dynamic IP section
+    if (!dynamicIp && bedrockSteps) {
+      const bedrockAddress = bedrockSteps.querySelector('.bedrock-detail-row .bedrock-detail-label');
+      if (bedrockAddress && bedrockAddress.textContent.includes('Address:')) {
+        const addressValue = bedrockAddress.closest('.bedrock-detail-row').querySelector('.bedrock-detail-value span');
+        const portLabel = Array.from(bedrockSteps.querySelectorAll('.bedrock-detail-label')).find(el => el.textContent.includes('Port:'));
+        const portValue = portLabel?.closest('.bedrock-detail-row').querySelector('.bedrock-detail-value span');
+        
+        if (addressValue && portValue) {
+          dynamicIp = `${addressValue.textContent.trim()}:${portValue.textContent.trim()}`;
         }
-        // Extract just the NODE part (before " - CPU" if it exists)
-        dynamicIp = nodeText.split(' - ')[0].trim();
-        break;
       }
     }
     
