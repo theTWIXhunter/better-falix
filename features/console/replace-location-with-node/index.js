@@ -79,10 +79,11 @@ chrome.storage.sync.get({ replaceCpuWithNode: false, enabled: true }, (data) => 
       return;
     }
 
-    // Replace the header text (keep the original CPU icon)
+    // Replace the header text and icon
     const headerElement = targetCard.querySelector('.compact-info-header');
     if (headerElement) {
-      headerElement.textContent = 'Server Node';
+      // Clear the header and add new text with server icon
+      headerElement.innerHTML = 'Server Node <svg class="svg-inline--fa" viewBox="0 0 512 512" width="1em" height="1em" fill="currentColor" aria-hidden="true"><path d="M64 32C28.7 32 0 60.7 0 96v64c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm280 72a24 24 0 1 1 0 48 24 24 0 1 1 0-48zm48 24a24 24 0 1 1 48 0 24 24 0 1 1 -48 0zM64 288c-35.3 0-64 28.7-64 64v64c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V352c0-35.3-28.7-64-64-64H64zm280 72a24 24 0 1 1 0 48 24 24 0 1 1 0-48zm56 24a24 24 0 1 1 48 0 24 24 0 1 1 -48 0z"></path></svg>';
     }
 
     // Replace the value with node information
