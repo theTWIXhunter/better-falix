@@ -90,11 +90,11 @@
 
 
 
-    // {
-    //   "matches": ["https://client.falixnodes.net/server/console*", "https://client.falixnodes.net/server/*/console*"],
-    //   "js": ["features/console/hide-console-tabs/index.js"],
-    //   "run_at": "document_start"
-    // },
+    {
+      "matches": ["https://client.falixnodes.net/server/console*", "https://client.falixnodes.net/server/*/console*"],
+      "js": ["features/console/hide-console-tabs/index.js"],
+      "run_at": "document_start"
+    },
     {
       "matches": ["https://client.falixnodes.net/server/console*", "https://client.falixnodes.net/server/*/console*"],
       "js": ["features/console/replace-support-modal/index.js"],
@@ -128,11 +128,6 @@
     {
       "matches": ["https://client.falixnodes.net/server/console*", "https://client.falixnodes.net/server/*/console*"],
       "js": ["features/console/remove-cpu-card/index.js"],
-      "run_at": "document_idle"
-    },
-    {
-      "matches": ["https://client.falixnodes.net/server/console*", "https://client.falixnodes.net/server/*/console*"],
-      "js": ["features/console/hide-port-card/index.js"],
       "run_at": "document_idle"
     },
 
