@@ -120,22 +120,34 @@ chrome.storage.sync.get({ enabled: true, replaceConnectTab: false }, (data) => {
     }
     
     // Add Dynamic IP box
-    if (dynamicIp && port) {
-      // Check if node is an IPv4 address (format: xxx.xxx.xxx.xxx)
-      const isIPv4 = /^(\d{1,3}\.){3}\d{1,3}$/.test(dynamicIp);
-      // Check if node matches EUX-O pattern (e.g., EU4-O, EU5-O)
-      const isEUXONode = /^EU\d+-O$/i.test(dynamicIp);
+    if (dynamicIp) {
+      // If dynamicIp already contains a colon, it already has the port included
+      const alreadyHasPort = dynamicIp.includes(':');
       
       let fullDynamicIp;
-      if (isIPv4) {
-        // If it's an IPv4 address, use it directly with the port
-        fullDynamicIp = `${dynamicIp}:${port}`;
-      } else if (isEUXONode) {
-        // If it's an EUX-O node, use host.falixserver.net
-        fullDynamicIp = `host.falixserver.net:${port}`;
+      if (alreadyHasPort) {
+        // Use as-is if it already includes the port
+        fullDynamicIp = dynamicIp;
+      } else if (port) {
+        // Only append port if dynamicIp doesn't already have one
+        // Check if node is an IPv4 address (format: xxx.xxx.xxx.xxx)
+        const isIPv4 = /^(\d{1,3}\.){3}\d{1,3}$/.test(dynamicIp);
+        // Check if node matches EUX-O pattern (e.g., EU4-O, EU5-O)
+        const isEUXONode = /^EU\d+-O$/i.test(dynamicIp);
+        
+        if (isIPv4) {
+          // If it's an IPv4 address, use it directly with the port
+          fullDynamicIp = `${dynamicIp}:${port}`;
+        } else if (isEUXONode) {
+          // If it's an EUX-O node, use host.falixserver.net
+          fullDynamicIp = `host.falixserver.net:${port}`;
+        } else {
+          // Otherwise, append .falixserver.net
+          fullDynamicIp = `${dynamicIp}.falixserver.net:${port}`;
+        }
       } else {
-        // Otherwise, append .falixserver.net
-        fullDynamicIp = `${dynamicIp}.falixserver.net:${port}`;
+        // No port available, use dynamicIp as-is
+        fullDynamicIp = dynamicIp;
       }
       
       javaSteps.appendChild(createAddressBox('DYNAMIC IP:', fullDynamicIp, fullDynamicIp));

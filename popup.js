@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 const toggleBtn = document.getElementById('toggle');
 const featureIds = [
-  'hideConsoleTabs',
+  // 'hideConsoleTabs', // Archived
   'replaceAccountCategory',
   'removeSftpUpload',
   'replaceConnectTab',
@@ -32,6 +32,7 @@ const featureIds = [
   'removePlayerManagement',
   'removePremiumTransfer',
   'removeCpuCard',
+  'hidePortCard',
   'uploadCreateHover',
   'customServerOrder',
   'removeServerSearch',
@@ -129,7 +130,7 @@ function setThemesListEnabled(enabled) {
 document.addEventListener('DOMContentLoaded', () => {
   chrome.storage.sync.get({
     enabled: false,
-    hideConsoleTabs: false,
+    // hideConsoleTabs: false, // Archived
     replaceAccountCategory: false,
     removeSftpUpload: false,
     replaceConnectTab: false,
@@ -147,6 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
     removeLogsContainer: false,
     removePremiumTransfer: false,
     removeCpuCard: false,
+    hidePortCard: false,
     redactedContentSubtle: false,
     betterEditorFullscreen: false,
     coloredLogMessages: false,
