@@ -17,77 +17,89 @@ chrome.storage.sync.get({ enabled: true, replaceConnectTab: false }, (data) => {
       connectModal.removeAttribute('aria-hidden');
     }
 
-    // Check for new modal-body structure
+    // Check for new modal-body structure (only if it has the specific connect sections)
     const modalBody = connectModal?.querySelector('.modal-body');
     
     if (modalBody) {
-      // Handle new modal structure
-      console.log('[better-falix] replace-connect-tab: Detected modal-body structure');
-      
-      let domainAddress = '';
-      let directConnection = '';
-      
-      // Extract domain address (IP with port)
-      const domainSection = Array.from(modalBody.querySelectorAll('.mb-4')).find(section => 
-        section.querySelector('.connect-label')?.textContent?.includes('Domain Address')
+      // Check if this is the new Hytale-style modal by looking for Domain Address or Direct Connection labels
+      const hasDomainAddress = Array.from(modalBody.querySelectorAll('.connect-label')).some(label => 
+        label.textContent?.includes('Domain Address')
       );
-      if (domainSection) {
-        const addressText = domainSection.querySelector('.connect-address-text');
-        if (addressText) {
-          domainAddress = addressText.textContent.trim();
-        }
-      }
-      
-      // Extract direct connection (dynamic IP with port)
-      const directSection = Array.from(modalBody.querySelectorAll('.mb-4')).find(section => 
-        section.querySelector('.connect-label')?.textContent?.includes('Direct Connection')
+      const hasDirectConnection = Array.from(modalBody.querySelectorAll('.connect-label')).some(label => 
+        label.textContent?.includes('Direct Connection')
       );
-      if (directSection) {
-        const addressText = directSection.querySelector('.connect-address-text');
-        if (addressText) {
-          directConnection = addressText.textContent.trim();
+      
+      if (hasDomainAddress || hasDirectConnection) {
+        // Handle new modal structure
+        console.log('[better-falix] replace-connect-tab: Detected modal-body structure');
+        
+        let domainAddress = '';
+        let directConnection = '';
+        
+        // Extract domain address (IP with port)
+        const domainSection = Array.from(modalBody.querySelectorAll('.mb-4')).find(section => 
+          section.querySelector('.connect-label')?.textContent?.includes('Domain Address')
+        );
+        if (domainSection) {
+          const addressText = domainSection.querySelector('.connect-address-text');
+          if (addressText) {
+            domainAddress = addressText.textContent.trim();
+          }
         }
+        
+        // Extract direct connection (dynamic IP with port)
+        const directSection = Array.from(modalBody.querySelectorAll('.mb-4')).find(section => 
+          section.querySelector('.connect-label')?.textContent?.includes('Direct Connection')
+        );
+        if (directSection) {
+          const addressText = directSection.querySelector('.connect-address-text');
+          if (addressText) {
+            directConnection = addressText.textContent.trim();
+          }
+        }
+        
+        console.log('[better-falix] replace-connect-tab: Domain:', domainAddress, 'Direct:', directConnection);
+        
+        // Only clear and rebuild if we found data
+        if (domainAddress || directConnection) {
+          console.log('[better-falix] replace-connect-tab: Clearing modal body');
+          modalBody.innerHTML = '';
+          
+          // Helper function to create address box
+          function createAddressBox(label, value) {
+            const container = document.createElement('div');
+            container.className = 'mb-4';
+            container.innerHTML = `
+              <div class="connect-label mb-2">${label}</div>
+              <div class="connect-address-box">
+                <span class="connect-address-text">${value}</span>
+                <button class="btn connect-inline-copy" onclick="copyConnectionInfo('${value}', this)">
+                  <svg class="svg-inline--fa" viewBox="0 0 448 512" width="0.875em" height="1em" fill="currentColor" aria-hidden="true">
+                    <path d="M192 0c-35.3 0-64 28.7-64 64l0 256c0 35.3 28.7 64 64 64l192 0c35.3 0 64-28.7 64-64l0-200.6c0-17.4-7.1-34.1-19.7-46.2L370.6 17.8C358.7 6.4 342.8 0 326.3 0L192 0zM64 128c-35.3 0-64 28.7-64 64L0 448c0 35.3 28.7 64 64 64l192 0c35.3 0 64-28.7 64-64l0-16-64 0 0 16-192 0 0-256 16 0 0-64-16 0z"></path>
+                  </svg>
+                </button>
+              </div>
+            `;
+            return container;
+          }
+          
+          // Add simplified connection info
+          if (domainAddress) {
+            console.log('[better-falix] replace-connect-tab: Adding domain address');
+            const box = createAddressBox('IP WITH PORT:', domainAddress);
+            modalBody.appendChild(box);
+          }
+          
+          if (directConnection) {
+            console.log('[better-falix] replace-connect-tab: Adding direct connection');
+            const box = createAddressBox('DYNAMIC IP (WITH PORT):', directConnection);
+            modalBody.appendChild(box);
+          }
+          
+          console.log('[better-falix] replace-connect-tab: Modal rebuilt successfully');
+        }
+        return;
       }
-      
-      console.log('[better-falix] replace-connect-tab: Domain:', domainAddress, 'Direct:', directConnection);
-      
-      // Clear modal body and rebuild with simplified structure
-      console.log('[better-falix] replace-connect-tab: Clearing modal body');
-      modalBody.innerHTML = '';
-      
-      // Helper function to create address box
-      function createAddressBox(label, value) {
-        const container = document.createElement('div');
-        container.className = 'mb-4';
-        container.innerHTML = `
-          <div class="connect-label mb-2">${label}</div>
-          <div class="connect-address-box">
-            <span class="connect-address-text">${value}</span>
-            <button class="btn connect-inline-copy" onclick="copyConnectionInfo('${value}', this)">
-              <svg class="svg-inline--fa" viewBox="0 0 448 512" width="0.875em" height="1em" fill="currentColor" aria-hidden="true">
-                <path d="M192 0c-35.3 0-64 28.7-64 64l0 256c0 35.3 28.7 64 64 64l192 0c35.3 0 64-28.7 64-64l0-200.6c0-17.4-7.1-34.1-19.7-46.2L370.6 17.8C358.7 6.4 342.8 0 326.3 0L192 0zM64 128c-35.3 0-64 28.7-64 64L0 448c0 35.3 28.7 64 64 64l192 0c35.3 0 64-28.7 64-64l0-16-64 0 0 16-192 0 0-256 16 0 0-64-16 0z"></path>
-              </svg>
-            </button>
-          </div>
-        `;
-        return container;
-      }
-      
-      // Add simplified connection info
-      if (domainAddress) {
-        console.log('[better-falix] replace-connect-tab: Adding domain address');
-        const box = createAddressBox('IP WITH PORT:', domainAddress);
-        modalBody.appendChild(box);
-      }
-      
-      if (directConnection) {
-        console.log('[better-falix] replace-connect-tab: Adding direct connection');
-        const box = createAddressBox('DYNAMIC IP (WITH PORT):', directConnection);
-        modalBody.appendChild(box);
-      }
-      
-      console.log('[better-falix] replace-connect-tab: Modal rebuilt successfully');
-      return;
     }
     
     // Original structure handling
