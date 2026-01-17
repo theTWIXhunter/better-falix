@@ -24,13 +24,30 @@ chrome.storage.sync.get({ enabled: true, replaceConnectTab: false }, (data) => {
     return box;
   }
 
+  // Render connection info boxes in the container
+  function renderConnectionBoxes(container, serverIp, dynamicIp) {
+    // Clear any existing boxes
+    container.querySelectorAll('.connect-address-box').forEach(el => el.remove());
+    
+    // Add SERVER IP (the primary connection address - for Hytale this is the .falixsrv.me domain)
+    if (serverIp) {
+      container.appendChild(createAddressBox('SERVER IP:', serverIp, serverIp));
+    }
+    
+    // Add DYNAMIC IP (the direct/alternative connection - for Hytale this is host.falixserver.net)
+    if (dynamicIp) {
+      container.appendChild(createAddressBox('DYNAMIC IP:', dynamicIp, dynamicIp));
+    }
+  }
+
   // Handle alternate modal structure (modal-body with direct connection info)
   function handleAlternateModalStructure(modalBody) {
     console.log('[better-falix] replace-connect-tab: Processing alternate modal structure');
     
     // Extract connection info from the alternate structure
     const addressBoxes = modalBody.querySelectorAll('.connect-address-box');
-    const connections = [];
+    let serverIp = ''; // The .falixsrv.me domain address
+    let dynamicIp = ''; // The host.falixserver.net address
     
     addressBoxes.forEach(box => {
       const addressText = box.querySelector('.connect-address-text');
@@ -40,11 +57,13 @@ chrome.storage.sync.get({ enabled: true, replaceConnectTab: false }, (data) => {
         const labelElement = box.previousElementSibling?.querySelector('.connect-label');
         let label = labelElement ? labelElement.textContent.trim() : '';
         
-        // Determine the type based on label or content
+        // Domain Address (.falixsrv.me) = SERVER IP for Hytale
         if (label.includes('Domain Address') || value.includes('.falixsrv.me')) {
-          connections.push({ type: 'domain', value: value, label: 'DYNAMIC IP:' });
-        } else if (label.includes('Direct Connection') || value.includes('host.falixserver.net')) {
-          connections.push({ type: 'direct', value: value, label: 'IP WITH PORT:' });
+          serverIp = value;
+        }
+        // Direct Connection (host.falixserver.net) = DYNAMIC IP for Hytale
+        else if (label.includes('Direct Connection') || value.includes('host.falixserver.net')) {
+          dynamicIp = value;
         }
       }
     });
@@ -56,32 +75,8 @@ chrome.storage.sync.get({ enabled: true, replaceConnectTab: false }, (data) => {
     const container = document.createElement('div');
     container.id = 'javaSteps';
     
-    // Add extracted connections in our custom format
-    connections.forEach(conn => {
-      // Parse IP and port if available
-      const parts = conn.value.split(':');
-      const hasPort = parts.length === 2;
-      const baseAddress = parts[0];
-      const port = hasPort ? parts[1] : '';
-      
-      // Add the main connection info
-      container.appendChild(createAddressBox(conn.label, conn.value, conn.value));
-      
-      // If it's a domain address and we have port, add individual components
-      if (conn.type === 'domain' && hasPort) {
-        // Extract just the IP part (before port)
-        container.appendChild(createAddressBox('SERVER IP:', baseAddress, baseAddress));
-        container.appendChild(createAddressBox('PORT:', port, port));
-      }
-      
-      // If it's direct connection, also add as SERVER IP
-      if (conn.type === 'direct') {
-        container.appendChild(createAddressBox('SERVER IP:', baseAddress, baseAddress));
-        if (hasPort) {
-          container.appendChild(createAddressBox('PORT:', port, port));
-        }
-      }
-    });
+    // Render using the shared function
+    renderConnectionBoxes(container, serverIp, dynamicIp);
     
     modalBody.appendChild(container);
     console.log('[better-falix] replace-connect-tab: Alternate modal processed successfully');
@@ -174,31 +169,21 @@ chrome.storage.sync.get({ enabled: true, replaceConnectTab: false }, (data) => {
       bedrockSteps.remove();
     }
 
-    // Remove any existing address boxes in javaSteps
-    javaSteps.querySelectorAll('.connect-address-box').forEach(el => el.remove());
-
-    // Add IP box
-    javaSteps.appendChild(createAddressBox('SERVER IP:', ip, ip));
+    // Determine SERVER IP and DYNAMIC IP based on what we extracted
+    let serverIp = '';
+    let finalDynamicIp = '';
     
-    // Add IP with port box
-    if (fullAddress) {
-      javaSteps.appendChild(createAddressBox('IP WITH PORT:', fullAddress, fullAddress));
-    }
+    // For Minecraft servers with both IPs:
+    // - SERVER IP is typically the base IP (without port for Java, or the direct connection)
+    // - DYNAMIC IP is the domain-based connection (often with .falixserver.net suffix)
     
-    // Add Port box
-    if (port) {
-      javaSteps.appendChild(createAddressBox('PORT:', port, port));
-    }
-    
-    // Add Dynamic IP box
     if (dynamicIp) {
       // If dynamicIp already contains a colon, it already has the port included
       const alreadyHasPort = dynamicIp.includes(':');
       
-      let fullDynamicIp;
       if (alreadyHasPort) {
         // Use as-is if it already includes the port
-        fullDynamicIp = dynamicIp;
+        finalDynamicIp = dynamicIp;
       } else if (port) {
         // Only append port if dynamicIp doesn't already have one
         // Check if node is an IPv4 address (format: xxx.xxx.xxx.xxx)
@@ -208,21 +193,25 @@ chrome.storage.sync.get({ enabled: true, replaceConnectTab: false }, (data) => {
         
         if (isIPv4) {
           // If it's an IPv4 address, use it directly with the port
-          fullDynamicIp = `${dynamicIp}:${port}`;
+          finalDynamicIp = `${dynamicIp}:${port}`;
         } else if (isEUXONode) {
           // If it's an EUX-O node, use host.falixserver.net
-          fullDynamicIp = `host.falixserver.net:${port}`;
+          finalDynamicIp = `host.falixserver.net:${port}`;
         } else {
           // Otherwise, append .falixserver.net
-          fullDynamicIp = `${dynamicIp}.falixserver.net:${port}`;
+          finalDynamicIp = `${dynamicIp}.falixserver.net:${port}`;
         }
       } else {
         // No port available, use dynamicIp as-is
-        fullDynamicIp = dynamicIp;
+        finalDynamicIp = dynamicIp;
       }
-      
-      javaSteps.appendChild(createAddressBox('DYNAMIC IP:', fullDynamicIp, fullDynamicIp));
     }
+    
+    // Set SERVER IP - prefer the main IP, fall back to fullAddress
+    serverIp = ip || fullAddress;
+    
+    // Use the shared rendering function
+    renderConnectionBoxes(javaSteps, serverIp, finalDynamicIp);
   }
 
   // Fix: always run after DOMContentLoaded to ensure all elements exist
