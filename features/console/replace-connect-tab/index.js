@@ -10,6 +10,83 @@ chrome.storage.sync.get({ enabled: true, replaceConnectTab: false }, (data) => {
 
   //  --------- START FEATURE ----------
 
+  // Helper function to create address box
+  function createAddressBox(label, value, copyValue) {
+    const box = document.createElement('div');
+    box.className = 'connect-address-box';
+    box.style.cssText = 'display: flex; align-items: center; white-space: nowrap;';
+    box.innerHTML = `
+      ${label} <span class="connect-address-text" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex-shrink: 1; min-width: 0;">${value}</span>
+      <button class="btn connect-inline-copy" onclick="copyConnectionInfo('${copyValue}', this)" title="Copy to clipboard" style="flex-shrink: 0;">
+        <svg class="svg-inline--fa fa-copy" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="copy" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M208 0L332.1 0c12.7 0 24.9 5.1 33.9 14.1l67.9 67.9c9 9 14.1 21.2 14.1 33.9L448 336c0 26.5-21.5 48-48 48l-192 0c-26.5 0-48-21.5-48-48l0-288c0-26.5 21.5-48 48-48zM48 128l80 0 0 64-64 0 0 256 192 0 0-32 64 0 0 48c0 26.5-21.5 48-48 48L48 512c-26.5 0-48-21.5-48-48L0 176c0-26.5 21.5-48 48-48z"></path></svg>
+      </button>
+    `;
+    return box;
+  }
+
+  // Handle alternate modal structure (modal-body with direct connection info)
+  function handleAlternateModalStructure(modalBody) {
+    console.log('[better-falix] replace-connect-tab: Processing alternate modal structure');
+    
+    // Extract connection info from the alternate structure
+    const addressBoxes = modalBody.querySelectorAll('.connect-address-box');
+    const connections = [];
+    
+    addressBoxes.forEach(box => {
+      const addressText = box.querySelector('.connect-address-text');
+      if (addressText) {
+        const value = addressText.textContent.trim();
+        // Look for the label in the previous sibling or parent
+        const labelElement = box.previousElementSibling?.querySelector('.connect-label');
+        let label = labelElement ? labelElement.textContent.trim() : '';
+        
+        // Determine the type based on label or content
+        if (label.includes('Domain Address') || value.includes('.falixsrv.me')) {
+          connections.push({ type: 'domain', value: value, label: 'DYNAMIC IP:' });
+        } else if (label.includes('Direct Connection') || value.includes('host.falixserver.net')) {
+          connections.push({ type: 'direct', value: value, label: 'IP WITH PORT:' });
+        }
+      }
+    });
+    
+    // Clear the modal body
+    modalBody.innerHTML = '';
+    
+    // Create a container similar to javaSteps
+    const container = document.createElement('div');
+    container.id = 'javaSteps';
+    
+    // Add extracted connections in our custom format
+    connections.forEach(conn => {
+      // Parse IP and port if available
+      const parts = conn.value.split(':');
+      const hasPort = parts.length === 2;
+      const baseAddress = parts[0];
+      const port = hasPort ? parts[1] : '';
+      
+      // Add the main connection info
+      container.appendChild(createAddressBox(conn.label, conn.value, conn.value));
+      
+      // If it's a domain address and we have port, add individual components
+      if (conn.type === 'domain' && hasPort) {
+        // Extract just the IP part (before port)
+        container.appendChild(createAddressBox('SERVER IP:', baseAddress, baseAddress));
+        container.appendChild(createAddressBox('PORT:', port, port));
+      }
+      
+      // If it's direct connection, also add as SERVER IP
+      if (conn.type === 'direct') {
+        container.appendChild(createAddressBox('SERVER IP:', baseAddress, baseAddress));
+        if (hasPort) {
+          container.appendChild(createAddressBox('PORT:', port, port));
+        }
+      }
+    });
+    
+    modalBody.appendChild(container);
+    console.log('[better-falix] replace-connect-tab: Alternate modal processed successfully');
+  }
+
   function replaceConnectTabSections() {
     // Fix aria-hidden accessibility warning by removing it from the modal
     const connectModal = document.getElementById('connectgui');
@@ -26,6 +103,14 @@ chrome.storage.sync.get({ enabled: true, replaceConnectTab: false }, (data) => {
 
     const javaSteps = document.getElementById('javaSteps');
     const bedrockSteps = document.getElementById('bedrockSteps');
+    
+    // Check for alternate modal structure (modal-body with direct connection info)
+    const modalBody = connectModal?.querySelector('.modal-body');
+    if (modalBody && !javaSteps) {
+      console.log('[better-falix] replace-connect-tab: Found alternate modal-body structure');
+      handleAlternateModalStructure(modalBody);
+      return;
+    }
     
     if (!javaSteps) {
       console.log('[better-falix] replace-connect-tab: Java steps not found');
@@ -91,20 +176,6 @@ chrome.storage.sync.get({ enabled: true, replaceConnectTab: false }, (data) => {
 
     // Remove any existing address boxes in javaSteps
     javaSteps.querySelectorAll('.connect-address-box').forEach(el => el.remove());
-
-    // Helper function to create address box
-    function createAddressBox(label, value, copyValue) {
-      const box = document.createElement('div');
-      box.className = 'connect-address-box';
-      box.style.cssText = 'display: flex; align-items: center; white-space: nowrap;';
-      box.innerHTML = `
-        ${label} <span class="connect-address-text" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex-shrink: 1; min-width: 0;">${value}</span>
-        <button class="btn connect-inline-copy" onclick="copyConnectionInfo('${copyValue}', this)" title="Copy to clipboard" style="flex-shrink: 0;">
-          <svg class="svg-inline--fa fa-copy" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="copy" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M208 0L332.1 0c12.7 0 24.9 5.1 33.9 14.1l67.9 67.9c9 9 14.1 21.2 14.1 33.9L448 336c0 26.5-21.5 48-48 48l-192 0c-26.5 0-48-21.5-48-48l0-288c0-26.5 21.5-48 48-48zM48 128l80 0 0 64-64 0 0 256 192 0 0-32 64 0 0 48c0 26.5-21.5 48-48 48L48 512c-26.5 0-48-21.5-48-48L0 176c0-26.5 21.5-48 48-48z"></path></svg>
-        </button>
-      `;
-      return box;
-    }
 
     // Add IP box
     javaSteps.appendChild(createAddressBox('SERVER IP:', ip, ip));
