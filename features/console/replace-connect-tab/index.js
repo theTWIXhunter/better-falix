@@ -52,6 +52,7 @@ chrome.storage.sync.get({ enabled: true, replaceConnectTab: false }, (data) => {
       console.log('[better-falix] replace-connect-tab: Domain:', domainAddress, 'Direct:', directConnection);
       
       // Clear modal body and rebuild with simplified structure
+      console.log('[better-falix] replace-connect-tab: Clearing modal body');
       modalBody.innerHTML = '';
       
       // Helper function to create address box
@@ -74,13 +75,18 @@ chrome.storage.sync.get({ enabled: true, replaceConnectTab: false }, (data) => {
       
       // Add simplified connection info
       if (domainAddress) {
-        modalBody.appendChild(createAddressBox('IP WITH PORT:', domainAddress));
+        console.log('[better-falix] replace-connect-tab: Adding domain address');
+        const box = createAddressBox('IP WITH PORT:', domainAddress);
+        modalBody.appendChild(box);
       }
       
       if (directConnection) {
-        modalBody.appendChild(createAddressBox('DYNAMIC IP (WITH PORT):', directConnection));
+        console.log('[better-falix] replace-connect-tab: Adding direct connection');
+        const box = createAddressBox('DYNAMIC IP (WITH PORT):', directConnection);
+        modalBody.appendChild(box);
       }
       
+      console.log('[better-falix] replace-connect-tab: Modal rebuilt successfully');
       return;
     }
     
@@ -228,6 +234,28 @@ chrome.storage.sync.get({ enabled: true, replaceConnectTab: false }, (data) => {
   } else {
     setTimeout(replaceConnectTabSections, 0);
   }
+
+  // Watch for modal changes and re-run when connect modal appears
+  const observer = new MutationObserver((mutations) => {
+    for (const mutation of mutations) {
+      if (mutation.type === 'childList' || mutation.type === 'attributes') {
+        const connectModal = document.getElementById('connectgui');
+        if (connectModal && connectModal.classList.contains('show')) {
+          console.log('[better-falix] replace-connect-tab: Modal shown, running replacement');
+          setTimeout(replaceConnectTabSections, 100);
+          break;
+        }
+      }
+    }
+  });
+
+  // Start observing the document for modal changes
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true,
+    attributes: true,
+    attributeFilter: ['class']
+  });
 
   setTimeout(() => {
     console.log('[better-falix] replace-connect-tab: Script loaded successfully');
