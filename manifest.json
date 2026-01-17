@@ -91,56 +91,61 @@
 
 
     {
-      "matches": ["https://client.falixnodes.net/server/console*"],
+      "matches": ["https://client.falixnodes.net/server/console*", "https://client.falixnodes.net/server/*/console*"],
       "js": ["features/console/hide-console-tabs/index.js"],
       "run_at": "document_start"
     },
     {
-      "matches": ["https://client.falixnodes.net/server/console*"],
+      "matches": ["https://client.falixnodes.net/server/console*", "https://client.falixnodes.net/server/*/console*"],
       "js": ["features/console/replace-support-modal/index.js"],
       "run_at": "document_idle"
     },
     {
-      "matches": ["https://client.falixnodes.net/server/console*"],
+      "matches": ["https://client.falixnodes.net/server/console*", "https://client.falixnodes.net/server/*/console*"],
       "js": ["features/console/replace-connect-tab/index.js"],
       "run_at": "document_idle"
     },
     {
-      "matches": ["https://client.falixnodes.net/server/console*"],
-      "js": ["features/console/replace-cpu-with-node/index.js"],
+      "matches": ["https://client.falixnodes.net/server/console*", "https://client.falixnodes.net/server/*/console*"],
+      "js": ["features/console/replace-location-with-node/index.js"],
       "run_at": "document_idle"
     },
     {
-      "matches": ["https://client.falixnodes.net/server/console*"],
+      "matches": ["https://client.falixnodes.net/server/console*", "https://client.falixnodes.net/server/*/console*"],
       "js": ["features/console/remove-max-players/index.js"],
       "run_at": "document_idle"
     },
     {
-      "matches": ["https://client.falixnodes.net/server/console*"],
+      "matches": ["https://client.falixnodes.net/server/console*", "https://client.falixnodes.net/server/*/console*"],
       "js": ["features/console/remove-player-management/index.js"],
       "run_at": "document_idle"
     },
     {
-      "matches": ["https://client.falixnodes.net/server/console*"],
+      "matches": ["https://client.falixnodes.net/server/console*", "https://client.falixnodes.net/server/*/console*"],
       "js": ["features/console/remove-premium-transfer/index.js"],
       "run_at": "document_start"
+    },
+    {
+      "matches": ["https://client.falixnodes.net/server/console*", "https://client.falixnodes.net/server/*/console*"],
+      "js": ["features/console/remove-cpu-card/index.js"],
+      "run_at": "document_idle"
     },
 
 
 
 
     {
-      "matches": ["https://client.falixnodes.net/server/filemanager*"],
+      "matches": ["https://client.falixnodes.net/server/filemanager*", "https://client.falixnodes.net/server/*/filemanager*"],
       "js": ["features/filemanager/remove-sftp-upload/index.js"],
       "run_at": "document_idle"
     },
     {
-      "matches": ["https://client.falixnodes.net/server/filemanager*"],
+      "matches": ["https://client.falixnodes.net/server/filemanager*", "https://client.falixnodes.net/server/*/filemanager*"],
       "js": ["features/filemanager/upload-create-hover/index.js"],
       "run_at": "document_idle"
     },
     {
-      "matches": ["https://client.falixnodes.net/server/edit*"],
+      "matches": ["https://client.falixnodes.net/server/edit*", "https://client.falixnodes.net/server/*/edit*"],
       "js": ["features/filemanager/better-editor-fullscreen/index.js"],
       "run_at": "document_idle"
     },

@@ -15,6 +15,8 @@ chrome.storage.sync.get({ removePlayerManagement: false, enabled: true }, (data)
     const infoCards = document.querySelectorAll('.compact-info-card');
     //console.log('[better-falix] Remove Player Management: Found', infoCards.length, 'compact info cards');
     
+    let removed = false;
+    
     // Look through all cards to find the one with "Player Management" header or modal target
     infoCards.forEach((card, index) => {
       const headerText = card.querySelector('.compact-info-header');
@@ -27,9 +29,27 @@ chrome.storage.sync.get({ removePlayerManagement: false, enabled: true }, (data)
       if (hasPlayerManagementText || hasPlayerManagementModal) {
         //console.log('[better-falix] Remove Player Management: Found Player Management card at index', index);
         card.remove();
+        removed = true;
         //console.log('[better-falix] Remove Player Management: Successfully removed Player Management card');
       }
     });
+    
+    if (removed) {
+      // Inject CSS to fix grid layout and prevent card expansion
+      const style = document.createElement('style');
+      style.textContent = `
+        .server-info-container {
+          grid-auto-rows: min-content !important;
+          height: auto !important;
+          min-height: unset !important;
+        }
+        .compact-info-card {
+          height: auto !important;
+          min-height: unset !important;
+        }
+      `;
+      document.head.appendChild(style);
+    }
   }
 
   // Wait for the page to load and then remove the Player Management card

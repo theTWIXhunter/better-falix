@@ -15,6 +15,8 @@ chrome.storage.sync.get({ removeMaxPlayers: false, enabled: true }, (data) => {
     const infoCards = document.querySelectorAll('.compact-info-card');
     //console.log('[better-falix] Remove Max Players: Found', infoCards.length, 'compact info cards');
     
+    let removed = false;
+    
     // Look through all cards to find the one with "Max Players" header
     infoCards.forEach((card, index) => {
       const headerText = card.querySelector('.compact-info-header');
@@ -22,9 +24,27 @@ chrome.storage.sync.get({ removeMaxPlayers: false, enabled: true }, (data) => {
       if (headerText && headerText.textContent && headerText.textContent.trim().toLowerCase().includes('max players')) {
         //console.log('[better-falix] Remove Max Players: Found Max Players card at index', index);
         card.remove();
+        removed = true;
         //console.log('[better-falix] Remove Max Players: Successfully removed Max Players card');
       }
     });
+    
+    if (removed) {
+      // Inject CSS to fix grid layout and prevent card expansion
+      const style = document.createElement('style');
+      style.textContent = `
+        .server-info-container {
+          grid-auto-rows: min-content !important;
+          height: auto !important;
+          min-height: unset !important;
+        }
+        .compact-info-card {
+          height: auto !important;
+          min-height: unset !important;
+        }
+      `;
+      document.head.appendChild(style);
+    }
   }
 
   // Wait for the page to load and then remove the Max Players card
