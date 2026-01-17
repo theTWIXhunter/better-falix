@@ -24,8 +24,8 @@ chrome.storage.sync.get({ enabled: true, replaceConnectTab: false }, (data) => {
     return box;
   }
 
-  // Render connection info boxes in the container
-  function renderConnectionBoxes(container, serverIp, dynamicIp) {
+  // Render connection info boxes in the container (for Hytale - simplified format)
+  function renderHytaleConnectionBoxes(container, serverIp, dynamicIp) {
     // Clear any existing boxes
     container.querySelectorAll('.connect-address-box').forEach(el => el.remove());
     
@@ -35,6 +35,32 @@ chrome.storage.sync.get({ enabled: true, replaceConnectTab: false }, (data) => {
     }
     
     // Add DYNAMIC IP (the direct/alternative connection - for Hytale this is host.falixserver.net)
+    if (dynamicIp) {
+      container.appendChild(createAddressBox('DYNAMIC IP:', dynamicIp, dynamicIp));
+    }
+  }
+
+  // Render connection info boxes for regular Minecraft servers (detailed format)
+  function renderMinecraftConnectionBoxes(container, ip, port, fullAddress, dynamicIp) {
+    // Clear any existing boxes
+    container.querySelectorAll('.connect-address-box').forEach(el => el.remove());
+    
+    // Add IP box
+    if (ip) {
+      container.appendChild(createAddressBox('SERVER IP:', ip, ip));
+    }
+    
+    // Add IP with port box
+    if (fullAddress) {
+      container.appendChild(createAddressBox('IP WITH PORT:', fullAddress, fullAddress));
+    }
+    
+    // Add Port box
+    if (port) {
+      container.appendChild(createAddressBox('PORT:', port, port));
+    }
+    
+    // Add Dynamic IP box
     if (dynamicIp) {
       container.appendChild(createAddressBox('DYNAMIC IP:', dynamicIp, dynamicIp));
     }
@@ -75,8 +101,8 @@ chrome.storage.sync.get({ enabled: true, replaceConnectTab: false }, (data) => {
     const container = document.createElement('div');
     container.id = 'javaSteps';
     
-    // Render using the shared function
-    renderConnectionBoxes(container, serverIp, dynamicIp);
+    // Render using the Hytale-specific function (simplified format with full addresses)
+    renderHytaleConnectionBoxes(container, serverIp, dynamicIp);
     
     modalBody.appendChild(container);
     console.log('[better-falix] replace-connect-tab: Alternate modal processed successfully');
@@ -169,13 +195,8 @@ chrome.storage.sync.get({ enabled: true, replaceConnectTab: false }, (data) => {
       bedrockSteps.remove();
     }
 
-    // Determine SERVER IP and DYNAMIC IP based on what we extracted
-    let serverIp = '';
+    // Build the full dynamic IP with proper formatting
     let finalDynamicIp = '';
-    
-    // For Minecraft servers with both IPs:
-    // - SERVER IP is typically the base IP (without port for Java, or the direct connection)
-    // - DYNAMIC IP is the domain-based connection (often with .falixserver.net suffix)
     
     if (dynamicIp) {
       // If dynamicIp already contains a colon, it already has the port included
@@ -207,11 +228,8 @@ chrome.storage.sync.get({ enabled: true, replaceConnectTab: false }, (data) => {
       }
     }
     
-    // Set SERVER IP - prefer the main IP, fall back to fullAddress
-    serverIp = ip || fullAddress;
-    
-    // Use the shared rendering function
-    renderConnectionBoxes(javaSteps, serverIp, finalDynamicIp);
+    // Use the Minecraft-specific rendering function (detailed format)
+    renderMinecraftConnectionBoxes(javaSteps, ip, port, fullAddress, finalDynamicIp);
   }
 
   // Fix: always run after DOMContentLoaded to ensure all elements exist
