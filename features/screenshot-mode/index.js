@@ -118,58 +118,45 @@ function applyCensoring() {
   
   // Server Address Card (on console page)
   if (config.serverIP?.enabled) {
-    document.querySelectorAll('.info-card').forEach(card => {
-      const header = card.querySelector('.info-card-header');
-      if (header && header.textContent.includes('Server Address')) {
-        const content = card.querySelector('.info-card-content');
-        if (content && content.textContent !== config.serverIP.replacement) {
-          content.textContent = config.serverIP.replacement;
+    document.querySelectorAll('.compact-info-card').forEach(card => {
+      const header = card.querySelector('.compact-info-header');
+      if (header && header.textContent.toUpperCase().includes('SERVER ADDRESS')) {
+        const valueSpan = card.querySelector('.compact-info-value span');
+        if (valueSpan && valueSpan.textContent !== config.serverIP.replacement) {
+          valueSpan.textContent = config.serverIP.replacement;
         }
       }
     });
   }
   
-  // Connect Modal - IP, Port, Dynamic IP
-  if (config.serverIP?.enabled) {
-    document.querySelectorAll('.modal-body .row').forEach(row => {
-      const label = row.querySelector('.col-4, .col-sm-4');
-      const value = row.querySelector('.col-8, .col-sm-8');
-      if (label && value) {
-        const labelText = label.textContent.trim();
-        if (labelText.includes('IP') || labelText.includes('Address')) {
-          if (value.textContent !== config.serverIP.replacement) {
-            value.textContent = config.serverIP.replacement;
-          }
+  // Connect Modal - Address boxes
+  if (config.serverIP?.enabled || config.serverPort?.enabled || config.serverDynamicIP?.enabled) {
+    document.querySelectorAll('.connect-address-box').forEach(box => {
+      const boxText = box.textContent.toLowerCase();
+      const addressSpan = box.querySelector('.connect-address-text');
+      
+      if (!addressSpan) return;
+      
+      // Server IP (includes "server ip:" label or .falixsrv.me domain)
+      if (config.serverIP?.enabled && 
+          (boxText.includes('server ip:') || addressSpan.textContent.includes('.falixsrv.me'))) {
+        if (addressSpan.textContent !== config.serverIP.replacement) {
+          addressSpan.textContent = config.serverIP.replacement;
         }
       }
-    });
-  }
-  
-  if (config.serverPort?.enabled) {
-    document.querySelectorAll('.modal-body .row').forEach(row => {
-      const label = row.querySelector('.col-4, .col-sm-4');
-      const value = row.querySelector('.col-8, .col-sm-8');
-      if (label && value) {
-        const labelText = label.textContent.trim();
-        if (labelText.includes('Port')) {
-          if (value.textContent !== config.serverPort.replacement) {
-            value.textContent = config.serverPort.replacement;
-          }
+      
+      // Port (includes "port:" label)
+      if (config.serverPort?.enabled && boxText.includes('port:')) {
+        if (addressSpan.textContent !== config.serverPort.replacement) {
+          addressSpan.textContent = config.serverPort.replacement;
         }
       }
-    });
-  }
-  
-  if (config.serverDynamicIP?.enabled) {
-    document.querySelectorAll('.modal-body .row').forEach(row => {
-      const label = row.querySelector('.col-4, .col-sm-4');
-      const value = row.querySelector('.col-8, .col-sm-8');
-      if (label && value) {
-        const labelText = label.textContent.trim();
-        if (labelText.includes('Dynamic')) {
-          if (value.textContent !== config.serverDynamicIP.replacement) {
-            value.textContent = config.serverDynamicIP.replacement;
-          }
+      
+      // Dynamic IP (includes "dynamic ip:" label or host.falixserver.net)
+      if (config.serverDynamicIP?.enabled && 
+          (boxText.includes('dynamic ip:') || addressSpan.textContent.includes('host.falixserver.net'))) {
+        if (addressSpan.textContent !== config.serverDynamicIP.replacement) {
+          addressSpan.textContent = config.serverDynamicIP.replacement;
         }
       }
     });
