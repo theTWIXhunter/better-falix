@@ -44,19 +44,20 @@ document.addEventListener('DOMContentLoaded', () => {
       // Save state
       chrome.storage.sync.set({ screenshotModeActive: isActive });
       
-      // Send message asynchronously (don't wait for response)
-      setTimeout(() => {
-        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-          if (tabs && tabs[0]) {
-            chrome.tabs.sendMessage(tabs[0].id, {
-              action: isActive ? 'enableScreenshotMode' : 'disableScreenshotMode'
-            }).catch(() => {
-              // Silently ignore errors
-            });
-          }
-        });
-      }, 0);
-    });
+      // Send message to page
+      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        if (tabs && tabs[0]) {
+          chrome.tabs.sendMessage(
+            tabs[0].id, 
+            { action: isActive ? 'enableScreenshotMode' : 'disableScreenshotMode' },
+            () => {
+              if (chrome.runtime.lastError) {
+                console.log('Message sent (will apply on page load)');
+              }
+            }
+          );
+        }
+      });
     });
   }
 });
