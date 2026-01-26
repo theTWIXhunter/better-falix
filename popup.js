@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Toggle screenshot mode
-    screenshotBtn.addEventListener('click', async (e) => {
+    screenshotBtn.addEventListener('click', (e) => {
       e.preventDefault();
       e.stopPropagation();
       
@@ -45,24 +45,20 @@ document.addEventListener('DOMContentLoaded', () => {
       // Save state
       chrome.storage.sync.set({ screenshotModeActive: isActive });
       
-      // Send message to all tabs with FalixNodes pages
-      chrome.tabs.query({}, (tabs) => {
-        tabs.forEach(tab => {
-          if (tab.url && (
-            tab.url.includes('client.falixnodes.net') || 
-            tab.url.includes('falixnodes.net') ||
-            tab.url.includes('kb.falixnodes.net')
-          )) {
-            chrome.tabs.sendMessage(tab.id, {
-              action: isActive ? 'enableScreenshotMode' : 'disableScreenshotMode'
-            }, () => {
-              // Ignore errors if tab doesn't have the content script loaded yet
-              if (chrome.runtime.lastError) {
-                console.log('Screenshot mode will apply when page loads');
-              }
-            });
-          }
-        });
+      // Send message to active tab only
+      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        if (tabs[0] && tabs[0].url && (
+          tabs[0].url.includes('client.falixnodes.net') || 
+          tabs[0].url.includes('falixnodes.net') ||
+          tabs[0].url.includes('kb.falixnodes.net')
+        )) {
+          chrome.tabs.sendMessage(tabs[0].id, {
+            action: isActive ? 'enableScreenshotMode' : 'disableScreenshotMode'
+          }, (response) => {
+            // Ignore errors - content script might not be ready
+            chrome.runtime.lastError;
+          });
+        }
       });
     });
     });
