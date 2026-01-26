@@ -237,8 +237,8 @@ function enableScreenshotMode() {
 function disableScreenshotMode() {
   screenshotModeActive = false;
   stopObserver();
-  // Reload page to restore original content
-  location.reload();
+  // Don't reload - just stop censoring
+  // User can refresh manually if they want to restore original values
 }
 
 // Listen for messages from popup

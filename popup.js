@@ -28,26 +28,43 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Toggle screenshot mode
-    screenshotBtn.addEventListener('click', (e) => {
+    screenshotBtn.addEventListener('click', async (e) => {
       e.preventDefault();
-      const isActive = screenshotBtn.classList.toggle('active');
+      e.stopPropagation();
       
-      // Save state first
-      chrome.storage.sync.set({ screenshotModeActive: isActive }, () => {
-        // Then send message to active tab to enable/disable censoring
-        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-          if (tabs[0]) {
-            chrome.tabs.sendMessage(tabs[0].id, {
+      const wasActive = screenshotBtn.classList.contains('active');
+      const isActive = !wasActive;
+      
+      // Update UI immediately
+      if (isActive) {
+        screenshotBtn.classList.add('active');
+      } else {
+        screenshotBtn.classList.remove('active');
+      }
+      
+      // Save state
+      chrome.storage.sync.set({ screenshotModeActive: isActive });
+      
+      // Send message to all tabs with FalixNodes pages
+      chrome.tabs.query({}, (tabs) => {
+        tabs.forEach(tab => {
+          if (tab.url && (
+            tab.url.includes('client.falixnodes.net') || 
+            tab.url.includes('falixnodes.net') ||
+            tab.url.includes('kb.falixnodes.net')
+          )) {
+            chrome.tabs.sendMessage(tab.id, {
               action: isActive ? 'enableScreenshotMode' : 'disableScreenshotMode'
             }, () => {
-              // Ignore errors if tab doesn't have the content script
+              // Ignore errors if tab doesn't have the content script loaded yet
               if (chrome.runtime.lastError) {
-                console.log('Screenshot mode toggled (will apply on next page load)');
+                console.log('Screenshot mode will apply when page loads');
               }
             });
           }
         });
       });
+    });
     });
   }
 });
