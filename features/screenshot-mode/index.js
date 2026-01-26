@@ -121,9 +121,9 @@ function applyCensoring() {
     document.querySelectorAll('.compact-info-card').forEach(card => {
       const header = card.querySelector('.compact-info-header');
       if (header && header.textContent.toUpperCase().includes('SERVER ADDRESS')) {
-        const valueSpan = card.querySelector('.compact-info-value span');
-        if (valueSpan && valueSpan.textContent !== config.serverIP.replacement) {
-          valueSpan.textContent = config.serverIP.replacement;
+        const valueEl = card.querySelector('.compact-info-value');
+        if (valueEl && valueEl.textContent.trim() !== config.serverIP.replacement) {
+          valueEl.textContent = config.serverIP.replacement;
         }
       }
     });
@@ -145,8 +145,16 @@ function applyCensoring() {
         }
       }
       
+      // IP with Port (includes "ip with port:" label)
+      if (config.serverIP?.enabled && config.serverPort?.enabled && boxText.includes('ip with port:')) {
+        const newValue = `${config.serverIP.replacement}:${config.serverPort.replacement}`;
+        if (addressSpan.textContent !== newValue) {
+          addressSpan.textContent = newValue;
+        }
+      }
+      
       // Port (includes "port:" label)
-      if (config.serverPort?.enabled && boxText.includes('port:')) {
+      if (config.serverPort?.enabled && boxText.includes('port:') && !boxText.includes('ip with port:')) {
         if (addressSpan.textContent !== config.serverPort.replacement) {
           addressSpan.textContent = config.serverPort.replacement;
         }
@@ -155,8 +163,16 @@ function applyCensoring() {
       // Dynamic IP (includes "dynamic ip:" label or host.falixserver.net)
       if (config.serverDynamicIP?.enabled && 
           (boxText.includes('dynamic ip:') || addressSpan.textContent.includes('host.falixserver.net'))) {
-        if (addressSpan.textContent !== config.serverDynamicIP.replacement) {
-          addressSpan.textContent = config.serverDynamicIP.replacement;
+        // Check if it includes a port (has a colon)
+        const hasDynamicPort = addressSpan.textContent.includes(':');
+        let newValue = config.serverDynamicIP.replacement;
+        
+        if (hasDynamicPort && config.serverPort?.enabled) {
+          newValue = `${config.serverDynamicIP.replacement}:${config.serverPort.replacement}`;
+        }
+        
+        if (addressSpan.textContent !== newValue) {
+          addressSpan.textContent = newValue;
         }
       }
     });
