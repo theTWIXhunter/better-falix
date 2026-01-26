@@ -115,6 +115,93 @@ function applyCensoring() {
       }
     });
   }
+  
+  // Server Address Card (on console page)
+  if (config.serverIP?.enabled) {
+    document.querySelectorAll('.info-card').forEach(card => {
+      const header = card.querySelector('.info-card-header');
+      if (header && header.textContent.includes('Server Address')) {
+        const content = card.querySelector('.info-card-content');
+        if (content && content.textContent !== config.serverIP.replacement) {
+          content.textContent = config.serverIP.replacement;
+        }
+      }
+    });
+  }
+  
+  // Connect Modal - IP, Port, Dynamic IP
+  if (config.serverIP?.enabled) {
+    document.querySelectorAll('.modal-body .row').forEach(row => {
+      const label = row.querySelector('.col-4, .col-sm-4');
+      const value = row.querySelector('.col-8, .col-sm-8');
+      if (label && value) {
+        const labelText = label.textContent.trim();
+        if (labelText.includes('IP') || labelText.includes('Address')) {
+          if (value.textContent !== config.serverIP.replacement) {
+            value.textContent = config.serverIP.replacement;
+          }
+        }
+      }
+    });
+  }
+  
+  if (config.serverPort?.enabled) {
+    document.querySelectorAll('.modal-body .row').forEach(row => {
+      const label = row.querySelector('.col-4, .col-sm-4');
+      const value = row.querySelector('.col-8, .col-sm-8');
+      if (label && value) {
+        const labelText = label.textContent.trim();
+        if (labelText.includes('Port')) {
+          if (value.textContent !== config.serverPort.replacement) {
+            value.textContent = config.serverPort.replacement;
+          }
+        }
+      }
+    });
+  }
+  
+  if (config.serverDynamicIP?.enabled) {
+    document.querySelectorAll('.modal-body .row').forEach(row => {
+      const label = row.querySelector('.col-4, .col-sm-4');
+      const value = row.querySelector('.col-8, .col-sm-8');
+      if (label && value) {
+        const labelText = label.textContent.trim();
+        if (labelText.includes('Dynamic')) {
+          if (value.textContent !== config.serverDynamicIP.replacement) {
+            value.textContent = config.serverDynamicIP.replacement;
+          }
+        }
+      }
+    });
+  }
+  
+  // Console log messages - censor IPs, ports, and UUIDs
+  document.querySelectorAll('.console-log-message, .log-message, .console-output div, .terminal-line').forEach(line => {
+    let text = line.textContent;
+    let modified = false;
+    
+    // Pattern: [20:05:12] [INFO]: * [/*.*.*.*:*] logged in
+    if (config.serverIP?.enabled && config.serverPort?.enabled) {
+      const ipPortPattern = /\[\/(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}):(\d+)\]/g;
+      if (ipPortPattern.test(text)) {
+        text = text.replace(ipPortPattern, `[/${config.serverDynamicIP.replacement}:${config.serverPort.replacement}]`);
+        modified = true;
+      }
+    }
+    
+    // Pattern: UUID of player * is *-*-*-*-*
+    if (config.consolePlayer?.enabled) {
+      const uuidPattern = /UUID of player .+ is [0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/gi;
+      if (uuidPattern.test(text)) {
+        text = text.replace(uuidPattern, `UUID of player ${config.consolePlayer.replacement} is 00000000-0000-0000-0000-000000000000`);
+        modified = true;
+      }
+    }
+    
+    if (modified && line.textContent !== text) {
+      line.textContent = text;
+    }
+  });
 }
 
 function startObserver() {

@@ -32,16 +32,21 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       const isActive = screenshotBtn.classList.toggle('active');
       
-      // Save state
-      chrome.storage.sync.set({ screenshotModeActive: isActive });
-      
-      // Send message to active tab to enable/disable censoring
-      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-        if (tabs[0]) {
-          chrome.tabs.sendMessage(tabs[0].id, {
-            action: isActive ? 'enableScreenshotMode' : 'disableScreenshotMode'
-          });
-        }
+      // Save state first
+      chrome.storage.sync.set({ screenshotModeActive: isActive }, () => {
+        // Then send message to active tab to enable/disable censoring
+        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+          if (tabs[0]) {
+            chrome.tabs.sendMessage(tabs[0].id, {
+              action: isActive ? 'enableScreenshotMode' : 'disableScreenshotMode'
+            }, () => {
+              // Ignore errors if tab doesn't have the content script
+              if (chrome.runtime.lastError) {
+                console.log('Screenshot mode toggled (will apply on next page load)');
+              }
+            });
+          }
+        });
       });
     });
   }
