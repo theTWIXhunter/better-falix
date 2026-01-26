@@ -237,17 +237,18 @@ function enableScreenshotMode() {
 function disableScreenshotMode() {
   screenshotModeActive = false;
   stopObserver();
-  // Don't reload - just stop censoring
-  // User can refresh manually if they want to restore original values
 }
 
 // Listen for messages from popup
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'enableScreenshotMode') {
     enableScreenshotMode();
+    sendResponse({ success: true });
   } else if (request.action === 'disableScreenshotMode') {
     disableScreenshotMode();
+    sendResponse({ success: true });
   }
+  return true; // Keep message channel open for async response
 });
 
 // Check if screenshot mode should be active on page load

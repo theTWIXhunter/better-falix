@@ -30,7 +30,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Toggle screenshot mode
     screenshotBtn.addEventListener('click', (e) => {
       e.preventDefault();
-      e.stopPropagation();
       
       const wasActive = screenshotBtn.classList.contains('active');
       const isActive = !wasActive;
@@ -45,21 +44,18 @@ document.addEventListener('DOMContentLoaded', () => {
       // Save state
       chrome.storage.sync.set({ screenshotModeActive: isActive });
       
-      // Send message to active tab only
-      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-        if (tabs[0] && tabs[0].url && (
-          tabs[0].url.includes('client.falixnodes.net') || 
-          tabs[0].url.includes('falixnodes.net') ||
-          tabs[0].url.includes('kb.falixnodes.net')
-        )) {
-          chrome.tabs.sendMessage(tabs[0].id, {
-            action: isActive ? 'enableScreenshotMode' : 'disableScreenshotMode'
-          }, (response) => {
-            // Ignore errors - content script might not be ready
-            chrome.runtime.lastError;
-          });
-        }
-      });
+      // Send message asynchronously (don't wait for response)
+      setTimeout(() => {
+        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+          if (tabs && tabs[0]) {
+            chrome.tabs.sendMessage(tabs[0].id, {
+              action: isActive ? 'enableScreenshotMode' : 'disableScreenshotMode'
+            }).catch(() => {
+              // Silently ignore errors
+            });
+          }
+        });
+      }, 0);
     });
     });
   }
