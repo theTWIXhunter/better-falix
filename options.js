@@ -61,6 +61,52 @@ chrome.storage.sync.get(null, data => {
   
   const navbarEditorV2Toggle = document.getElementById('navbarEditorV2Enabled');
   if (navbarEditorV2Toggle) setToggleState(navbarEditorV2Toggle, !!data.navbarEditorV2Enabled);
+  
+  // Screenshot mode settings
+  const screenshotModeConfig = data.screenshotModeConfig || {};
+  
+  const serverNameInput = document.getElementById('screenshotMode_serverName');
+  if (serverNameInput) serverNameInput.value = screenshotModeConfig.serverName?.replacement || 'Example Server';
+  const serverNameToggle = document.getElementById('screenshotMode_serverName_enabled');
+  if (serverNameToggle) setToggleState(serverNameToggle, screenshotModeConfig.serverName?.enabled !== false);
+  
+  const serverIPInput = document.getElementById('screenshotMode_serverIP');
+  if (serverIPInput) serverIPInput.value = screenshotModeConfig.serverIP?.replacement || 'serverIPhere.falixsrv.me';
+  const serverIPToggle = document.getElementById('screenshotMode_serverIP_enabled');
+  if (serverIPToggle) setToggleState(serverIPToggle, screenshotModeConfig.serverIP?.enabled !== false);
+  
+  const serverPortInput = document.getElementById('screenshotMode_serverPort');
+  if (serverPortInput) serverPortInput.value = screenshotModeConfig.serverPort?.replacement || '12345';
+  const serverPortToggle = document.getElementById('screenshotMode_serverPort_enabled');
+  if (serverPortToggle) setToggleState(serverPortToggle, screenshotModeConfig.serverPort?.enabled !== false);
+  
+  const serverDynamicIPInput = document.getElementById('screenshotMode_serverDynamicIP');
+  if (serverDynamicIPInput) serverDynamicIPInput.value = screenshotModeConfig.serverDynamicIP?.replacement || '127.0.0.1';
+  const serverDynamicIPToggle = document.getElementById('screenshotMode_serverDynamicIP_enabled');
+  if (serverDynamicIPToggle) setToggleState(serverDynamicIPToggle, screenshotModeConfig.serverDynamicIP?.enabled !== false);
+  
+  const profileUsernameInput = document.getElementById('screenshotMode_profileUsername');
+  if (profileUsernameInput) profileUsernameInput.value = screenshotModeConfig.profileUsername?.replacement || 'Example User';
+  const profileUsernameToggle = document.getElementById('screenshotMode_profileUsername_enabled');
+  if (profileUsernameToggle) setToggleState(profileUsernameToggle, screenshotModeConfig.profileUsername?.enabled !== false);
+  
+  const profileTagInput = document.getElementById('screenshotMode_profileTag');
+  if (profileTagInput) profileTagInput.value = screenshotModeConfig.profileTag?.replacement || 'example';
+  const profileTagToggle = document.getElementById('screenshotMode_profileTag_enabled');
+  if (profileTagToggle) setToggleState(profileTagToggle, screenshotModeConfig.profileTag?.enabled !== false);
+  
+  const profilePictureInput = document.getElementById('screenshotMode_profilePicture');
+  if (profilePictureInput) profilePictureInput.value = screenshotModeConfig.profilePicture?.replacement || 'https://ui-avatars.com/api/?name=User';
+  const profilePictureToggle = document.getElementById('screenshotMode_profilePicture_enabled');
+  if (profilePictureToggle) setToggleState(profilePictureToggle, screenshotModeConfig.profilePicture?.enabled !== false);
+  
+  const consolePlayerInput = document.getElementById('screenshotMode_consolePlayer');
+  if (consolePlayerInput) consolePlayerInput.value = screenshotModeConfig.consolePlayer?.replacement || 'Player';
+  const consolePlayerToggle = document.getElementById('screenshotMode_consolePlayer_enabled');
+  if (consolePlayerToggle) setToggleState(consolePlayerToggle, screenshotModeConfig.consolePlayer?.enabled !== false);
+  
+  const adminBadgeToggle = document.getElementById('screenshotMode_adminBadge_enabled');
+  if (adminBadgeToggle) setToggleState(adminBadgeToggle, screenshotModeConfig.adminBadge?.enabled !== false);
 });
 
 // General toggles - only add listeners if elements exist
@@ -381,6 +427,81 @@ document.addEventListener('DOMContentLoaded', () => {
   observeAndApplyEditorHeight();
 });
 
+// Screenshot mode settings handlers
+function saveScreenshotModeConfig() {
+  chrome.storage.sync.get(['screenshotModeConfig'], data => {
+    const config = data.screenshotModeConfig || {};
+    
+    // Save all screenshot mode settings
+    const inputs = {
+      serverName: document.getElementById('screenshotMode_serverName'),
+      serverIP: document.getElementById('screenshotMode_serverIP'),
+      serverPort: document.getElementById('screenshotMode_serverPort'),
+      serverDynamicIP: document.getElementById('screenshotMode_serverDynamicIP'),
+      profileUsername: document.getElementById('screenshotMode_profileUsername'),
+      profileTag: document.getElementById('screenshotMode_profileTag'),
+      profilePicture: document.getElementById('screenshotMode_profilePicture'),
+      consolePlayer: document.getElementById('screenshotMode_consolePlayer')
+    };
+    
+    const toggles = {
+      serverName: document.getElementById('screenshotMode_serverName_enabled'),
+      serverIP: document.getElementById('screenshotMode_serverIP_enabled'),
+      serverPort: document.getElementById('screenshotMode_serverPort_enabled'),
+      serverDynamicIP: document.getElementById('screenshotMode_serverDynamicIP_enabled'),
+      profileUsername: document.getElementById('screenshotMode_profileUsername_enabled'),
+      profileTag: document.getElementById('screenshotMode_profileTag_enabled'),
+      profilePicture: document.getElementById('screenshotMode_profilePicture_enabled'),
+      consolePlayer: document.getElementById('screenshotMode_consolePlayer_enabled'),
+      adminBadge: document.getElementById('screenshotMode_adminBadge_enabled')
+    };
+    
+    Object.keys(inputs).forEach(key => {
+      if (inputs[key] && toggles[key]) {
+        config[key] = {
+          enabled: toggles[key].getAttribute('aria-pressed') === 'true',
+          replacement: inputs[key].value
+        };
+      }
+    });
+    
+    if (toggles.adminBadge) {
+      config.adminBadge = {
+        enabled: toggles.adminBadge.getAttribute('aria-pressed') === 'true',
+        replacement: null
+      };
+    }
+    
+    chrome.storage.sync.set({ screenshotModeConfig: config });
+  });
+}
+
+// Add event listeners for screenshot mode settings
+['serverName', 'serverIP', 'serverPort', 'serverDynamicIP', 'profileUsername', 'profileTag', 'profilePicture', 'consolePlayer'].forEach(key => {
+  const input = document.getElementById(`screenshotMode_${key}`);
+  const toggle = document.getElementById(`screenshotMode_${key}_enabled`);
+  
+  if (input) {
+    input.addEventListener('input', saveScreenshotModeConfig);
+  }
+  
+  if (toggle) {
+    toggle.addEventListener('click', function() {
+      const state = this.getAttribute('aria-pressed') !== 'true';
+      setToggleState(this, state);
+      saveScreenshotModeConfig();
+    });
+  }
+});
+
+const adminBadgeToggle = document.getElementById('screenshotMode_adminBadge_enabled');
+if (adminBadgeToggle) {
+  adminBadgeToggle.addEventListener('click', function() {
+    const state = this.getAttribute('aria-pressed') !== 'true';
+    setToggleState(this, state);
+    saveScreenshotModeConfig();
+  });
+}
 function observeAndApplyEditorHeight() {
   applyEditorWrapperHeight();
   const observer = new MutationObserver(applyEditorWrapperHeight);

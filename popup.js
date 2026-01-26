@@ -16,6 +16,35 @@ document.addEventListener('DOMContentLoaded', () => {
       chrome.tabs.create({ url: chrome.runtime.getURL('options.html') });
     });
   });
+
+  // Screenshot mode button handler
+  const screenshotBtn = document.getElementById('screenshotModeBtn');
+  if (screenshotBtn) {
+    // Load saved state
+    chrome.storage.sync.get(['screenshotModeActive'], (result) => {
+      if (result.screenshotModeActive) {
+        screenshotBtn.classList.add('active');
+      }
+    });
+
+    // Toggle screenshot mode
+    screenshotBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const isActive = screenshotBtn.classList.toggle('active');
+      
+      // Save state
+      chrome.storage.sync.set({ screenshotModeActive: isActive });
+      
+      // Send message to active tab to enable/disable censoring
+      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        if (tabs[0]) {
+          chrome.tabs.sendMessage(tabs[0].id, {
+            action: isActive ? 'enableScreenshotMode' : 'disableScreenshotMode'
+          });
+        }
+      });
+    });
+  }
 });
 
 const toggleBtn = document.getElementById('toggle');
