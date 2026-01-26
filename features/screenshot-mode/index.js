@@ -3,6 +3,9 @@
 
 let screenshotModeActive = false;
 let config = {};
+let observer = null;
+let lastApplied = 0;
+const THROTTLE_MS = 500; // Only apply censoring every 500ms max
 
 function loadConfig() {
   return new Promise((resolve) => {
@@ -25,77 +28,128 @@ function loadConfig() {
 }
 
 function applyCensoring() {
+  // Throttle to prevent performance issues
+  const now = Date.now();
+  if (now - lastApplied < THROTTLE_MS) return;
+  lastApplied = now;
+
+  if (!screenshotModeActive || !config) return;
+
   // Server names
-  if (config.serverName.enabled) {
+  if (config.serverName?.enabled) {
     document.querySelectorAll('.current-server-name, .server-name').forEach(el => {
-      el.textContent = config.serverName.replacement;
+      if (el.textContent !== config.serverName.replacement) {
+        el.textContent = config.serverName.replacement;
+      }
     });
   }
   
   // Server IPs
-  if (config.serverIP.enabled) {
+  if (config.serverIP?.enabled) {
     document.querySelectorAll('.server-address, .connection-details-ip').forEach(el => {
-      el.textContent = config.serverIP.replacement;
+      if (el.textContent !== config.serverIP.replacement) {
+        el.textContent = config.serverIP.replacement;
+      }
     });
   }
   
   // Server Ports
-  if (config.serverPort.enabled) {
+  if (config.serverPort?.enabled) {
     document.querySelectorAll('.connection-details-port').forEach(el => {
-      el.textContent = config.serverPort.replacement;
+      if (el.textContent !== config.serverPort.replacement) {
+        el.textContent = config.serverPort.replacement;
+      }
     });
   }
   
   // Dynamic IPs
-  if (config.serverDynamicIP.enabled) {
+  if (config.serverDynamicIP?.enabled) {
     document.querySelectorAll('.connection-details-dynamicip').forEach(el => {
-      el.textContent = config.serverDynamicIP.replacement;
+      if (el.textContent !== config.serverDynamicIP.replacement) {
+        el.textContent = config.serverDynamicIP.replacement;
+      }
     });
   }
   
   // Profile Username
-  if (config.profileUsername.enabled) {
+  if (config.profileUsername?.enabled) {
     document.querySelectorAll('.profile-name').forEach(el => {
-      el.textContent = config.profileUsername.replacement;
+      if (el.textContent !== config.profileUsername.replacement) {
+        el.textContent = config.profileUsername.replacement;
+      }
     });
   }
   
   // Profile Tag
-  if (config.profileTag.enabled) {
+  if (config.profileTag?.enabled) {
     document.querySelectorAll('.profile-tag').forEach(el => {
-      el.textContent = config.profileTag.replacement;
+      if (el.textContent !== config.profileTag.replacement) {
+        el.textContent = config.profileTag.replacement;
+      }
     });
   }
   
   // Profile Picture
-  if (config.profilePicture.enabled) {
+  if (config.profilePicture?.enabled) {
     document.querySelectorAll('.profile-avatar-large img').forEach(img => {
-      img.src = config.profilePicture.replacement;
+      if (img.src !== config.profilePicture.replacement) {
+        img.src = config.profilePicture.replacement;
+      }
     });
   }
   
   // Console Player Usernames
-  if (config.consolePlayer.enabled) {
+  if (config.consolePlayer?.enabled) {
     document.querySelectorAll('.console-player-username').forEach(el => {
-      el.textContent = config.consolePlayer.replacement;
+      if (el.textContent !== config.consolePlayer.replacement) {
+        el.textContent = config.consolePlayer.replacement;
+      }
     });
   }
   
   // Admin Badge
-  if (config.adminBadge.enabled) {
+  if (config.adminBadge?.enabled) {
     document.querySelectorAll('.admin-badge-large').forEach(el => {
-      el.style.display = 'none';
+      if (el.style.display !== 'none') {
+        el.style.display = 'none';
+      }
     });
+  }
+}
+
+function startObserver() {
+  if (observer) return; // Already running
+  
+  observer = new MutationObserver(() => {
+    if (screenshotModeActive) applyCensoring();
+  });
+  
+  if (document.body) {
+    observer.observe(document.body, { 
+      childList: true, 
+      subtree: true 
+    });
+  }
+}
+
+function stopObserver() {
+  if (observer) {
+    observer.disconnect();
+    observer = null;
   }
 }
 
 function enableScreenshotMode() {
   screenshotModeActive = true;
-  loadConfig().then(() => applyCensoring());
+  loadConfig().then(() => {
+    applyCensoring();
+    startObserver();
+  });
 }
 
 function disableScreenshotMode() {
   screenshotModeActive = false;
+  stopObserver();
   // Reload page to restore original content
   location.reload();
 }
@@ -115,17 +169,3 @@ chrome.storage.sync.get(['screenshotModeActive'], (result) => {
     loadConfig().then(() => enableScreenshotMode());
   }
 });
-
-// If screenshot mode is enabled, re-apply on DOM changes
-const observer = new MutationObserver(() => {
-  if (screenshotModeActive) applyCensoring();
-});
-
-// Wait for body to be available
-if (document.body) {
-  observer.observe(document.body, { childList: true, subtree: true });
-} else {
-  document.addEventListener('DOMContentLoaded', () => {
-    observer.observe(document.body, { childList: true, subtree: true });
-  });
-}
