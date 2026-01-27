@@ -44,6 +44,18 @@ function applyCensoring() {
     });
   }
   
+  // Server domain on main site
+  if (config.serverIP?.enabled) {
+    document.querySelectorAll('.server-info.server-domain span').forEach(el => {
+      if (el.textContent.trim() !== config.serverIP.replacement) {
+        el.textContent = config.serverIP.replacement;
+        if (el.hasAttribute('title')) {
+          el.setAttribute('title', config.serverIP.replacement);
+        }
+      }
+    });
+  }
+  
   // Server IPs
   if (config.serverIP?.enabled) {
     document.querySelectorAll('.server-address, .connection-details-ip').forEach(el => {
