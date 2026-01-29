@@ -258,12 +258,12 @@ function applyCensoring() {
       
       // Bedrock - Address line
       if (config.serverDynamicIP?.enabled && text.includes('Address:') && text.match(/\d+\.\d+\.\d+\.\d+/)) {
-        span.innerHTML = span.innerHTML.replace(/\d+\.\d+\.\d+\.\d+/, config.serverDynamicIP.replacement);
+        span.textContent = span.textContent.replace(/\d+\.\d+\.\d+\.\d+/, config.serverDynamicIP.replacement);
       }
       
       // Bedrock - Port line
       if (config.serverPort?.enabled && text.includes('Port:') && text.match(/Port:\s*\d+/)) {
-        span.innerHTML = span.innerHTML.replace(/Port:\s*\d+/, `Port: ${config.serverPort.replacement}`);
+        span.textContent = span.textContent.replace(/Port:\s*\d+/, `Port: ${config.serverPort.replacement}`);
       }
     });
     
