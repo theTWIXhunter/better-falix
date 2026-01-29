@@ -1,8 +1,6 @@
 // Screenshot Mode Feature
 // Censors sensitive information for screenshots
 
-console.log('[Screenshot Mode Content] Script loaded');
-
 let screenshotModeActive = false;
 let config = {};
 let observer = null;
@@ -10,7 +8,6 @@ let lastApplied = 0;
 const THROTTLE_MS = 500; // Only apply censoring every 500ms max
 
 function loadConfig() {
-  console.log('[Screenshot Mode Content] Loading config...');
   return new Promise((resolve) => {
     chrome.storage.sync.get(['screenshotModeConfig'], (data) => {
       const defaultConfig = {
@@ -25,7 +22,6 @@ function loadConfig() {
         adminBadge: { enabled: true, replacement: null },
       };
       config = data.screenshotModeConfig || defaultConfig;
-      console.log('[Screenshot Mode Content] Config loaded:', config);
       resolve();
     });
   });
@@ -192,6 +188,73 @@ function applyCensoring() {
         }
       }
     });
+    
+    // Bedrock connection details
+    document.querySelectorAll('.bedrock-detail-row').forEach(row => {
+      const label = row.querySelector('.bedrock-detail-label');
+      const valueSpan = row.querySelector('.bedrock-detail-value span');
+      
+      if (!label || !valueSpan) return;
+      
+      const labelText = label.textContent.toLowerCase();
+      
+      if (config.serverDynamicIP?.enabled && labelText.includes('address')) {
+        if (valueSpan.textContent.trim() !== config.serverDynamicIP.replacement) {
+          valueSpan.textContent = config.serverDynamicIP.replacement;
+        }
+      }
+      
+      if (config.serverPort?.enabled && labelText.includes('port')) {
+        if (valueSpan.textContent.trim() !== config.serverPort.replacement) {
+          valueSpan.textContent = config.serverPort.replacement;
+        }
+      }
+    });
+    
+    // Backup connection items (Java full address and Bedrock details)
+    document.querySelectorAll('.backup-connection-value').forEach(valueEl => {
+      const span = valueEl.querySelector('span');
+      if (!span) return;
+      
+      const text = span.textContent;
+      
+      // Java Edition - Full Address (IP:Port)
+      if (config.serverDynamicIP?.enabled && config.serverPort?.enabled && text.match(/^\d+\.\d+\.\d+\.\d+:\d+$/)) {
+        const newValue = `${config.serverDynamicIP.replacement}:${config.serverPort.replacement}`;
+        if (text !== newValue) {
+          span.textContent = newValue;
+        }
+      }
+      
+      // Bedrock - Address line
+      if (config.serverDynamicIP?.enabled && text.includes('Address:') && text.match(/\d+\.\d+\.\d+\.\d+/)) {
+        span.innerHTML = span.innerHTML.replace(/\d+\.\d+\.\d+\.\d+/, config.serverDynamicIP.replacement);
+      }
+      
+      // Bedrock - Port line
+      if (config.serverPort?.enabled && text.includes('Port:') && text.match(/Port:\s*\d+/)) {
+        span.innerHTML = span.innerHTML.replace(/Port:\s*\d+/, `Port: ${config.serverPort.replacement}`);
+      }
+    });
+    
+    // Quick Add link for Bedrock (minecraft:// protocol)
+    if (config.serverDynamicIP?.enabled && config.serverPort?.enabled) {
+      document.querySelectorAll('a[href^="minecraft://"]').forEach(link => {
+        const newHref = `minecraft://?addExternalServer=Direct%20Server|${config.serverDynamicIP.replacement}:${config.serverPort.replacement}`;
+        if (link.href !== newHref) {
+          link.href = newHref;
+        }
+      });
+    }
+    
+    // Domain in warning message
+    if (config.serverIP?.enabled) {
+      document.querySelectorAll('.alert-warning strong').forEach(strong => {
+        if (strong.textContent.includes('.falixsrv.me')) {
+          strong.textContent = config.serverIP.replacement;
+        }
+      });
+    }
   }
   
   // Console log messages - censor IPs, ports, and UUIDs
@@ -246,26 +309,20 @@ function stopObserver() {
 }
 
 function enableScreenshotMode() {
-  console.log('[Screenshot Mode Content] 🟢 Enabling screenshot mode...');
   screenshotModeActive = true;
   loadConfig().then(() => {
-    console.log('[Screenshot Mode Content] Config loaded, applying censoring...');
     applyCensoring();
     startObserver();
-    console.log('[Screenshot Mode Content] ✅ Screenshot mode enabled');
   });
 }
 
 function disableScreenshotMode() {
-  console.log('[Screenshot Mode Content] 🔴 Disabling screenshot mode...');
   screenshotModeActive = false;
   stopObserver();
-  console.log('[Screenshot Mode Content] ✅ Screenshot mode disabled');
 }
 
 // Listen for messages from popup
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  console.log('[Screenshot Mode Content] 📨 Message received:', request);
   if (request.action === 'enableScreenshotMode') {
     enableScreenshotMode();
     sendResponse({ success: true });
