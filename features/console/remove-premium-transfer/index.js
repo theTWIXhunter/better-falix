@@ -53,7 +53,9 @@ chrome.storage.sync.get({ removePremiumTransfer: false, enabled: true }, (data) 
     removePremiumTransferBanner();
   });
   
-  observer.observe(document.body, { childList: true, subtree: true });
+  if (document.body) {
+    observer.observe(document.body, { childList: true, subtree: true });
+  }
   
   setTimeout(() => {
     try {
