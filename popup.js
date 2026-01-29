@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const screenshotBtn = document.getElementById('screenshotModeBtn');
   if (screenshotBtn) {
     let isProcessing = false;
+    const injectedTabs = new Set(); // Track which tabs have the script
     
     // Load saved state (default to false)
     chrome.storage.sync.get({ screenshotModeActive: false }, (result) => {
@@ -56,26 +57,31 @@ document.addEventListener('DOMContentLoaded', () => {
             const tabId = tabs[0].id;
             
             try {
-              // Inject the script
-              await chrome.scripting.executeScript({
-                target: { tabId: tabId },
-                files: ['features/screenshot-mode/index.js']
-              });
+              // Only inject if not already injected for this tab
+              if (!injectedTabs.has(tabId)) {
+                await chrome.scripting.executeScript({
+                  target: { tabId: tabId },
+                  files: ['features/screenshot-mode/index.js']
+                });
+                injectedTabs.add(tabId);
+                
+                // Wait longer for first injection to ensure script initializes
+                await new Promise(resolve => setTimeout(resolve, 200));
+              }
               
-              // Wait a bit for script to initialize
-              setTimeout(() => {
-                // Send message to toggle the mode
-                chrome.tabs.sendMessage(
-                  tabId,
-                  { action: isActive ? 'enableScreenshotMode' : 'disableScreenshotMode' },
-                  () => {
-                    if (chrome.runtime.lastError) {
-                      console.log('Message error:', chrome.runtime.lastError.message);
-                    }
-                    isProcessing = false;
+              // Send message to toggle the mode
+              chrome.tabs.sendMessage(
+                tabId,
+                { action: isActive ? 'enableScreenshotMode' : 'disableScreenshotMode' },
+                (response) => {
+                  if (chrome.runtime.lastError) {
+                    // If message fails, script might not be injected - remove from set and retry next time
+                    injectedTabs.delete(tabId);
+                    console.log('Message error:', chrome.runtime.lastError.message);
                   }
-                );
-              }, 100);
+                  isProcessing = false;
+                }
+              );
             } catch (err) {
               console.log('Injection error:', err);
               isProcessing = false;
