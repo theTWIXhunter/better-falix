@@ -51,31 +51,35 @@ document.addEventListener('DOMContentLoaded', () => {
       // Save state
       chrome.storage.sync.set({ screenshotModeActive: isActive }, () => {
         // Get the active tab
-        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
           if (tabs && tabs[0]) {
             const tabId = tabs[0].id;
             
-            // Inject the script if not already injected
-            chrome.scripting.executeScript({
-              target: { tabId: tabId },
-              files: ['features/screenshot-mode/index.js']
-            }, () => {
-              if (chrome.runtime.lastError) {
-                console.log('Script injection error (may already be injected):', chrome.runtime.lastError.message);
-              }
+            try {
+              // Inject the script
+              await chrome.scripting.executeScript({
+                target: { tabId: tabId },
+                files: ['features/screenshot-mode/index.js']
+              });
               
-              // Send message to toggle the mode
-              chrome.tabs.sendMessage(
-                tabId,
-                { action: isActive ? 'enableScreenshotMode' : 'disableScreenshotMode' },
-                () => {
-                  if (chrome.runtime.lastError) {
-                    console.log('Message sent (will apply on next injection)');
+              // Wait a bit for script to initialize
+              setTimeout(() => {
+                // Send message to toggle the mode
+                chrome.tabs.sendMessage(
+                  tabId,
+                  { action: isActive ? 'enableScreenshotMode' : 'disableScreenshotMode' },
+                  () => {
+                    if (chrome.runtime.lastError) {
+                      console.log('Message error:', chrome.runtime.lastError.message);
+                    }
+                    isProcessing = false;
                   }
-                  isProcessing = false;
-                }
-              );
-            });
+                );
+              }, 100);
+            } catch (err) {
+              console.log('Injection error:', err);
+              isProcessing = false;
+            }
           } else {
             isProcessing = false;
           }
