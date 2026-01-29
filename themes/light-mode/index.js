@@ -14,6 +14,9 @@
         }
         console.log('[better-falix] LIGHT MODE THEME: Script enabled');
 
+        // Define light mode color variables
+        const lightBg = '#fff';
+
         // Remove 'dark' class from <html> and <body>
         document.documentElement.classList.remove('dark');
         document.body.classList.remove('dark');
@@ -22,7 +25,7 @@
         document.documentElement.setAttribute('data-bs-theme', 'light');
 
         // Set background color for light mode
-        document.body.style.backgroundColor = '#fff';
+        document.body.style.backgroundColor = lightBg;
 
         // Remove any dark-mode specific classes from all elements
         document.querySelectorAll('[class*="dark"]').forEach(el => {
@@ -30,15 +33,15 @@
         });
 
         // Override CSS variables for light mode
-        document.documentElement.style.setProperty('--falcon-card-bg', '#fff');
+        document.documentElement.style.setProperty('--falcon-card-bg', lightBg);
         document.documentElement.style.setProperty('--falcon-700', '#2c3e50');
         document.documentElement.style.setProperty('--falcon-500', '#6c757d');
 
         // Make navbar white
         var navbars = document.querySelectorAll('.navbar-vertical, .navbar-brand-container, .navbar-content-wrapper, .navbar-footer, .top-navbar');
         navbars.forEach(function(nav) {
-            nav.style.background = '#fff';
-            nav.style.backgroundColor = '#fff';
+            nav.style.background = lightBg;
+            nav.style.backgroundColor = lightBg;
             nav.style.color = '#222';
             nav.style.boxShadow = '0 1px 4px rgba(0,0,0,0.04)';
         });
@@ -46,8 +49,8 @@
         // Make widget cards white
         var cards = document.querySelectorAll('.card, .resource-card, .compact-info-card, .modal-content');
         cards.forEach(function(card) {
-            card.style.background = '#fff';
-            card.style.backgroundColor = '#fff';
+            card.style.background = lightBg;
+            card.style.backgroundColor = lightBg;
             card.style.color = '#222';
             card.style.boxShadow = '0 1px 4px rgba(0,0,0,0.04)';
         });
@@ -67,30 +70,30 @@
         // Set console-tabs background to white
         var consoleTabs = document.querySelectorAll('.console-tabs');
         consoleTabs.forEach(function(el) {
-            el.style.background = '#fff';
-            el.style.backgroundColor = '#fff';
+            el.style.background = lightBg;
+            el.style.backgroundColor = lightBg;
         });
 
         // Set console-output, console-terminal, console-input-container, and console-input background to white
         var consoleOutput = document.querySelectorAll('.console-output');
         consoleOutput.forEach(function(el) {
-            el.style.background = '#fff';
-            el.style.backgroundColor = '#fff';
+            el.style.background = lightBg;
+            el.style.backgroundColor = lightBg;
         });
         var consoleTerminal = document.querySelectorAll('.console-terminal');
         consoleTerminal.forEach(function(el) {
-            el.style.background = '#fff';
-            el.style.backgroundColor = '#fff';
+            el.style.background = lightBg;
+            el.style.backgroundColor = lightBg;
         });
         var consoleInputContainer = document.querySelectorAll('.console-input-container');
         consoleInputContainer.forEach(function(el) {
-            el.style.background = '#fff';
-            el.style.backgroundColor = '#fff';
+            el.style.background = lightBg;
+            el.style.backgroundColor = lightBg;
         });
         var consoleInput = document.querySelectorAll('.console-input');
         consoleInput.forEach(function(el) {
-            el.style.background = '#fff';
-            el.style.backgroundColor = '#fff';
+            el.style.background = lightBg;
+            el.style.backgroundColor = lightBg;
         });
 
         // Set plain text in <pre class="console-terminal"> to light black (#222)
@@ -112,8 +115,8 @@
         // Also make #console_box white with dark text and light border
         var consoleBox = document.getElementById('console_box');
         if (consoleBox) {
-            consoleBox.style.background = '#fff';
-            consoleBox.style.backgroundColor = '#fff';
+            consoleBox.style.background = lightBg;
+            consoleBox.style.backgroundColor = lightBg;
             consoleBox.style.color = '#222';
             consoleBox.style.borderColor = '#e5e7eb';
             consoleBox.style.boxShadow = '0 1px 4px rgba(0,0,0,0.04)';
@@ -169,8 +172,8 @@
         // Make .clickablebox white with black text
         var clickableBoxes = document.querySelectorAll('.clickablebox');
         clickableBoxes.forEach(function(el) {
-            el.style.background = '#fff';
-            el.style.backgroundColor = '#fff';
+            el.style.background = lightBg;
+            el.style.backgroundColor = lightBg;
             el.style.color = '#000';
         });
 
@@ -185,117 +188,117 @@
         // Mass actions panel white
         var massActionsPanels = document.querySelectorAll('.mass-actions-panel');
         massActionsPanels.forEach(function(el) {
-            el.style.background = '#fff';
+            el.style.background = lightBg;
             el.style.color = '#222';
         });
 
         // Upload queue white
         var uploadQueues = document.querySelectorAll('.upload-queue, .upload-queue-header, .upload-queue-body, .upload-item');
         uploadQueues.forEach(function(el) {
-            el.style.background = '#fff';
+            el.style.background = lightBg;
             el.style.color = '#222';
         });
 
         // Progress overlays white
         var progressModals = document.querySelectorAll('.download-progress-modal, .upload-progress-modal');
         progressModals.forEach(function(el) {
-            el.style.background = '#fff';
+            el.style.background = lightBg;
             el.style.color = '#222';
         });
 
         // All modals white
         var modalContents = document.querySelectorAll('.modal-content, .modal-header');
         modalContents.forEach(function(el) {
-            el.style.background = '#fff';
+            el.style.background = lightBg;
             el.style.color = '#222';
         });
 
         // Select all container white
         var selectAllContainers = document.querySelectorAll('.select-all-container');
         selectAllContainers.forEach(function(el) {
-            el.style.background = '#fff';
+            el.style.background = lightBg;
             el.style.color = '#222';
         });
 
         // File table rows and cells white
         var fileTableRows = document.querySelectorAll('.file-table tbody tr');
         fileTableRows.forEach(function(el) {
-            el.style.background = '#fff';
+            el.style.background = lightBg;
             el.style.color = '#222';
         });
         var fileTableCells = document.querySelectorAll('.file-table tbody tr td');
         fileTableCells.forEach(function(el) {
-            el.style.background = '#fff';
+            el.style.background = lightBg;
             el.style.color = '#222';
         });
 
         // File/folder/goback icon wrappers white
         var iconWrappers = document.querySelectorAll('.file-icon-wrapper, .folder-icon-wrapper, .goback-icon-wrapper');
         iconWrappers.forEach(function(el) {
-            el.style.background = '#fff';
+            el.style.background = lightBg;
             el.style.color = '#222';
         });
 
         // Dropdown menus white
         var dropdownMenus = document.querySelectorAll('.dropdown-menu, .custom-dropdown-menu, .context-menu-content');
         dropdownMenus.forEach(function(el) {
-            el.style.background = '#fff';
+            el.style.background = lightBg;
             el.style.color = '#222';
         });
 
         // Breadcrumbs white
         var breadcrumbs = document.querySelectorAll('.breadcrumb, .breadcrumb-wrapper');
         breadcrumbs.forEach(function(el) {
-            el.style.background = '#fff';
+            el.style.background = lightBg;
             el.style.color = '#222';
         });
 
         // Error/empty state containers white
         var emptyStates = document.querySelectorAll('.access-denied-container, .hexagon-bg');
         emptyStates.forEach(function(el) {
-            el.style.background = '#fff';
+            el.style.background = lightBg;
             el.style.color = '#222';
         });
 
         // Resource modal white
         var resourceModals = document.querySelectorAll('.resources-grid-modal, .resource-item-modal');
         resourceModals.forEach(function(el) {
-            el.style.background = '#fff';
+            el.style.background = lightBg;
             el.style.color = '#222';
         });
 
         // Select all label white
         var selectAllLabels = document.querySelectorAll('.select-all-label');
         selectAllLabels.forEach(function(el) {
-            el.style.background = '#fff';
+            el.style.background = lightBg;
             el.style.color = '#222';
         });
 
         // Sort bar/buttons white
         var sortEls = document.querySelectorAll('.sort-options, .sort-btn');
         sortEls.forEach(function(el) {
-            el.style.background = '#fff';
+            el.style.background = lightBg;
             el.style.color = '#222';
         });
 
         // Mass actions header/content/buttons white
         var massActionsEls = document.querySelectorAll('.mass-actions-header, .mass-actions-content, .mass-action-btn');
         massActionsEls.forEach(function(el) {
-            el.style.background = '#fff';
+            el.style.background = lightBg;
             el.style.color = '#222';
         });
 
         // Mobile action sheet white
         var mobileActionSheets = document.querySelectorAll('.mobile-action-sheet, .mobile-action-sheet-overlay');
         mobileActionSheets.forEach(function(el) {
-            el.style.background = '#fff';
+            el.style.background = lightBg;
             el.style.color = '#222';
         });
 
         // Footer white
         var footers = document.querySelectorAll('.footer-modern');
         footers.forEach(function(el) {
-            el.style.background = '#fff';
+            el.style.background = lightBg;
             el.style.color = '#222';
         });
 
@@ -342,8 +345,8 @@
         // Make .server-row.bg-200.mx-2 white with dark text, force background
         var serverRows = document.querySelectorAll('.server-row.bg-200.mx-2');
         serverRows.forEach(function(el) {
-            el.style.setProperty('background', '#fff', 'important');
-            el.style.setProperty('background-color', '#fff', 'important');
+            el.style.setProperty('background', lightBg, 'important');
+            el.style.setProperty('background-color', lightBg, 'important');
             el.style.color = '#222';
         });
 
@@ -352,8 +355,8 @@
             '.island-container.mb-5, .world-card, .player-card'
         );
         whiteBgEls.forEach(function(el) {
-            el.style.setProperty('background', '#fff', 'important');
-            el.style.setProperty('background-color', '#fff', 'important');
+            el.style.setProperty('background', lightBg, 'important');
+            el.style.setProperty('background-color', lightBg, 'important');
         });
 
         // Set text color to black(ish) for #last-updated and .player-name
@@ -425,7 +428,7 @@ label.btn.btn-outline-secondary[for="recursiveMode"] {
 .modal-body,
 .modal-header.bg-1000.border-700,
 .card-body {
-  background-color: #fff !important;
+  background-color: ` + lightBg + ` !important;
 }
 .modal-body,
 .modal-header.bg-1000.border-700,
