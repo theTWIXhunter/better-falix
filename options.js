@@ -105,6 +105,11 @@ chrome.storage.sync.get(null, data => {
   const consolePlayerToggle = document.getElementById('screenshotMode_consolePlayer_enabled');
   if (consolePlayerToggle) setToggleState(consolePlayerToggle, screenshotModeConfig.consolePlayer?.enabled !== false);
   
+  const consoleUUIDInput = document.getElementById('screenshotMode_consoleUUID');
+  if (consoleUUIDInput) consoleUUIDInput.value = screenshotModeConfig.consoleUUID?.replacement || '00000000-0000-0000-0000-000000000000';
+  const consoleUUIDToggle = document.getElementById('screenshotMode_consoleUUID_enabled');
+  if (consoleUUIDToggle) setToggleState(consoleUUIDToggle, screenshotModeConfig.consoleUUID?.enabled !== false);
+  
   const adminBadgeToggle = document.getElementById('screenshotMode_adminBadge_enabled');
   if (adminBadgeToggle) setToggleState(adminBadgeToggle, screenshotModeConfig.adminBadge?.enabled !== false);
 });
@@ -441,7 +446,8 @@ function saveScreenshotModeConfig() {
       profileUsername: document.getElementById('screenshotMode_profileUsername'),
       profileTag: document.getElementById('screenshotMode_profileTag'),
       profilePicture: document.getElementById('screenshotMode_profilePicture'),
-      consolePlayer: document.getElementById('screenshotMode_consolePlayer')
+      consolePlayer: document.getElementById('screenshotMode_consolePlayer'),
+      consoleUUID: document.getElementById('screenshotMode_consoleUUID')
     };
     
     const toggles = {
@@ -453,6 +459,7 @@ function saveScreenshotModeConfig() {
       profileTag: document.getElementById('screenshotMode_profileTag_enabled'),
       profilePicture: document.getElementById('screenshotMode_profilePicture_enabled'),
       consolePlayer: document.getElementById('screenshotMode_consolePlayer_enabled'),
+      consoleUUID: document.getElementById('screenshotMode_consoleUUID_enabled'),
       adminBadge: document.getElementById('screenshotMode_adminBadge_enabled')
     };
     

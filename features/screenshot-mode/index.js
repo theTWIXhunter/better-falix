@@ -19,6 +19,7 @@ function loadConfig() {
         profileTag: { enabled: true, replacement: "example" },
         profilePicture: { enabled: true, replacement: "https://ui-avatars.com/api/?name=User" },
         consolePlayer: { enabled: true, replacement: "Player" },
+        consoleUUID: { enabled: true, replacement: "00000000-0000-0000-0000-000000000000" },
         adminBadge: { enabled: true, replacement: null },
       };
       config = data.screenshotModeConfig || defaultConfig;
@@ -122,6 +123,15 @@ function applyCensoring() {
     document.querySelectorAll('.console-player-username').forEach(el => {
       if (el.textContent !== config.consolePlayer.replacement) {
         el.textContent = config.consolePlayer.replacement;
+      }
+    });
+  }
+  
+  // Console UUIDs
+  if (config.consoleUUID?.enabled) {
+    document.querySelectorAll('.console-uuid').forEach(el => {
+      if (el.textContent !== config.consoleUUID.replacement) {
+        el.textContent = config.consoleUUID.replacement;
       }
     });
   }
