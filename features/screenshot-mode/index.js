@@ -20,6 +20,7 @@ function loadConfig() {
         profilePicture: { enabled: true, replacement: "https://ui-avatars.com/api/?name=User" },
         consolePlayer: { enabled: true, replacement: "Player" },
         consoleUUID: { enabled: true, replacement: "00000000-0000-0000-0000-000000000000" },
+        consoleConnectionIP: { enabled: true, replacement: "0.0.0.0:00000" },
         adminBadge: { enabled: true, replacement: null },
       };
       config = data.screenshotModeConfig || defaultConfig;
@@ -132,6 +133,18 @@ function applyCensoring() {
     document.querySelectorAll('.console-uuid').forEach(el => {
       if (el.textContent !== config.consoleUUID.replacement) {
         el.textContent = config.consoleUUID.replacement;
+      }
+    });
+  }
+  
+  // Console Connection IPs (in console logs)
+  if (config.consoleConnectionIP?.enabled) {
+    document.querySelectorAll('.console-censored-ip').forEach(el => {
+      if (el.textContent !== config.consoleConnectionIP.replacement) {
+        el.textContent = config.consoleConnectionIP.replacement;
+        if (el.hasAttribute('title')) {
+          el.setAttribute('title', 'Censored for screenshot');
+        }
       }
     });
   }
