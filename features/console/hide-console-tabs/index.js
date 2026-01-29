@@ -38,7 +38,9 @@ chrome.storage.sync.get({ hideConsoleTabs: false, enabled: true }, (data) => {
   }
   
   const observer = new MutationObserver(hideTabs);
-  observer.observe(document.body, { childList: true, subtree: true });
+  if (document.body) {
+    observer.observe(document.body, { childList: true, subtree: true });
+  }
 
   // [better-falix] hide-console-tabs: Script loaded sucsessfully
   setTimeout(() => {
