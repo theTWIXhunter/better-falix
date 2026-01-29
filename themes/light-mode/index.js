@@ -411,6 +411,18 @@
             el.style.setProperty('color', '#000', 'important');
         });
 
+        // Override custom navbar editor styles
+        var navLinks = document.querySelectorAll('.nav-link, .navbar-nav .nav-item a, .nav-category');
+        navLinks.forEach(function(el) {
+            el.style.setProperty('color', '#000', 'important');
+        });
+
+        var navSections = document.querySelectorAll('.nav-section, .navbar-nav');
+        navSections.forEach(function(el) {
+            el.style.setProperty('background', lightBg, 'important');
+            el.style.setProperty('background-color', lightBg, 'important');
+        });
+
         // Set chart container background to rgb(150,150,150)
         if (!document.getElementById('light-mode-chart-container-style')) {
           var chartContainerStyle = document.createElement('style');
