@@ -1,6 +1,8 @@
 // Screenshot Mode Feature
 // Censors sensitive information for screenshots
 
+console.log('[Screenshot Mode Content] Script loaded');
+
 let screenshotModeActive = false;
 let config = {};
 let observer = null;
@@ -8,6 +10,7 @@ let lastApplied = 0;
 const THROTTLE_MS = 500; // Only apply censoring every 500ms max
 
 function loadConfig() {
+  console.log('[Screenshot Mode Content] Loading config...');
   return new Promise((resolve) => {
     chrome.storage.sync.get(['screenshotModeConfig'], (data) => {
       const defaultConfig = {
@@ -22,6 +25,7 @@ function loadConfig() {
         adminBadge: { enabled: true, replacement: null },
       };
       config = data.screenshotModeConfig || defaultConfig;
+      console.log('[Screenshot Mode Content] Config loaded:', config);
       resolve();
     });
   });
@@ -240,16 +244,22 @@ function stopObserver() {
     observer = null;
   }
 }
-
-function enableScreenshotMode() {
+console.log('[Screenshot Mode Content] 🟢 Enabling screenshot mode...');
   screenshotModeActive = true;
   loadConfig().then(() => {
+    console.log('[Screenshot Mode Content] Config loaded, applying censoring...');
     applyCensoring();
     startObserver();
+    console.log('[Screenshot Mode Content] ✅ Screenshot mode enabled');
   });
 }
 
 function disableScreenshotMode() {
+  console.log('[Screenshot Mode Content] 🔴 Disabling screenshot mode...');
+  screenshotModeActive = false;
+  stopObserver();
+  console.log('[Screenshot Mode Content] 📨 Message received:', request);
+  console.log('[Screenshot Mode Content] ✅ Screenshot mode disabled'eScreenshotMode() {
   screenshotModeActive = false;
   stopObserver();
 }

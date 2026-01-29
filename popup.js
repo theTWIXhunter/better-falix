@@ -23,8 +23,11 @@ document.addEventListener('DOMContentLoaded', () => {
     let isProcessing = false;
     const injectedTabs = new Set(); // Track which tabs have the script
     
+    console.log('[Screenshot Mode] Initializing button handler');
+    
     // Load saved state (default to false)
     chrome.storage.sync.get({ screenshotModeActive: false }, (result) => {
+      console.log('[Screenshot Mode] Loaded saved state:', result.screenshotModeActive);
       if (result.screenshotModeActive === true) {
         screenshotBtn.classList.add('active');
       } else {
@@ -34,13 +37,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to send toggle message
     const sendToggleMessage = (tabId, isActive, callback) => {
+      console.log('[Screenshot Mode] Sending message to tab', tabId, '- action:', isActive ? 'enable' : 'disable');
       chrome.tabs.sendMessage(
         tabId,
         { action: isActive ? 'enableScreenshotMode' : 'disableScreenshotMode' },
         (response) => {
           if (chrome.runtime.lastError) {
-            console.log('Message error:', chrome.runtime.lastError.message);
+            console.log('[Screenshot Mode] ❌ Message error:', chrome.runtime.lastError.message);
             injectedTabs.delete(tabId);
+          } else {
+            console.log('[Screenshot Mode] ✅ Message sent successfully, response:', response);
           }
           if (callback) callback();
         }
@@ -50,12 +56,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // Toggle screenshot mode
     screenshotBtn.addEventListener('click', (e) => {
       e.preventDefault();
+      console.log('[Screenshot Mode] 🔘 Button clicked');
       
-      if (isProcessing) return; // Prevent double-clicks
+      if (isProcessing) {
+        console.log('[Screenshot Mode] ⚠️ Already processing, ignoring click');
+        return;
+      }
       isProcessing = true;
+      console.log('[Screenshot Mode] Processing set to true');
       
       const wasActive = screenshotBtn.classList.contains('active');
       const isActive = !wasActive;
+      console.log('[Screenshot Mode] Toggle state: was', wasActive, '-> now', isActive);
       
       // Update UI immediately
       if (isActive) {
@@ -63,48 +75,63 @@ document.addEventListener('DOMContentLoaded', () => {
       } else {
         screenshotBtn.classList.remove('active');
       }
+      console.log('[Screenshot Mode] UI updated');
       
       // Save state
       chrome.storage.sync.set({ screenshotModeActive: isActive }, () => {
+        console.log('[Screenshot Mode] State saved to storage:', isActive);
+        
         // Get the active tab
         chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
           if (tabs && tabs[0]) {
             const tabId = tabs[0].id;
+            console.log('[Screenshot Mode] Active tab ID:', tabId);
+            console.log('[Screenshot Mode] Injected tabs:', Array.from(injectedTabs));
             
             try {
               // Check if script needs to be injected
               const needsInjection = !injectedTabs.has(tabId);
+              console.log('[Screenshot Mode] Needs injection:', needsInjection);
               
               if (needsInjection) {
+                console.log('[Screenshot Mode] 💉 Injecting script...');
                 // Inject the script
                 await chrome.scripting.executeScript({
                   target: { tabId: tabId },
                   files: ['features/screenshot-mode/index.js']
                 });
                 injectedTabs.add(tabId);
+                console.log('[Screenshot Mode] ✅ Script injected, waiting 250ms...');
                 
                 // Wait for script to initialize
                 await new Promise(resolve => setTimeout(resolve, 250));
+                console.log('[Screenshot Mode] Wait complete, sending first message...');
                 
                 // Send message twice after fresh injection (first ensures it's ready, second actually toggles)
                 sendToggleMessage(tabId, isActive, () => {
+                  console.log('[Screenshot Mode] First message sent, waiting 100ms...');
                   setTimeout(() => {
+                    console.log('[Screenshot Mode] Sending second message...');
                     sendToggleMessage(tabId, isActive, () => {
+                      console.log('[Screenshot Mode] Second message sent, processing complete');
                       isProcessing = false;
                     });
                   }, 100);
                 });
               } else {
+                console.log('[Screenshot Mode] Script already injected, sending single message...');
                 // Script already injected, just send once
                 sendToggleMessage(tabId, isActive, () => {
+                  console.log('[Screenshot Mode] Message sent, processing complete');
                   isProcessing = false;
                 });
               }
             } catch (err) {
-              console.log('Injection error:', err);
+              console.log('[Screenshot Mode] ❌ Injection error:', err);
               isProcessing = false;
             }
           } else {
+            console.log('[Screenshot Mode] ❌ No active tab found');
             isProcessing = false;
           }
         });
