@@ -20,16 +20,23 @@ document.addEventListener('DOMContentLoaded', () => {
   // Screenshot mode button handler
   const screenshotBtn = document.getElementById('screenshotModeBtn');
   if (screenshotBtn) {
-    // Load saved state
-    chrome.storage.sync.get(['screenshotModeActive'], (result) => {
-      if (result.screenshotModeActive) {
+    let isProcessing = false;
+    
+    // Load saved state (default to false)
+    chrome.storage.sync.get({ screenshotModeActive: false }, (result) => {
+      if (result.screenshotModeActive === true) {
         screenshotBtn.classList.add('active');
+      } else {
+        screenshotBtn.classList.remove('active');
       }
     });
 
     // Toggle screenshot mode
     screenshotBtn.addEventListener('click', (e) => {
       e.preventDefault();
+      
+      if (isProcessing) return; // Prevent double-clicks
+      isProcessing = true;
       
       const wasActive = screenshotBtn.classList.contains('active');
       const isActive = !wasActive;
@@ -42,21 +49,24 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       
       // Save state
-      chrome.storage.sync.set({ screenshotModeActive: isActive });
-      
-      // Send message to page
-      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-        if (tabs && tabs[0]) {
-          chrome.tabs.sendMessage(
-            tabs[0].id, 
-            { action: isActive ? 'enableScreenshotMode' : 'disableScreenshotMode' },
-            () => {
-              if (chrome.runtime.lastError) {
-                console.log('Message sent (will apply on page load)');
+      chrome.storage.sync.set({ screenshotModeActive: isActive }, () => {
+        // Send message to page
+        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+          if (tabs && tabs[0]) {
+            chrome.tabs.sendMessage(
+              tabs[0].id, 
+              { action: isActive ? 'enableScreenshotMode' : 'disableScreenshotMode' },
+              () => {
+                if (chrome.runtime.lastError) {
+                  console.log('Message sent (will apply on page load)');
+                }
+                isProcessing = false;
               }
-            }
-          );
-        }
+            );
+          } else {
+            isProcessing = false;
+          }
+        });
       });
     });
   }

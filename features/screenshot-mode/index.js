@@ -268,7 +268,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
 // Check if screenshot mode should be active on page load
 chrome.storage.sync.get(['screenshotModeActive'], (result) => {
-  if (result.screenshotModeActive) {
+  if (result.screenshotModeActive === true) {
     loadConfig().then(() => enableScreenshotMode());
   }
 });
