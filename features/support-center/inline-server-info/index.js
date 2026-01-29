@@ -250,10 +250,32 @@ function replaceButtonWithInfo(serverInfo) {
     const pinBorder = isDeleted ? 'rgba(239, 68, 68, 0.3)' : 'rgba(249, 115, 22, 0.3)';
     const pinBgHover = isDeleted ? 'rgba(239, 68, 68, 0.25)' : 'rgba(249, 115, 22, 0.25)';
     
-    pinButton.innerHTML = `${pinText} <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 4px; vertical-align: middle;">
-        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-    </svg>`;
+    pinButton.textContent = pinText + ' ';
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('width', '14');
+    svg.setAttribute('height', '14');
+    svg.setAttribute('viewBox', '0 0 24 24');
+    svg.setAttribute('fill', 'none');
+    svg.setAttribute('stroke', 'currentColor');
+    svg.setAttribute('stroke-width', '2');
+    svg.setAttribute('stroke-linecap', 'round');
+    svg.setAttribute('stroke-linejoin', 'round');
+    svg.style.cssText = 'margin-left: 4px; vertical-align: middle;';
+    
+    const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    rect.setAttribute('x', '9');
+    rect.setAttribute('y', '9');
+    rect.setAttribute('width', '13');
+    rect.setAttribute('height', '13');
+    rect.setAttribute('rx', '2');
+    rect.setAttribute('ry', '2');
+    svg.appendChild(rect);
+    
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.setAttribute('d', 'M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1');
+    svg.appendChild(path);
+    
+    pinButton.appendChild(svg);
     pinButton.style.cssText = `background: ${pinBg}; color: ${pinColor}; border: 1px solid ${pinBorder}; padding: 2px 8px; border-radius: 4px; cursor: pointer; font-size: 0.85em; font-weight: 500; display: inline-flex; align-items: center; transition: all 0.2s;`;
     pinButton.title = isDeleted ? 'PIN deleted' : 'Click to copy PIN';
     pinButton.onclick = (e) => {
@@ -342,11 +364,14 @@ function fallbackCopy(text) {
 }
 
 function showCopyFeedback(button, message) {
-    const originalHTML = button.innerHTML;
-    button.innerHTML = message;
+    const originalContent = button.cloneNode(true);
+    button.textContent = message;
     button.style.pointerEvents = 'none';
     setTimeout(() => {
-        button.innerHTML = originalHTML;
+        button.textContent = '';
+        while (originalContent.firstChild) {
+            button.appendChild(originalContent.firstChild.cloneNode(true));
+        }
         button.style.pointerEvents = 'auto';
     }, 1500);
 }

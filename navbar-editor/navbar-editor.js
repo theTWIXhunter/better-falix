@@ -544,65 +544,219 @@ function createSectionElement(section, sIndex) {
   const isFirst = sIndex === 0;
   const isLast = sIndex === totalSections - 1;
   
-  div.innerHTML = `
-    <div class="section-header">
-      <span class="drag-handle">☰</span>
-      <span class="section-title">${section.name}</span>
-      <div class="section-controls">
-        <label class="section-control-label" title="Expanded by default">
-          <input type="checkbox" class="section-control-checkbox section-expanded-check" ${section.expanded ? 'checked' : ''} data-section-index="${sIndex}">
-          <span>Expanded</span>
-        </label>
-        <label class="section-control-label" title="Hide section header (show items only)">
-          <input type="checkbox" class="section-control-checkbox section-hide-header-check" ${section.hideHeader ? 'checked' : ''} data-section-index="${sIndex}">
-          <span>Hide Header</span>
-        </label>
-      </div>
-      <div class="reorder-buttons">
-        <button class="btn-reorder" data-action="move-section-up" data-section-index="${sIndex}" ${isFirst ? 'disabled' : ''} title="Move up">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path d="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2V448c0 17.7 14.3 32 32 32s32-14.3 32-32V141.2L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z"/></svg>
-        </button>
-        <button class="btn-reorder" data-action="move-section-down" data-section-index="${sIndex}" ${isLast ? 'disabled' : ''} title="Move down">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path d="M169.4 470.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 370.8 224 64c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 306.7L54.6 265.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"/></svg>
-        </button>
-      </div>
-      <div class="section-actions">
-        <button class="btn btn-sm btn-secondary" data-action="add-item" data-section-index="${sIndex}">+ Item</button>
-        <button class="btn btn-sm btn-secondary" data-action="edit-section" data-section-index="${sIndex}">Edit</button>
-        <button class="btn btn-sm btn-danger" data-action="delete-section" data-section-index="${sIndex}">Delete</button>
-      </div>
-    </div>
-    <div class="items">
-      ${section.items.map((item, iIndex) => {
-        const totalItems = section.items.length;
-        const isFirstItem = iIndex === 0;
-        const isLastItem = iIndex === totalItems - 1;
-        
-        return `
-        <div class="item" draggable="true" data-item-index="${iIndex}">
-          <span class="drag-handle">☰</span>
-          <svg class="item-icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="${item.iconViewBox || '0 0 512 512'}" width="20" height="20" style="flex-shrink: 0; margin-right: 12px;">
-            <path fill="currentColor" d="${item.iconPath}"></path>
-          </svg>
-          <div class="item-info">
-            <div class="item-name">${item.name}</div>
-            <div class="item-url">${item.url}</div>
-          </div>
-          <div class="reorder-buttons">
-            <button class="btn-reorder" data-action="move-item-up" data-section-index="${sIndex}" data-item-index="${iIndex}" ${isFirstItem ? 'disabled' : ''} title="Move up">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path d="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2V448c0 17.7 14.3 32 32 32s32-14.3 32-32V141.2L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z"/></svg>
-            </button>
-            <button class="btn-reorder" data-action="move-item-down" data-section-index="${sIndex}" data-item-index="${iIndex}" ${isLastItem ? 'disabled' : ''} title="Move down">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path d="M169.4 470.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 370.8 224 64c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 306.7L54.6 265.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"/></svg>
-            </button>
-          </div>
-          <button class="btn btn-sm btn-secondary" data-action="edit-item" data-section-index="${sIndex}" data-item-index="${iIndex}">Edit</button>
-          <button class="btn btn-sm btn-danger" data-action="delete-item" data-section-index="${sIndex}" data-item-index="${iIndex}">Delete</button>
-        </div>
-      `;
-      }).join('')}
-    </div>
-  `;
+  const headerDiv = document.createElement('div');
+  headerDiv.className = 'section-header';
+  
+  const dragHandle = document.createElement('span');
+  dragHandle.className = 'drag-handle';
+  dragHandle.textContent = '☰';
+  headerDiv.appendChild(dragHandle);
+  
+  const titleSpan = document.createElement('span');
+  titleSpan.className = 'section-title';
+  titleSpan.textContent = section.name;
+  headerDiv.appendChild(titleSpan);
+  
+  const controlsDiv = document.createElement('div');
+  controlsDiv.className = 'section-controls';
+  
+  const expandedLabel = document.createElement('label');
+  expandedLabel.className = 'section-control-label';
+  expandedLabel.title = 'Expanded by default';
+  
+  const expandedInput = document.createElement('input');
+  expandedInput.type = 'checkbox';
+  expandedInput.className = 'section-control-checkbox section-expanded-check';
+  expandedInput.checked = section.expanded;
+  expandedInput.dataset.sectionIndex = sIndex;
+  expandedLabel.appendChild(expandedInput);
+  
+  const expandedSpan = document.createElement('span');
+  expandedSpan.textContent = 'Expanded';
+  expandedLabel.appendChild(expandedSpan);
+  controlsDiv.appendChild(expandedLabel);
+  
+  const hideHeaderLabel = document.createElement('label');
+  hideHeaderLabel.className = 'section-control-label';
+  hideHeaderLabel.title = 'Hide section header (show items only)';
+  
+  const hideHeaderInput = document.createElement('input');
+  hideHeaderInput.type = 'checkbox';
+  hideHeaderInput.className = 'section-control-checkbox section-hide-header-check';
+  hideHeaderInput.checked = section.hideHeader;
+  hideHeaderInput.dataset.sectionIndex = sIndex;
+  hideHeaderLabel.appendChild(hideHeaderInput);
+  
+  const hideHeaderSpan = document.createElement('span');
+  hideHeaderSpan.textContent = 'Hide Header';
+  hideHeaderLabel.appendChild(hideHeaderSpan);
+  controlsDiv.appendChild(hideHeaderLabel);
+  
+  headerDiv.appendChild(controlsDiv);
+  
+  const reorderButtonsDiv = document.createElement('div');
+  reorderButtonsDiv.className = 'reorder-buttons';
+  
+  const moveUpBtn = document.createElement('button');
+  moveUpBtn.className = 'btn-reorder';
+  moveUpBtn.dataset.action = 'move-section-up';
+  moveUpBtn.dataset.sectionIndex = sIndex;
+  moveUpBtn.disabled = isFirst;
+  moveUpBtn.title = 'Move up';
+  const upSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  upSvg.setAttribute('viewBox', '0 0 384 512');
+  const upPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  upPath.setAttribute('d', 'M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2V448c0 17.7 14.3 32 32 32s32-14.3 32-32V141.2L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z');
+  upSvg.appendChild(upPath);
+  moveUpBtn.appendChild(upSvg);
+  reorderButtonsDiv.appendChild(moveUpBtn);
+  
+  const moveDownBtn = document.createElement('button');
+  moveDownBtn.className = 'btn-reorder';
+  moveDownBtn.dataset.action = 'move-section-down';
+  moveDownBtn.dataset.sectionIndex = sIndex;
+  moveDownBtn.disabled = isLast;
+  moveDownBtn.title = 'Move down';
+  const downSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  downSvg.setAttribute('viewBox', '0 0 384 512');
+  const downPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  downPath.setAttribute('d', 'M169.4 470.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 370.8 224 64c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 306.7L54.6 265.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z');
+  downSvg.appendChild(downPath);
+  moveDownBtn.appendChild(downSvg);
+  reorderButtonsDiv.appendChild(moveDownBtn);
+  
+  headerDiv.appendChild(reorderButtonsDiv);
+  
+  const actionsDiv = document.createElement('div');
+  actionsDiv.className = 'section-actions';
+  
+  const addItemBtn = document.createElement('button');
+  addItemBtn.className = 'btn btn-sm btn-secondary';
+  addItemBtn.dataset.action = 'add-item';
+  addItemBtn.dataset.sectionIndex = sIndex;
+  addItemBtn.textContent = '+ Item';
+  actionsDiv.appendChild(addItemBtn);
+  
+  const editBtn = document.createElement('button');
+  editBtn.className = 'btn btn-sm btn-secondary';
+  editBtn.dataset.action = 'edit-section';
+  editBtn.dataset.sectionIndex = sIndex;
+  editBtn.textContent = 'Edit';
+  actionsDiv.appendChild(editBtn);
+  
+  const deleteBtn = document.createElement('button');
+  deleteBtn.className = 'btn btn-sm btn-danger';
+  deleteBtn.dataset.action = 'delete-section';
+  deleteBtn.dataset.sectionIndex = sIndex;
+  deleteBtn.textContent = 'Delete';
+  actionsDiv.appendChild(deleteBtn);
+  
+  headerDiv.appendChild(actionsDiv);
+  div.appendChild(headerDiv);
+  
+  const itemsDiv = document.createElement('div');
+  itemsDiv.className = 'items';
+  
+  section.items.forEach((item, iIndex) => {
+    const totalItems = section.items.length;
+    const isFirstItem = iIndex === 0;
+    const isLastItem = iIndex === totalItems - 1;
+    
+    const itemDiv = document.createElement('div');
+    itemDiv.className = 'item';
+    itemDiv.draggable = true;
+    itemDiv.dataset.itemIndex = iIndex;
+    
+    const itemDragHandle = document.createElement('span');
+    itemDragHandle.className = 'drag-handle';
+    itemDragHandle.textContent = '☰';
+    itemDiv.appendChild(itemDragHandle);
+    
+    const itemIcon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    itemIcon.setAttribute('class', 'item-icon');
+    itemIcon.setAttribute('aria-hidden', 'true');
+    itemIcon.setAttribute('focusable', 'false');
+    itemIcon.setAttribute('viewBox', item.iconViewBox || '0 0 512 512');
+    itemIcon.setAttribute('width', '20');
+    itemIcon.setAttribute('height', '20');
+    itemIcon.style.cssText = 'flex-shrink: 0; margin-right: 12px;';
+    
+    const itemIconPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    itemIconPath.setAttribute('fill', 'currentColor');
+    itemIconPath.setAttribute('d', item.iconPath);
+    itemIcon.appendChild(itemIconPath);
+    itemDiv.appendChild(itemIcon);
+    
+    const itemInfo = document.createElement('div');
+    itemInfo.className = 'item-info';
+    
+    const itemName = document.createElement('div');
+    itemName.className = 'item-name';
+    itemName.textContent = item.name;
+    itemInfo.appendChild(itemName);
+    
+    const itemUrl = document.createElement('div');
+    itemUrl.className = 'item-url';
+    itemUrl.textContent = item.url;
+    itemInfo.appendChild(itemUrl);
+    
+    itemDiv.appendChild(itemInfo);
+    
+    const itemReorderDiv = document.createElement('div');
+    itemReorderDiv.className = 'reorder-buttons';
+    
+    const itemUpBtn = document.createElement('button');
+    itemUpBtn.className = 'btn-reorder';
+    itemUpBtn.dataset.action = 'move-item-up';
+    itemUpBtn.dataset.sectionIndex = sIndex;
+    itemUpBtn.dataset.itemIndex = iIndex;
+    itemUpBtn.disabled = isFirstItem;
+    itemUpBtn.title = 'Move up';
+    const itemUpSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    itemUpSvg.setAttribute('viewBox', '0 0 384 512');
+    const itemUpPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    itemUpPath.setAttribute('d', 'M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2V448c0 17.7 14.3 32 32 32s32-14.3 32-32V141.2L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z');
+    itemUpSvg.appendChild(itemUpPath);
+    itemUpBtn.appendChild(itemUpSvg);
+    itemReorderDiv.appendChild(itemUpBtn);
+    
+    const itemDownBtn = document.createElement('button');
+    itemDownBtn.className = 'btn-reorder';
+    itemDownBtn.dataset.action = 'move-item-down';
+    itemDownBtn.dataset.sectionIndex = sIndex;
+    itemDownBtn.dataset.itemIndex = iIndex;
+    itemDownBtn.disabled = isLastItem;
+    itemDownBtn.title = 'Move down';
+    const itemDownSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    itemDownSvg.setAttribute('viewBox', '0 0 384 512');
+    const itemDownPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    itemDownPath.setAttribute('d', 'M169.4 470.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 370.8 224 64c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 306.7L54.6 265.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z');
+    itemDownSvg.appendChild(itemDownPath);
+    itemDownBtn.appendChild(itemDownSvg);
+    itemReorderDiv.appendChild(itemDownBtn);
+    
+    itemDiv.appendChild(itemReorderDiv);
+    
+    const itemEditBtn = document.createElement('button');
+    itemEditBtn.className = 'btn btn-sm btn-secondary';
+    itemEditBtn.dataset.action = 'edit-item';
+    itemEditBtn.dataset.sectionIndex = sIndex;
+    itemEditBtn.dataset.itemIndex = iIndex;
+    itemEditBtn.textContent = 'Edit';
+    itemDiv.appendChild(itemEditBtn);
+    
+    const itemDeleteBtn = document.createElement('button');
+    itemDeleteBtn.className = 'btn btn-sm btn-danger';
+    itemDeleteBtn.dataset.action = 'delete-item';
+    itemDeleteBtn.dataset.sectionIndex = sIndex;
+    itemDeleteBtn.dataset.itemIndex = iIndex;
+    itemDeleteBtn.textContent = 'Delete';
+    itemDiv.appendChild(itemDeleteBtn);
+    
+    itemsDiv.appendChild(itemDiv);
+  });
+  
+  div.appendChild(itemsDiv);
   
   // Add event listeners for inline controls
   const expandedCheck = div.querySelector('.section-expanded-check');
@@ -943,11 +1097,14 @@ function renderIconPicker() {
     option.dataset.iconName = name;
     option.title = name;
     
-    option.innerHTML = `
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="${data.viewBox}">
-        <path d="${data.path}"/>
-      </svg>
-    `;
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('viewBox', data.viewBox);
+    
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.setAttribute('d', data.path);
+    svg.appendChild(path);
+    
+    option.appendChild(svg);
     
     option.addEventListener('click', () => {
       selectIcon(name, data, option);

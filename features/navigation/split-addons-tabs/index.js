@@ -95,7 +95,10 @@ chrome.storage.sync.get({ splitAddonsTabs: false, enabled: true }, (data) => {
         link.classList.add('active');
       }
       
-      link.innerHTML = `<i class="fa-solid ${tabData.icon}"></i> ${tabData.name}`;
+      const icon = document.createElement('i');
+      icon.className = `fa-solid ${tabData.icon}`;
+      link.appendChild(icon);
+      link.appendChild(document.createTextNode(' ' + tabData.name));
       
       newTab.appendChild(link);
       

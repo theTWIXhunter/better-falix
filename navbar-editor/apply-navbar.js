@@ -53,39 +53,72 @@ function createNavSection(section) {
 
   // If hideHeader is true, just add items directly without header
   if (section.hideHeader) {
-    sectionDiv.innerHTML = section.items.map(item => createNavItem(item)).join('');
+    section.items.forEach(item => {
+      sectionDiv.appendChild(createNavItem(item));
+    });
     return sectionDiv;
   }
 
   const sectionId = section.name.toLowerCase().replace(/\s+/g, '') + 'Section';
   const expandedClass = section.expanded ? 'show' : '';
 
-  sectionDiv.innerHTML = `
-    <button class="nav-category" data-bs-toggle="collapse" data-bs-target="#${sectionId}" 
-            aria-expanded="${section.expanded}" aria-controls="${sectionId}" 
-            data-category="${section.name.toUpperCase()}">
-      <svg class="svg-inline--fa fa-cube category-icon" aria-hidden="true" focusable="false" 
-           xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-        <path fill="currentColor" d="M234.5 5.7c13.9-5 29.1-5 43.1 0l192 68.6C495 83.4 512 107.5 512 134.6l0 242.9c0 27-17 51.2-42.5 60.3l-192 68.6c-13.9 5-29.1 5-43.1 0l-192-68.6C17 428.6 0 404.5 0 377.4L0 134.6c0-27 17-51.2 42.5-60.3l192-68.6zM256 66L82.3 128 256 190l173.7-62L256 66zm32 368.6l160-57.1 0-188L288 246.6l0 188z"></path>
-      </svg>
-      <span>${section.name}</span>
-      <svg class="svg-inline--fa fa-chevron-down toggle-icon" aria-hidden="true" focusable="false" 
-           xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-        <path fill="currentColor" d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"></path>
-      </svg>
-    </button>
-    <div class="collapse ${expandedClass}" id="${sectionId}">
-      <ul class="navbar-nav" role="list">
-        ${section.items.map(item => createNavItem(item)).join('')}
-      </ul>
-    </div>
-  `;
+  const button = document.createElement('button');
+  button.className = 'nav-category';
+  button.setAttribute('data-bs-toggle', 'collapse');
+  button.setAttribute('data-bs-target', '#' + sectionId);
+  button.setAttribute('aria-expanded', section.expanded.toString());
+  button.setAttribute('aria-controls', sectionId);
+  button.setAttribute('data-category', section.name.toUpperCase());
+  
+  const catSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  catSvg.setAttribute('class', 'svg-inline--fa fa-cube category-icon');
+  catSvg.setAttribute('aria-hidden', 'true');
+  catSvg.setAttribute('focusable', 'false');
+  catSvg.setAttribute('viewBox', '0 0 512 512');
+  
+  const catPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  catPath.setAttribute('fill', 'currentColor');
+  catPath.setAttribute('d', 'M234.5 5.7c13.9-5 29.1-5 43.1 0l192 68.6C495 83.4 512 107.5 512 134.6l0 242.9c0 27-17 51.2-42.5 60.3l-192 68.6c-13.9 5-29.1 5-43.1 0l-192-68.6C17 428.6 0 404.5 0 377.4L0 134.6c0-27 17-51.2 42.5-60.3l192-68.6zM256 66L82.3 128 256 190l173.7-62L256 66zm32 368.6l160-57.1 0-188L288 246.6l0 188z');
+  catSvg.appendChild(catPath);
+  button.appendChild(catSvg);
+  
+  const nameSpan = document.createElement('span');
+  nameSpan.textContent = section.name;
+  button.appendChild(nameSpan);
+  
+  const chevSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  chevSvg.setAttribute('class', 'svg-inline--fa fa-chevron-down toggle-icon');
+  chevSvg.setAttribute('aria-hidden', 'true');
+  chevSvg.setAttribute('focusable', 'false');
+  chevSvg.setAttribute('viewBox', '0 0 512 512');
+  
+  const chevPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  chevPath.setAttribute('fill', 'currentColor');
+  chevPath.setAttribute('d', 'M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z');
+  chevSvg.appendChild(chevPath);
+  button.appendChild(chevSvg);
+  
+  sectionDiv.appendChild(button);
+  
+  const collapseDiv = document.createElement('div');
+  collapseDiv.className = 'collapse ' + expandedClass;
+  collapseDiv.id = sectionId;
+  
+  const ul = document.createElement('ul');
+  ul.className = 'navbar-nav';
+  ul.setAttribute('role', 'list');
+  
+  section.items.forEach(item => {
+    ul.appendChild(createNavItem(item));
+  });
+  
+  collapseDiv.appendChild(ul);
+  sectionDiv.appendChild(collapseDiv);
 
   return sectionDiv;
 }
 
 function createNavItem(item) {
-  const targetAttr = item.target ? `target="${item.target}"` : '';
   const viewBox = item.iconViewBox || '0 0 512 512';
   
   // Check if the current page matches this nav item
@@ -103,17 +136,34 @@ function createNavItem(item) {
     isActive = currentPath === item.url || currentPath.startsWith(item.url + '/');
   }
   
-  const activeClass = isActive ? ' active' : '';
+  const li = document.createElement('li');
+  li.className = 'nav-item';
+  li.setAttribute('role', 'listitem');
   
-  return `
-    <li class="nav-item" role="listitem">
-      <a class="nav-link${activeClass}" href="${item.url}" aria-label="${item.name}" ${targetAttr}>
-        <svg class="svg-inline--fa" aria-hidden="true" focusable="false" 
-             xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox}">
-          <path fill="currentColor" d="${item.iconPath}"></path>
-        </svg>
-        <span>${item.name}</span>
-      </a>
-    </li>
-  `;
+  const a = document.createElement('a');
+  a.className = 'nav-link' + (isActive ? ' active' : '');
+  a.href = item.url;
+  a.setAttribute('aria-label', item.name);
+  if (item.target) {
+    a.target = item.target;
+  }
+  
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('class', 'svg-inline--fa');
+  svg.setAttribute('aria-hidden', 'true');
+  svg.setAttribute('focusable', 'false');
+  svg.setAttribute('viewBox', viewBox);
+  
+  const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  path.setAttribute('fill', 'currentColor');
+  path.setAttribute('d', item.iconPath);
+  svg.appendChild(path);
+  a.appendChild(svg);
+  
+  const span = document.createElement('span');
+  span.textContent = item.name;
+  a.appendChild(span);
+  
+  li.appendChild(a);
+  return li;
 }
