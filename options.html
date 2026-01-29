@@ -290,6 +290,78 @@
       <div class="feature-desc">Enable the Custom Navbar Editor to customize navbar sections and items. Click the "Custom Navbar" tab in the popup to open the editor.</div>
     </div>
 
+    <!-- Screenshot Mode section -->
+    <div class="section-title">Screenshot Mode</div>
+    
+    <div class="feature-block">
+      <div class="feature-desc" style="margin-bottom: 1.5em;">Configure what information gets censored when Screenshot Mode is active. Toggle each item and customize replacement text.</div>
+      
+      <div class="setting-row">
+        <span class="setting-label">Server Name</span>
+        <input class="setting-input" id="screenshotMode_serverName" type="text" value="Example Server" style="flex: 1; margin-right: 10px;">
+        <button class="feature-toggle" id="screenshotMode_serverName_enabled" aria-pressed="true" tabindex="0"><span class="dot"></span></button>
+      </div>
+      
+      <div class="setting-row">
+        <span class="setting-label">Server IP</span>
+        <input class="setting-input" id="screenshotMode_serverIP" type="text" value="serverIPhere.falixsrv.me" style="flex: 1; margin-right: 10px;">
+        <button class="feature-toggle" id="screenshotMode_serverIP_enabled" aria-pressed="true" tabindex="0"><span class="dot"></span></button>
+      </div>
+      
+      <div class="setting-row">
+        <span class="setting-label">Server Port</span>
+        <input class="setting-input" id="screenshotMode_serverPort" type="text" value="12345" style="flex: 1; margin-right: 10px;">
+        <button class="feature-toggle" id="screenshotMode_serverPort_enabled" aria-pressed="true" tabindex="0"><span class="dot"></span></button>
+      </div>
+      
+      <div class="setting-row">
+        <span class="setting-label">Server Dynamic IP</span>
+        <input class="setting-input" id="screenshotMode_serverDynamicIP" type="text" value="127.0.0.1" style="flex: 1; margin-right: 10px;">
+        <button class="feature-toggle" id="screenshotMode_serverDynamicIP_enabled" aria-pressed="true" tabindex="0"><span class="dot"></span></button>
+      </div>
+      
+      <div class="setting-row">
+        <span class="setting-label">Profile Username</span>
+        <input class="setting-input" id="screenshotMode_profileUsername" type="text" value="Example User" style="flex: 1; margin-right: 10px;">
+        <button class="feature-toggle" id="screenshotMode_profileUsername_enabled" aria-pressed="true" tabindex="0"><span class="dot"></span></button>
+      </div>
+      
+      <div class="setting-row">
+        <span class="setting-label">Profile Tag</span>
+        <input class="setting-input" id="screenshotMode_profileTag" type="text" value="example" style="flex: 1; margin-right: 10px;">
+        <button class="feature-toggle" id="screenshotMode_profileTag_enabled" aria-pressed="true" tabindex="0"><span class="dot"></span></button>
+      </div>
+      
+      <div class="setting-row">
+        <span class="setting-label">Profile Picture URL</span>
+        <input class="setting-input" id="screenshotMode_profilePicture" type="text" value="https://ui-avatars.com/api/?name=User" style="flex: 1; margin-right: 10px;">
+        <button class="feature-toggle" id="screenshotMode_profilePicture_enabled" aria-pressed="true" tabindex="0"><span class="dot"></span></button>
+      </div>
+      
+      <div class="setting-row">
+        <span class="setting-label">Console Player Names</span>
+        <input class="setting-input" id="screenshotMode_consolePlayer" type="text" value="Player" style="flex: 1; margin-right: 10px;">
+        <button class="feature-toggle" id="screenshotMode_consolePlayer_enabled" aria-pressed="true" tabindex="0"><span class="dot"></span></button>
+      </div>
+      
+      <div class="setting-row">
+        <span class="setting-label">Console UUIDs</span>
+        <input class="setting-input" id="screenshotMode_consoleUUID" type="text" value="00000000-0000-0000-0000-000000000000" style="flex: 1; margin-right: 10px;">
+        <button class="feature-toggle" id="screenshotMode_consoleUUID_enabled" aria-pressed="true" tabindex="0"><span class="dot"></span></button>
+      </div>
+      
+      <div class="setting-row">
+        <span class="setting-label">Console Player IPs</span>
+        <input class="setting-input" id="screenshotMode_consoleConnectionIP" type="text" value="0.0.0.0:00000" style="flex: 1; margin-right: 10px;">
+        <button class="feature-toggle" id="screenshotMode_consoleConnectionIP_enabled" aria-pressed="true" tabindex="0"><span class="dot"></span></button>
+      </div>
+      
+      <div class="setting-row">
+        <span class="setting-label">Hide Admin Badge</span>
+        <button class="feature-toggle" id="screenshotMode_adminBadge_enabled" aria-pressed="true" tabindex="0" style="margin-left: auto;"><span class="dot"></span></button>
+      </div>
+    </div>
+
     <div class="footer">&copy; 2025 the_twix_hunter. All rights reserved. <br>
                         This extension is not affiliated with FalixNodes. <br>
                         <a href="https://github.com/thetwixhunter/better-falix" target="_blank" style="color: #3b82f6; text-decoration: none;">View on Github</a> - 

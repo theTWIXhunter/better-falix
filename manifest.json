@@ -22,7 +22,9 @@
     }
   },
   "permissions": [
-    "storage"
+    "storage",
+    "scripting",
+    "activeTab"
   ],
   "host_permissions": [
     "https://client.falixnodes.net/*",

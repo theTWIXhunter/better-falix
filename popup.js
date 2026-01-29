@@ -16,6 +16,111 @@ document.addEventListener('DOMContentLoaded', () => {
       chrome.tabs.create({ url: chrome.runtime.getURL('options.html') });
     });
   });
+
+  // Screenshot mode button handler
+  const screenshotBtn = document.getElementById('screenshotModeBtn');
+  if (screenshotBtn) {
+    let isProcessing = false;
+    const injectedTabs = new Set(); // Track which tabs have the script
+    
+    // Force clear any stored state and button class on initialization
+    screenshotBtn.classList.remove('active');
+    chrome.storage.sync.set({ screenshotModeActive: false }, () => {
+      // Now load the actual saved state (if user had it active before)
+      chrome.storage.sync.get({ screenshotModeActive: false }, (result) => {
+        if (result.screenshotModeActive === true) {
+          screenshotBtn.classList.add('active');
+        } else {
+          screenshotBtn.classList.remove('active');
+        }
+      });
+    });
+
+    // Function to send toggle message
+    const sendToggleMessage = (tabId, isActive, callback) => {
+      chrome.tabs.sendMessage(
+        tabId,
+        { action: isActive ? 'enableScreenshotMode' : 'disableScreenshotMode' },
+        (response) => {
+          if (chrome.runtime.lastError) {
+            injectedTabs.delete(tabId);
+          }
+          if (callback) callback();
+        }
+      );
+    };
+
+    // Toggle screenshot mode
+    screenshotBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      
+      if (isProcessing) return;
+      isProcessing = true;
+      
+      const wasActive = screenshotBtn.classList.contains('active');
+      const isActive = !wasActive;
+      
+      // Update UI immediately
+      if (isActive) {
+        screenshotBtn.classList.add('active');
+      } else {
+        screenshotBtn.classList.remove('active');
+      }
+      
+      // Save state
+      chrome.storage.sync.set({ screenshotModeActive: isActive }, () => {
+        // Get the active tab
+        chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
+          if (tabs && tabs[0]) {
+            const tabId = tabs[0].id;
+            
+            try {
+              // Check if script needs to be injected
+              const needsInjection = !injectedTabs.has(tabId);
+              
+              if (needsInjection) {
+                // Inject the script
+                await chrome.scripting.executeScript({
+                  target: { tabId: tabId },
+                  files: ['features/screenshot-mode/index.js']
+                });
+                injectedTabs.add(tabId);
+                
+                // Wait for script to initialize
+                await new Promise(resolve => setTimeout(resolve, 250));
+                
+                // Send message twice after fresh injection (first ensures it's ready, second actually toggles)
+                sendToggleMessage(tabId, isActive, () => {
+                  setTimeout(() => {
+                    sendToggleMessage(tabId, isActive, () => {
+                      isProcessing = false;
+                    });
+                  }, 100);
+                });
+              } else {
+                if (isActive) {
+                  // Script already injected, send enable message
+                  sendToggleMessage(tabId, isActive, () => {
+                    isProcessing = false;
+                  });
+                } else {
+                  // To disable, just refresh the page (script won't re-inject since it's not in manifest)
+                  chrome.tabs.reload(tabId, () => {
+                    injectedTabs.delete(tabId);
+                    isProcessing = false;
+                  });
+                }
+              }
+            } catch (err) {
+              isProcessing = false;
+            }
+          } else {
+            isProcessing = false;
+          }
+        });
+      });
+    });
+  }
 });
 
 const toggleBtn = document.getElementById('toggle');

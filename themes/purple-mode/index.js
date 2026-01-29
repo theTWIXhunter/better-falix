@@ -2,13 +2,11 @@
   // [better-falix] PURPLE MODE THEME: Script loading
   console.log('[better-falix] PURPLE MODE THEME Script loading');
 
-  if (
-    typeof window.chrome !== "undefined" &&
-    chrome.storage &&
-    chrome.storage.sync &&
-    typeof chrome.storage.sync.get === "function"
-  ) {
-    chrome.storage.sync.get({ activeTheme: false, enabled: true }, function(data) {
+  // Cross-browser compatibility: Use browser API (Firefox) or chrome API (Chrome/Edge)
+  const browserAPI = (typeof browser !== 'undefined' && browser.storage) ? browser : (typeof chrome !== 'undefined' ? chrome : null);
+
+  if (browserAPI && browserAPI.storage && browserAPI.storage.sync) {
+    browserAPI.storage.sync.get({ activeTheme: false, enabled: true }, function(data) {
       if (data.activeTheme !== 'purple-mode' || data.enabled !== true) {
         console.log('[better-falix] PURPLE MODE THEME: Script disabled');
         return;

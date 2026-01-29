@@ -35,10 +35,11 @@
       box-sizing: border-box;
     }
     #toggle {
-      width: calc(100% - 50px);
+      width: calc(100% - 100px);
       padding: 18px 0;
       font-size: 1.2em;
       margin-bottom: 18px;
+      margin-left: 50px;
       background: var(--falix-accent);
       color: #fff;
       border: none;
@@ -311,6 +312,46 @@
     .settings-link:hover img {
       filter: grayscale(0) brightness(1.5) drop-shadow(0 0 2px #3b82f6);
     }
+    /* Screenshot mode button styles */
+    .screenshot-mode-link {
+      position: absolute;
+      top: 34px;
+      left: 20px;
+      background: #1a1a1a;
+      border: 2px solid #2a2a2a;
+      border-radius: 50%;
+      cursor: pointer;
+      padding: 0;
+      margin: 0;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0.85;
+      transition: all 0.2s;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+    .screenshot-mode-link:hover {
+      opacity: 1;
+      background: #000;
+      box-shadow: 0 0 12px rgba(255,0,0,0.4);
+    }
+    .screenshot-mode-link::after {
+      content: '';
+      width: 12px;
+      height: 12px;
+      background: #ff0000;
+      border-radius: 50%;
+      box-shadow: 0 0 8px rgba(255,0,0,0.6);
+    }
+    .screenshot-mode-link.active::after {
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.2); opacity: 0.8; }
+    }
     /* Slider styles */
     .slider-tabs {
       display: flex;
@@ -466,6 +507,9 @@
   </style>
 </head>
 <body>
+
+    <!-- Screenshot mode button -->
+    <button class="screenshot-mode-link" id="screenshotModeBtn" title="Toggle Screenshot Mode" aria-label="Toggle Screenshot Mode"></button>
 
     <!-- Settings icon button -->
     <a href="#" class="settings-link" id="openSettings" title="Open Settings" aria-label="Open Settings">
