@@ -2,14 +2,12 @@
     // [better-falix] LIGHT MODE THEME: Script loading
     console.log('[better-falix] LIGHT MODE THEME Script loading');
 
+    // Cross-browser compatibility: Use browser API (Firefox) or chrome API (Chrome/Edge)
+    const browserAPI = (typeof browser !== 'undefined' && browser.storage) ? browser : (typeof chrome !== 'undefined' ? chrome : null);
+
     // Check if both the theme and the general extension are enabled
-    if (
-      typeof window.chrome !== "undefined" &&
-      chrome.storage &&
-      chrome.storage.sync &&
-      typeof chrome.storage.sync.get === "function"
-    ) {
-      chrome.storage.sync.get({ activeTheme: false, enabled: true }, function(data) {
+    if (browserAPI && browserAPI.storage && browserAPI.storage.sync) {
+      browserAPI.storage.sync.get({ activeTheme: false, enabled: true }, function(data) {
         if (data.activeTheme !== 'light-mode' || data.enabled !== true) {
           console.log('[better-falix] LIGHT MODE THEME: Script disabled');
           return;
