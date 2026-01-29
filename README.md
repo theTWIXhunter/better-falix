@@ -1,4 +1,4 @@
-# Better Falix 1.5.3
+# Better Falix 1.5.4
 
 Better Falix is a browser extension that enhances the FalixNodes client-side experience by allowing you to customize and improve the website's navigation and interface.
 
@@ -17,6 +17,9 @@ Customize navbar sections and items with the visual editor. Features include:
 ## Features
 
 - **Enable/Disable All Features:** A master toggle to quickly enable or disable all extension features.
+- **Navbar Editor:** Visual editor for customizing navbar sections and items with drag-and-drop reordering, icon customization, and configuration import/export.
+- **Screenshot Mode:** Quickly hide sensitive information for taking clean screenshots of your FalixNodes interface.
+
 
 ### General
 
