@@ -54,6 +54,13 @@ function applyCensoring() {
         }
       }
     });
+    
+    // Domain URL and primary domain name
+    document.querySelectorAll('.domain-url, .primary-domain-name').forEach(el => {
+      if (el.textContent.trim() !== config.serverIP.replacement) {
+        el.textContent = config.serverIP.replacement;
+      }
+    });
   }
   
   // Server IPs
@@ -67,7 +74,7 @@ function applyCensoring() {
   
   // Server Ports
   if (config.serverPort?.enabled) {
-    document.querySelectorAll('.connection-details-port').forEach(el => {
+    document.querySelectorAll('.connection-details-port, .port-address-text, .port-ip-text').forEach(el => {
       if (el.textContent !== config.serverPort.replacement) {
         el.textContent = config.serverPort.replacement;
       }
