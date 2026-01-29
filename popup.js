@@ -50,19 +50,32 @@ document.addEventListener('DOMContentLoaded', () => {
       
       // Save state
       chrome.storage.sync.set({ screenshotModeActive: isActive }, () => {
-        // Send message to page
+        // Get the active tab
         chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
           if (tabs && tabs[0]) {
-            chrome.tabs.sendMessage(
-              tabs[0].id, 
-              { action: isActive ? 'enableScreenshotMode' : 'disableScreenshotMode' },
-              () => {
-                if (chrome.runtime.lastError) {
-                  console.log('Message sent (will apply on page load)');
-                }
-                isProcessing = false;
+            const tabId = tabs[0].id;
+            
+            // Inject the script if not already injected
+            chrome.scripting.executeScript({
+              target: { tabId: tabId },
+              files: ['features/screenshot-mode/index.js']
+            }, () => {
+              if (chrome.runtime.lastError) {
+                console.log('Script injection error (may already be injected):', chrome.runtime.lastError.message);
               }
-            );
+              
+              // Send message to toggle the mode
+              chrome.tabs.sendMessage(
+                tabId,
+                { action: isActive ? 'enableScreenshotMode' : 'disableScreenshotMode' },
+                () => {
+                  if (chrome.runtime.lastError) {
+                    console.log('Message sent (will apply on next injection)');
+                  }
+                  isProcessing = false;
+                }
+              );
+            });
           } else {
             isProcessing = false;
           }
