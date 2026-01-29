@@ -129,12 +129,23 @@ document.addEventListener('DOMContentLoaded', () => {
                   }, 100);
                 });
               } else {
-                console.log('[Screenshot Mode] Script already injected, sending single message...');
-                // Script already injected, just send once
-                sendToggleMessage(tabId, isActive, () => {
-                  console.log('[Screenshot Mode] Message sent, processing complete');
-                  isProcessing = false;
-                });
+                console.log('[Screenshot Mode] Script already injected');
+                if (isActive) {
+                  console.log('[Screenshot Mode] Enabling, sending message...');
+                  // Script already injected, send enable message
+                  sendToggleMessage(tabId, isActive, () => {
+                    console.log('[Screenshot Mode] Message sent, processing complete');
+                    isProcessing = false;
+                  });
+                } else {
+                  console.log('[Screenshot Mode] Disabling, refreshing page...');
+                  // To disable, just refresh the page (script won't re-inject since it's not in manifest)
+                  chrome.tabs.reload(tabId, () => {
+                    console.log('[Screenshot Mode] Page refreshed');
+                    injectedTabs.delete(tabId);
+                    isProcessing = false;
+                  });
+                }
               }
             } catch (err) {
               console.log('[Screenshot Mode] ❌ Injection error:', err);
