@@ -32,6 +32,21 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
+    // Function to send toggle message
+    const sendToggleMessage = (tabId, isActive, callback) => {
+      chrome.tabs.sendMessage(
+        tabId,
+        { action: isActive ? 'enableScreenshotMode' : 'disableScreenshotMode' },
+        (response) => {
+          if (chrome.runtime.lastError) {
+            console.log('Message error:', chrome.runtime.lastError.message);
+            injectedTabs.delete(tabId);
+          }
+          if (callback) callback();
+        }
+      );
+    };
+
     // Toggle screenshot mode
     screenshotBtn.addEventListener('click', (e) => {
       e.preventDefault();
@@ -57,31 +72,34 @@ document.addEventListener('DOMContentLoaded', () => {
             const tabId = tabs[0].id;
             
             try {
-              // Only inject if not already injected for this tab
-              if (!injectedTabs.has(tabId)) {
+              // Check if script needs to be injected
+              const needsInjection = !injectedTabs.has(tabId);
+              
+              if (needsInjection) {
+                // Inject the script
                 await chrome.scripting.executeScript({
                   target: { tabId: tabId },
                   files: ['features/screenshot-mode/index.js']
                 });
                 injectedTabs.add(tabId);
                 
-                // Wait longer for first injection to ensure script initializes
-                await new Promise(resolve => setTimeout(resolve, 200));
-              }
-              
-              // Send message to toggle the mode
-              chrome.tabs.sendMessage(
-                tabId,
-                { action: isActive ? 'enableScreenshotMode' : 'disableScreenshotMode' },
-                (response) => {
-                  if (chrome.runtime.lastError) {
-                    // If message fails, script might not be injected - remove from set and retry next time
-                    injectedTabs.delete(tabId);
-                    console.log('Message error:', chrome.runtime.lastError.message);
-                  }
+                // Wait for script to initialize
+                await new Promise(resolve => setTimeout(resolve, 250));
+                
+                // Send message twice after fresh injection (first ensures it's ready, second actually toggles)
+                sendToggleMessage(tabId, isActive, () => {
+                  setTimeout(() => {
+                    sendToggleMessage(tabId, isActive, () => {
+                      isProcessing = false;
+                    });
+                  }, 100);
+                });
+              } else {
+                // Script already injected, just send once
+                sendToggleMessage(tabId, isActive, () => {
                   isProcessing = false;
-                }
-              );
+                });
+              }
             } catch (err) {
               console.log('Injection error:', err);
               isProcessing = false;
