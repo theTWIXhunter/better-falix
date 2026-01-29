@@ -25,14 +25,21 @@ document.addEventListener('DOMContentLoaded', () => {
     
     console.log('[Screenshot Mode] Initializing button handler');
     
+    // Ensure button starts clean
+    screenshotBtn.classList.remove('active');
+    
     // Load saved state (default to false)
     chrome.storage.sync.get({ screenshotModeActive: false }, (result) => {
       console.log('[Screenshot Mode] Loaded saved state:', result.screenshotModeActive);
+      console.log('[Screenshot Mode] Button has active class before update:', screenshotBtn.classList.contains('active'));
+      
       if (result.screenshotModeActive === true) {
         screenshotBtn.classList.add('active');
       } else {
         screenshotBtn.classList.remove('active');
       }
+      
+      console.log('[Screenshot Mode] Button has active class after update:', screenshotBtn.classList.contains('active'));
     });
 
     // Function to send toggle message
