@@ -67,6 +67,18 @@
             el.style.color = '#333';
         });
 
+        // Set header-icon background color
+        var headerIcons = document.querySelectorAll('.header-icon');
+        headerIcons.forEach(function(el) {
+            el.style.backgroundColor = lightBg;
+        });
+
+        // Set console-btn background color
+        var consoleBtns = document.querySelectorAll('.console-btn');
+        consoleBtns.forEach(function(el) {
+            el.style.backgroundColor = lightBg;
+        });
+
         // Set console-tabs background to white
         var consoleTabs = document.querySelectorAll('.console-tabs');
         consoleTabs.forEach(function(el) {
@@ -350,6 +362,14 @@
             el.style.color = '#222';
         });
 
+        // Make all .server-row white with dark text, force background
+        var allServerRows = document.querySelectorAll('.server-row');
+        allServerRows.forEach(function(el) {
+            el.style.setProperty('background', lightBg, 'important');
+            el.style.setProperty('background-color', lightBg, 'important');
+            el.style.color = '#222';
+        });
+
         // Set background to white for island/world/player containers
         var whiteBgEls = document.querySelectorAll(
             '.island-container.mb-5, .world-card, .player-card'
@@ -383,6 +403,12 @@
         var spanEls = document.querySelectorAll('span');
         spanEls.forEach(function(el) {
             el.style.color = '#000';
+        });
+
+        // Make navbar spans specifically black with !important
+        var navbarSpans = document.querySelectorAll('.navbar-vertical span, .navbar-brand-container span, .navbar-content-wrapper span, .navbar-footer span, .top-navbar span');
+        navbarSpans.forEach(function(el) {
+            el.style.setProperty('color', '#000', 'important');
         });
 
         // Set chart container background to rgb(150,150,150)
