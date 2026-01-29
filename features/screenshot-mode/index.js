@@ -244,7 +244,9 @@ function stopObserver() {
     observer = null;
   }
 }
-console.log('[Screenshot Mode Content] 🟢 Enabling screenshot mode...');
+
+function enableScreenshotMode() {
+  console.log('[Screenshot Mode Content] 🟢 Enabling screenshot mode...');
   screenshotModeActive = true;
   loadConfig().then(() => {
     console.log('[Screenshot Mode Content] Config loaded, applying censoring...');
@@ -258,14 +260,12 @@ function disableScreenshotMode() {
   console.log('[Screenshot Mode Content] 🔴 Disabling screenshot mode...');
   screenshotModeActive = false;
   stopObserver();
-  console.log('[Screenshot Mode Content] 📨 Message received:', request);
-  console.log('[Screenshot Mode Content] ✅ Screenshot mode disabled'eScreenshotMode() {
-  screenshotModeActive = false;
-  stopObserver();
+  console.log('[Screenshot Mode Content] ✅ Screenshot mode disabled');
 }
 
 // Listen for messages from popup
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  console.log('[Screenshot Mode Content] 📨 Message received:', request);
   if (request.action === 'enableScreenshotMode') {
     enableScreenshotMode();
     sendResponse({ success: true });
