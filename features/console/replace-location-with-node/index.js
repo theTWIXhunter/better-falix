@@ -92,15 +92,20 @@ chrome.storage.sync.get({ replaceCpuWithNode: false, enabled: true }, (data) => 
       valueElement.textContent = nodeInfo;
     }
     
-    // Also replace in statusbar button (desktop)
-    const statusbarButton = document.querySelector('button.statusbar-item.statusbar-item-desktop[data-bs-target="#transferserver"]');
-    if (statusbarButton) {
-      const span = statusbarButton.querySelector('span');
-      if (span) {
-        span.textContent = nodeInfo;
-        console.log('[better-falix] Replace-location-with-Node: Also replaced statusbar location with node info');
+    // Also replace in statusbar button (desktop) - check all statusbar buttons
+    document.querySelectorAll('button.statusbar-item').forEach(button => {
+      // Look for the button with transfer server modal or has a flag image (location button)
+      const hasTransferModal = button.getAttribute('data-bs-target') === '#transferserver';
+      const hasFlag = button.querySelector('.statusbar-flag');
+      
+      if (hasTransferModal || hasFlag) {
+        const span = button.querySelector('span');
+        if (span) {
+          span.textContent = nodeInfo;
+          console.log('[better-falix] Replace-location-with-Node: Also replaced statusbar location with node info');
+        }
       }
-    }
+    });
 
     console.log('[better-falix] Replace-location-with-Node: Successfully replaced CPU info with node info');
   }
