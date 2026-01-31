@@ -1,11 +1,9 @@
 // [better-falix] inline-server-info: Script loading
 console.log('[better-falix] inline-server-info: Script loading');
-console.error('[better-falix] inline-server-info: TESTING - This should always appear!');
 
 chrome.storage.sync.get({ inlineServerInfo: false, enabled: true }, (data) => {
-  console.log('[better-falix] inline-server-info: Storage data received:', data);
   if (!data.enabled || !data.inlineServerInfo) {
-    console.log('[better-falix] inline-server-info: Script disabled', 'enabled:', data.enabled, 'inlineServerInfo:', data.inlineServerInfo);
+    console.log('[better-falix] inline-server-info: Script disabled');
     return;
   }
   console.log('[better-falix] inline-server-info: Script enabled');
@@ -296,34 +294,12 @@ function replaceButtonWithInfo(serverInfo) {
 
     // Copy all button
     const copyAllButton = document.createElement('button');
+    copyAllButton.innerHTML = `Copy All <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 4px; vertical-align: middle;">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+    </svg>`;
     copyAllButton.style.cssText = 'background: rgba(34, 197, 94, 0.15); color: rgba(34, 197, 94, 0.9); border: 1px solid rgba(34, 197, 94, 0.3); padding: 2px 8px; border-radius: 4px; cursor: pointer; font-size: 0.85em; font-weight: 500; display: inline-flex; align-items: center; transition: all 0.2s;';
     copyAllButton.title = 'Copy all server info';
-    
-    const textNode = document.createTextNode('Copy All ');
-    copyAllButton.appendChild(textNode);
-    
-    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    svg.setAttribute('width', '14');
-    svg.setAttribute('height', '14');
-    svg.setAttribute('viewBox', '0 0 24 24');
-    svg.setAttribute('fill', 'none');
-    svg.setAttribute('stroke', 'currentColor');
-    svg.setAttribute('stroke-width', '2');
-    svg.setAttribute('stroke-linecap', 'round');
-    svg.setAttribute('stroke-linejoin', 'round');
-    svg.style.cssText = 'margin-left: 4px; vertical-align: middle;';
-    const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-    rect.setAttribute('x', '9');
-    rect.setAttribute('y', '9');
-    rect.setAttribute('width', '13');
-    rect.setAttribute('height', '13');
-    rect.setAttribute('rx', '2');
-    rect.setAttribute('ry', '2');
-    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    path.setAttribute('d', 'M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1');
-    svg.appendChild(rect);
-    svg.appendChild(path);
-    copyAllButton.appendChild(svg);
     copyAllButton.onclick = (e) => {
         e.preventDefault();
         const ticketId = getTicketIdFromUrl();
@@ -388,16 +364,11 @@ function fallbackCopy(text) {
 }
 
 function showCopyFeedback(button, message) {
-    const originalContent = Array.from(button.childNodes).map(node => node.cloneNode(true));
+    const originalHTML = button.innerHTML;
     button.textContent = message;
     button.style.pointerEvents = 'none';
     setTimeout(() => {
-        button.textContent = '';
-        originalContent.forEach(node => button.appendChild(node));
+        button.innerHTML = originalHTML;
         button.style.pointerEvents = 'auto';
     }, 1500);
 }
-
-console.log('[better-falix] inline-server-info: Script loaded successfully');
-
-console.log('[better-falix] inline-server-info: Script loaded successfully');
