@@ -489,18 +489,17 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!btn.disabled) {
           const featureId = btn.id;
           featuresToUpdate[featureId] = newState;
-          setFeatureBtnState(btn, newState);
         }
       });
-      
-      // Update button text
-      this.textContent = newState ? 'Disable All' : 'Enable All';
       
       // Save all changes at once
       chrome.storage.sync.set(featuresToUpdate, () => {
         console.log(`${newState ? 'Enabled' : 'Disabled'} all features in ${category} category`);
         // Update all feature buttons to reflect the new state
-        chrome.storage.sync.get(null, updateFeatureButtons);
+        chrome.storage.sync.get(null, (data) => {
+          updateFeatureButtons(data);
+          updateEnableAllButtons();
+        });
       });
     });
   });
