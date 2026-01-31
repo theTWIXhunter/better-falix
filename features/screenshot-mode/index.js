@@ -276,7 +276,21 @@ function applyCensoring() {
         }
       });
     }
-    
+  }
+  
+  // Statusbar items (buttons with server addresses)
+  if (config.serverIP?.enabled) {
+    document.querySelectorAll('button.statusbar-item').forEach(button => {
+      const span = button.querySelector('span');
+      if (span && (span.textContent.includes('.falixsrv.me') || span.textContent.includes('host.falixserver.net'))) {
+        if (span.textContent !== config.serverIP.replacement) {
+          span.textContent = config.serverIP.replacement;
+        }
+      }
+    });
+  }
+  
+  if (config.serverIP?.enabled) {
     // Domain in warning message
     if (config.serverIP?.enabled) {
       document.querySelectorAll('.alert-warning strong').forEach(strong => {
