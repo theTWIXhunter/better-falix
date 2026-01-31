@@ -294,7 +294,12 @@ function replaceButtonWithInfo(serverInfo) {
 
     // Copy all button
     const copyAllButton = document.createElement('button');
-    copyAllButton.textContent = 'Copy All ';
+    copyAllButton.style.cssText = 'background: rgba(34, 197, 94, 0.15); color: rgba(34, 197, 94, 0.9); border: 1px solid rgba(34, 197, 94, 0.3); padding: 2px 8px; border-radius: 4px; cursor: pointer; font-size: 0.85em; font-weight: 500; display: inline-flex; align-items: center; transition: all 0.2s;';
+    copyAllButton.title = 'Copy all server info';
+    
+    const textNode = document.createTextNode('Copy All ');
+    copyAllButton.appendChild(textNode);
+    
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     svg.setAttribute('width', '14');
     svg.setAttribute('height', '14');
@@ -317,8 +322,6 @@ function replaceButtonWithInfo(serverInfo) {
     svg.appendChild(rect);
     svg.appendChild(path);
     copyAllButton.appendChild(svg);
-    copyAllButton.style.cssText = 'background: rgba(34, 197, 94, 0.15); color: rgba(34, 197, 94, 0.9); border: 1px solid rgba(34, 197, 94, 0.3); padding: 2px 8px; border-radius: 4px; cursor: pointer; font-size: 0.85em; font-weight: 500; display: inline-flex; align-items: center; transition: all 0.2s;';
-    copyAllButton.title = 'Copy all server info';
     copyAllButton.onclick = (e) => {
         e.preventDefault();
         const ticketId = getTicketIdFromUrl();
