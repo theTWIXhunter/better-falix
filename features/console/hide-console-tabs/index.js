@@ -15,6 +15,16 @@ chrome.storage.sync.get({ hideConsoleTabs: false, enabled: true }, (data) => {
   const hideTabs = () => {
     const el = document.querySelector('.console-tabs');
     if (el) el.style.display = 'none';
+    
+    const titlebarCenter = document.querySelector('.titlebar-center');
+    if (titlebarCenter) titlebarCenter.style.display = 'none';
+    
+    const titlebarActions = document.querySelector('.titlebar-actions');
+    if (titlebarActions) titlebarActions.style.display = 'none';
+    
+    document.querySelectorAll('.titlebar-divider').forEach(divider => {
+      divider.style.display = 'none';
+    });
   };
   
   hideTabs();
