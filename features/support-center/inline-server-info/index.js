@@ -399,3 +399,5 @@ function showCopyFeedback(button, message) {
 }
 
 console.log('[better-falix] inline-server-info: Script loaded successfully');
+
+console.log('[better-falix] inline-server-info: Script loaded successfully');
