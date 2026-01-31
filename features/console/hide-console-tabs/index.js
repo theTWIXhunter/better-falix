@@ -25,6 +25,15 @@ chrome.storage.sync.get({ hideConsoleTabs: false, enabled: true }, (data) => {
     document.querySelectorAll('.titlebar-divider').forEach(divider => {
       divider.style.display = 'none';
     });
+    
+    // Un-truncate the server name
+    const serverName = document.querySelector('.server-name');
+    if (serverName) {
+      serverName.style.overflow = 'visible';
+      serverName.style.textOverflow = 'unset';
+      serverName.style.whiteSpace = 'normal';
+      serverName.style.maxWidth = 'none';
+    }
   };
   
   hideTabs();
