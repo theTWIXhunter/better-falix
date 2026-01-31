@@ -1,8 +1,8 @@
 // [better-falix] Remove Max Players: Script loading
 console.log('[better-falix] Remove Max Players: Script loading');
 
-chrome.storage.sync.get({ removeMaxPlayers: false, enabled: true }, (data) => {
-  if (!data.enabled || !data.removeMaxPlayers) {
+chrome.storage.sync.get({ ARCHIVED_removeMaxPlayers: false, enabled: true }, (data) => {
+  if (!data.enabled || !data.ARCHIVED_removeMaxPlayers) {
     console.log('[better-falix] Remove Max Players: Script disabled');
     return;
   }
