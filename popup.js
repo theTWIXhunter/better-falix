@@ -498,6 +498,8 @@ document.addEventListener('DOMContentLoaded', () => {
       // Save all changes at once
       chrome.storage.sync.set(featuresToUpdate, () => {
         console.log(`${newState ? 'Enabled' : 'Disabled'} all features in ${category} category`);
+        // Update all feature buttons to reflect the new state
+        chrome.storage.sync.get(null, updateFeatureButtons);
       });
     });
   });
