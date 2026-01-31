@@ -91,6 +91,16 @@ chrome.storage.sync.get({ replaceCpuWithNode: false, enabled: true }, (data) => 
     if (valueElement) {
       valueElement.textContent = nodeInfo;
     }
+    
+    // Also replace in statusbar button (desktop)
+    const statusbarButton = document.querySelector('button.statusbar-item.statusbar-item-desktop[data-bs-target="#transferserver"]');
+    if (statusbarButton) {
+      const span = statusbarButton.querySelector('span');
+      if (span) {
+        span.textContent = nodeInfo;
+        console.log('[better-falix] Replace-location-with-Node: Also replaced statusbar location with node info');
+      }
+    }
 
     console.log('[better-falix] Replace-location-with-Node: Successfully replaced CPU info with node info');
   }
