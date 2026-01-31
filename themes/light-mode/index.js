@@ -15,7 +15,7 @@
         console.log('[better-falix] LIGHT MODE THEME: Script enabled');
 
         // Define light mode color variables
-        const lightBg = '#00ff66';
+        const lightBg = '#fff';
 
         // Remove 'dark' class from <html> and <body>
         document.documentElement.classList.remove('dark');
