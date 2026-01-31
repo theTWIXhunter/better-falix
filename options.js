@@ -117,6 +117,23 @@ chrome.storage.sync.get(null, data => {
   
   const adminBadgeToggle = document.getElementById('screenshotMode_adminBadge_enabled');
   if (adminBadgeToggle) setToggleState(adminBadgeToggle, screenshotModeConfig.adminBadge?.enabled !== false);
+  
+  // Remove State Overlays settings
+  const removeStateOverlaysToggle = document.getElementById('removeStateOverlays');
+  if (removeStateOverlaysToggle) setToggleState(removeStateOverlaysToggle, !!data.removeStateOverlays);
+  
+  const removeStartingOverlay = document.getElementById('removeStartingOverlay');
+  if (removeStartingOverlay) removeStartingOverlay.checked = data.removeStartingOverlay !== false;
+  
+  const removeOfflineOverlay = document.getElementById('removeOfflineOverlay');
+  if (removeOfflineOverlay) removeOfflineOverlay.checked = !!data.removeOfflineOverlay;
+  
+  // Larger Server Name settings
+  const largerServerNameToggle = document.getElementById('largerServerName');
+  if (largerServerNameToggle) setToggleState(largerServerNameToggle, !!data.largerServerName);
+  
+  const largerServerNameFontSize = document.getElementById('largerServerNameFontSize');
+  if (largerServerNameFontSize) largerServerNameFontSize.value = data.largerServerNameFontSize || 1.2;
 });
 
 // General toggles - only add listeners if elements exist
@@ -149,6 +166,23 @@ if (resetAllBtn) {
     if (confirm('Reset all settings to default?')) {
       chrome.storage.sync.clear(() => window.location.reload());
     }
+  });
+}
+
+// Larger Server Name toggle and font size
+const largerServerNameToggle = document.getElementById('largerServerName');
+if (largerServerNameToggle) {
+  largerServerNameToggle.addEventListener('click', function() {
+    const state = this.getAttribute('aria-pressed') !== 'true';
+    setToggleState(this, state);
+    saveSetting('largerServerName', state);
+  });
+}
+
+const largerServerNameFontSize = document.getElementById('largerServerNameFontSize');
+if (largerServerNameFontSize) {
+  largerServerNameFontSize.addEventListener('change', function() {
+    saveSetting('largerServerNameFontSize', parseFloat(this.value) || 1.2);
   });
 }
 
@@ -343,6 +377,30 @@ if (navbarEditorToggle) {
     const state = this.getAttribute('aria-pressed') !== 'true';
     setToggleState(this, state);
     saveSetting('navbarEditorV2Enabled', state);
+  });
+}
+
+// Remove State Overlays feature
+const removeStateOverlaysToggle = document.getElementById('removeStateOverlays');
+if (removeStateOverlaysToggle) {
+  removeStateOverlaysToggle.addEventListener('click', function() {
+    const state = this.getAttribute('aria-pressed') !== 'true';
+    setToggleState(this, state);
+    saveSetting('removeStateOverlays', state);
+  });
+}
+
+const removeStartingOverlay = document.getElementById('removeStartingOverlay');
+if (removeStartingOverlay) {
+  removeStartingOverlay.addEventListener('change', function() {
+    saveSetting('removeStartingOverlay', this.checked);
+  });
+}
+
+const removeOfflineOverlay = document.getElementById('removeOfflineOverlay');
+if (removeOfflineOverlay) {
+  removeOfflineOverlay.addEventListener('change', function() {
+    saveSetting('removeOfflineOverlay', this.checked);
   });
 }
 

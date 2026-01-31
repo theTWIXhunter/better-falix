@@ -1,8 +1,8 @@
 // [better-falix] splitAddonsTabs: Script loading
 console.log('[better-falix] split-Addons-Tabs: Script loading');
 
-chrome.storage.sync.get({ splitAddonsTabs: false, enabled: true }, (data) => {
-  if (!data.enabled || !data.splitAddonsTabs) {
+chrome.storage.sync.get({ ARCHIVED_splitAddonsTabs: false, enabled: true }, (data) => {
+  if (!data.enabled || !data.ARCHIVED_splitAddonsTabs) {
     console.log('[better-falix] split-Addons-Tabs: Script disabled');
     return;
   }

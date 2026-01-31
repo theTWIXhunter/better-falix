@@ -368,10 +368,7 @@ function showCopyFeedback(button, message) {
     button.textContent = message;
     button.style.pointerEvents = 'none';
     setTimeout(() => {
-        button.textContent = '';
-        while (originalContent.firstChild) {
-            button.appendChild(originalContent.firstChild.cloneNode(true));
-        }
+        button.replaceChildren(...originalContent.childNodes);
         button.style.pointerEvents = 'auto';
     }, 1500);
 }

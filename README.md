@@ -1,4 +1,4 @@
-# Better Falix 1.5.4
+# Better Falix 1.5.5
 
 Better Falix is a browser extension that enhances the FalixNodes client-side experience by allowing you to customize and improve the website's navigation and interface.
 
@@ -36,8 +36,9 @@ Customize navbar sections and items with the visual editor. Features include:
 - **Hide Console Tabs:** Optionally hide unnecessary console tabs for a cleaner interface (added to Falix itself using a dropdown, this feature will just delete the dropdown button itself).
 - **Replace Support Modal:** Replaces the support modal with a cleaner one and adds a copy all button.
 - **Replace CPU with Node:** Replaces the CPU information with Node information in the console.
-- **Remove Max Players card:** Removes the Max Players info card from the console interface.
-- **Remove Player Management card:** Removes the Player Management info card from the console interface.
+- **Add Power Button Text:** Adds text labels to the power action buttons (Start, Stop, Restart, Kill) for better clarity.
+- **Remove State Overlays:** Removes state overlays from the console. Configure which states to hide in settings (Starting overlay hidden by default, Offline overlay visible by default).
+- **Larger Server Name:** Increase the font size of the server name in the console titlebar for better readability. Configurable font size in settings (default: 1.2rem).
 - **Replace connect modal:** Removes all "How to connect" steps, DNS verification sections, and the "Server Name" row from the connect button and adds back the IPwithPORT and PORT.
 - **Remove Premium Transfer Banner:** Removes the 'Welcome to Premium' transfer notification banner from the console.
 
@@ -46,15 +47,6 @@ Customize navbar sections and items with the visual editor. Features include:
 - **Remove SFTP info from upload:** Removes the SFTP info and its divider from the upload button dropdown for a cleaner UI.
 - **upload-create-hover:** Makes the Upload and Create buttons show their dropdowns when hovered.
 - **Better Editor Fullscreen:** Hide editor header and breadcrumb when using built-in fullscreen mode.
-
-### Navigation
-these features have been deprecated and will be removed in 1.6.0, use the navbar editor for more customizable options.
-
-- **Rename Config to Properties:** Renames the "Config" navigation option to "Properties" in the Minecraft category for clarity.
-- **Rename Addons to Mods:** Renames the "Addons" navigation option to "Mods" in the Minecraft category for clarity.
-- **Split Addons Tabs:** Splits the addons tab back into separate plugins, mods, modpacks, and datapacks tabs on server pages.
-- **Add Versions Nav:** Adds a "Versions" link with a code-branch icon to the Minecraft section of the navbar for quick access to server version changes.
-- **Hide Support Category:** Hides the Support category from the navigation and main interface.
 
 ### Shared Logs
 
@@ -71,6 +63,16 @@ Note: this category isn't visible by default, you can enable "staff features" in
 - **Hide Template Button:** Hides the template button in ticket reply box. You can use '!' command instead to access templates.
 - **Remove File Upload Label:** Removes the file upload label from ticket reply box.
 - **Show Ticket ID in Title:** Adds the ticket ID to the start of the ticket title (e.g., '#123 - Title') for easier identification.
+
+# ARCHIVED
+- **Remove Max Players card:** Removes the Max Players info card from the console interface.
+- **Remove Player Management card:** Removes the Player Management info card from the console interface.
+- **Hide CPU card** Removes the CPU card from the console interface.
+- **Rename Config to Properties:** Renames the "Config" navigation option to "Properties" in the Minecraft category for clarity.
+- **Rename Addons to Mods:** Renames the "Addons" navigation option to "Mods" in the Minecraft category for clarity.
+- **Split Addons Tabs:** Splits the addons tab back into separate plugins, mods, modpacks, and datapacks tabs on server pages.
+- **Add Versions Nav:** Adds a "Versions" link with a code-branch icon to the Minecraft section of the navbar for quick access to server version changes.
+- **Hide Support Category:** Hides the Support category from the navigation and main interface.
 
 ## Usage
 

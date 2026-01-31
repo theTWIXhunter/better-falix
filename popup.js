@@ -121,6 +121,18 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
   }
+
+  // Archived features toggle logic
+  const toggleArchivedBtn = document.getElementById('toggleArchivedFeatures');
+  const archivedSection = document.getElementById('archivedFeaturesSection');
+  
+  if (toggleArchivedBtn && archivedSection) {
+    toggleArchivedBtn.addEventListener('click', function() {
+      const isHidden = archivedSection.style.display === 'none';
+      archivedSection.style.display = isHidden ? 'block' : 'none';
+      toggleArchivedBtn.textContent = isHidden ? 'Hide Archived Features' : 'Show Archived Features';
+    });
+  }
 });
 
 const toggleBtn = document.getElementById('toggle');
@@ -133,19 +145,22 @@ const featureIds = [
   'navbarHover',
   'replaceSupportModal',
   'replaceCpuWithNode',
-  'removeMaxPlayers',
-  'removePlayerManagement',
+  'ARCHIVED_removeMaxPlayers',
+  'ARCHIVED_removePlayerManagement',
   'removePremiumTransfer',
-  'removeCpuCard',
+  'ARCHIVED_removeCpuCard',
+  'addPowerButtonText',
+  'removeStateOverlays',
+  'largerServerName',
   'uploadCreateHover',
   'customServerOrder',
   'removeServerSearch',
-  'hideSupportCategory',
+  'ARCHIVED_hideSupportCategory',
   'removeLanguageSelector',
   'replaceFalixLogo',
-  'splitAddonsTabs',
-  'renameConfigToProperties',
-  'renameAddonsToMods',
+  'ARCHIVED_splitAddonsTabs',
+  'ARCHIVED_renameConfigToProperties',
+  'ARCHIVED_renameAddonsToMods',
   'removeLogsContainer',
   'redactedContentSubtle',
   'betterEditorFullscreen',
@@ -244,14 +259,19 @@ document.addEventListener('DOMContentLoaded', () => {
     navbarHover: false,
     replaceSupportModal: false,
     replaceCpuWithNode: false,
-    removeMaxPlayers: false,
-    removePlayerManagement: false,
+    ARCHIVED_removeMaxPlayers: false,
+    ARCHIVED_removePlayerManagement: false,
     uploadCreateHover: false,
     customServerOrder: false,
     removeServerSearch: false,
     removeLogsContainer: false,
     removePremiumTransfer: false,
-    removeCpuCard: false,
+    ARCHIVED_removeCpuCard: false,
+    addPowerButtonText: false,
+    removeStateOverlays: false,
+    removeStartingOverlay: true,
+    removeOfflineOverlay: false,
+    largerServerName: false,
     redactedContentSubtle: false,
     betterEditorFullscreen: false,
     coloredLogMessages: false,
@@ -439,16 +459,6 @@ document.addEventListener('DOMContentLoaded', () => {
   chrome.storage.sync.get(['activeTheme'], function(data) {
     const activeTheme = data.activeTheme || 'default';
     setActiveTheme(activeTheme);
-  });
-
-  // Archived features toggle logic
-  const toggleArchivedBtn = document.getElementById('toggleArchivedFeatures');
-  const archivedSection = document.getElementById('archivedFeaturesSection');
-  
-  toggleArchivedBtn.addEventListener('click', function() {
-    const isHidden = archivedSection.style.display === 'none';
-    archivedSection.style.display = isHidden ? 'block' : 'none';
-    toggleArchivedBtn.textContent = isHidden ? 'Hide Archived Features' : 'Show Archived Features';
   });
 
   // Enable All / Disable All button logic
