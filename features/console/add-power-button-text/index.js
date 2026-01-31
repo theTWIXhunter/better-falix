@@ -12,6 +12,31 @@ chrome.storage.sync.get({ addPowerButtonText: false, enabled: true }, (data) => 
 });
 
 function addPowerButtonLabels() {
+    // Add CSS to prevent button overlap
+    const style = document.createElement('style');
+    style.textContent = `
+        .titlebar-power button.titlebar-btn {
+            padding: 0 10px !important;
+            min-width: fit-content !important;
+            gap: 6px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            white-space: nowrap !important;
+        }
+        .titlebar-power {
+            gap: 8px !important;
+            display: flex !important;
+        }
+        .titlebar-btn .btn-label {
+            font-size: 0.875rem;
+            line-height: 1;
+        }
+    `;
+    if (!document.querySelector('#power-button-text-style')) {
+        style.id = 'power-button-text-style';
+        document.head.appendChild(style);
+    }
+
     function addLabels() {
         const powerButtons = [
             { selector: 'button.titlebar-btn.start', label: 'Start' },
@@ -27,8 +52,6 @@ function addPowerButtonLabels() {
                 const labelSpan = document.createElement('span');
                 labelSpan.className = 'btn-label';
                 labelSpan.textContent = label;
-                labelSpan.style.marginLeft = '6px';
-                labelSpan.style.fontSize = '0.875rem';
                 
                 // Append the label after the SVG
                 button.appendChild(labelSpan);
