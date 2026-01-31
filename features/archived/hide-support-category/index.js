@@ -1,8 +1,8 @@
 // [better-falix] hide-support-category: Script loading
 console.log('[better-falix] hide-support-category: Script loading');
 
-chrome.storage.sync.get({ hideSupportCategory: false, enabled: true }, (data) => {
-  if (!data.enabled || !data.hideSupportCategory) {
+chrome.storage.sync.get({ ARCHIVED_hideSupportCategory: false, enabled: true }, (data) => {
+  if (!data.enabled || !data.ARCHIVED_hideSupportCategory) {
     console.log('[better-falix] hide-support-category: Script disabled');
     return;
   }

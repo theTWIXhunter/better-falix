@@ -1,8 +1,8 @@
 // [better-falix] renameConfigToProperties: Script loading
 console.log('[better-falix] rename-Config-To-Properties: Script loading');
 
-chrome.storage.sync.get({ renameConfigToProperties: false, enabled: true }, (data) => {
-  if (!data.enabled || !data.renameConfigToProperties) {
+chrome.storage.sync.get({ ARCHIVED_renameConfigToProperties: false, enabled: true }, (data) => {
+  if (!data.enabled || !data.ARCHIVED_renameConfigToProperties) {
     console.log('[better-falix] rename-Config-To-Properties: Script disabled');
     return;
   }

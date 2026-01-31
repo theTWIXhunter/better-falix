@@ -146,30 +146,6 @@
 
 
     {
-      "matches": ["https://client.falixnodes.net/server/*"],
-      "js": ["features/navigation/rename-config-to-properties/index.js"],
-      "run_at": "document_idle"
-    },
-    {
-      "matches": ["https://client.falixnodes.net/server/*"],
-      "js": ["features/navigation/rename-addons-to-mods/index.js"],
-      "run_at": "document_idle"
-    },
-    {
-      "matches": ["https://client.falixnodes.net/server/*"],
-      "js": ["features/navigation/split-addons-tabs/index.js"],
-      "run_at": "document_idle"
-    },
-    {
-      "matches": ["https://client.falixnodes.net/*"],
-      "js": ["features/navigation/hide-support-category/index.js"],
-      "run_at": "document_idle"
-    },
-
-
-
-
-    {
       "matches": ["https://client.falixnodes.net/shared-logs/*"],
       "js": ["features/logsharing/remove-logs-container/index.js"],
       "run_at": "document_idle"
@@ -234,23 +210,43 @@
 
     {
       "matches": ["https://client.falixnodes.net/server/console*", "https://client.falixnodes.net/server/*/console*"],
-      "js": ["features/console/remove-player-management/index.js"],
+      "js": ["features/archived/remove-player-management/index.js"],
       "run_at": "document_idle"
     },
         {
       "matches": ["https://client.falixnodes.net/server/console*", "https://client.falixnodes.net/server/*/console*"],
-      "js": ["features/console/remove-max-players/index.js"],
+      "js": ["features/archived/remove-max-players/index.js"],
       "run_at": "document_idle"
     },
         {
       "matches": ["https://client.falixnodes.net/server/console*", "https://client.falixnodes.net/server/*/console*"],
-      "js": ["features/console/remove-cpu-card/index.js"],
+      "js": ["features/archived/remove-cpu-card/index.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://client.falixnodes.net/server/*"],
+      "js": ["features/archived/rename-config-to-properties/index.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://client.falixnodes.net/server/*"],
+      "js": ["features/archived/rename-addons-to-mods/index.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://client.falixnodes.net/server/*"],
+      "js": ["features/archived/split-addons-tabs/index.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://client.falixnodes.net/*"],
+      "js": ["features/archived/hide-support-category/index.js"],
       "run_at": "document_idle"
     },
 
 
 
-    
+
     {
       "matches": ["https://client.falixnodes.net/*"],
       "js": ["themes/light-mode/index.js"],
