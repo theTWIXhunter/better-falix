@@ -265,6 +265,7 @@ document.addEventListener('DOMContentLoaded', () => {
     removeLogsContainer: false,
     removePremiumTransfer: false,
     ARCHIVED_removeCpuCard: false,
+    addPowerButtonText: false,
     redactedContentSubtle: false,
     betterEditorFullscreen: false,
     coloredLogMessages: false,
