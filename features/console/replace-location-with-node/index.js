@@ -92,18 +92,22 @@ chrome.storage.sync.get({ replaceCpuWithNode: false, enabled: true }, (data) => 
       valueElement.textContent = nodeInfo;
     }
     
-    // Also replace in statusbar button (desktop) - check all statusbar buttons
+    // Also replace in statusbar button - check all statusbar buttons
     document.querySelectorAll('button.statusbar-item').forEach(button => {
       // Look for the button with transfer server modal or has a flag image (location button)
       const hasTransferModal = button.getAttribute('data-bs-target') === '#transferserver';
       const hasFlag = button.querySelector('.statusbar-flag');
       
       if (hasTransferModal || hasFlag) {
-        const span = button.querySelector('span');
-        if (span) {
-          span.textContent = nodeInfo;
-          console.log('[better-falix] Replace-location-with-Node: Also replaced statusbar location with node info');
-        }
+        // Get all spans and find the one that's not a status dot
+        const spans = button.querySelectorAll('span');
+        spans.forEach(span => {
+          // Skip spans that are status dots or have specific IDs
+          if (!span.classList.contains('status-dot') && !span.id) {
+            span.textContent = nodeInfo;
+            console.log('[better-falix] Replace-location-with-Node: Also replaced statusbar location with node info');
+          }
+        });
       }
     });
 
