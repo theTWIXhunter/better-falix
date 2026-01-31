@@ -272,6 +272,7 @@ document.addEventListener('DOMContentLoaded', () => {
     removeStartingOverlay: true,
     removeOfflineOverlay: false,
     largerServerName: false,
+    largerServerNameFontSize: 1.2,
     redactedContentSubtle: false,
     betterEditorFullscreen: false,
     coloredLogMessages: false,
@@ -528,15 +529,5 @@ document.addEventListener('DOMContentLoaded', () => {
   // Call updateEnableAllButtons when features are loaded
   chrome.storage.sync.get(null, (data) => {
     updateEnableAllButtons();
-  });
-
-  // Also update when individual features are toggled
-  featureIds.forEach(id => {
-    const btn = document.getElementById(id);
-    if (btn) {
-      btn.addEventListener('click', function() {
-        setTimeout(updateEnableAllButtons, 50);
-      });
-    }
   });
 });
