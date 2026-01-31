@@ -137,6 +137,7 @@ const featureIds = [
   'removePlayerManagement',
   'removePremiumTransfer',
   'removeCpuCard',
+  'addPowerButtonText',
   'uploadCreateHover',
   'customServerOrder',
   'removeServerSearch',

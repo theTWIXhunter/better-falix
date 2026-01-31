@@ -1,9 +1,14 @@
-const storageApi = (typeof browser !== 'undefined' && browser.storage) ? browser : chrome;
+// [better-falix] add-power-button-text: Script loading
+console.log('[better-falix] add-power-button-text: Script loading');
 
-storageApi.storage.sync.get(['addPowerButtonText'], (result) => {
-    if (result.addPowerButtonText) {
-        addPowerButtonLabels();
-    }
+chrome.storage.sync.get({ addPowerButtonText: false, enabled: true }, (data) => {
+  if (!data.enabled || !data.addPowerButtonText) {
+    console.log('[better-falix] add-power-button-text: Script disabled');
+    return;
+  }
+  console.log('[better-falix] add-power-button-text: Script enabled');
+
+  addPowerButtonLabels();
 });
 
 function addPowerButtonLabels() {
