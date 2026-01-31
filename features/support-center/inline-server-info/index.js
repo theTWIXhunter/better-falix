@@ -364,11 +364,11 @@ function fallbackCopy(text) {
 }
 
 function showCopyFeedback(button, message) {
-    const originalHTML = button.innerHTML;
+    const originalContent = button.cloneNode(true);
     button.textContent = message;
     button.style.pointerEvents = 'none';
     setTimeout(() => {
-        button.innerHTML = originalHTML;
+        button.replaceChildren(...originalContent.childNodes);
         button.style.pointerEvents = 'auto';
     }, 1500);
 }
