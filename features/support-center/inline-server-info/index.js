@@ -1,9 +1,11 @@
 // [better-falix] inline-server-info: Script loading
 console.log('[better-falix] inline-server-info: Script loading');
+console.error('[better-falix] inline-server-info: TESTING - This should always appear!');
 
 chrome.storage.sync.get({ inlineServerInfo: false, enabled: true }, (data) => {
+  console.log('[better-falix] inline-server-info: Storage data received:', data);
   if (!data.enabled || !data.inlineServerInfo) {
-    console.log('[better-falix] inline-server-info: Script disabled');
+    console.log('[better-falix] inline-server-info: Script disabled', 'enabled:', data.enabled, 'inlineServerInfo:', data.inlineServerInfo);
     return;
   }
   console.log('[better-falix] inline-server-info: Script enabled');
@@ -395,3 +397,5 @@ function showCopyFeedback(button, message) {
         button.style.pointerEvents = 'auto';
     }, 1500);
 }
+
+console.log('[better-falix] inline-server-info: Script loaded successfully');
