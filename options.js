@@ -117,6 +117,16 @@ chrome.storage.sync.get(null, data => {
   
   const adminBadgeToggle = document.getElementById('screenshotMode_adminBadge_enabled');
   if (adminBadgeToggle) setToggleState(adminBadgeToggle, screenshotModeConfig.adminBadge?.enabled !== false);
+  
+  // Remove State Overlays settings
+  const removeStateOverlaysToggle = document.getElementById('removeStateOverlays');
+  if (removeStateOverlaysToggle) setToggleState(removeStateOverlaysToggle, !!data.removeStateOverlays);
+  
+  const removeStartingOverlay = document.getElementById('removeStartingOverlay');
+  if (removeStartingOverlay) removeStartingOverlay.checked = data.removeStartingOverlay !== false;
+  
+  const removeOfflineOverlay = document.getElementById('removeOfflineOverlay');
+  if (removeOfflineOverlay) removeOfflineOverlay.checked = !!data.removeOfflineOverlay;
 });
 
 // General toggles - only add listeners if elements exist
@@ -343,6 +353,30 @@ if (navbarEditorToggle) {
     const state = this.getAttribute('aria-pressed') !== 'true';
     setToggleState(this, state);
     saveSetting('navbarEditorV2Enabled', state);
+  });
+}
+
+// Remove State Overlays feature
+const removeStateOverlaysToggle = document.getElementById('removeStateOverlays');
+if (removeStateOverlaysToggle) {
+  removeStateOverlaysToggle.addEventListener('click', function() {
+    const state = this.getAttribute('aria-pressed') !== 'true';
+    setToggleState(this, state);
+    saveSetting('removeStateOverlays', state);
+  });
+}
+
+const removeStartingOverlay = document.getElementById('removeStartingOverlay');
+if (removeStartingOverlay) {
+  removeStartingOverlay.addEventListener('change', function() {
+    saveSetting('removeStartingOverlay', this.checked);
+  });
+}
+
+const removeOfflineOverlay = document.getElementById('removeOfflineOverlay');
+if (removeOfflineOverlay) {
+  removeOfflineOverlay.addEventListener('change', function() {
+    saveSetting('removeOfflineOverlay', this.checked);
   });
 }
 

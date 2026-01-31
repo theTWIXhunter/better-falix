@@ -122,6 +122,11 @@
       "js": ["features/console/add-power-button-text/index.js"],
       "run_at": "document_idle"
     },
+    {
+      "matches": ["https://client.falixnodes.net/server/console*", "https://client.falixnodes.net/server/*/console*"],
+      "js": ["features/console/remove-state-overlays/index.js"],
+      "run_at": "document_idle"
+    },
 
 
 
