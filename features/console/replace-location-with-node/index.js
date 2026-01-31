@@ -120,14 +120,29 @@ chrome.storage.sync.get({ replaceCpuWithNode: false, enabled: true }, (data) => 
       const cpuCard = document.querySelector('.compact-info-card');
       const supportInfoSpans = document.querySelectorAll('span.support-info-text');
       const bedrockValues = document.querySelectorAll('.bedrock-value');
+      const statusbarButtons = document.querySelectorAll('button.statusbar-item');
+      
+      console.log('[better-falix] Replace-location-with-Node: Checking for elements...', {
+        cpuCard: !!cpuCard,
+        supportInfoSpans: supportInfoSpans.length,
+        bedrockValues: bedrockValues.length,
+        statusbarButtons: statusbarButtons.length
+      });
       
       // Check if we have either the original structure or the new modal structure
       const hasOriginalStructure = cpuCard && supportInfoSpans.length >= 3;
       const hasNewStructure = cpuCard && bedrockValues.length >= 3;
       
       if (hasOriginalStructure || hasNewStructure) {
+        console.log('[better-falix] Replace-location-with-Node: Elements found, executing replacement');
         clearInterval(checkInterval);
         replaceCpuWithNode();
+        
+        // Also set up an observer for statusbar buttons that might load later
+        setTimeout(() => {
+          console.log('[better-falix] Replace-location-with-Node: Running delayed statusbar check');
+          replaceCpuWithNode();
+        }, 1000);
       }
     }, 100);
 
