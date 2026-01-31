@@ -121,6 +121,18 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
   }
+
+  // Archived features toggle logic
+  const toggleArchivedBtn = document.getElementById('toggleArchivedFeatures');
+  const archivedSection = document.getElementById('archivedFeaturesSection');
+  
+  if (toggleArchivedBtn && archivedSection) {
+    toggleArchivedBtn.addEventListener('click', function() {
+      const isHidden = archivedSection.style.display === 'none';
+      archivedSection.style.display = isHidden ? 'block' : 'none';
+      toggleArchivedBtn.textContent = isHidden ? 'Hide Archived Features' : 'Show Archived Features';
+    });
+  }
 });
 
 const toggleBtn = document.getElementById('toggle');
