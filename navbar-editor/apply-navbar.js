@@ -7,9 +7,13 @@ chrome.storage.sync.get({ enabled: true, navbarEditorV2Enabled: false }, (data) 
   }
   console.log('[better-falix] navbar-editor: Script enabled');
 
+  // Store cloned styles globally
+  let clonedNavLinkStyles = null;
+  let clonedNavCategoryStyles = null;
+
   // Clone CSS from existing navbar elements
   function cloneNavbarStyles() {
-    const existingNavLink = document.querySelector('.navbar-nav-container .nav-link');
+    const existingNavLink = document.querySelector('.navbar-nav-container .nav-link:not([href*="undefined"])');
     const existingNavCategory = document.querySelector('.navbar-nav-container .nav-category');
     const existingNavItem = document.querySelector('.navbar-nav-container .nav-item');
     
@@ -18,43 +22,37 @@ chrome.storage.sync.get({ enabled: true, navbarEditorV2Enabled: false }, (data) 
       return;
     }
 
-    const navLinkStyles = window.getComputedStyle(existingNavLink);
-    const navCategoryStyles = existingNavCategory ? window.getComputedStyle(existingNavCategory) : null;
+    clonedNavLinkStyles = window.getComputedStyle(existingNavLink);
+    clonedNavCategoryStyles = existingNavCategory ? window.getComputedStyle(existingNavCategory) : null;
     const navItemStyles = existingNavItem ? window.getComputedStyle(existingNavItem) : null;
+
+    console.log('[better-falix] navbar-editor: Cloned styles - padding:', clonedNavLinkStyles.padding, 'height:', clonedNavLinkStyles.height, 'font-size:', clonedNavLinkStyles.fontSize);
 
     const style = document.createElement('style');
     style.id = 'custom-navbar-cloned-styles';
     
-    // Clone critical styles from the actual navbar
+    // Clone critical styles from the actual navbar with very specific selectors
     const navLinkCSS = `
-      padding: ${navLinkStyles.padding} !important;
-      padding-top: ${navLinkStyles.paddingTop} !important;
-      padding-bottom: ${navLinkStyles.paddingBottom} !important;
-      padding-left: ${navLinkStyles.paddingLeft} !important;
-      padding-right: ${navLinkStyles.paddingRight} !important;
-      min-height: ${navLinkStyles.minHeight} !important;
-      height: ${navLinkStyles.height} !important;
-      display: ${navLinkStyles.display} !important;
-      align-items: ${navLinkStyles.alignItems} !important;
-      gap: ${navLinkStyles.gap} !important;
-      font-size: ${navLinkStyles.fontSize} !important;
-      line-height: ${navLinkStyles.lineHeight} !important;
-      font-weight: ${navLinkStyles.fontWeight} !important;
-      box-sizing: ${navLinkStyles.boxSizing} !important;
+      padding: ${clonedNavLinkStyles.paddingTop} ${clonedNavLinkStyles.paddingRight} ${clonedNavLinkStyles.paddingBottom} ${clonedNavLinkStyles.paddingLeft} !important;
+      min-height: ${clonedNavLinkStyles.minHeight} !important;
+      height: ${clonedNavLinkStyles.height === 'auto' ? 'auto' : clonedNavLinkStyles.height} !important;
+      display: ${clonedNavLinkStyles.display} !important;
+      align-items: ${clonedNavLinkStyles.alignItems} !important;
+      gap: ${clonedNavLinkStyles.gap} !important;
+      font-size: ${clonedNavLinkStyles.fontSize} !important;
+      line-height: ${clonedNavLinkStyles.lineHeight} !important;
+      font-weight: ${clonedNavLinkStyles.fontWeight} !important;
+      box-sizing: border-box !important;
     `;
 
-    const navCategoryCSS = navCategoryStyles ? `
-      padding: ${navCategoryStyles.padding} !important;
-      padding-top: ${navCategoryStyles.paddingTop} !important;
-      padding-bottom: ${navCategoryStyles.paddingBottom} !important;
-      padding-left: ${navCategoryStyles.paddingLeft} !important;
-      padding-right: ${navCategoryStyles.paddingRight} !important;
-      min-height: ${navCategoryStyles.minHeight} !important;
-      height: ${navCategoryStyles.height} !important;
-      display: ${navCategoryStyles.display} !important;
-      align-items: ${navCategoryStyles.alignItems} !important;
-      gap: ${navCategoryStyles.gap} !important;
-      font-size: ${navCategoryStyles.fontSize} !important;
+    const navCategoryCSS = clonedNavCategoryStyles ? `
+      padding: ${clonedNavCategoryStyles.paddingTop} ${clonedNavCategoryStyles.paddingRight} ${clonedNavCategoryStyles.paddingBottom} ${clonedNavCategoryStyles.paddingLeft} !important;
+      min-height: ${clonedNavCategoryStyles.minHeight} !important;
+      height: ${clonedNavCategoryStyles.height === 'auto' ? 'auto' : clonedNavCategoryStyles.height} !important;
+      display: ${clonedNavCategoryStyles.display} !important;
+      align-items: ${clonedNavCategoryStyles.alignItems} !important;
+      gap: ${clonedNavCategoryStyles.gap} !important;
+      font-size: ${clonedNavCategoryStyles.fontSize} !important;
     ` : '';
 
     const navItemCSS = navItemStyles ? `
@@ -63,25 +61,27 @@ chrome.storage.sync.get({ enabled: true, navbarEditorV2Enabled: false }, (data) 
     ` : '';
 
     style.textContent = `
-      /* Cloned styles from actual Falix navbar */
+      /* Cloned styles from actual Falix navbar - VERY HIGH SPECIFICITY */
+      .navbar-nav-container .nav-section .nav-link,
+      .navbar-nav-container .navbar-nav .nav-link,
       .navbar-nav-container .nav-link,
-      .nav-section .nav-link,
-      body .nav-item .nav-link {
+      .menu-scroll-container .nav-link,
+      body div.navbar-nav-container a.nav-link {
         ${navLinkCSS}
       }
       
-      ${navCategoryStyles ? `
+      ${clonedNavCategoryStyles ? `
+      .navbar-nav-container .nav-section .nav-category,
       .navbar-nav-container .nav-category,
-      .nav-section .nav-category,
-      body .nav-section .nav-category {
+      body div.navbar-nav-container button.nav-category {
         ${navCategoryCSS}
       }
       ` : ''}
 
       ${navItemStyles ? `
+      .navbar-nav-container .nav-section .nav-item,
       .navbar-nav-container .nav-item,
-      .nav-section .nav-item,
-      body .nav-section .nav-item {
+      body div.navbar-nav-container li.nav-item {
         ${navItemCSS}
       }
       ` : ''}
@@ -94,19 +94,13 @@ chrome.storage.sync.get({ enabled: true, navbarEditorV2Enabled: false }, (data) 
         flex-shrink: 0 !important;
       }
     `;
+    
+    // Remove old style if exists
+    const oldStyle = document.getElementById('custom-navbar-cloned-styles');
+    if (oldStyle) oldStyle.remove();
+    
     document.head.appendChild(style);
-    console.log('[better-falix] navbar-editor: Cloned navbar styles applied');
-  }
-
-  // Wait for navbar to be available, then clone styles
-  function waitForNavbarAndClone() {
-    const existingNavLink = document.querySelector('.navbar-nav-container .nav-link');
-    if (existingNavLink) {
-      cloneNavbarStyles();
-    } else {
-      console.log('[better-falix] navbar-editor: Waiting for navbar to load...');
-      setTimeout(waitForNavbarAndClone, 100);
-    }
+    console.log('[better-falix] navbar-editor: Cloned navbar styles applied successfully');
   }
 
   const isServerPage = window.location.pathname.startsWith('/server/');
@@ -123,9 +117,17 @@ chrome.storage.sync.get({ enabled: true, navbarEditorV2Enabled: false }, (data) 
 
     console.log('[better-falix] navbar-editor: Config loaded:', config);
     
-    // Clone styles first, then apply config
-    waitForNavbarAndClone();
-    applyNavbarConfig(config);
+    // Wait for navbar, clone styles, then apply config
+    function initCustomNavbar() {
+      const existingNavLink = document.querySelector('.navbar-nav-container .nav-link');
+      if (existingNavLink) {
+        cloneNavbarStyles();
+        setTimeout(() => applyNavbarConfig(config), 50);
+      } else {
+        setTimeout(initCustomNavbar, 100);
+      }
+    }
+    initCustomNavbar();
   });
 });
 
