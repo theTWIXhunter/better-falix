@@ -7,6 +7,38 @@ chrome.storage.sync.get({ enabled: true, navbarEditorV2Enabled: false }, (data) 
   }
   console.log('[better-falix] navbar-editor: Script enabled');
 
+  // Inject CSS to ensure custom navbar items match the new thicker navbar style
+  const style = document.createElement('style');
+  style.id = 'custom-navbar-sizing';
+  style.textContent = `
+    /* Match the thicker navbar style for custom navbar items */
+    .navbar-nav-container .nav-link {
+      padding: 14px 20px !important;
+      min-height: 48px !important;
+      display: flex !important;
+      align-items: center !important;
+      gap: 12px !important;
+      font-size: 15px !important;
+    }
+    
+    .navbar-nav-container .nav-item {
+      margin-bottom: 2px !important;
+    }
+    
+    .navbar-nav-container .nav-link svg {
+      width: 18px !important;
+      height: 18px !important;
+      flex-shrink: 0 !important;
+    }
+    
+    .navbar-nav-container .nav-category {
+      padding: 14px 20px !important;
+      min-height: 48px !important;
+      font-size: 13px !important;
+    }
+  `;
+  document.head.appendChild(style);
+
   const isServerPage = window.location.pathname.startsWith('/server/');
   const configKey = isServerPage ? 'navbarConfigServer' : 'navbarConfigOther';
   console.log('[better-falix] navbar-editor: Looking for config key:', configKey, 'isServerPage:', isServerPage);
