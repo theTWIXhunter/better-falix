@@ -13,12 +13,20 @@ chrome.storage.sync.get({ enabled: true, navbarEditorV2Enabled: false }, (data) 
 
   // Clone CSS from existing navbar elements
   function cloneNavbarStyles() {
-    const existingNavLink = document.querySelector('.navbar-nav-container .nav-link:not([href*="undefined"])');
-    const existingNavCategory = document.querySelector('.navbar-nav-container .nav-category');
-    const existingNavItem = document.querySelector('.navbar-nav-container .nav-item');
+    // Try multiple selectors to find existing navbar elements
+    const existingNavLink = document.querySelector('.navbar-nav-container .nav-link:not([href*="undefined"])') ||
+                           document.querySelector('.menu-scroll-container .nav-link') ||
+                           document.querySelector('.nav-link');
+    const existingNavCategory = document.querySelector('.navbar-nav-container .nav-category') ||
+                                document.querySelector('.menu-scroll-container .nav-category') ||
+                                document.querySelector('.nav-category');
+    const existingNavItem = document.querySelector('.navbar-nav-container .nav-item') ||
+                           document.querySelector('.menu-scroll-container .nav-item') ||
+                           document.querySelector('.nav-item');
     
     if (!existingNavLink) {
-      console.log('[better-falix] navbar-editor: No existing nav-link found to clone styles from');
+      console.log('[better-falix] navbar-editor: No existing nav-link found to clone styles from, using fallback styles');
+      applyFallbackStyles();
       return;
     }
 
@@ -103,6 +111,58 @@ chrome.storage.sync.get({ enabled: true, navbarEditorV2Enabled: false }, (data) 
     console.log('[better-falix] navbar-editor: Cloned navbar styles applied successfully');
   }
 
+  // Fallback styles if we can't find existing navbar elements
+  function applyFallbackStyles() {
+    const style = document.createElement('style');
+    style.id = 'custom-navbar-cloned-styles';
+    style.textContent = `
+      /* Fallback styles matching new thicker Falix navbar */
+      .navbar-nav-container .nav-link,
+      .menu-scroll-container .nav-link,
+      body div.navbar-nav-container a.nav-link {
+        padding: 14px 20px !important;
+        min-height: 48px !important;
+        height: auto !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 12px !important;
+        font-size: 15px !important;
+        line-height: 1.5 !important;
+        font-weight: 500 !important;
+        box-sizing: border-box !important;
+      }
+      
+      .navbar-nav-container .nav-category,
+      body div.navbar-nav-container button.nav-category {
+        padding: 14px 20px !important;
+        min-height: 48px !important;
+        height: auto !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 12px !important;
+        font-size: 13px !important;
+      }
+
+      .navbar-nav-container .nav-item,
+      body div.navbar-nav-container li.nav-item {
+        margin-bottom: 2px !important;
+      }
+      
+      .navbar-nav-container .nav-link svg,
+      .nav-section .nav-link svg {
+        width: 1em !important;
+        height: 1em !important;
+        flex-shrink: 0 !important;
+      }
+    `;
+    
+    const oldStyle = document.getElementById('custom-navbar-cloned-styles');
+    if (oldStyle) oldStyle.remove();
+    
+    document.head.appendChild(style);
+    console.log('[better-falix] navbar-editor: Applied fallback styles');
+  }
+
   const isServerPage = window.location.pathname.startsWith('/server/');
   const configKey = isServerPage ? 'navbarConfigServer' : 'navbarConfigOther';
   console.log('[better-falix] navbar-editor: Looking for config key:', configKey, 'isServerPage:', isServerPage);
@@ -117,14 +177,28 @@ chrome.storage.sync.get({ enabled: true, navbarEditorV2Enabled: false }, (data) 
 
     console.log('[better-falix] navbar-editor: Config loaded:', config);
     
-    // Wait for navbar, clone styles, then apply config
+    // Wait for navbar, clone styles, then apply config with retries
+    let retries = 0;
+    const maxRetries = 20;
+    
     function initCustomNavbar() {
-      const existingNavLink = document.querySelector('.navbar-nav-container .nav-link');
-      if (existingNavLink) {
+      const existingNavLink = document.querySelector('.nav-link');
+      const navContainer = document.querySelector('.navbar-nav-container') || document.querySelector('.menu-scroll-container');
+      
+      console.log('[better-falix] navbar-editor: Init attempt', retries + 1, '- Found nav-link:', !!existingNavLink, 'Found container:', !!navContainer);
+      
+      if (existingNavLink && navContainer) {
         cloneNavbarStyles();
-        setTimeout(() => applyNavbarConfig(config), 50);
+        setTimeout(() => applyNavbarConfig(config), 100);
       } else {
-        setTimeout(initCustomNavbar, 100);
+        retries++;
+        if (retries < maxRetries) {
+          setTimeout(initCustomNavbar, 200);
+        } else {
+          console.log('[better-falix] navbar-editor: Max retries reached, applying with fallback styles');
+          applyFallbackStyles();
+          applyNavbarConfig(config);
+        }
       }
     }
     initCustomNavbar();
