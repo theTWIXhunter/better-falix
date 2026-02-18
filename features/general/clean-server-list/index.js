@@ -27,24 +27,20 @@ chrome.storage.sync.get({ cleanServerList: false, enabled: true }, (data) => {
       console.log('[better-falix] clean-server-list: Added padding to', serverRowLinks.length, '.server-row-link elements');
     }
 
-    // 3. Remove style elements from .servers-container and add them to each .server-row-link individually
+    // 3. Add .servers-container class to all .server-row-link elements and remove it from the parent
     const serversContainer = document.querySelector('.servers-container');
     if (serversContainer) {
-      // Get the inline style attribute from servers-container
-      const containerStyle = serversContainer.getAttribute('style');
-      
-      // Apply the style to each .server-row-link
       const serverRowLinks = serversContainer.querySelectorAll('.server-row-link');
+      
+      // Add servers-container class to each server-row-link
       serverRowLinks.forEach(link => {
-        if (containerStyle) {
-          link.setAttribute('style', (link.getAttribute('style') || '') + '; ' + containerStyle);
-        }
+        link.classList.add('servers-container');
       });
 
-      // Remove inline styles from servers-container
-      serversContainer.removeAttribute('style');
+      // Remove servers-container class from the parent
+      serversContainer.classList.remove('servers-container');
 
-      console.log('[better-falix] clean-server-list: Moved styles from .servers-container to', serverRowLinks.length, '.server-row-link elements');
+      console.log('[better-falix] clean-server-list: Added .servers-container class to', serverRowLinks.length, '.server-row-link elements');
     }
   }
 
