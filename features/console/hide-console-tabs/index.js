@@ -83,15 +83,28 @@ chrome.storage.sync.get({ hideConsoleTabs: false, enabled: true }, (data) => {
         const newShareBtn = document.getElementById('shareConsoleBtnAlt');
         const newViewModeToggle = document.getElementById('viewModeToggleAlt');
         
+        // Helper function to click hidden buttons
+        const clickHiddenButton = (button) => {
+          const titlebarActions = document.querySelector('.titlebar-actions');
+          if (titlebarActions && button) {
+            // Temporarily show to allow click to work
+            const originalDisplay = titlebarActions.style.display;
+            titlebarActions.style.display = '';
+            button.click();
+            // Hide again immediately
+            titlebarActions.style.display = originalDisplay;
+          }
+        };
+        
         if (originalPopupBtn && newPopupBtn) {
           newPopupBtn.addEventListener('click', () => {
-            originalPopupBtn.click();
+            clickHiddenButton(originalPopupBtn);
           });
         }
         
         if (originalShareBtn && newShareBtn) {
           newShareBtn.addEventListener('click', () => {
-            originalShareBtn.click();
+            clickHiddenButton(originalShareBtn);
           });
         }
         
@@ -116,7 +129,7 @@ chrome.storage.sync.get({ hideConsoleTabs: false, enabled: true }, (data) => {
           
           // Sync on click
           newViewModeToggle.addEventListener('click', () => {
-            originalViewModeToggle.click();
+            clickHiddenButton(originalViewModeToggle);
             // Wait a bit for the DOM to update
             setTimeout(syncViewModeState, 100);
           });
