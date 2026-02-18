@@ -15,24 +15,36 @@ chrome.storage.sync.get({ addTemplateManagerButton: false, enabled: true }, (dat
   const addManagerButton = () => {
     const templateAutocomplete = document.getElementById('templateAutocomplete');
     
+    console.log('[better-falix] add-template-manager-button: Checking for templateAutocomplete...', templateAutocomplete);
+    
     if (templateAutocomplete && !buttonAdded && !document.getElementById('manageTemplatesBtn')) {
+      console.log('[better-falix] add-template-manager-button: templateAutocomplete found, adding button...');
+      
+      // Ensure parent has position: relative for absolute positioning to work
+      const computedPosition = window.getComputedStyle(templateAutocomplete).position;
+      if (computedPosition === 'static') {
+        templateAutocomplete.style.position = 'relative';
+      }
+      
       // Create the button
       const button = document.createElement('button');
       button.type = 'button';
       button.id = 'manageTemplatesBtn';
       button.style.cssText = `
-        position: absolute;
-        top: 8px;
-        right: 8px;
-        background: rgba(var(--falcon-warning-rgb), 0.1);
-        color: rgb(var(--falcon-warning-rgb));
-        border: 1px solid rgba(var(--falcon-warning-rgb), 0.2);
-        padding: 0.35rem 0.7rem;
-        border-radius: 6px;
-        font-size: 0.75rem;
-        cursor: pointer;
-        z-index: 10002;
-        transition: all 0.2s;
+        position: absolute !important;
+        top: 8px !important;
+        right: 8px !important;
+        background: rgba(var(--falcon-warning-rgb), 0.1) !important;
+        color: rgb(var(--falcon-warning-rgb)) !important;
+        border: 1px solid rgba(var(--falcon-warning-rgb), 0.2) !important;
+        padding: 0.35rem 0.7rem !important;
+        border-radius: 6px !important;
+        font-size: 0.75rem !important;
+        cursor: pointer !important;
+        z-index: 10002 !important;
+        transition: all 0.2s !important;
+        display: block !important;
+        visibility: visible !important;
       `;
       
       button.innerHTML = `
@@ -55,8 +67,11 @@ chrome.storage.sync.get({ addTemplateManagerButton: false, enabled: true }, (dat
       
       // Find the original manage templates button and clone its click functionality
       const originalBtn = document.querySelector('[data-bs-target="#templatesModal"]');
+      console.log('[better-falix] add-template-manager-button: Original button found:', originalBtn);
+      
       if (originalBtn) {
         button.addEventListener('click', () => {
+          console.log('[better-falix] add-template-manager-button: Button clicked, triggering original...');
           originalBtn.click();
         });
       }
@@ -64,7 +79,7 @@ chrome.storage.sync.get({ addTemplateManagerButton: false, enabled: true }, (dat
       templateAutocomplete.appendChild(button);
       buttonAdded = true;
       
-      console.log('[better-falix] add-template-manager-button: Button added successfully');
+      console.log('[better-falix] add-template-manager-button: Button added successfully, element:', button);
     }
   };
 
