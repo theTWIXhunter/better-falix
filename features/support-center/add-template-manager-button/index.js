@@ -10,20 +10,24 @@ chrome.storage.sync.get({ addTemplateManagerButton: false, enabled: true }, (dat
 
   //  --------- START FEATURE ----------
 
-  let buttonAdded = false;
-
   const addManagerButton = () => {
     const templateAutocomplete = document.getElementById('templateAutocomplete');
-    const existingButton = document.getElementById('bf-manageTemplatesBtn');
+    
+    // Only proceed if autocomplete exists and is visible
+    if (!templateAutocomplete || templateAutocomplete.style.display === 'none') {
+      return;
+    }
+    
+    // Check if button already exists in the autocomplete element
+    const existingButton = templateAutocomplete.querySelector('#bf-manageTemplatesBtn');
     
     console.log('[better-falix] add-template-manager-button: Checking...', {
       templateAutocomplete: !!templateAutocomplete,
-      buttonAdded: buttonAdded,
       existingButton: !!existingButton,
-      templateVisible: templateAutocomplete ? templateAutocomplete.style.display : 'N/A'
+      templateVisible: templateAutocomplete.style.display
     });
     
-    if (templateAutocomplete && !buttonAdded && !existingButton) {
+    if (!existingButton) {
       console.log('[better-falix] add-template-manager-button: Adding button now...');
       
       // Create the button
@@ -77,7 +81,6 @@ chrome.storage.sync.get({ addTemplateManagerButton: false, enabled: true }, (dat
       }
       
       templateAutocomplete.appendChild(button);
-      buttonAdded = true;
       
       console.log('[better-falix] add-template-manager-button: Button added successfully!', button);
     }
