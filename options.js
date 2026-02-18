@@ -23,11 +23,11 @@ chrome.storage.sync.get(null, data => {
   const themeSelect = document.getElementById('theme');
   if (themeSelect) themeSelect.value = data.theme || 'auto';
   
-  const customServerOrderToggle = document.getElementById('customServerOrder');
-  if (customServerOrderToggle) setToggleState(customServerOrderToggle, !!data.customServerOrder);
+  const ARCHIVED_customServerOrderToggle = document.getElementById('ARCHIVED_customServerOrder');
+  if (ARCHIVED_customServerOrderToggle) setToggleState(ARCHIVED_customServerOrderToggle, !!data.ARCHIVED_customServerOrder);
   
-  const customServerOrderList = document.getElementById('customServerOrder_list');
-  if (customServerOrderList) customServerOrderList.value = data.customServerOrder_list || '';
+  const ARCHIVED_customServerOrderList = document.getElementById('ARCHIVED_customServerOrder_list');
+  if (ARCHIVED_customServerOrderList) ARCHIVED_customServerOrderList.value = data.ARCHIVED_customServerOrder_list || '';
   
   const cleanServerListToggle = document.getElementById('cleanServerList');
   if (cleanServerListToggle) setToggleState(cleanServerListToggle, !!data.cleanServerList);
@@ -121,6 +121,11 @@ chrome.storage.sync.get(null, data => {
   const consoleConnectionIPToggle = document.getElementById('screenshotMode_consoleConnectionIP_enabled');
   if (consoleConnectionIPToggle) setToggleState(consoleConnectionIPToggle, screenshotModeConfig.consoleConnectionIP?.enabled !== false);
   
+  const folderNameInput = document.getElementById('screenshotMode_folderName');
+  if (folderNameInput) folderNameInput.value = screenshotModeConfig.folderName?.replacement || 'example folder';
+  const folderNameToggle = document.getElementById('screenshotMode_folderName_enabled');
+  if (folderNameToggle) setToggleState(folderNameToggle, screenshotModeConfig.folderName?.enabled !== false);
+  
   const adminBadgeToggle = document.getElementById('screenshotMode_adminBadge_enabled');
   if (adminBadgeToggle) setToggleState(adminBadgeToggle, screenshotModeConfig.adminBadge?.enabled !== false);
   
@@ -205,8 +210,8 @@ if (exportSettingsBtn) {
         enableStaffFeatures: document.getElementById('enableStaffFeatures')?.getAttribute('aria-pressed') === 'true',
         
         // Feature settings with values
-        customServerOrder: document.getElementById('customServerOrder')?.getAttribute('aria-pressed') === 'true',
-        customServerOrder_list: document.getElementById('customServerOrder_list')?.value || '',
+        ARCHIVED_customServerOrder: document.getElementById('ARCHIVED_customServerOrder')?.getAttribute('aria-pressed') === 'true',
+        ARCHIVED_customServerOrder_list: document.getElementById('ARCHIVED_customServerOrder_list')?.value || '',
         
         cleanServerList: document.getElementById('cleanServerList')?.getAttribute('aria-pressed') === 'true',
         cleanServerList_padding: parseInt(document.getElementById('cleanServerList_padding')?.value) || 8,
@@ -275,19 +280,19 @@ if (importSettingsBtn && importFileInput) {
 }
 
 // Feature toggles and settings - only add listeners if elements exist
-const customServerOrderToggle = document.getElementById('customServerOrder');
-if (customServerOrderToggle) {
-  customServerOrderToggle.addEventListener('click', function() {
+const ARCHIVED_customServerOrderToggle = document.getElementById('ARCHIVED_customServerOrder');
+if (ARCHIVED_customServerOrderToggle) {
+  ARCHIVED_customServerOrderToggle.addEventListener('click', function() {
     const state = this.getAttribute('aria-pressed') !== 'true';
     setToggleState(this, state);
-    saveSetting('customServerOrder', state);
+    saveSetting('ARCHIVED_customServerOrder', state);
   });
 }
 
-const customServerOrderList = document.getElementById('customServerOrder_list');
-if (customServerOrderList) {
-  customServerOrderList.addEventListener('input', function() {
-    saveSetting('customServerOrder_list', this.value);
+const ARCHIVED_customServerOrderList = document.getElementById('ARCHIVED_customServerOrder_list');
+if (ARCHIVED_customServerOrderList) {
+  ARCHIVED_customServerOrderList.addEventListener('input', function() {
+    saveSetting('ARCHIVED_customServerOrder_list', this.value);
   });
 }
 
@@ -432,9 +437,9 @@ if (removeOfflineOverlay) {
 
 // --- Feature logic for reorder and editor height ---
 function applyCustomServerOrder() {
-  chrome.storage.sync.get(['customServerOrder', 'customServerOrder_list'], data => {
-    if (!data.customServerOrder) return;
-    const orderList = (data.customServerOrder_list || '')
+  chrome.storage.sync.get(['ARCHIVED_customServerOrder', 'ARCHIVED_customServerOrder_list'], data => {
+    if (!data.ARCHIVED_customServerOrder) return;
+    const orderList = (data.ARCHIVED_customServerOrder_list || '')
       .split(',')
       .map(x => x.trim())
       .filter(Boolean);
@@ -536,7 +541,8 @@ function saveScreenshotModeConfig() {
       profilePicture: document.getElementById('screenshotMode_profilePicture'),
       consolePlayer: document.getElementById('screenshotMode_consolePlayer'),
       consoleUUID: document.getElementById('screenshotMode_consoleUUID'),
-      consoleConnectionIP: document.getElementById('screenshotMode_consoleConnectionIP')
+      consoleConnectionIP: document.getElementById('screenshotMode_consoleConnectionIP'),
+      folderName: document.getElementById('screenshotMode_folderName')
     };
     
     const toggles = {
@@ -550,6 +556,7 @@ function saveScreenshotModeConfig() {
       consolePlayer: document.getElementById('screenshotMode_consolePlayer_enabled'),
       consoleUUID: document.getElementById('screenshotMode_consoleUUID_enabled'),
       consoleConnectionIP: document.getElementById('screenshotMode_consoleConnectionIP_enabled'),
+      folderName: document.getElementById('screenshotMode_folderName_enabled'),
       adminBadge: document.getElementById('screenshotMode_adminBadge_enabled')
     };
     
@@ -574,7 +581,7 @@ function saveScreenshotModeConfig() {
 }
 
 // Add event listeners for screenshot mode settings
-['serverName', 'serverIP', 'serverPort', 'serverDynamicIP', 'profileUsername', 'profileTag', 'profilePicture', 'consolePlayer'].forEach(key => {
+['serverName', 'serverIP', 'serverPort', 'serverDynamicIP', 'profileUsername', 'profileTag', 'profilePicture', 'consolePlayer', 'consoleUUID', 'consoleConnectionIP', 'folderName'].forEach(key => {
   const input = document.getElementById(`screenshotMode_${key}`);
   const toggle = document.getElementById(`screenshotMode_${key}_enabled`);
   

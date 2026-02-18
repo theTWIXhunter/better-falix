@@ -175,7 +175,7 @@
     .reset-btn:hover {
       background: #b91c1c;
     }
-    #customServerOrder_list {
+    #ARCHIVED_customServerOrder_list {
       width: 100%;
       min-height: 150px;
       resize: vertical;
@@ -233,18 +233,6 @@
 
     <div class="section-title">Features</div>
 
-    <!-- Example feature blocks -->
-    <div class="feature-block">
-      <div class="feature-header">
-        <span class="feature-title">Custom Server Order</span> <br><br>
-        <button class="feature-toggle" id="customServerOrder" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
-      </div>
-      <div class="feature-desc">Reorder your server list to your preferred order (case sensitive). <br> resize the list if needed.</div>
-      <div class="setting-row" style="align-items: flex-start;">
-        <textarea class="setting-input" id="customServerOrder_list" placeholder="Enter server names, one per line&#10;Example:&#10;Server1,&#10;Server2,&#10;Server3"></textarea>
-      </div>
-    </div>
-
     <div class="feature-block">
       <div class="feature-header">
         <span class="feature-title">Clean Server List</span>
@@ -266,26 +254,6 @@
       <div class="setting-row">
         <span class="setting-label">Hover Zone Width (px)</span>
         <input class="setting-input" id="navbarHoverZoneWidth" type="number" min="1" max="200" value="30">
-      </div>
-    </div>
-
-    <div class="feature-block">
-      <div class="feature-header">
-        <span class="feature-title">Remove State Overlays (ARCHIVED)</span>
-        <button class="feature-toggle" id="ARCHIVED_removeStateOverlays" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
-      </div>
-      <div class="feature-desc">Choose which console state overlays to hide. By default, the "Starting" overlay is hidden while "Offline" remains visible.</div>
-      <div class="setting-row">
-        <label class="checkbox-label">
-          <input type="checkbox" id="removeStartingOverlay" checked>
-          <span>Hide "Server Starting" overlay</span>
-        </label>
-      </div>
-      <div class="setting-row">
-        <label class="checkbox-label">
-          <input type="checkbox" id="removeOfflineOverlay">
-          <span>Hide "Server Offline" overlay</span>
-        </label>
       </div>
     </div>
 
@@ -415,8 +383,45 @@
       </div>
       
       <div class="setting-row">
+        <span class="setting-label">Folder Names</span>
+        <input class="setting-input" id="screenshotMode_folderName" type="text" value="example folder" style="flex: 1; margin-right: 10px;">
+        <button class="feature-toggle" id="screenshotMode_folderName_enabled" aria-pressed="true" tabindex="0"><span class="dot"></span></button>
+      </div>
+      
+      <div class="setting-row">
         <span class="setting-label">Hide Admin Badge</span>
         <button class="feature-toggle" id="screenshotMode_adminBadge_enabled" aria-pressed="true" tabindex="0" style="margin-left: auto;"><span class="dot"></span></button>
+      </div>
+    </div>
+
+    <div class="category">ARCHIVED</div>
+        <div class="feature-block">
+      <div class="feature-header">
+        <span class="feature-title">Custom Server Order</span> <br><br>
+        <button class="feature-toggle" id="ARCHIVED_customServerOrder" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+      </div>
+      <div class="feature-desc">Reorder your server list to your preferred order (case sensitive). <br> resize the list if needed.</div>
+      <div class="setting-row" style="align-items: flex-start;">
+        <textarea class="setting-input" id="ARCHIVED_customServerOrder_list" placeholder="Enter server names, one per line&#10;Example:&#10;Server1,&#10;Server2,&#10;Server3"></textarea>
+      </div>
+    </div>
+    <div class="feature-block">
+      <div class="feature-header">
+        <span class="feature-title">Remove State Overlays</span>
+        <button class="feature-toggle" id="ARCHIVED_removeStateOverlays" aria-pressed="false" tabindex="0"><span class="dot"></span></button>
+      </div>
+      <div class="feature-desc">Choose which console state overlays to hide. By default, the "Starting" overlay is hidden while "Offline" remains visible.</div>
+      <div class="setting-row">
+        <label class="checkbox-label">
+          <input type="checkbox" id="removeStartingOverlay" checked>
+          <span>Hide "Server Starting" overlay</span>
+        </label>
+      </div>
+      <div class="setting-row">
+        <label class="checkbox-label">
+          <input type="checkbox" id="removeOfflineOverlay">
+          <span>Hide "Server Offline" overlay</span>
+        </label>
       </div>
     </div>
 

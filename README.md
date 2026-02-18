@@ -176,8 +176,8 @@ and the following in options.js:
 
 ```js
 const FEATURENAMEToggle = document.getElementById('FEATURENAME');
-if (customServerOrderToggle) {
-  customServerOrderToggle.addEventListener('click', function() {
+if (ARCHIVED_customServerOrderToggle) {
+  ARCHIVED_customServerOrderToggle.addEventListener('click', function() {
     const state = this.getAttribute('aria-pressed') !== 'true';
     setToggleState(this, state);
     saveSetting('FEATURE NAME', state);
