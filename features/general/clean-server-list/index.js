@@ -1,7 +1,7 @@
 // [better-falix] clean-server-list: Script loading
 console.log('[better-falix] clean-server-list: Script loading');
 
-chrome.storage.sync.get({ cleanServerList: false, enabled: true }, (data) => {
+chrome.storage.sync.get({ cleanServerList: false, cleanServerList_padding: 24, enabled: true }, (data) => {
   if (!data.enabled || !data.cleanServerList) {
     console.log('[better-falix] clean-server-list: Script disabled');
     return;
@@ -22,15 +22,16 @@ chrome.storage.sync.get({ cleanServerList: false, enabled: true }, (data) => {
     const serverRowLinks = document.querySelectorAll('.server-row-link');
     
     if (serverRowLinks && serverRowLinks.length > 0) {
+      const padding = data.cleanServerList_padding || 24;
       // Add padding to all server-row-link elements
       serverRowLinks.forEach(link => {
-        link.style.setProperty('padding', '8px', 'important');
+        link.style.setProperty('padding', padding + 'px', 'important');
         // Add servers-container class to each server-row-link
         if (!link.classList.contains('servers-container')) {
           link.classList.add('servers-container');
         }
       });
-      console.log('[better-falix] clean-server-list: Applied styles to', serverRowLinks.length, '.server-row-link elements');
+      console.log('[better-falix] clean-server-list: Applied styles to', serverRowLinks.length, '.server-row-link elements with', padding + 'px padding');
     }
 
     // 3. Remove servers-container class from the original parent container

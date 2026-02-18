@@ -29,6 +29,12 @@ chrome.storage.sync.get(null, data => {
   const customServerOrderList = document.getElementById('customServerOrder_list');
   if (customServerOrderList) customServerOrderList.value = data.customServerOrder_list || '';
   
+  const cleanServerListToggle = document.getElementById('cleanServerList');
+  if (cleanServerListToggle) setToggleState(cleanServerListToggle, !!data.cleanServerList);
+  
+  const cleanServerListPadding = document.getElementById('cleanServerList_padding');
+  if (cleanServerListPadding) cleanServerListPadding.value = data.cleanServerList_padding ?? 24;
+  
   const editorWrapperHeightToggle = document.getElementById('editorWrapperHeight');
   if (editorWrapperHeightToggle) setToggleState(editorWrapperHeightToggle, !!data.editorWrapperHeight);
   
@@ -202,6 +208,9 @@ if (exportSettingsBtn) {
         customServerOrder: document.getElementById('customServerOrder')?.getAttribute('aria-pressed') === 'true',
         customServerOrder_list: document.getElementById('customServerOrder_list')?.value || '',
         
+        cleanServerList: document.getElementById('cleanServerList')?.getAttribute('aria-pressed') === 'true',
+        cleanServerList_padding: parseInt(document.getElementById('cleanServerList_padding')?.value) || 24,
+        
         navbarHover: document.getElementById('navbarHover')?.getAttribute('aria-pressed') === 'true',
         navbarHoverZoneWidth: parseInt(document.getElementById('navbarHoverZoneWidth')?.value) || 40,
         
@@ -279,6 +288,22 @@ const customServerOrderList = document.getElementById('customServerOrder_list');
 if (customServerOrderList) {
   customServerOrderList.addEventListener('input', function() {
     saveSetting('customServerOrder_list', this.value);
+  });
+}
+
+const cleanServerListToggle = document.getElementById('cleanServerList');
+if (cleanServerListToggle) {
+  cleanServerListToggle.addEventListener('click', function() {
+    const state = this.getAttribute('aria-pressed') !== 'true';
+    setToggleState(this, state);
+    saveSetting('cleanServerList', state);
+  });
+}
+
+const cleanServerListPadding = document.getElementById('cleanServerList_padding');
+if (cleanServerListPadding) {
+  cleanServerListPadding.addEventListener('input', function() {
+    saveSetting('cleanServerList_padding', parseInt(this.value) || 24);
   });
 }
 
