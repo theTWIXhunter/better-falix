@@ -470,14 +470,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Enable All / Disable All button logic
   document.querySelectorAll('.enable-all-btn').forEach(enableAllBtn => {
+    console.log('Attaching event listener to Enable All button:', enableAllBtn.dataset.category);
     enableAllBtn.addEventListener('click', function() {
+      console.log('Enable All button clicked for category:', this.dataset.category);
       const category = this.dataset.category;
       const featureList = document.querySelector(`.feature-list[data-category="${category}"]`);
       
-      if (!featureList) return;
+      console.log('Found feature list:', featureList);
+      if (!featureList) {
+        console.error('No feature list found for category:', category);
+        return;
+      }
       
       // Get all feature buttons in this category
       const featureButtons = featureList.querySelectorAll('.feature-btn');
+      console.log('Found feature buttons:', featureButtons.length);
       
       // Check if all features are currently enabled
       let allEnabled = true;
@@ -486,6 +493,8 @@ document.addEventListener('DOMContentLoaded', () => {
           allEnabled = false;
         }
       });
+      
+      console.log('All enabled status:', allEnabled, '- New state will be:', !allEnabled);
       
       // Toggle all features based on current state
       const newState = !allEnabled;
@@ -497,6 +506,8 @@ document.addEventListener('DOMContentLoaded', () => {
           featuresToUpdate[featureId] = newState;
         }
       });
+      
+      console.log('Features to update:', featuresToUpdate);
       
       // Save all changes at once
       chrome.storage.sync.set(featuresToUpdate, () => {
