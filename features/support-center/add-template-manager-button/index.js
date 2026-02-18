@@ -14,16 +14,27 @@ chrome.storage.sync.get({ addTemplateManagerButton: false, enabled: true }, (dat
 
   const addManagerButton = () => {
     const templateAutocomplete = document.getElementById('templateAutocomplete');
+    const existingButton = document.getElementById('manageTemplatesBtn');
     
-    console.log('[better-falix] add-template-manager-button: Checking for templateAutocomplete...', templateAutocomplete);
+    console.log('[better-falix] add-template-manager-button: Checking...', {
+      templateAutocomplete: !!templateAutocomplete,
+      buttonAdded: buttonAdded,
+      existingButton: !!existingButton,
+      templateVisible: templateAutocomplete ? templateAutocomplete.style.display : 'N/A'
+    });
     
-    if (templateAutocomplete && !buttonAdded && !document.getElementById('manageTemplatesBtn')) {
-      console.log('[better-falix] add-template-manager-button: templateAutocomplete found, adding button...');
+    if (templateAutocomplete && !buttonAdded && !existingButton) {
+      console.log('[better-falix] add-template-manager-button: Adding button now...');
       
-      // Ensure parent has position: relative for absolute positioning to work
-      const computedPosition = window.getComputedStyle(templateAutocomplete).position;
-      if (computedPosition === 'static') {
-        templateAutocomplete.style.position = 'relative';
+      // Ensure parent has position: relative or fixed for absolute positioning to work
+      if (templateAutocomplete.style.position === 'fixed') {
+        // If it's fixed, the button should also be fixed or positioned relative to it
+        // Since parent is fixed, we need to ensure button positions correctly
+      } else {
+        const computedPosition = window.getComputedStyle(templateAutocomplete).position;
+        if (computedPosition === 'static') {
+          templateAutocomplete.style.position = 'relative';
+        }
       }
       
       // Create the button
@@ -79,7 +90,7 @@ chrome.storage.sync.get({ addTemplateManagerButton: false, enabled: true }, (dat
       templateAutocomplete.appendChild(button);
       buttonAdded = true;
       
-      console.log('[better-falix] add-template-manager-button: Button added successfully, element:', button);
+      console.log('[better-falix] add-template-manager-button: Button added successfully!', button);
     }
   };
 
