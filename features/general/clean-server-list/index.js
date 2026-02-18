@@ -49,14 +49,25 @@ chrome.storage.sync.get({ cleanServerList: false, cleanServerList_padding: 8, en
       const spacing = data.cleanServerList_padding || 8;
       // Add spacing between server-row-link elements and apply container styles
       serverRowLinks.forEach((link, index) => {
-        link.style.setProperty('padding', '0px', 'important');
-        // Add margin-bottom to all except the last one
-        if (index < serverRowLinks.length - 1) {
-          link.style.setProperty('margin-bottom', spacing + 'px', 'important');
-        }
-        // Add servers-container class to each server-row-link
-        if (!link.classList.contains('servers-container')) {
-          link.classList.add('servers-container');
+        // Check if the link or its parent is hidden/filtered
+        const isVisible = link.offsetParent !== null && 
+                         link.style.display !== 'none' && 
+                         !link.classList.contains('hidden');
+        
+        if (isVisible) {
+          link.style.setProperty('padding', '0px', 'important');
+          // Add margin-bottom to all except the last one
+          if (index < serverRowLinks.length - 1) {
+            link.style.setProperty('margin-bottom', spacing + 'px', 'important');
+          }
+          // Add servers-container class to each server-row-link
+          if (!link.classList.contains('servers-container')) {
+            link.classList.add('servers-container');
+          }
+        } else {
+          // Remove servers-container class from hidden elements
+          link.classList.remove('servers-container');
+          link.style.removeProperty('margin-bottom');
         }
       });
       console.log('[better-falix] clean-server-list: Applied styles to', serverRowLinks.length, '.server-row-link elements with', spacing + 'px spacing');
