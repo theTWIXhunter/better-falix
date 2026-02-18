@@ -11,9 +11,20 @@ chrome.storage.sync.get({ cleanServerList: false, cleanServerList_padding: 8, en
   //  --------- START FEATURE ----------
 
   function applyCleanServerList() {
-    // 1. Remove the div with class="server-table-header"
+    // 1. Extract header-controls from server-table-header and move to page-header-modern
     const serverTableHeader = document.querySelector('.server-table-header');
     if (serverTableHeader) {
+      const headerControls = serverTableHeader.querySelector('.header-controls');
+      if (headerControls) {
+        const pageHeaderModern = document.querySelector('.page-header-modern');
+        if (pageHeaderModern) {
+          // Clone or move the header-controls element
+          const controlsClone = headerControls.cloneNode(true);
+          pageHeaderModern.appendChild(controlsClone);
+          console.log('[better-falix] clean-server-list: Moved .header-controls to .page-header-modern');
+        }
+      }
+      // Remove the server-table-header
       serverTableHeader.remove();
       console.log('[better-falix] clean-server-list: Removed .server-table-header');
     }
