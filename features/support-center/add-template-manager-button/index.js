@@ -69,15 +69,38 @@ chrome.storage.sync.get({ addTemplateManagerButton: false, enabled: true }, (dat
         button.style.borderColor = 'rgba(var(--falcon-warning-rgb), 0.2)';
       });
       
-      // Find the original manage templates button and clone its click functionality
-      const originalBtn = document.querySelector('[data-bs-target="#templatesModal"]');
+      // Find the original manage templates button - try multiple selectors
+      let originalBtn = document.getElementById('manageTemplatesBtn');
+      if (!originalBtn) {
+        originalBtn = document.querySelector('[data-bs-target="#templatesModal"]');
+      }
+      if (!originalBtn) {
+        originalBtn = document.querySelector('button[onclick*="templates"]');
+      }
+      
       console.log('[better-falix] add-template-manager-button: Original button found:', originalBtn);
       
       if (originalBtn) {
-        button.addEventListener('click', () => {
+        button.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
           console.log('[better-falix] add-template-manager-button: Button clicked, triggering original...');
+          
+          // Try to trigger the original button's click
           originalBtn.click();
+          
+          // If click doesn't work, try dispatching a click event
+          if (!originalBtn.clicked) {
+            const clickEvent = new MouseEvent('click', {
+              view: window,
+              bubbles: true,
+              cancelable: true
+            });
+            originalBtn.dispatchEvent(clickEvent);
+          }
         });
+      } else {
+        console.warn('[better-falix] add-template-manager-button: Original button not found!');
       }
       
       templateAutocomplete.appendChild(button);
