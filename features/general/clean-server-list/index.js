@@ -18,8 +18,21 @@ chrome.storage.sync.get({ cleanServerList: false, cleanServerList_padding: 8, en
       if (headerControls) {
         const pageHeaderModern = document.querySelector('.page-header-modern');
         if (pageHeaderModern) {
+          // Ensure page-header-modern displays flex and aligns items properly
+          pageHeaderModern.style.display = 'flex';
+          pageHeaderModern.style.alignItems = 'center';
+          pageHeaderModern.style.justifyContent = 'space-between';
+          pageHeaderModern.style.gap = '16px';
+          
+          // Ensure header-title doesn't take full width
+          const headerTitle = pageHeaderModern.querySelector('.header-title');
+          if (headerTitle) {
+            headerTitle.style.flex = '0 1 auto';
+          }
+          
           // Clone or move the header-controls element
           const controlsClone = headerControls.cloneNode(true);
+          controlsClone.style.flex = '0 0 auto';
           pageHeaderModern.appendChild(controlsClone);
           console.log('[better-falix] clean-server-list: Moved .header-controls to .page-header-modern');
         }
