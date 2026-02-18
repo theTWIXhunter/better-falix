@@ -47,11 +47,17 @@ chrome.storage.sync.get({ cleanServerList: false, cleanServerList_padding: 8, en
     
     if (serverRowLinks && serverRowLinks.length > 0) {
       const spacing = data.cleanServerList_padding || 8;
+      let hiddenCount = 0;
       // Add spacing between server-row-link elements and apply container styles
       serverRowLinks.forEach((link, index) => {
         // Check if the child .server-row has search-hidden class
         const serverRow = link.querySelector('.server-row');
         const isHidden = serverRow && serverRow.classList.contains('search-hidden');
+        
+        if (isHidden) {
+          hiddenCount++;
+          console.log('[better-falix] clean-server-list: Found hidden server:', serverRow.querySelector('.server-name')?.textContent.trim());
+        }
         
         if (!isHidden) {
           link.style.setProperty('padding', '0px', 'important');
@@ -68,10 +74,16 @@ chrome.storage.sync.get({ cleanServerList: false, cleanServerList_padding: 8, en
           // Hide the entire link when the server is filtered
           link.style.setProperty('display', 'none', 'important');
           // Remove servers-container class from hidden elements
-          link.classList.remove('servers-container');
+          if (link.classList.contains('servers-container')) {
+            link.classList.remove('servers-container');
+          }
           link.style.removeProperty('margin-bottom');
+          link.style.removeProperty('padding');
         }
       });
+      if (hiddenCount > 0) {
+        console.log('[better-falix] clean-server-list: Hidden', hiddenCount, 'server(s) with search-hidden class');
+      }
       console.log('[better-falix] clean-server-list: Applied styles to', serverRowLinks.length, '.server-row-link elements with', spacing + 'px spacing');
     }
 
@@ -89,21 +101,22 @@ chrome.storage.sync.get({ cleanServerList: false, cleanServerList_padding: 8, en
   // Run immediately
   applyCleanServerList();
 
-  // Watch for dynamic changes for a short period to catch SPA loads
+  // Watch for dynamic changes continuously to catch search filtering
   const observer = new MutationObserver((mutations) => {
     applyCleanServerList();
   });
 
   // Observe the body for changes
   if (document.body) {
-    observer.observe(document.body, { childList: true, subtree: true });
+    observer.observe(document.body, { 
+      childList: true, 
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['class']
+    });
   }
 
-  // Stop observing after 5 seconds to reduce overhead
-  setTimeout(() => {
-    observer.disconnect();
-    console.log('[better-falix] clean-server-list: Stopped observing mutations');
-  }, 5000);
+  console.log('[better-falix] clean-server-list: Observing DOM changes for search filtering');
 
   //  --------- END FEATURE ----------
 
