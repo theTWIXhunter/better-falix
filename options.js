@@ -119,8 +119,8 @@ chrome.storage.sync.get(null, data => {
   if (adminBadgeToggle) setToggleState(adminBadgeToggle, screenshotModeConfig.adminBadge?.enabled !== false);
   
   // Remove State Overlays settings
-  const removeStateOverlaysToggle = document.getElementById('removeStateOverlays');
-  if (removeStateOverlaysToggle) setToggleState(removeStateOverlaysToggle, !!data.removeStateOverlays);
+  const ARCHIVED_removeStateOverlaysToggle = document.getElementById('ARCHIVED_removeStateOverlays');
+  if (ARCHIVED_removeStateOverlaysToggle) setToggleState(ARCHIVED_removeStateOverlaysToggle, !!data.ARCHIVED_removeStateOverlays);
   
   const removeStartingOverlay = document.getElementById('removeStartingOverlay');
   if (removeStartingOverlay) removeStartingOverlay.checked = data.removeStartingOverlay !== false;
@@ -381,12 +381,12 @@ if (navbarEditorToggle) {
 }
 
 // Remove State Overlays feature
-const removeStateOverlaysToggle = document.getElementById('removeStateOverlays');
-if (removeStateOverlaysToggle) {
-  removeStateOverlaysToggle.addEventListener('click', function() {
+const ARCHIVED_removeStateOverlaysToggle = document.getElementById('ARCHIVED_removeStateOverlays');
+if (ARCHIVED_removeStateOverlaysToggle) {
+  ARCHIVED_removeStateOverlaysToggle.addEventListener('click', function() {
     const state = this.getAttribute('aria-pressed') !== 'true';
     setToggleState(this, state);
-    saveSetting('removeStateOverlays', state);
+    saveSetting('ARCHIVED_removeStateOverlays', state);
   });
 }
 

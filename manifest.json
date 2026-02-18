@@ -116,20 +116,24 @@
     },
     {
       "matches": ["https://client.falixnodes.net/server/console*", "https://client.falixnodes.net/server/*/console*"],
-      "js": ["features/console/add-power-button-text/index.js"],
-      "run_at": "document_idle"
-    },
-    {
-      "matches": ["https://client.falixnodes.net/server/console*", "https://client.falixnodes.net/server/*/console*"],
-      "js": ["features/console/remove-state-overlays/index.js"],
-      "run_at": "document_idle"
-    },
-    {
-      "matches": ["https://client.falixnodes.net/server/console*", "https://client.falixnodes.net/server/*/console*"],
       "js": ["features/console/larger-server-name/index.js"],
       "run_at": "document_idle"
     },
-
+    {
+      "matches": ["https://client.falixnodes.net/server/console*", "https://client.falixnodes.net/server/*/console*"],
+      "js": ["features/console/remove-player-management/index.js"],
+      "run_at": "document_idle"
+    },
+        {
+      "matches": ["https://client.falixnodes.net/server/console*", "https://client.falixnodes.net/server/*/console*"],
+      "js": ["features/console/remove-max-players/index.js"],
+      "run_at": "document_idle"
+    },
+        {
+      "matches": ["https://client.falixnodes.net/server/console*", "https://client.falixnodes.net/server/*/console*"],
+      "js": ["features/console/remove-cpu-card/index.js"],
+      "run_at": "document_idle"
+    },
 
 
 
@@ -216,21 +220,6 @@
 
 
     {
-      "matches": ["https://client.falixnodes.net/server/console*", "https://client.falixnodes.net/server/*/console*"],
-      "js": ["features/archived/remove-player-management/index.js"],
-      "run_at": "document_idle"
-    },
-        {
-      "matches": ["https://client.falixnodes.net/server/console*", "https://client.falixnodes.net/server/*/console*"],
-      "js": ["features/archived/remove-max-players/index.js"],
-      "run_at": "document_idle"
-    },
-        {
-      "matches": ["https://client.falixnodes.net/server/console*", "https://client.falixnodes.net/server/*/console*"],
-      "js": ["features/archived/remove-cpu-card/index.js"],
-      "run_at": "document_idle"
-    },
-    {
       "matches": ["https://client.falixnodes.net/server/*"],
       "js": ["features/archived/rename-config-to-properties/index.js"],
       "run_at": "document_idle"
@@ -248,6 +237,16 @@
     {
       "matches": ["https://client.falixnodes.net/*"],
       "js": ["features/archived/hide-support-category/index.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://client.falixnodes.net/server/console*", "https://client.falixnodes.net/server/*/console*"],
+      "js": ["features/archived/add-power-button-text/index.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://client.falixnodes.net/server/console*", "https://client.falixnodes.net/server/*/console*"],
+      "js": ["features/archived/remove-state-overlays/index.js"],
       "run_at": "document_idle"
     },
 

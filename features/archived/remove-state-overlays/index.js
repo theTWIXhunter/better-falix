@@ -1,8 +1,8 @@
 // [better-falix] remove-state-overlays: Script loading
 console.log('[better-falix] remove-state-overlays: Script loading');
 
-chrome.storage.sync.get({ removeStateOverlays: false, enabled: true }, (data) => {
-  if (!data.enabled || !data.removeStateOverlays) {
+chrome.storage.sync.get({ ARCHIVED_removeStateOverlays: false, enabled: true }, (data) => {
+  if (!data.enabled || !data.ARCHIVED_removeStateOverlays) {
     console.log('[better-falix] remove-state-overlays: Script disabled');
     return;
   }
@@ -16,11 +16,11 @@ chrome.storage.sync.get({ removeStateOverlays: false, enabled: true }, (data) =>
     removeOfflineOverlay: false
   }, (config) => {
     console.log('[better-falix] remove-state-overlays: Config - Starting:', config.removeStartingOverlay, 'Offline:', config.removeOfflineOverlay);
-    removeStateOverlays(config.removeStartingOverlay, config.removeOfflineOverlay);
+    ARCHIVED_removeStateOverlays(config.removeStartingOverlay, config.removeOfflineOverlay);
   });
 });
 
-function removeStateOverlays(removeStarting, removeOffline) {
+function ARCHIVED_removeStateOverlays(removeStarting, removeOffline) {
   function checkAndRemoveOverlay() {
     const overlay = document.getElementById('console-state-overlay');
     

@@ -1,8 +1,8 @@
 // [better-falix] Remove Player Management: Script loading
 console.log('[better-falix] Remove Player Management: Script loading');
 
-chrome.storage.sync.get({ ARCHIVED_removePlayerManagement: false, enabled: true }, (data) => {
-  if (!data.enabled || !data.ARCHIVED_removePlayerManagement) {
+chrome.storage.sync.get({ removePlayerManagement: false, enabled: true }, (data) => {
+  if (!data.enabled || !data.removePlayerManagement) {
     console.log('[better-falix] Remove Player Management: Script disabled');
     return;
   }

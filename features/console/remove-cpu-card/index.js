@@ -1,8 +1,8 @@
 // [better-falix] remove-cpu-card: Script loading
 console.log('[better-falix] remove-cpu-card: Script loading');
 
-chrome.storage.sync.get({ ARCHIVED_removeCpuCard: false, enabled: true }, (data) => {
-  if (!data.enabled || !data.ARCHIVED_removeCpuCard) {
+chrome.storage.sync.get({ removeCpuCard: false, enabled: true }, (data) => {
+  if (!data.enabled || !data.removeCpuCard) {
     console.log('[better-falix] remove-cpu-card: Script disabled');
     return;
   }
