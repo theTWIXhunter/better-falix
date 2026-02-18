@@ -34,11 +34,14 @@ chrome.storage.sync.get({ cleanServerList: false, enabled: true }, (data) => {
     }
 
     // 3. Remove servers-container class from the original parent container
-    const serversContainer = document.querySelector('#serverslist > .servers-container');
-    if (serversContainer && serversContainer.classList.contains('servers-container')) {
-      serversContainer.classList.remove('servers-container');
-      console.log('[better-falix] clean-server-list: Removed .servers-container class from parent');
-    }
+    const allContainers = document.querySelectorAll('.servers-container');
+    allContainers.forEach(container => {
+      // Only remove from elements that are NOT server-row-link
+      if (!container.classList.contains('server-row-link')) {
+        container.classList.remove('servers-container');
+        console.log('[better-falix] clean-server-list: Removed .servers-container class from parent');
+      }
+    });
   }
 
   // Run immediately
