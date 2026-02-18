@@ -49,12 +49,11 @@ chrome.storage.sync.get({ cleanServerList: false, cleanServerList_padding: 8, en
       const spacing = data.cleanServerList_padding || 8;
       // Add spacing between server-row-link elements and apply container styles
       serverRowLinks.forEach((link, index) => {
-        // Check if the link or its parent is hidden/filtered
-        const isVisible = link.offsetParent !== null && 
-                         link.style.display !== 'none' && 
-                         !link.classList.contains('hidden');
+        // Check if the child .server-row has search-hidden class
+        const serverRow = link.querySelector('.server-row');
+        const isHidden = serverRow && serverRow.classList.contains('search-hidden');
         
-        if (isVisible) {
+        if (!isHidden) {
           link.style.setProperty('padding', '0px', 'important');
           // Add margin-bottom to all except the last one
           if (index < serverRowLinks.length - 1) {
