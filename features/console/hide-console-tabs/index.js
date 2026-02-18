@@ -49,10 +49,10 @@ chrome.storage.sync.get({ hideConsoleTabs: false, enabled: true }, (data) => {
       if (consoleActions && connectBtn && !document.getElementById('popupConsoleBtnAlt')) {
         const dropdownHTML = `
           <div class="dropdown">
-            <button class="console-btn show" data-bs-toggle="dropdown" aria-expanded="true">
+            <button class="console-btn" data-bs-toggle="dropdown" aria-expanded="false">
               <svg class="svg-inline--fa" viewBox="0 0 128 512" width="0.25em" height="1em" fill="currentColor" aria-hidden="true"><path d="M64 144a56 56 0 1 1 0-112 56 56 0 1 1 0 112zm0 224c30.9 0 56 25.1 56 56s-25.1 56-56 56-56-25.1-56-56 25.1-56 56-56zm56-112c0 30.9-25.1 56-56 56s-56-25.1-56-56 25.1-56 56-56 56 25.1 56 56z"></path></svg>
             </button>
-            <ul class="dropdown-menu dropdown-menu-end show" style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate3d(-0.8px, 42.4px, 0px);" data-popper-placement="bottom-end">
+            <ul class="dropdown-menu dropdown-menu-end" data-popper-placement="bottom-end">
               <li>
                 <button class="dropdown-item" id="popupConsoleBtnAlt">
                   <svg class="svg-inline--fa" viewBox="0 0 512 512" width="1em" height="1em" fill="currentColor" aria-hidden="true"><path class="fa-secondary" opacity="0.4" d="M0 176c0-44.2 35.8-80 80-80l80 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-80 0c-8.8 0-16 7.2-16 16l0 256c0 8.8 7.2 16 16 16l256 0c8.8 0 16-7.2 16-16l0-80c0-17.7 14.3-32 32-32s32 14.3 32 32l0 80c0 44.2-35.8 80-80 80L80 512c-44.2 0-80-35.8-80-80L0 176z"></path><path class="fa-primary" d="M288 32c0-17.7 14.3-32 32-32L480 0c17.7 0 32 14.3 32 32l0 160c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-82.7-201.4 201.4c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L402.7 64 320 64c-17.7 0-32-14.3-32-32z"></path></svg>
@@ -96,9 +96,42 @@ chrome.storage.sync.get({ hideConsoleTabs: false, enabled: true }, (data) => {
         }
         
         if (originalViewModeToggle && newViewModeToggle) {
+          // For view mode toggle, we need to observe changes to the original and sync them
+          const syncViewModeState = () => {
+            const originalIcon = document.getElementById('viewModeIcon');
+            const originalText = document.getElementById('viewModeText');
+            const newIcon = document.getElementById('viewModeIconAlt');
+            const newText = document.getElementById('viewModeTextAlt');
+            
+            if (originalIcon && newIcon) {
+              newIcon.innerHTML = originalIcon.innerHTML;
+            }
+            if (originalText && newText) {
+              newText.textContent = originalText.textContent;
+            }
+          };
+          
+          // Initial sync
+          syncViewModeState();
+          
+          // Sync on click
           newViewModeToggle.addEventListener('click', () => {
             originalViewModeToggle.click();
+            // Wait a bit for the DOM to update
+            setTimeout(syncViewModeState, 100);
           });
+          
+          // Observe changes to the original button to keep in sync
+          const observer = new MutationObserver(syncViewModeState);
+          const originalIcon = document.getElementById('viewModeIcon');
+          const originalText = document.getElementById('viewModeText');
+          
+          if (originalIcon) {
+            observer.observe(originalIcon, { childList: true, subtree: true });
+          }
+          if (originalText) {
+            observer.observe(originalText, { childList: true, characterData: true, subtree: true });
+          }
         }
       }
     }
