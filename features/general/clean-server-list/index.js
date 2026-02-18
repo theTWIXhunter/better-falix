@@ -30,35 +30,21 @@ chrome.storage.sync.get({ cleanServerList: false, enabled: true }, (data) => {
     // 3. Remove style elements from .servers-container and add them to each .server-row-link individually
     const serversContainer = document.querySelector('.servers-container');
     if (serversContainer) {
-      // Get computed styles from servers-container before removing them
-      const computedStyle = window.getComputedStyle(serversContainer);
-      const stylesToCopy = {
-        display: computedStyle.display,
-        flexDirection: computedStyle.flexDirection,
-        gap: computedStyle.gap,
-        gridGap: computedStyle.gridGap,
-        gridTemplateColumns: computedStyle.gridTemplateColumns,
-        gridTemplateRows: computedStyle.gridTemplateRows,
-        justifyContent: computedStyle.justifyContent,
-        alignItems: computedStyle.alignItems
-      };
+      // Get the inline style attribute from servers-container
+      const containerStyle = serversContainer.getAttribute('style');
+      
+      // Apply the style to each .server-row-link
+      const serverRowLinks = serversContainer.querySelectorAll('.server-row-link');
+      serverRowLinks.forEach(link => {
+        if (containerStyle) {
+          link.setAttribute('style', (link.getAttribute('style') || '') + '; ' + containerStyle);
+        }
+      });
 
       // Remove inline styles from servers-container
       serversContainer.removeAttribute('style');
-      
-      // Apply styles to each .server-row-link
-      const serverRowLinks = serversContainer.querySelectorAll('.server-row-link');
-      serverRowLinks.forEach(link => {
-        // Apply copied styles if they have meaningful values
-        Object.keys(stylesToCopy).forEach(prop => {
-          const value = stylesToCopy[prop];
-          if (value && value !== 'none' && value !== 'normal' && value !== '0px') {
-            link.style[prop] = value;
-          }
-        });
-      });
 
-      console.log('[better-falix] clean-server-list: Moved styles from .servers-container to .server-row-link elements');
+      console.log('[better-falix] clean-server-list: Moved styles from .servers-container to', serverRowLinks.length, '.server-row-link elements');
     }
   }
 
