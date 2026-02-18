@@ -327,6 +327,9 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('themes-content').style.display = 'block';
       document.getElementById('slider-indicator').style.left = '50%';
     }
+    
+    // Update Enable/Disable All button states after features are loaded
+    updateEnableAllButtons();
   });
 
   // Main toggle logic - completely reimplemented for reliability
@@ -527,9 +530,4 @@ document.addEventListener('DOMContentLoaded', () => {
       btn.textContent = allEnabled ? 'Disable All' : 'Enable All';
     });
   }
-
-  // Call updateEnableAllButtons when features are loaded
-  chrome.storage.sync.get(null, (data) => {
-    updateEnableAllButtons();
-  });
 });
