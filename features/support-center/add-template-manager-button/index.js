@@ -14,7 +14,7 @@ chrome.storage.sync.get({ addTemplateManagerButton: false, enabled: true }, (dat
 
   const addManagerButton = () => {
     const templateAutocomplete = document.getElementById('templateAutocomplete');
-    const existingButton = document.getElementById('manageTemplatesBtn');
+    const existingButton = document.getElementById('bf-manageTemplatesBtn');
     
     console.log('[better-falix] add-template-manager-button: Checking...', {
       templateAutocomplete: !!templateAutocomplete,
@@ -26,21 +26,10 @@ chrome.storage.sync.get({ addTemplateManagerButton: false, enabled: true }, (dat
     if (templateAutocomplete && !buttonAdded && !existingButton) {
       console.log('[better-falix] add-template-manager-button: Adding button now...');
       
-      // Ensure parent has position: relative or fixed for absolute positioning to work
-      if (templateAutocomplete.style.position === 'fixed') {
-        // If it's fixed, the button should also be fixed or positioned relative to it
-        // Since parent is fixed, we need to ensure button positions correctly
-      } else {
-        const computedPosition = window.getComputedStyle(templateAutocomplete).position;
-        if (computedPosition === 'static') {
-          templateAutocomplete.style.position = 'relative';
-        }
-      }
-      
       // Create the button
       const button = document.createElement('button');
       button.type = 'button';
-      button.id = 'manageTemplatesBtn';
+      button.id = 'bf-manageTemplatesBtn';
       button.style.cssText = `
         position: absolute !important;
         top: 8px !important;
