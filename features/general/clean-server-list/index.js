@@ -55,6 +55,7 @@ chrome.storage.sync.get({ cleanServerList: false, cleanServerList_padding: 8, en
         
         if (!isHidden) {
           link.style.setProperty('padding', '0px', 'important');
+          link.style.removeProperty('display');
           // Add margin-bottom to all except the last one
           if (index < serverRowLinks.length - 1) {
             link.style.setProperty('margin-bottom', spacing + 'px', 'important');
@@ -64,6 +65,8 @@ chrome.storage.sync.get({ cleanServerList: false, cleanServerList_padding: 8, en
             link.classList.add('servers-container');
           }
         } else {
+          // Hide the entire link when the server is filtered
+          link.style.setProperty('display', 'none', 'important');
           // Remove servers-container class from hidden elements
           link.classList.remove('servers-container');
           link.style.removeProperty('margin-bottom');
