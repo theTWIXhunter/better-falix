@@ -21,6 +21,7 @@ function loadConfig() {
         consolePlayer: { enabled: true, replacement: "Player" },
         consoleUUID: { enabled: true, replacement: "00000000-0000-0000-0000-000000000000" },
         consoleConnectionIP: { enabled: true, replacement: "0.0.0.0:00000" },
+        folderName: { enabled: true, replacement: "example folder" },
         adminBadge: { enabled: true, replacement: null },
       };
       config = data.screenshotModeConfig || defaultConfig;
@@ -145,6 +146,15 @@ function applyCensoring() {
         if (el.hasAttribute('title')) {
           el.setAttribute('title', 'Censored for screenshot');
         }
+      }
+    });
+  }
+  
+  // Folder Names
+  if (config.folderName?.enabled) {
+    document.querySelectorAll('.folder-name').forEach(el => {
+      if (el.textContent !== config.folderName.replacement) {
+        el.textContent = config.folderName.replacement;
       }
     });
   }
