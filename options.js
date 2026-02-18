@@ -33,7 +33,7 @@ chrome.storage.sync.get(null, data => {
   if (cleanServerListToggle) setToggleState(cleanServerListToggle, !!data.cleanServerList);
   
   const cleanServerListPadding = document.getElementById('cleanServerList_padding');
-  if (cleanServerListPadding) cleanServerListPadding.value = data.cleanServerList_padding ?? 24;
+  if (cleanServerListPadding) cleanServerListPadding.value = data.cleanServerList_padding ?? 8;
   
   const editorWrapperHeightToggle = document.getElementById('editorWrapperHeight');
   if (editorWrapperHeightToggle) setToggleState(editorWrapperHeightToggle, !!data.editorWrapperHeight);
@@ -209,7 +209,7 @@ if (exportSettingsBtn) {
         customServerOrder_list: document.getElementById('customServerOrder_list')?.value || '',
         
         cleanServerList: document.getElementById('cleanServerList')?.getAttribute('aria-pressed') === 'true',
-        cleanServerList_padding: parseInt(document.getElementById('cleanServerList_padding')?.value) || 24,
+        cleanServerList_padding: parseInt(document.getElementById('cleanServerList_padding')?.value) || 8,
         
         navbarHover: document.getElementById('navbarHover')?.getAttribute('aria-pressed') === 'true',
         navbarHoverZoneWidth: parseInt(document.getElementById('navbarHoverZoneWidth')?.value) || 40,
@@ -303,7 +303,7 @@ if (cleanServerListToggle) {
 const cleanServerListPadding = document.getElementById('cleanServerList_padding');
 if (cleanServerListPadding) {
   cleanServerListPadding.addEventListener('input', function() {
-    saveSetting('cleanServerList_padding', parseInt(this.value) || 24);
+    saveSetting('cleanServerList_padding', parseInt(this.value) || 8);
   });
 }
 

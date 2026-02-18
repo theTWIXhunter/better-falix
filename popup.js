@@ -265,7 +265,7 @@ document.addEventListener('DOMContentLoaded', () => {
     uploadCreateHover: false,
     customServerOrder: false,
     cleanServerList: false,
-    cleanServerList_padding: 24,
+    cleanServerList_padding: 8,
     removeServerSearch: false,
     removeLogsContainer: false,
     removePremiumTransfer: false,
