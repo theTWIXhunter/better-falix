@@ -197,6 +197,11 @@
     },
     {
       "matches": ["https://client.falixnodes.net/support/viewticket.php*"],
+      "js": ["features/support-center/add-template-manager-button/index.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://client.falixnodes.net/support/viewticket.php*"],
       "js": ["features/support-center/remove-file-upload-label/index.js"],
       "run_at": "document_idle"
     },
