@@ -18,29 +18,26 @@ chrome.storage.sync.get({ cleanServerList: false, enabled: true }, (data) => {
       console.log('[better-falix] clean-server-list: Removed .server-table-header');
     }
 
-    // 2. Add padding: 8px !important to all .server-row-link elements
+    // 2. Find all server-row-link elements
     const serverRowLinks = document.querySelectorAll('.server-row-link');
+    
     if (serverRowLinks && serverRowLinks.length > 0) {
+      // Add padding to all server-row-link elements
       serverRowLinks.forEach(link => {
         link.style.setProperty('padding', '8px', 'important');
+        // Add servers-container class to each server-row-link
+        if (!link.classList.contains('servers-container')) {
+          link.classList.add('servers-container');
+        }
       });
-      console.log('[better-falix] clean-server-list: Added padding to', serverRowLinks.length, '.server-row-link elements');
+      console.log('[better-falix] clean-server-list: Applied styles to', serverRowLinks.length, '.server-row-link elements');
     }
 
-    // 3. Add .servers-container class to all .server-row-link elements and remove it from the parent
-    const serversContainer = document.querySelector('.servers-container');
-    if (serversContainer) {
-      const serverRowLinks = serversContainer.querySelectorAll('.server-row-link');
-      
-      // Add servers-container class to each server-row-link
-      serverRowLinks.forEach(link => {
-        link.classList.add('servers-container');
-      });
-
-      // Remove servers-container class from the parent
+    // 3. Remove servers-container class from the original parent container
+    const serversContainer = document.querySelector('#serverslist > .servers-container');
+    if (serversContainer && serversContainer.classList.contains('servers-container')) {
       serversContainer.classList.remove('servers-container');
-
-      console.log('[better-falix] clean-server-list: Added .servers-container class to', serverRowLinks.length, '.server-row-link elements');
+      console.log('[better-falix] clean-server-list: Removed .servers-container class from parent');
     }
   }
 
