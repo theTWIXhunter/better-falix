@@ -10,6 +10,28 @@ chrome.storage.sync.get({ enabled: true, replaceConnectTab: false }, (data) => {
 
   //  --------- START FEATURE ----------
 
+  // Copy connection info to clipboard and show feedback
+  function copyConnectionInfo(text, button) {
+    navigator.clipboard.writeText(text).then(() => {
+      // Store original content
+      const originalHTML = button.innerHTML;
+      
+      // Show "Copied!" feedback
+      button.innerHTML = `
+        <svg class="svg-inline--fa fa-check" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="check" role="img" viewBox="0 0 448 512">
+          <path fill="currentColor" d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"></path>
+        </svg>
+      `;
+      
+      // Reset after 2 seconds
+      setTimeout(() => {
+        button.innerHTML = originalHTML;
+      }, 2000);
+    }).catch(err => {
+      console.error('[better-falix] replace-connect-tab: Copy failed', err);
+    });
+  }
+
   // Helper function to create address box
   function createAddressBox(label, value, copyValue) {
     const box = document.createElement('div');

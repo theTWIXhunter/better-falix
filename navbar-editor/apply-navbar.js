@@ -7,6 +7,162 @@ chrome.storage.sync.get({ enabled: true, navbarEditorV2Enabled: false }, (data) 
   }
   console.log('[better-falix] navbar-editor: Script enabled');
 
+  // Store cloned styles globally
+  let clonedNavLinkStyles = null;
+  let clonedNavCategoryStyles = null;
+
+  // Clone CSS from existing navbar elements
+  function cloneNavbarStyles() {
+    // Try multiple selectors to find existing navbar elements
+    const existingNavLink = document.querySelector('.navbar-nav-container .nav-link:not([href*="undefined"])') ||
+                           document.querySelector('.menu-scroll-container .nav-link') ||
+                           document.querySelector('.nav-link');
+    const existingNavCategory = document.querySelector('.navbar-nav-container .nav-category') ||
+                                document.querySelector('.menu-scroll-container .nav-category') ||
+                                document.querySelector('.nav-category');
+    const existingNavItem = document.querySelector('.navbar-nav-container .nav-item') ||
+                           document.querySelector('.menu-scroll-container .nav-item') ||
+                           document.querySelector('.nav-item');
+    
+    if (!existingNavLink) {
+      console.log('[better-falix] navbar-editor: No existing nav-link found to clone styles from, using fallback styles');
+      applyFallbackStyles();
+      return;
+    }
+
+    clonedNavLinkStyles = window.getComputedStyle(existingNavLink);
+    clonedNavCategoryStyles = existingNavCategory ? window.getComputedStyle(existingNavCategory) : null;
+    const navItemStyles = existingNavItem ? window.getComputedStyle(existingNavItem) : null;
+
+    console.log('[better-falix] navbar-editor: Cloned styles - padding:', clonedNavLinkStyles.padding, 'height:', clonedNavLinkStyles.height, 'font-size:', clonedNavLinkStyles.fontSize);
+
+    const style = document.createElement('style');
+    style.id = 'custom-navbar-cloned-styles';
+    
+    // Clone critical styles from the actual navbar with very specific selectors
+    const navLinkCSS = `
+      padding: ${clonedNavLinkStyles.paddingTop} ${clonedNavLinkStyles.paddingRight} ${clonedNavLinkStyles.paddingBottom} ${clonedNavLinkStyles.paddingLeft} !important;
+      min-height: ${clonedNavLinkStyles.minHeight} !important;
+      height: ${clonedNavLinkStyles.height === 'auto' ? 'auto' : clonedNavLinkStyles.height} !important;
+      display: ${clonedNavLinkStyles.display} !important;
+      align-items: ${clonedNavLinkStyles.alignItems} !important;
+      gap: ${clonedNavLinkStyles.gap} !important;
+      font-size: ${clonedNavLinkStyles.fontSize} !important;
+      line-height: ${clonedNavLinkStyles.lineHeight} !important;
+      font-weight: ${clonedNavLinkStyles.fontWeight} !important;
+      box-sizing: border-box !important;
+    `;
+
+    const navCategoryCSS = clonedNavCategoryStyles ? `
+      padding: ${clonedNavCategoryStyles.paddingTop} ${clonedNavCategoryStyles.paddingRight} ${clonedNavCategoryStyles.paddingBottom} ${clonedNavCategoryStyles.paddingLeft} !important;
+      min-height: ${clonedNavCategoryStyles.minHeight} !important;
+      height: ${clonedNavCategoryStyles.height === 'auto' ? 'auto' : clonedNavCategoryStyles.height} !important;
+      display: ${clonedNavCategoryStyles.display} !important;
+      align-items: ${clonedNavCategoryStyles.alignItems} !important;
+      gap: ${clonedNavCategoryStyles.gap} !important;
+      font-size: ${clonedNavCategoryStyles.fontSize} !important;
+    ` : '';
+
+    const navItemCSS = navItemStyles ? `
+      margin-bottom: ${navItemStyles.marginBottom} !important;
+      margin-top: ${navItemStyles.marginTop} !important;
+    ` : '';
+
+    style.textContent = `
+      /* Cloned styles from actual Falix navbar - VERY HIGH SPECIFICITY */
+      .navbar-nav-container .nav-section .nav-link,
+      .navbar-nav-container .navbar-nav .nav-link,
+      .navbar-nav-container .nav-link,
+      .menu-scroll-container .nav-link,
+      body div.navbar-nav-container a.nav-link {
+        ${navLinkCSS}
+      }
+      
+      ${clonedNavCategoryStyles ? `
+      .navbar-nav-container .nav-section .nav-category,
+      .navbar-nav-container .nav-category,
+      body div.navbar-nav-container button.nav-category {
+        ${navCategoryCSS}
+      }
+      ` : ''}
+
+      ${navItemStyles ? `
+      .navbar-nav-container .nav-section .nav-item,
+      .navbar-nav-container .nav-item,
+      body div.navbar-nav-container li.nav-item {
+        ${navItemCSS}
+      }
+      ` : ''}
+      
+      /* SVG sizing from existing elements */
+      .navbar-nav-container .nav-link svg,
+      .nav-section .nav-link svg {
+        width: 1em !important;
+        height: 1em !important;
+        flex-shrink: 0 !important;
+      }
+    `;
+    
+    // Remove old style if exists
+    const oldStyle = document.getElementById('custom-navbar-cloned-styles');
+    if (oldStyle) oldStyle.remove();
+    
+    document.head.appendChild(style);
+    console.log('[better-falix] navbar-editor: Cloned navbar styles applied successfully');
+  }
+
+  // Fallback styles if we can't find existing navbar elements
+  function applyFallbackStyles() {
+    const style = document.createElement('style');
+    style.id = 'custom-navbar-cloned-styles';
+    style.textContent = `
+      /* Fallback styles matching new thicker Falix navbar */
+      .navbar-nav-container .nav-link,
+      .menu-scroll-container .nav-link,
+      body div.navbar-nav-container a.nav-link {
+        padding: 14px 20px !important;
+        min-height: 48px !important;
+        height: auto !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 12px !important;
+        font-size: 15px !important;
+        line-height: 1.5 !important;
+        font-weight: 500 !important;
+        box-sizing: border-box !important;
+      }
+      
+      .navbar-nav-container .nav-category,
+      body div.navbar-nav-container button.nav-category {
+        padding: 14px 20px !important;
+        min-height: 48px !important;
+        height: auto !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 12px !important;
+        font-size: 13px !important;
+      }
+
+      .navbar-nav-container .nav-item,
+      body div.navbar-nav-container li.nav-item {
+        margin-bottom: 2px !important;
+      }
+      
+      .navbar-nav-container .nav-link svg,
+      .nav-section .nav-link svg {
+        width: 1em !important;
+        height: 1em !important;
+        flex-shrink: 0 !important;
+      }
+    `;
+    
+    const oldStyle = document.getElementById('custom-navbar-cloned-styles');
+    if (oldStyle) oldStyle.remove();
+    
+    document.head.appendChild(style);
+    console.log('[better-falix] navbar-editor: Applied fallback styles');
+  }
+
   const isServerPage = window.location.pathname.startsWith('/server/');
   const configKey = isServerPage ? 'navbarConfigServer' : 'navbarConfigOther';
   console.log('[better-falix] navbar-editor: Looking for config key:', configKey, 'isServerPage:', isServerPage);
@@ -20,7 +176,32 @@ chrome.storage.sync.get({ enabled: true, navbarEditorV2Enabled: false }, (data) 
     }
 
     console.log('[better-falix] navbar-editor: Config loaded:', config);
-    applyNavbarConfig(config);
+    
+    // Wait for navbar, clone styles, then apply config with retries
+    let retries = 0;
+    const maxRetries = 20;
+    
+    function initCustomNavbar() {
+      const existingNavLink = document.querySelector('.nav-link');
+      const navContainer = document.querySelector('.navbar-nav-container') || document.querySelector('.menu-scroll-container');
+      
+      console.log('[better-falix] navbar-editor: Init attempt', retries + 1, '- Found nav-link:', !!existingNavLink, 'Found container:', !!navContainer);
+      
+      if (existingNavLink && navContainer) {
+        cloneNavbarStyles();
+        setTimeout(() => applyNavbarConfig(config), 100);
+      } else {
+        retries++;
+        if (retries < maxRetries) {
+          setTimeout(initCustomNavbar, 200);
+        } else {
+          console.log('[better-falix] navbar-editor: Max retries reached, applying with fallback styles');
+          applyFallbackStyles();
+          applyNavbarConfig(config);
+        }
+      }
+    }
+    initCustomNavbar();
   });
 });
 

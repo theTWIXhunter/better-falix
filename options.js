@@ -23,11 +23,38 @@ chrome.storage.sync.get(null, data => {
   const themeSelect = document.getElementById('theme');
   if (themeSelect) themeSelect.value = data.theme || 'auto';
   
-  const customServerOrderToggle = document.getElementById('customServerOrder');
-  if (customServerOrderToggle) setToggleState(customServerOrderToggle, !!data.customServerOrder);
+  const ARCHIVED_customServerOrderToggle = document.getElementById('ARCHIVED_customServerOrder');
+  if (ARCHIVED_customServerOrderToggle) setToggleState(ARCHIVED_customServerOrderToggle, !!data.ARCHIVED_customServerOrder);
   
-  const customServerOrderList = document.getElementById('customServerOrder_list');
-  if (customServerOrderList) customServerOrderList.value = data.customServerOrder_list || '';
+  const ARCHIVED_customServerOrderList = document.getElementById('ARCHIVED_customServerOrder_list');
+  if (ARCHIVED_customServerOrderList) ARCHIVED_customServerOrderList.value = data.ARCHIVED_customServerOrder_list || '';
+  
+  const cleanServerListToggle = document.getElementById('cleanServerList');
+  if (cleanServerListToggle) setToggleState(cleanServerListToggle, !!data.cleanServerList);
+  
+  const cleanServerListPadding = document.getElementById('cleanServerList_padding');
+  if (cleanServerListPadding) cleanServerListPadding.value = data.cleanServerList_padding ?? 8;
+  
+  const cleanServerListFolderIndent = document.getElementById('cleanServerList_folderIndent');
+  if (cleanServerListFolderIndent) cleanServerListFolderIndent.value = data.cleanServerList_folderIndent ?? 16;
+  
+  const cleanServerListStatusBordersToggle = document.getElementById('cleanServerList_statusBorders');
+  if (cleanServerListStatusBordersToggle) setToggleState(cleanServerListStatusBordersToggle, data.cleanServerList_statusBorders !== false);
+  
+  const cleanServerListBorderThickness = document.getElementById('cleanServerList_borderThickness');
+  if (cleanServerListBorderThickness) cleanServerListBorderThickness.value = data.cleanServerList_borderThickness ?? 4;
+  
+  const cleanServerListRunningColor = document.getElementById('cleanServerList_runningColor');
+  if (cleanServerListRunningColor) cleanServerListRunningColor.value = data.cleanServerList_runningColor || 'rgb(16, 185, 129)';
+  
+  const cleanServerListStoppedColor = document.getElementById('cleanServerList_stoppedColor');
+  if (cleanServerListStoppedColor) cleanServerListStoppedColor.value = data.cleanServerList_stoppedColor || 'rgb(239, 68, 68)';
+  
+  const cleanServerListStartingColor = document.getElementById('cleanServerList_startingColor');
+  if (cleanServerListStartingColor) cleanServerListStartingColor.value = data.cleanServerList_startingColor || 'rgb(245, 158, 11)';
+  
+  const cleanServerListStoppingColor = document.getElementById('cleanServerList_stoppingColor');
+  if (cleanServerListStoppingColor) cleanServerListStoppingColor.value = data.cleanServerList_stoppingColor || 'rgb(245, 158, 11)';
   
   const editorWrapperHeightToggle = document.getElementById('editorWrapperHeight');
   if (editorWrapperHeightToggle) setToggleState(editorWrapperHeightToggle, !!data.editorWrapperHeight);
@@ -115,12 +142,17 @@ chrome.storage.sync.get(null, data => {
   const consoleConnectionIPToggle = document.getElementById('screenshotMode_consoleConnectionIP_enabled');
   if (consoleConnectionIPToggle) setToggleState(consoleConnectionIPToggle, screenshotModeConfig.consoleConnectionIP?.enabled !== false);
   
+  const folderNameInput = document.getElementById('screenshotMode_folderName');
+  if (folderNameInput) folderNameInput.value = screenshotModeConfig.folderName?.replacement || 'example folder';
+  const folderNameToggle = document.getElementById('screenshotMode_folderName_enabled');
+  if (folderNameToggle) setToggleState(folderNameToggle, screenshotModeConfig.folderName?.enabled !== false);
+  
   const adminBadgeToggle = document.getElementById('screenshotMode_adminBadge_enabled');
   if (adminBadgeToggle) setToggleState(adminBadgeToggle, screenshotModeConfig.adminBadge?.enabled !== false);
   
   // Remove State Overlays settings
-  const removeStateOverlaysToggle = document.getElementById('removeStateOverlays');
-  if (removeStateOverlaysToggle) setToggleState(removeStateOverlaysToggle, !!data.removeStateOverlays);
+  const ARCHIVED_removeStateOverlaysToggle = document.getElementById('ARCHIVED_removeStateOverlays');
+  if (ARCHIVED_removeStateOverlaysToggle) setToggleState(ARCHIVED_removeStateOverlaysToggle, !!data.ARCHIVED_removeStateOverlays);
   
   const removeStartingOverlay = document.getElementById('removeStartingOverlay');
   if (removeStartingOverlay) removeStartingOverlay.checked = data.removeStartingOverlay !== false;
@@ -199,8 +231,18 @@ if (exportSettingsBtn) {
         enableStaffFeatures: document.getElementById('enableStaffFeatures')?.getAttribute('aria-pressed') === 'true',
         
         // Feature settings with values
-        customServerOrder: document.getElementById('customServerOrder')?.getAttribute('aria-pressed') === 'true',
-        customServerOrder_list: document.getElementById('customServerOrder_list')?.value || '',
+        ARCHIVED_customServerOrder: document.getElementById('ARCHIVED_customServerOrder')?.getAttribute('aria-pressed') === 'true',
+        ARCHIVED_customServerOrder_list: document.getElementById('ARCHIVED_customServerOrder_list')?.value || '',
+        
+        cleanServerList: document.getElementById('cleanServerList')?.getAttribute('aria-pressed') === 'true',
+        cleanServerList_padding: parseInt(document.getElementById('cleanServerList_padding')?.value) || 8,
+        cleanServerList_folderIndent: parseInt(document.getElementById('cleanServerList_folderIndent')?.value) ?? 16,
+        cleanServerList_statusBorders: document.getElementById('cleanServerList_statusBorders')?.getAttribute('aria-pressed') === 'true',
+        cleanServerList_borderThickness: parseInt(document.getElementById('cleanServerList_borderThickness')?.value) || 4,
+        cleanServerList_runningColor: document.getElementById('cleanServerList_runningColor')?.value || 'rgb(16, 185, 129)',
+        cleanServerList_stoppedColor: document.getElementById('cleanServerList_stoppedColor')?.value || 'rgb(239, 68, 68)',
+        cleanServerList_startingColor: document.getElementById('cleanServerList_startingColor')?.value || 'rgb(245, 158, 11)',
+        cleanServerList_stoppingColor: document.getElementById('cleanServerList_stoppingColor')?.value || 'rgb(245, 158, 11)',
         
         navbarHover: document.getElementById('navbarHover')?.getAttribute('aria-pressed') === 'true',
         navbarHoverZoneWidth: parseInt(document.getElementById('navbarHoverZoneWidth')?.value) || 40,
@@ -266,19 +308,86 @@ if (importSettingsBtn && importFileInput) {
 }
 
 // Feature toggles and settings - only add listeners if elements exist
-const customServerOrderToggle = document.getElementById('customServerOrder');
-if (customServerOrderToggle) {
-  customServerOrderToggle.addEventListener('click', function() {
+const ARCHIVED_customServerOrderToggle = document.getElementById('ARCHIVED_customServerOrder');
+if (ARCHIVED_customServerOrderToggle) {
+  ARCHIVED_customServerOrderToggle.addEventListener('click', function() {
     const state = this.getAttribute('aria-pressed') !== 'true';
     setToggleState(this, state);
-    saveSetting('customServerOrder', state);
+    saveSetting('ARCHIVED_customServerOrder', state);
   });
 }
 
-const customServerOrderList = document.getElementById('customServerOrder_list');
-if (customServerOrderList) {
-  customServerOrderList.addEventListener('input', function() {
-    saveSetting('customServerOrder_list', this.value);
+const ARCHIVED_customServerOrderList = document.getElementById('ARCHIVED_customServerOrder_list');
+if (ARCHIVED_customServerOrderList) {
+  ARCHIVED_customServerOrderList.addEventListener('input', function() {
+    saveSetting('ARCHIVED_customServerOrder_list', this.value);
+  });
+}
+
+const cleanServerListToggle = document.getElementById('cleanServerList');
+if (cleanServerListToggle) {
+  cleanServerListToggle.addEventListener('click', function() {
+    const state = this.getAttribute('aria-pressed') !== 'true';
+    setToggleState(this, state);
+    saveSetting('cleanServerList', state);
+  });
+}
+
+const cleanServerListPadding = document.getElementById('cleanServerList_padding');
+if (cleanServerListPadding) {
+  cleanServerListPadding.addEventListener('input', function() {
+    saveSetting('cleanServerList_padding', parseInt(this.value) || 8);
+  });
+}
+
+const cleanServerListStatusBordersToggle = document.getElementById('cleanServerList_statusBorders');
+if (cleanServerListStatusBordersToggle) {
+  cleanServerListStatusBordersToggle.addEventListener('click', function() {
+    const state = this.getAttribute('aria-pressed') !== 'true';
+    setToggleState(this, state);
+    saveSetting('cleanServerList_statusBorders', state);
+  });
+}
+
+const cleanServerListBorderThickness = document.getElementById('cleanServerList_borderThickness');
+if (cleanServerListBorderThickness) {
+  cleanServerListBorderThickness.addEventListener('input', function() {
+    saveSetting('cleanServerList_borderThickness', parseInt(this.value) || 4);
+  });
+}
+
+const cleanServerListRunningColor = document.getElementById('cleanServerList_runningColor');
+if (cleanServerListRunningColor) {
+  cleanServerListRunningColor.addEventListener('input', function() {
+    saveSetting('cleanServerList_runningColor', this.value);
+  });
+}
+
+const cleanServerListStoppedColor = document.getElementById('cleanServerList_stoppedColor');
+if (cleanServerListStoppedColor) {
+  cleanServerListStoppedColor.addEventListener('input', function() {
+    saveSetting('cleanServerList_stoppedColor', this.value);
+  });
+}
+
+const cleanServerListStartingColor = document.getElementById('cleanServerList_startingColor');
+if (cleanServerListStartingColor) {
+  cleanServerListStartingColor.addEventListener('input', function() {
+    saveSetting('cleanServerList_startingColor', this.value);
+  });
+}
+
+const cleanServerListStoppingColor = document.getElementById('cleanServerList_stoppingColor');
+if (cleanServerListStoppingColor) {
+  cleanServerListStoppingColor.addEventListener('input', function() {
+    saveSetting('cleanServerList_stoppingColor', this.value);
+  });
+}
+
+const cleanServerListFolderIndent = document.getElementById('cleanServerList_folderIndent');
+if (cleanServerListFolderIndent) {
+  cleanServerListFolderIndent.addEventListener('input', function() {
+    saveSetting('cleanServerList_folderIndent', parseInt(this.value) ?? 16);
   });
 }
 
@@ -381,12 +490,12 @@ if (navbarEditorToggle) {
 }
 
 // Remove State Overlays feature
-const removeStateOverlaysToggle = document.getElementById('removeStateOverlays');
-if (removeStateOverlaysToggle) {
-  removeStateOverlaysToggle.addEventListener('click', function() {
+const ARCHIVED_removeStateOverlaysToggle = document.getElementById('ARCHIVED_removeStateOverlays');
+if (ARCHIVED_removeStateOverlaysToggle) {
+  ARCHIVED_removeStateOverlaysToggle.addEventListener('click', function() {
     const state = this.getAttribute('aria-pressed') !== 'true';
     setToggleState(this, state);
-    saveSetting('removeStateOverlays', state);
+    saveSetting('ARCHIVED_removeStateOverlays', state);
   });
 }
 
@@ -407,9 +516,9 @@ if (removeOfflineOverlay) {
 
 // --- Feature logic for reorder and editor height ---
 function applyCustomServerOrder() {
-  chrome.storage.sync.get(['customServerOrder', 'customServerOrder_list'], data => {
-    if (!data.customServerOrder) return;
-    const orderList = (data.customServerOrder_list || '')
+  chrome.storage.sync.get(['ARCHIVED_customServerOrder', 'ARCHIVED_customServerOrder_list'], data => {
+    if (!data.ARCHIVED_customServerOrder) return;
+    const orderList = (data.ARCHIVED_customServerOrder_list || '')
       .split(',')
       .map(x => x.trim())
       .filter(Boolean);
@@ -511,7 +620,8 @@ function saveScreenshotModeConfig() {
       profilePicture: document.getElementById('screenshotMode_profilePicture'),
       consolePlayer: document.getElementById('screenshotMode_consolePlayer'),
       consoleUUID: document.getElementById('screenshotMode_consoleUUID'),
-      consoleConnectionIP: document.getElementById('screenshotMode_consoleConnectionIP')
+      consoleConnectionIP: document.getElementById('screenshotMode_consoleConnectionIP'),
+      folderName: document.getElementById('screenshotMode_folderName')
     };
     
     const toggles = {
@@ -525,6 +635,7 @@ function saveScreenshotModeConfig() {
       consolePlayer: document.getElementById('screenshotMode_consolePlayer_enabled'),
       consoleUUID: document.getElementById('screenshotMode_consoleUUID_enabled'),
       consoleConnectionIP: document.getElementById('screenshotMode_consoleConnectionIP_enabled'),
+      folderName: document.getElementById('screenshotMode_folderName_enabled'),
       adminBadge: document.getElementById('screenshotMode_adminBadge_enabled')
     };
     
@@ -549,7 +660,7 @@ function saveScreenshotModeConfig() {
 }
 
 // Add event listeners for screenshot mode settings
-['serverName', 'serverIP', 'serverPort', 'serverDynamicIP', 'profileUsername', 'profileTag', 'profilePicture', 'consolePlayer'].forEach(key => {
+['serverName', 'serverIP', 'serverPort', 'serverDynamicIP', 'profileUsername', 'profileTag', 'profilePicture', 'consolePlayer', 'consoleUUID', 'consoleConnectionIP', 'folderName'].forEach(key => {
   const input = document.getElementById(`screenshotMode_${key}`);
   const toggle = document.getElementById(`screenshotMode_${key}_enabled`);
   

@@ -1,12 +1,12 @@
-// [better-falix] add-power-button-text: Script loading
-console.log('[better-falix] add-power-button-text: Script loading');
+// [better-falix] ARCHIVED_add-power-button-text: Script loading
+console.log('[better-falix] ARCHIVED_add-power-button-text: Script loading');
 
-chrome.storage.sync.get({ addPowerButtonText: false, enabled: true }, (data) => {
-  if (!data.enabled || !data.addPowerButtonText) {
-    console.log('[better-falix] add-power-button-text: Script disabled');
+chrome.storage.sync.get({ ARCHIVED_addPowerButtonText: false, enabled: true }, (data) => {
+  if (!data.enabled || !data.ARCHIVED_addPowerButtonText) {
+    console.log('[better-falix] ARCHIVED_add-power-button-text: Script disabled');
     return;
   }
-  console.log('[better-falix] add-power-button-text: Script enabled');
+  console.log('[better-falix] ARCHIVED_add-power-button-text: Script enabled');
 
   addPowerButtonLabels();
 });

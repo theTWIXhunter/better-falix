@@ -30,10 +30,10 @@ chrome.storage.sync.get({ replaceCpuWithNode: false, enabled: true }, (data) => 
     // Find the node information from the third span with class="support-info-text"
     // Also check the new modal structure created by replace-support-modal feature
     const supportInfoSpans = document.querySelectorAll('span.support-info-text');
-    const bedrockValues = document.querySelectorAll('.bedrock-value');
+    const supportInfoValues = document.querySelectorAll('.support-info-value');
     
     console.log('[better-falix] Replace-location-with-Node: Found', supportInfoSpans.length, 'support info spans');
-    console.log('[better-falix] Replace-location-with-Node: Found', bedrockValues.length, 'bedrock values');
+    console.log('[better-falix] Replace-location-with-Node: Found', supportInfoValues.length, 'support info values');
     
     let nodeInfo = null;
     
@@ -45,28 +45,21 @@ chrome.storage.sync.get({ replaceCpuWithNode: false, enabled: true }, (data) => 
       console.log('[better-falix] Replace-location-with-Node: Found node info from original structure:', nodeInfo);
     }
     // If that fails, try to get it from the new modal structure (replace-support-modal)
-    // Look specifically for the bedrock-value that has node information (should contain node name)
-    else if (bedrockValues.length >= 3) {
-      // Check each bedrock-value to find the one that looks like a node name
-      for (let i = 0; i < bedrockValues.length; i++) {
-        const value = bedrockValues[i].textContent.trim();
-        console.log('[better-falix] Replace-location-with-Node: Checking bedrock-value', i, ':', value);
-        // Node names typically contain letters and numbers, not just numbers
-        if (value && value.length > 2 && /[a-zA-Z]/.test(value) && !value.includes('@') && !value.includes('.')) {
-          // Extract just the node name (before " - CPU" part if present)
-          nodeInfo = value.split(' - ')[0].trim();
-          console.log('[better-falix] Replace-location-with-Node: Found node info from new modal structure:', nodeInfo);
-          break;
+    // Look for the support-info-value that has "Node" as its label
+    else if (supportInfoValues.length > 0) {
+      // Find the value associated with "Node" label
+      supportInfoValues.forEach((valueSpan, index) => {
+        const parentDetails = valueSpan.closest('.support-info-details');
+        if (parentDetails) {
+          const labelSpan = parentDetails.querySelector('.support-info-label');
+          if (labelSpan && labelSpan.textContent.trim().toLowerCase() === 'node') {
+            const fullText = valueSpan.textContent.trim();
+            // Extract just the node name (before " - CPU" part)
+            nodeInfo = fullText.split(' - ')[0].trim();
+            console.log('[better-falix] Replace-location-with-Node: Found node info from new modal structure:', nodeInfo);
+          }
         }
-      }
-      
-      // If no suitable node name found, fall back to the third element
-      if (!nodeInfo && bedrockValues.length >= 3) {
-        const fallbackText = bedrockValues[2].textContent.trim();
-        // Extract just the node name (before " - CPU" part)
-        nodeInfo = fallbackText.split(' - ')[0].trim();
-        console.log('[better-falix] Replace-location-with-Node: Using fallback - third bedrock-value:', nodeInfo);
-      }
+      });
     }
     
     if (!nodeInfo) {
@@ -118,21 +111,21 @@ chrome.storage.sync.get({ replaceCpuWithNode: false, enabled: true }, (data) => 
     const checkInterval = setInterval(() => {
       const cpuCard = document.querySelector('.compact-info-card');
       const supportInfoSpans = document.querySelectorAll('span.support-info-text');
-      const bedrockValues = document.querySelectorAll('.bedrock-value');
+      const supportInfoValues = document.querySelectorAll('.support-info-value');
       const statusbarButtons = document.querySelectorAll('button.statusbar-item');
       
       console.log('[better-falix] Replace-location-with-Node: Checking for elements...', {
         cpuCard: !!cpuCard,
         supportInfoSpans: supportInfoSpans.length,
-        bedrockValues: bedrockValues.length,
+        supportInfoValues: supportInfoValues.length,
         statusbarButtons: statusbarButtons.length
       });
       
-      // Check if we have either the original structure or the new modal structure
-      // We can now work without the card if we have node info available
-      const hasNodeInfo = supportInfoSpans.length >= 3 || bedrockValues.length >= 3;
+      // Check if we have the card (we can at least change the header)
+      // or if we have node info sources
+      const hasNodeInfo = supportInfoSpans.length >= 3 || supportInfoValues.length >= 3;
       
-      if (hasNodeInfo) {
+      if (cpuCard || hasNodeInfo) {
         console.log('[better-falix] Replace-location-with-Node: Elements found, executing replacement');
         clearInterval(checkInterval);
         replaceCpuWithNode();

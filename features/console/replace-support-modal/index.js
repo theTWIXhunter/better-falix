@@ -18,14 +18,84 @@ chrome.storage.sync.get({ replaceSupportModal: false, enabled: true }, (data) =>
       // Skip if already processed
       if (processedModals.has(modalBody)) return;
 
-      // Check if this is a support modal by looking for support-info-card
+      // Check if this is a support modal by looking for support-info-card or support-info-grid
       const supportCards = modalBody.querySelectorAll('.support-info-card');
-      if (supportCards.length === 0) return;
+      const supportGrid = modalBody.querySelector('.support-info-grid');
+      
+      if (supportCards.length === 0 && !supportGrid) return;
 
       // Mark as processed immediately to prevent re-processing
       processedModals.add(modalBody);
 
       try {
+        // Handle NEW modal structure (with support-info-grid)
+        if (supportGrid) {
+          console.log('[better-falix] replaceSupportModal: Processing new modal structure');
+          
+          // The new modal is already clean! Just add a "Copy All" button if it doesn't exist
+          if (!modalBody.querySelector('.copy-all-support-btn')) {
+            // Find all support info values for the copy all button
+            const supportRows = supportGrid.querySelectorAll('.support-info-row');
+            const allValues = [];
+            
+            supportRows.forEach(row => {
+              const label = row.querySelector('.support-info-label')?.textContent.trim();
+              const value = row.querySelector('.support-info-value')?.textContent.trim();
+              if (label && value) {
+                allValues.push(`${label}: ${value}`);
+              }
+            });
+            
+            // Create copy all button
+            const copyAllBtn = document.createElement('button');
+            copyAllBtn.className = 'support-action-btn copy-all-support-btn';
+            copyAllBtn.style.marginTop = '12px';
+            copyAllBtn.innerHTML = `
+              <svg class="svg-inline--fa" viewBox="0 0 448 512" width="15.75px" height="14px" fill="currentColor" aria-hidden="true">
+                <path d="M192 0c-35.3 0-64 28.7-64 64l0 256c0 35.3 28.7 64 64 64l192 0c35.3 0 64-28.7 64-64l0-200.6c0-17.4-7.1-34.1-19.7-46.2L370.6 17.8C358.7 6.4 342.8 0 326.3 0L192 0zM64 128c-35.3 0-64 28.7-64 64L0 448c0 35.3 28.7 64 64 64l192 0c35.3 0 64-28.7 64-64l0-16-64 0 0 16-192 0 0-256 16 0 0-64-16 0z"></path>
+              </svg>
+              Copy All Support Info
+            `;
+            
+            copyAllBtn.addEventListener('click', () => {
+              const textToCopy = allValues.join('\n');
+              navigator.clipboard.writeText(textToCopy).then(() => {
+                const originalHTML = copyAllBtn.innerHTML;
+                copyAllBtn.innerHTML = `
+                  <svg class="svg-inline--fa" viewBox="0 0 448 512" width="15.75px" height="14px" fill="currentColor" aria-hidden="true">
+                    <path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"></path>
+                  </svg>
+                  Copied!
+                `;
+                setTimeout(() => {
+                  copyAllBtn.innerHTML = originalHTML;
+                }, 2000);
+              });
+            });
+            
+            // Insert before the support ticket link
+            const supportTicketLink = modalBody.querySelector('.support-action-btn:not(.copy-all-support-btn)');
+            if (supportTicketLink) {
+              supportTicketLink.parentNode.insertBefore(copyAllBtn, supportTicketLink);
+              // Hide the original support ticket link
+              supportTicketLink.style.display = 'none';
+            } else {
+              modalBody.appendChild(copyAllBtn);
+            }
+          } else {
+            // If copy all button exists, make sure the support ticket link is hidden
+            const supportTicketLink = modalBody.querySelector('.support-action-btn:not(.copy-all-support-btn)');
+            if (supportTicketLink) {
+              supportTicketLink.style.display = 'none';
+            }
+          }
+          
+          return; // Exit early for new structure
+        }
+        
+        // Handle OLD modal structure (with support-info-card)
+        console.log('[better-falix] replaceSupportModal: Processing old modal structure');
+        
         // Remove the warning section
         const warningSection = modalBody.querySelector('.support-warning');
         if (warningSection) {

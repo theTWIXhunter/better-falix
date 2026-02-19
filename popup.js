@@ -145,15 +145,16 @@ const featureIds = [
   'navbarHover',
   'replaceSupportModal',
   'replaceCpuWithNode',
-  'ARCHIVED_removeMaxPlayers',
-  'ARCHIVED_removePlayerManagement',
+  'removeMaxPlayers',
+  'removePlayerManagement',
   'removePremiumTransfer',
-  'ARCHIVED_removeCpuCard',
-  'addPowerButtonText',
-  'removeStateOverlays',
+  'removeCpuCard',
+  'ARCHIVED_addPowerButtonText',
+  'ARCHIVED_removeStateOverlays',
   'largerServerName',
   'uploadCreateHover',
-  'customServerOrder',
+  'ARCHIVED_customServerOrder',
+  'cleanServerList',
   'removeServerSearch',
   'ARCHIVED_hideSupportCategory',
   'removeLanguageSelector',
@@ -179,6 +180,7 @@ const featureIds = [
   'compactReplyBox',
   'iKnowMarkdown',
   'hideTemplateButton',
+  'addTemplateManagerButton',
   'removeFileUploadLabel',
   'showTicketId',
   'inlineServerInfo',
@@ -259,19 +261,28 @@ document.addEventListener('DOMContentLoaded', () => {
     navbarHover: false,
     replaceSupportModal: false,
     replaceCpuWithNode: false,
-    ARCHIVED_removeMaxPlayers: false,
-    ARCHIVED_removePlayerManagement: false,
+    removeMaxPlayers: false,
+    removePlayerManagement: false,
     uploadCreateHover: false,
-    customServerOrder: false,
+    ARCHIVED_customServerOrder: false,
+    cleanServerList: false,
+    cleanServerList_padding: 8,
+    cleanServerList_statusBorders: true,
+    cleanServerList_borderThickness: 4,
+    cleanServerList_runningColor: 'rgb(16, 185, 129)',
+    cleanServerList_stoppedColor: 'rgb(239, 68, 68)',
+    cleanServerList_startingColor: 'rgb(245, 158, 11)',
+    cleanServerList_stoppingColor: 'rgb(245, 158, 11)',
     removeServerSearch: false,
     removeLogsContainer: false,
     removePremiumTransfer: false,
-    ARCHIVED_removeCpuCard: false,
-    addPowerButtonText: false,
-    removeStateOverlays: false,
+    removeCpuCard: false,
+    ARCHIVED_addPowerButtonText: false,
+    ARCHIVED_removeStateOverlays: false,
     removeStartingOverlay: true,
     removeOfflineOverlay: false,
     largerServerName: false,
+    largerServerNameFontSize: 1.2,
     redactedContentSubtle: false,
     betterEditorFullscreen: false,
     coloredLogMessages: false,
@@ -295,6 +306,7 @@ document.addEventListener('DOMContentLoaded', () => {
     compactReplyBox: false,
     iKnowMarkdown: false,
     hideTemplateButton: false,
+    addTemplateManagerButton: false,
     removeFileUploadLabel: false,
     showTicketId: false,
     inlineServerInfo: false,
@@ -323,6 +335,9 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('themes-content').style.display = 'block';
       document.getElementById('slider-indicator').style.left = '50%';
     }
+    
+    // Update Enable/Disable All button states after features are loaded
+    updateEnableAllButtons();
   });
 
   // Main toggle logic - completely reimplemented for reliability
@@ -356,7 +371,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const obj = {};
         obj[id] = newState;
         chrome.storage.sync.set(obj, () => {
-          chrome.storage.sync.get(null, updateFeatureButtons);
+          chrome.storage.sync.get(null, (data) => {
+            updateFeatureButtons(data);
+            updateEnableAllButtons();
+          });
         });
       });
       btn.addEventListener('keydown', function(e) {
@@ -430,16 +448,22 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Open navbar editor button
-  document.getElementById('openNavbarEditor').addEventListener('click', function() {
-    chrome.tabs.create({ url: chrome.runtime.getURL('navbar-editor/navbar-editor.html') });
-  });
+  const openNavbarEditorBtn = document.getElementById('openNavbarEditor');
+  if (openNavbarEditorBtn) {
+    openNavbarEditorBtn.addEventListener('click', function() {
+      chrome.tabs.create({ url: chrome.runtime.getURL('navbar-editor/navbar-editor.html') });
+    });
+  }
 
   // Navigation warning link
-  document.getElementById('navWarningLink').addEventListener('click', function(e) {
-    e.preventDefault();
-    activateTab('navbar');
-    chrome.tabs.create({ url: chrome.runtime.getURL('navbar-editor/navbar-editor.html') });
-  });
+  const navWarningLink = document.getElementById('navWarningLink');
+  if (navWarningLink) {
+    navWarningLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      activateTab('navbar');
+      chrome.tabs.create({ url: chrome.runtime.getURL('navbar-editor/navbar-editor.html') });
+    });
+  }
 
   // Theme selection logic
   function setActiveTheme(themeName) {
@@ -463,14 +487,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Enable All / Disable All button logic
   document.querySelectorAll('.enable-all-btn').forEach(enableAllBtn => {
+    console.log('Attaching event listener to Enable All button:', enableAllBtn.dataset.category);
     enableAllBtn.addEventListener('click', function() {
+      console.log('Enable All button clicked for category:', this.dataset.category);
       const category = this.dataset.category;
       const featureList = document.querySelector(`.feature-list[data-category="${category}"]`);
       
-      if (!featureList) return;
+      console.log('Found feature list:', featureList);
+      if (!featureList) {
+        console.error('No feature list found for category:', category);
+        return;
+      }
       
       // Get all feature buttons in this category
       const featureButtons = featureList.querySelectorAll('.feature-btn');
+      console.log('Found feature buttons:', featureButtons.length);
       
       // Check if all features are currently enabled
       let allEnabled = true;
@@ -480,6 +511,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
       
+      console.log('All enabled status:', allEnabled, '- New state will be:', !allEnabled);
+      
       // Toggle all features based on current state
       const newState = !allEnabled;
       const featuresToUpdate = {};
@@ -488,16 +521,19 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!btn.disabled) {
           const featureId = btn.id;
           featuresToUpdate[featureId] = newState;
-          setFeatureBtnState(btn, newState);
         }
       });
       
-      // Update button text
-      this.textContent = newState ? 'Disable All' : 'Enable All';
+      console.log('Features to update:', featuresToUpdate);
       
       // Save all changes at once
       chrome.storage.sync.set(featuresToUpdate, () => {
         console.log(`${newState ? 'Enabled' : 'Disabled'} all features in ${category} category`);
+        // Update all feature buttons to reflect the new state
+        chrome.storage.sync.get(null, (data) => {
+          updateFeatureButtons(data);
+          updateEnableAllButtons();
+        });
       });
     });
   });
@@ -522,19 +558,4 @@ document.addEventListener('DOMContentLoaded', () => {
       btn.textContent = allEnabled ? 'Disable All' : 'Enable All';
     });
   }
-
-  // Call updateEnableAllButtons when features are loaded
-  chrome.storage.sync.get(null, (data) => {
-    updateEnableAllButtons();
-  });
-
-  // Also update when individual features are toggled
-  featureIds.forEach(id => {
-    const btn = document.getElementById(id);
-    if (btn) {
-      btn.addEventListener('click', function() {
-        setTimeout(updateEnableAllButtons, 50);
-      });
-    }
-  });
 });
