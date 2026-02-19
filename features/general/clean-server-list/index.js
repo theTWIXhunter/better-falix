@@ -88,9 +88,9 @@ chrome.storage.sync.get({
           
           // Apply folder indentation if server is inside a folder and indent is enabled
           if (isInFolder && folderIndent > 0) {
-            link.style.setProperty('padding-left', folderIndent + 'px', 'important');
+            link.style.setProperty('margin-left', folderIndent + 'px', 'important');
           } else {
-            link.style.removeProperty('padding-left');
+            link.style.removeProperty('margin-left');
           }
           
           // Add colored left border based on server status
