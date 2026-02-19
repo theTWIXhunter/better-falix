@@ -35,6 +35,9 @@ chrome.storage.sync.get(null, data => {
   const cleanServerListPadding = document.getElementById('cleanServerList_padding');
   if (cleanServerListPadding) cleanServerListPadding.value = data.cleanServerList_padding ?? 8;
   
+  const cleanServerListFolderIndent = document.getElementById('cleanServerList_folderIndent');
+  if (cleanServerListFolderIndent) cleanServerListFolderIndent.value = data.cleanServerList_folderIndent ?? 16;
+  
   const cleanServerListStatusBordersToggle = document.getElementById('cleanServerList_statusBorders');
   if (cleanServerListStatusBordersToggle) setToggleState(cleanServerListStatusBordersToggle, data.cleanServerList_statusBorders !== false);
   
@@ -233,6 +236,7 @@ if (exportSettingsBtn) {
         
         cleanServerList: document.getElementById('cleanServerList')?.getAttribute('aria-pressed') === 'true',
         cleanServerList_padding: parseInt(document.getElementById('cleanServerList_padding')?.value) || 8,
+        cleanServerList_folderIndent: parseInt(document.getElementById('cleanServerList_folderIndent')?.value) ?? 16,
         cleanServerList_statusBorders: document.getElementById('cleanServerList_statusBorders')?.getAttribute('aria-pressed') === 'true',
         cleanServerList_borderThickness: parseInt(document.getElementById('cleanServerList_borderThickness')?.value) || 4,
         cleanServerList_runningColor: document.getElementById('cleanServerList_runningColor')?.value || 'rgb(16, 185, 129)',
@@ -377,6 +381,13 @@ const cleanServerListStoppingColor = document.getElementById('cleanServerList_st
 if (cleanServerListStoppingColor) {
   cleanServerListStoppingColor.addEventListener('input', function() {
     saveSetting('cleanServerList_stoppingColor', this.value);
+  });
+}
+
+const cleanServerListFolderIndent = document.getElementById('cleanServerList_folderIndent');
+if (cleanServerListFolderIndent) {
+  cleanServerListFolderIndent.addEventListener('input', function() {
+    saveSetting('cleanServerList_folderIndent', parseInt(this.value) ?? 16);
   });
 }
 

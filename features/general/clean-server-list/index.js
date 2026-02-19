@@ -4,6 +4,7 @@ console.log('[better-falix] clean-server-list: Script loading');
 chrome.storage.sync.get({ 
   cleanServerList: false, 
   cleanServerList_padding: 8, 
+  cleanServerList_folderIndent: 16,
   cleanServerList_statusBorders: true,
   cleanServerList_borderThickness: 4,
   cleanServerList_runningColor: 'rgb(16, 185, 129)',
@@ -57,12 +58,16 @@ chrome.storage.sync.get({
     
     if (serverRowLinks && serverRowLinks.length > 0) {
       const spacing = data.cleanServerList_padding || 8;
+      const folderIndent = data.cleanServerList_folderIndent ?? 16;
       let hiddenCount = 0;
       // Add spacing between server-row-link elements and apply container styles
       serverRowLinks.forEach((link, index) => {
         // Check if the child .server-row has search-hidden class
         const serverRow = link.querySelector('.server-row');
         const isHidden = serverRow && serverRow.classList.contains('search-hidden');
+        
+        // Check if this server is inside a folder
+        const isInFolder = link.closest('.server-folder') !== null;
         
         if (isHidden) {
           hiddenCount++;
@@ -79,6 +84,13 @@ chrome.storage.sync.get({
           // Add servers-container class to each server-row-link
           if (!link.classList.contains('servers-container')) {
             link.classList.add('servers-container');
+          }
+          
+          // Apply folder indentation if server is inside a folder and indent is enabled
+          if (isInFolder && folderIndent > 0) {
+            link.style.setProperty('padding-left', folderIndent + 'px', 'important');
+          } else {
+            link.style.removeProperty('padding-left');
           }
           
           // Add colored left border based on server status
