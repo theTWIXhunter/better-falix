@@ -24,6 +24,7 @@ Customize navbar sections and items with the visual editor. Features include:
 ### General
 
 - **Custom Server Order:** Reorder your server list in any way you want.
+- **Clean Server List:** Remove the server table header and add customizable spacing between server cards. Features status-based colored left borders for servers (green for running, red for stopped, orange for starting/stopping). Border colors, thickness, and visibility are fully configurable in settings.
 - **Navbar Hover:** Opens and closes the navbar when you hover on/off it.
 - **Replace Account Category:** Hides the sidebar "Account" category and adds a custom popup menu to the profile icon with quick links to Profile Settings and Logout.
 - **Remove-exit-discount:** Removes the most annoying popup ever (the exit discount modal and its backdrop) from falixnodes.net.
