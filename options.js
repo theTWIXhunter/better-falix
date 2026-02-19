@@ -35,6 +35,24 @@ chrome.storage.sync.get(null, data => {
   const cleanServerListPadding = document.getElementById('cleanServerList_padding');
   if (cleanServerListPadding) cleanServerListPadding.value = data.cleanServerList_padding ?? 8;
   
+  const cleanServerListStatusBordersToggle = document.getElementById('cleanServerList_statusBorders');
+  if (cleanServerListStatusBordersToggle) setToggleState(cleanServerListStatusBordersToggle, data.cleanServerList_statusBorders !== false);
+  
+  const cleanServerListBorderThickness = document.getElementById('cleanServerList_borderThickness');
+  if (cleanServerListBorderThickness) cleanServerListBorderThickness.value = data.cleanServerList_borderThickness ?? 4;
+  
+  const cleanServerListRunningColor = document.getElementById('cleanServerList_runningColor');
+  if (cleanServerListRunningColor) cleanServerListRunningColor.value = data.cleanServerList_runningColor || 'rgb(16, 185, 129)';
+  
+  const cleanServerListStoppedColor = document.getElementById('cleanServerList_stoppedColor');
+  if (cleanServerListStoppedColor) cleanServerListStoppedColor.value = data.cleanServerList_stoppedColor || 'rgb(239, 68, 68)';
+  
+  const cleanServerListStartingColor = document.getElementById('cleanServerList_startingColor');
+  if (cleanServerListStartingColor) cleanServerListStartingColor.value = data.cleanServerList_startingColor || 'rgb(245, 158, 11)';
+  
+  const cleanServerListStoppingColor = document.getElementById('cleanServerList_stoppingColor');
+  if (cleanServerListStoppingColor) cleanServerListStoppingColor.value = data.cleanServerList_stoppingColor || 'rgb(245, 158, 11)';
+  
   const editorWrapperHeightToggle = document.getElementById('editorWrapperHeight');
   if (editorWrapperHeightToggle) setToggleState(editorWrapperHeightToggle, !!data.editorWrapperHeight);
   
@@ -215,6 +233,12 @@ if (exportSettingsBtn) {
         
         cleanServerList: document.getElementById('cleanServerList')?.getAttribute('aria-pressed') === 'true',
         cleanServerList_padding: parseInt(document.getElementById('cleanServerList_padding')?.value) || 8,
+        cleanServerList_statusBorders: document.getElementById('cleanServerList_statusBorders')?.getAttribute('aria-pressed') === 'true',
+        cleanServerList_borderThickness: parseInt(document.getElementById('cleanServerList_borderThickness')?.value) || 4,
+        cleanServerList_runningColor: document.getElementById('cleanServerList_runningColor')?.value || 'rgb(16, 185, 129)',
+        cleanServerList_stoppedColor: document.getElementById('cleanServerList_stoppedColor')?.value || 'rgb(239, 68, 68)',
+        cleanServerList_startingColor: document.getElementById('cleanServerList_startingColor')?.value || 'rgb(245, 158, 11)',
+        cleanServerList_stoppingColor: document.getElementById('cleanServerList_stoppingColor')?.value || 'rgb(245, 158, 11)',
         
         navbarHover: document.getElementById('navbarHover')?.getAttribute('aria-pressed') === 'true',
         navbarHoverZoneWidth: parseInt(document.getElementById('navbarHoverZoneWidth')?.value) || 40,
@@ -309,6 +333,50 @@ const cleanServerListPadding = document.getElementById('cleanServerList_padding'
 if (cleanServerListPadding) {
   cleanServerListPadding.addEventListener('input', function() {
     saveSetting('cleanServerList_padding', parseInt(this.value) || 8);
+  });
+}
+
+const cleanServerListStatusBordersToggle = document.getElementById('cleanServerList_statusBorders');
+if (cleanServerListStatusBordersToggle) {
+  cleanServerListStatusBordersToggle.addEventListener('click', function() {
+    const state = this.getAttribute('aria-pressed') !== 'true';
+    setToggleState(this, state);
+    saveSetting('cleanServerList_statusBorders', state);
+  });
+}
+
+const cleanServerListBorderThickness = document.getElementById('cleanServerList_borderThickness');
+if (cleanServerListBorderThickness) {
+  cleanServerListBorderThickness.addEventListener('input', function() {
+    saveSetting('cleanServerList_borderThickness', parseInt(this.value) || 4);
+  });
+}
+
+const cleanServerListRunningColor = document.getElementById('cleanServerList_runningColor');
+if (cleanServerListRunningColor) {
+  cleanServerListRunningColor.addEventListener('input', function() {
+    saveSetting('cleanServerList_runningColor', this.value);
+  });
+}
+
+const cleanServerListStoppedColor = document.getElementById('cleanServerList_stoppedColor');
+if (cleanServerListStoppedColor) {
+  cleanServerListStoppedColor.addEventListener('input', function() {
+    saveSetting('cleanServerList_stoppedColor', this.value);
+  });
+}
+
+const cleanServerListStartingColor = document.getElementById('cleanServerList_startingColor');
+if (cleanServerListStartingColor) {
+  cleanServerListStartingColor.addEventListener('input', function() {
+    saveSetting('cleanServerList_startingColor', this.value);
+  });
+}
+
+const cleanServerListStoppingColor = document.getElementById('cleanServerList_stoppingColor');
+if (cleanServerListStoppingColor) {
+  cleanServerListStoppingColor.addEventListener('input', function() {
+    saveSetting('cleanServerList_stoppingColor', this.value);
   });
 }
 

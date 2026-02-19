@@ -1,7 +1,17 @@
 // [better-falix] clean-server-list: Script loading
 console.log('[better-falix] clean-server-list: Script loading');
 
-chrome.storage.sync.get({ cleanServerList: false, cleanServerList_padding: 8, enabled: true }, (data) => {
+chrome.storage.sync.get({ 
+  cleanServerList: false, 
+  cleanServerList_padding: 8, 
+  cleanServerList_statusBorders: true,
+  cleanServerList_borderThickness: 4,
+  cleanServerList_runningColor: 'rgb(16, 185, 129)',
+  cleanServerList_stoppedColor: 'rgb(239, 68, 68)',
+  cleanServerList_startingColor: 'rgb(245, 158, 11)',
+  cleanServerList_stoppingColor: 'rgb(245, 158, 11)',
+  enabled: true 
+}, (data) => {
   if (!data.enabled || !data.cleanServerList) {
     console.log('[better-falix] clean-server-list: Script disabled');
     return;
@@ -69,6 +79,36 @@ chrome.storage.sync.get({ cleanServerList: false, cleanServerList_padding: 8, en
           // Add servers-container class to each server-row-link
           if (!link.classList.contains('servers-container')) {
             link.classList.add('servers-container');
+          }
+          
+          // Add colored left border based on server status
+          if (data.cleanServerList_statusBorders) {
+            const borderThickness = data.cleanServerList_borderThickness || 4;
+            let borderColor = null;
+            
+            if (serverRow) {
+              if (serverRow.classList.contains('status-running')) {
+                borderColor = data.cleanServerList_runningColor || 'rgb(16, 185, 129)';
+              } else if (serverRow.classList.contains('status-stopped')) {
+                borderColor = data.cleanServerList_stoppedColor || 'rgb(239, 68, 68)';
+              } else if (serverRow.classList.contains('status-starting')) {
+                borderColor = data.cleanServerList_startingColor || 'rgb(245, 158, 11)';
+              } else if (serverRow.classList.contains('status-stopping')) {
+                borderColor = data.cleanServerList_stoppingColor || 'rgb(245, 158, 11)';
+              }
+            }
+            
+            if (borderColor) {
+              link.style.setProperty('border-left-color', borderColor, 'important');
+              link.style.setProperty('border-left-width', borderThickness + 'px', 'important');
+            } else {
+              link.style.removeProperty('border-left-color');
+              link.style.removeProperty('border-left-width');
+            }
+          } else {
+            // Remove border styling if status borders are disabled
+            link.style.removeProperty('border-left-color');
+            link.style.removeProperty('border-left-width');
           }
         } else {
           // Hide the entire link when the server is filtered
