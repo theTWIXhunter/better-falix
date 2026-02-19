@@ -102,11 +102,6 @@ chrome.storage.sync.get({ hideConsoleTabs: false, enabled: true }, (data) => {
         consoleActions.appendChild(dropdown);
         dropdownAdded = true;
         
-        // Clone event listeners from original buttons
-        const newPopupBtn = document.getElementById('popupConsoleBtnAlt');
-        const newShareBtn = document.getElementById('shareConsoleBtnAlt');
-        const newViewModeToggle = document.getElementById('viewModeToggleAlt');
-        
         // Helper function to click hidden buttons
         const clickHiddenButton = (button) => {
           const titlebarActions = document.querySelector('.titlebar-actions');
@@ -120,32 +115,31 @@ chrome.storage.sync.get({ hideConsoleTabs: false, enabled: true }, (data) => {
           }
         };
         
-        if (originalPopupBtn && newPopupBtn) {
-          newPopupBtn.addEventListener('click', () => {
+        // Attach event listeners using direct button references
+        if (originalPopupBtn) {
+          popupBtn.addEventListener('click', () => {
             clickHiddenButton(originalPopupBtn);
           });
         }
         
-        if (originalShareBtn && newShareBtn) {
-          newShareBtn.addEventListener('click', () => {
+        if (originalShareBtn) {
+          shareBtn.addEventListener('click', () => {
             clickHiddenButton(originalShareBtn);
           });
         }
         
-        if (originalViewModeToggle && newViewModeToggle) {
+        if (originalViewModeToggle) {
           // For view mode toggle, we need to observe changes to the original and sync them
           const syncViewModeState = () => {
             const originalIcon = document.getElementById('viewModeIcon');
             const originalText = document.getElementById('viewModeText');
-            const newIcon = document.getElementById('viewModeIconAlt');
-            const newText = document.getElementById('viewModeTextAlt');
             
-            if (originalIcon && newIcon) {
+            if (originalIcon && viewModeIcon) {
               // Use replaceChildren for security instead of innerHTML
-              newIcon.replaceChildren(...Array.from(originalIcon.childNodes).map(node => node.cloneNode(true)));
+              viewModeIcon.replaceChildren(...Array.from(originalIcon.childNodes).map(node => node.cloneNode(true)));
             }
-            if (originalText && newText) {
-              newText.textContent = originalText.textContent;
+            if (originalText && viewModeText) {
+              viewModeText.textContent = originalText.textContent;
             }
           };
           
@@ -153,7 +147,7 @@ chrome.storage.sync.get({ hideConsoleTabs: false, enabled: true }, (data) => {
           syncViewModeState();
           
           // Sync on click
-          newViewModeToggle.addEventListener('click', () => {
+          viewModeBtn.addEventListener('click', () => {
             clickHiddenButton(originalViewModeToggle);
             // Wait a bit for the DOM to update
             setTimeout(syncViewModeState, 100);
