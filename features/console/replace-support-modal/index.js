@@ -77,8 +77,16 @@ chrome.storage.sync.get({ replaceSupportModal: false, enabled: true }, (data) =>
             const supportTicketLink = modalBody.querySelector('.support-action-btn:not(.copy-all-support-btn)');
             if (supportTicketLink) {
               supportTicketLink.parentNode.insertBefore(copyAllBtn, supportTicketLink);
+              // Hide the original support ticket link
+              supportTicketLink.style.display = 'none';
             } else {
               modalBody.appendChild(copyAllBtn);
+            }
+          } else {
+            // If copy all button exists, make sure the support ticket link is hidden
+            const supportTicketLink = modalBody.querySelector('.support-action-btn:not(.copy-all-support-btn)');
+            if (supportTicketLink) {
+              supportTicketLink.style.display = 'none';
             }
           }
           
