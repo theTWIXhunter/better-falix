@@ -365,7 +365,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const obj = {};
         obj[id] = newState;
         chrome.storage.sync.set(obj, () => {
-          chrome.storage.sync.get(null, updateFeatureButtons);
+          chrome.storage.sync.get(null, (data) => {
+            updateFeatureButtons(data);
+            updateEnableAllButtons();
+          });
         });
       });
       btn.addEventListener('keydown', function(e) {
