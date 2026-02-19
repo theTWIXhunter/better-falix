@@ -102,30 +102,74 @@ chrome.storage.sync.get({ hideConsoleTabs: false, enabled: true }, (data) => {
         consoleActions.appendChild(dropdown);
         dropdownAdded = true;
         
+        console.log('[better-falix] hide-console-tabs: Dropdown added. Original buttons:', {
+          popup: !!originalPopupBtn,
+          share: !!originalShareBtn,
+          viewMode: !!originalViewModeToggle
+        });
+        
         // Helper function to click hidden buttons
         const clickHiddenButton = (button) => {
+          console.log('[better-falix] hide-console-tabs: Attempting to click hidden button:', button);
           const titlebarActions = document.querySelector('.titlebar-actions');
           if (titlebarActions && button) {
             // Temporarily show to allow click to work
             const originalDisplay = titlebarActions.style.display;
             titlebarActions.style.display = '';
             button.click();
+            console.log('[better-falix] hide-console-tabs: Button clicked');
             // Hide again immediately
             titlebarActions.style.display = originalDisplay;
+          } else {
+            console.log('[better-falix] hide-console-tabs: Failed to click - titlebarActions or button not found');
           }
         };
         
         // Attach event listeners using direct button references
         if (originalPopupBtn) {
-          popupBtn.addEventListener('click', () => {
+          popupBtn.addEventListener('click', (e) => {
+            console.log('[better-falix] hide-console-tabs: Popup button clicked');
+            e.preventDefault();
+            e.stopPropagation();
             clickHiddenButton(originalPopupBtn);
           });
+          console.log('[better-falix] hide-console-tabs: Popup button listener attached');
+        } else {
+          console.log('[better-falix] hide-console-tabs: Original popup button not found, will retry');
+          // Retry finding the button after a delay
+          setTimeout(() => {
+            const retryOriginalPopupBtn = document.getElementById('popupConsoleBtn');
+            if (retryOriginalPopupBtn) {
+              console.log('[better-falix] hide-console-tabs: Found original popup button on retry');
+              popupBtn.addEventListener('click', (e) => {
+                console.log('[better-falix] hide-console-tabs: Popup button clicked (retry)');
+                e.preventDefault();
+                e.stopPropagation();
+                clickHiddenButton(retryOriginalPopupBtn);
+              });
+            }
+          }, 1000);
         }
         
         if (originalShareBtn) {
-          shareBtn.addEventListener('click', () => {
+          shareBtn.addEventListener('click', (e) => {
+            console.log('[better-falix] hide-console-tabs: Share button clicked');
+            e.preventDefault();
+            e.stopPropagation();
             clickHiddenButton(originalShareBtn);
           });
+        } else {
+          // Retry finding the button after a delay
+          setTimeout(() => {
+            const retryOriginalShareBtn = document.getElementById('shareConsoleBtn');
+            if (retryOriginalShareBtn) {
+              shareBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                clickHiddenButton(retryOriginalShareBtn);
+              });
+            }
+          }, 1000);
         }
         
         if (originalViewModeToggle) {
@@ -147,7 +191,10 @@ chrome.storage.sync.get({ hideConsoleTabs: false, enabled: true }, (data) => {
           syncViewModeState();
           
           // Sync on click
-          viewModeBtn.addEventListener('click', () => {
+          viewModeBtn.addEventListener('click', (e) => {
+            console.log('[better-falix] hide-console-tabs: View mode button clicked');
+            e.preventDefault();
+            e.stopPropagation();
             clickHiddenButton(originalViewModeToggle);
             // Wait a bit for the DOM to update
             setTimeout(syncViewModeState, 100);
@@ -164,6 +211,44 @@ chrome.storage.sync.get({ hideConsoleTabs: false, enabled: true }, (data) => {
           if (originalText) {
             observer.observe(originalText, { childList: true, characterData: true, subtree: true });
           }
+        } else {
+          // Retry finding the button after a delay
+          setTimeout(() => {
+            const retryOriginalViewModeToggle = document.getElementById('viewModeToggle');
+            if (retryOriginalViewModeToggle) {
+              const syncViewModeState = () => {
+                const originalIcon = document.getElementById('viewModeIcon');
+                const originalText = document.getElementById('viewModeText');
+                
+                if (originalIcon && viewModeIcon) {
+                  viewModeIcon.replaceChildren(...Array.from(originalIcon.childNodes).map(node => node.cloneNode(true)));
+                }
+                if (originalText && viewModeText) {
+                  viewModeText.textContent = originalText.textContent;
+                }
+              };
+              
+              syncViewModeState();
+              
+              viewModeBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                clickHiddenButton(retryOriginalViewModeToggle);
+                setTimeout(syncViewModeState, 100);
+              });
+              
+              const observer = new MutationObserver(syncViewModeState);
+              const originalIcon = document.getElementById('viewModeIcon');
+              const originalText = document.getElementById('viewModeText');
+              
+              if (originalIcon) {
+                observer.observe(originalIcon, { childList: true, subtree: true });
+              }
+              if (originalText) {
+                observer.observe(originalText, { childList: true, characterData: true, subtree: true });
+              }
+            }
+          }, 1000);
         }
       }
     }
