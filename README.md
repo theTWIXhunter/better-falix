@@ -23,35 +23,36 @@ Customize navbar sections and items with the visual editor. Features include:
 
 ### General
 
-- **Custom Server Order:** Reorder your server list in any way you want.
-- **Clean Server List:** Remove the server table header and add customizable spacing between server cards. Features status-based colored left borders for servers (green for running, red for stopped, orange for starting/stopping). Border colors, thickness, and visibility are fully configurable in settings.
+- **Clean Server List:** Removes the server table header and applies padding to server rows for a cleaner look.
 - **Navbar Hover:** Opens and closes the navbar when you hover on/off it.
 - **Replace Account Category:** Hides the sidebar "Account" category and adds a custom popup menu to the profile icon with quick links to Profile Settings and Logout.
-- **Remove-exit-discount:** Removes the most annoying popup ever (the exit discount modal and its backdrop) from falixnodes.net.
-- **it's just Paper:** Renames "Craftbukkit / Spigot / PaperSpigot" to "Paper" in the server type dropdown for clarity.
-- **it's just Geyser:** Renames "Java + Bedrock Support (Geyser)" to "geyser" in the server type dropdown for clarity.
-- **Remove Server search bar:** Removes the Server Search bar from the main page.
+- **Remove Exit-Discount:** Removes the most annoying popup ever (the exit discount modal and its backdrop) from falixnodes.net.
+- **Remove Server search bar:** Remove the Server Search bar from the main page.
+- **Remove Navbar Footer Buttons:** Removes the language selector and customize button from the navbar footer on all pages.
+- **Replace Falix Logo:** Replace the Falix logo (falix.svg) with a custom logo of your choice.
+- **24-Hour Time Format:** Converts 12-hour time format (AM/PM) to 24-hour format across all sites.
 
 ### Console
 
-- **Hide Console Tabs:** Optionally hide unnecessary console tabs for a cleaner interface (added to Falix itself using a dropdown, this feature will just delete the dropdown button itself).
-- **Replace Support Modal:** Replaces the support modal with a cleaner one and adds a copy all button.
-- **Replace CPU with Node:** Replaces the CPU information with Node information in the console.
-- **Add Power Button Text:** Adds text labels to the power action buttons (Start, Stop, Restart, Kill) for better clarity.
-- **Remove State Overlays:** Removes state overlays from the console. Configure which states to hide in settings (Starting overlay hidden by default, Offline overlay visible by default).
-- **Larger Server Name:** Increase the font size of the server name in the console titlebar for better readability. Configurable font size in settings (default: 1.2rem).
-- **Replace connect modal:** Removes all "How to connect" steps, DNS verification sections, and the "Server Name" row from the connect button and adds back the IPwithPORT and PORT.
+- **Hide Console Tabs:** Optionally hide unnecessary console tabs for a cleaner interface.
+- **Copy all support info:** Replaces the create a support ticket button and adds a copy all button.
+- **Replace Location with Node:** Replaces the Location information with Node information in the console.
+- **Larger Server Name:** Makes the server name in the console titlebar larger and easier to read.
+- **Replace connect modal:** Removes all "How to connect" steps, DNS verification sections, and the "Server Name" row from the connect button for a cleaner look.
 - **Remove Premium Transfer Banner:** Removes the 'Welcome to Premium' transfer notification banner from the console.
+- **Remove Max Players card:** Removes the Max Players info card from the console interface.
+- **Remove Player Management:** Removes the Player Management info card from the console interface.
+- **Remove CPU Card:** Removes the CPU info card from the console interface.
 
 ### Filemanager
 
 - **Remove SFTP info from upload:** Removes the SFTP info and its divider from the upload button dropdown for a cleaner UI.
-- **upload-create-hover:** Makes the Upload and Create buttons show their dropdowns when hovered.
+- **Upload/Create Hover:** Makes the Upload and Create buttons show their dropdowns when hovered.
 - **Better Editor Fullscreen:** Hide editor header and breadcrumb when using built-in fullscreen mode.
 
-### Shared Logs
+### Logs sharing
 
-- **Remove logs container:** Removes the scrollable container around the shared logs box.
+- **Remove Logs container:** Removes the scrollable container around the shared logs box.
 - **Subtle Redacted Content:** Make redacted content less eye-catching with subtle gray styling.
 - **Colored Log Messages:** Color warning log messages gold and error log messages red.
 - **Auto-Collapse Log Analysis:** Automatically collapse the Log Analysis section when the page loads.
@@ -59,21 +60,23 @@ Customize navbar sections and items with the visual editor. Features include:
 ### Support Center
 Note: this category isn't visible by default, you can enable "staff features" in the options page.
 
-- **Hide Reply Headers:**  removes the  unnecessarily bulky "write a reply" headers from the message box in the support center chat.
+- **Hide Write a Reply Header:** Removes the unnecessarily bulky "write a reply" headers from the message box in the support center chat.
 - **I Know Markdown:** Hides markdown formatting buttons in ticket reply box for users who prefer to write markdown manually.
-- **Hide Template Button:** Hides the template button in ticket reply box. You can use '!' command instead to access templates.
 - **Remove File Upload Label:** Removes the file upload label from ticket reply box.
-- **Show Ticket ID in Title:** Adds the ticket ID to the start of the ticket title (e.g., '#123 - Title') for easier identification.
+- **Show Ticket ID in Title:** Adds the ticket ID to the start of the ticket title (e.g., '#123 - Title').
+- **Inline Server Info:** When only 1 server is attached, displays server ID, PIN, and copy buttons inline instead of the modal button.
+- **Hide Participants Display:** Hides the participants display and separator from ticket header.
 
 # ARCHIVED
-- **Remove Max Players card:** Removes the Max Players info card from the console interface.
-- **Remove Player Management card:** Removes the Player Management info card from the console interface.
-- **Hide CPU card** Removes the CPU card from the console interface.
+These features are archived because they are replaced, broken, or got implemented into the native page. Enabling them may cause issues or incompatibilities with other plugins or native features.
+
+- **Remove State Overlays:** Removes state overlays from the console. Configure which states to hide in settings.
 - **Rename Config to Properties:** Renames the "Config" navigation option to "Properties" in the Minecraft category for clarity.
 - **Rename Addons to Mods:** Renames the "Addons" navigation option to "Mods" in the Minecraft category for clarity.
 - **Split Addons Tabs:** Splits the addons tab back into separate plugins, mods, modpacks, and datapacks tabs on server pages.
-- **Add Versions Nav:** Adds a "Versions" link with a code-branch icon to the Minecraft section of the navbar for quick access to server version changes.
-- **Hide Support Category:** Hides the Support category from the navigation and main interface.
+- **Hide Support Category:** Hides the Support category from the navbar.
+- **Add Power Button Text:** Adds text labels to the power action buttons (Start, Stop, Restart, Kill).
+- **Custom Server Order:** Reorder your server list in any way you want. (See settings)
 
 ## Usage
 
