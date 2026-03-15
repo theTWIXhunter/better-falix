@@ -1207,6 +1207,27 @@ function deleteItem(sectionIndex, itemIndex) {
   saveConfig();
 }
 
+function getServerUrlMissingIdWarning(url) {
+  if (!url || !url.startsWith('/server/')) {
+    return '';
+  }
+
+  const rest = url.slice('/server/'.length).replace(/^\/+/, '');
+  if (!rest) {
+    return 'This URL is missing both a server ID and page path. Use /server/{id}/page or /server/123456/page.';
+  }
+
+  const firstSegment = rest.split('/')[0];
+  const hasExplicitId = /^\d+$/.test(firstSegment);
+  const hasPlaceholderId = firstSegment === '{id}' || url.includes('/{id}/') || url.endsWith('/{id}');
+
+  if (hasExplicitId || hasPlaceholderId) {
+    return '';
+  }
+
+  return 'This server URL has no explicit ID. Example: /server/idk\n\nBetter-Falix will auto-insert the current server ID at runtime, resulting in /server/{id}/idk. If you want full control, set it explicitly with {id} (example: /server/{id}/idk).';
+}
+
 function saveItemModal() {
   const name = document.getElementById('itemName').value.trim();
   const url = document.getElementById('itemUrl').value.trim();
@@ -1215,6 +1236,11 @@ function saveItemModal() {
   const target = document.getElementById('itemTarget').value.trim();
   
   if (!name || !url || !iconPath) return;
+
+  const serverUrlWarning = getServerUrlMissingIdWarning(url);
+  if (serverUrlWarning && !confirm(`${serverUrlWarning}\n\nPress OK to save anyway, or Cancel to edit the URL.`)) {
+    return;
+  }
   
   const item = { name, url, iconPath };
   if (iconViewBox && iconViewBox !== '0 0 512 512') item.iconViewBox = iconViewBox;
