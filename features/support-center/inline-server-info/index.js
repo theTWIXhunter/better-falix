@@ -182,17 +182,11 @@ function getServerInfoFromModal() {
 function extractServerInfo(modalBody) {
     // Find the link with target="_blank" that contains the server ID
     const serverLink = modalBody.querySelector('a[target="_blank"][href*="?id="]');
-    
-    // Look for PIN element
-    const pinElement = Array.from(modalBody.querySelectorAll('div')).find(el => el.textContent.includes('PIN:'));
 
-    console.log('[better-falix] inline-server-info: Extraction attempt - serverLink:', !!serverLink, 'pinElement:', !!pinElement);
+    console.log('[better-falix] inline-server-info: Extraction attempt - serverLink:', !!serverLink);
     
     if (serverLink) {
         console.log('[better-falix] inline-server-info: Server link found - href:', serverLink.getAttribute('href'));
-    }
-    if (pinElement) {
-        console.log('[better-falix] inline-server-info: PIN element found:', pinElement.textContent);
     }
 
     if (!serverLink) {
@@ -202,10 +196,8 @@ function extractServerInfo(modalBody) {
     // Get the href attribute (relative path) and extract ID from it
     const href = serverLink.getAttribute('href');
     const idMatch = href.match(/[?&]id=(\d+)/);
-    
-    const pinMatch = pinElement ? pinElement.textContent.match(/PIN:\s*(\d+)/) : null;
 
-    console.log('[better-falix] inline-server-info: Server ID from href:', idMatch?.[1], 'PIN match:', pinMatch?.[1]);
+    console.log('[better-falix] inline-server-info: Server ID from href:', idMatch?.[1]);
 
     if (!idMatch) {
         return null;
@@ -213,8 +205,7 @@ function extractServerInfo(modalBody) {
 
     return {
         serverId: idMatch[1],
-        serverHref: href,
-        pin: pinMatch?.[1] || null
+        serverHref: href
     };
 }
 
@@ -241,57 +232,6 @@ function replaceButtonWithInfo(serverInfo) {
     serverLink.onmouseover = () => serverLink.style.textDecoration = 'underline';
     serverLink.onmouseout = () => serverLink.style.textDecoration = 'none';
 
-    // PIN display with copy button
-    const pinButton = document.createElement('button');
-    const isDeleted = !serverInfo.pin;
-    const pinText = isDeleted ? 'DELETED' : serverInfo.pin;
-    const pinColor = isDeleted ? 'rgba(239, 68, 68, 0.9)' : 'rgba(249, 115, 22, 0.9)';
-    const pinBg = isDeleted ? 'rgba(239, 68, 68, 0.15)' : 'rgba(249, 115, 22, 0.15)';
-    const pinBorder = isDeleted ? 'rgba(239, 68, 68, 0.3)' : 'rgba(249, 115, 22, 0.3)';
-    const pinBgHover = isDeleted ? 'rgba(239, 68, 68, 0.25)' : 'rgba(249, 115, 22, 0.25)';
-    
-    pinButton.textContent = pinText + ' ';
-    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    svg.setAttribute('width', '14');
-    svg.setAttribute('height', '14');
-    svg.setAttribute('viewBox', '0 0 24 24');
-    svg.setAttribute('fill', 'none');
-    svg.setAttribute('stroke', 'currentColor');
-    svg.setAttribute('stroke-width', '2');
-    svg.setAttribute('stroke-linecap', 'round');
-    svg.setAttribute('stroke-linejoin', 'round');
-    svg.style.cssText = 'margin-left: 4px; vertical-align: middle;';
-    
-    const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-    rect.setAttribute('x', '9');
-    rect.setAttribute('y', '9');
-    rect.setAttribute('width', '13');
-    rect.setAttribute('height', '13');
-    rect.setAttribute('rx', '2');
-    rect.setAttribute('ry', '2');
-    svg.appendChild(rect);
-    
-    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    path.setAttribute('d', 'M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1');
-    svg.appendChild(path);
-    
-    pinButton.appendChild(svg);
-    pinButton.style.cssText = `background: ${pinBg}; color: ${pinColor}; border: 1px solid ${pinBorder}; padding: 2px 8px; border-radius: 4px; cursor: pointer; font-size: 0.85em; font-weight: 500; display: inline-flex; align-items: center; transition: all 0.2s;`;
-    pinButton.title = isDeleted ? 'PIN deleted' : 'Click to copy PIN';
-    pinButton.onclick = (e) => {
-        e.preventDefault();
-        if (!isDeleted) {
-            copyToClipboard(serverInfo.pin);
-            showCopyFeedback(pinButton, 'PIN copied!');
-        }
-    };
-    pinButton.onmouseover = () => {
-        pinButton.style.background = pinBgHover;
-    };
-    pinButton.onmouseout = () => {
-        pinButton.style.background = pinBg;
-    };
-
     // Copy all button
     const copyAllButton = document.createElement('button');
     copyAllButton.innerHTML = `Copy All <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 4px; vertical-align: middle;">
@@ -304,9 +244,7 @@ function replaceButtonWithInfo(serverInfo) {
         e.preventDefault();
         const ticketId = getTicketIdFromUrl();
         const fullServerUrl = `https://client.falixnodes.net${serverInfo.serverHref}`;
-        const pinText = serverInfo.pin || 'DELETED';
         const markdownText = `SupportID: [${serverInfo.serverId}](<${fullServerUrl}>)
-SupportPIN: ${pinText}
 Ticket: [Support-center-#${ticketId}](<https://client.falixnodes.net/support/viewticket.php?id=${ticketId}>)`;
         copyToClipboard(markdownText);
         showCopyFeedback(copyAllButton, 'All info copied!');
@@ -320,8 +258,6 @@ Ticket: [Support-center-#${ticketId}](<https://client.falixnodes.net/support/vie
 
     // Assemble the inline display
     inlineDisplay.appendChild(serverLink);
-    inlineDisplay.appendChild(pinButton);
-    
     inlineDisplay.appendChild(copyAllButton);
 
     // Replace the original button

@@ -41,7 +41,8 @@ chrome.storage.sync.get({ replaceSupportModal: false, enabled: true }, (data) =>
             supportRows.forEach(row => {
               const label = row.querySelector('.support-info-label')?.textContent.trim();
               const value = row.querySelector('.support-info-value')?.textContent.trim();
-              if (label && value) {
+              const isPinField = /pin/i.test(label || '');
+              if (label && value && !isPinField) {
                 allValues.push(`${label}: ${value}`);
               }
             });

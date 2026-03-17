@@ -299,22 +299,59 @@ function createNavSection(section) {
   return sectionDiv;
 }
 
+function getCurrentServerId() {
+  const match = window.location.pathname.match(/^\/server\/(\d+)(?:\/|$)/);
+  return match ? match[1] : null;
+}
+
+function resolveServerAwareUrl(rawUrl, currentServerId) {
+  if (!rawUrl || typeof rawUrl !== 'string') {
+    return rawUrl;
+  }
+
+  // Replace explicit placeholder first so users can control placement.
+  if (rawUrl.includes('{id}')) {
+    return currentServerId ? rawUrl.replaceAll('{id}', currentServerId) : rawUrl;
+  }
+
+  if (!rawUrl.startsWith('/server/')) {
+    return rawUrl;
+  }
+
+  const rest = rawUrl.slice('/server/'.length).replace(/^\/+/, '');
+  if (!rest) {
+    return rawUrl;
+  }
+
+  const firstSegment = rest.split('/')[0];
+  const alreadyHasId = /^\d+$/.test(firstSegment);
+  if (alreadyHasId || !currentServerId) {
+    return rawUrl;
+  }
+
+  // Default behavior: inject current server ID between /server/ and the page path.
+  return `/server/${currentServerId}/${rest}`;
+}
+
 function createNavItem(item) {
   const viewBox = item.iconViewBox || '0 0 512 512';
+  const currentServerId = getCurrentServerId();
+  const resolvedUrl = resolveServerAwareUrl(item.url, currentServerId);
   
   // Check if the current page matches this nav item
   const currentPath = window.location.pathname;
+  const normalizedCurrentPath = currentPath.replace(/\/+$/, '') || '/';
+  const normalizedResolvedUrl = (resolvedUrl || '').replace(/\/+$/, '') || '/';
   let isActive = false;
   
-  // Handle server pages with ID in URL (e.g., /server/12345/console)
+  // Handle server pages with dynamic ID support.
   if (item.url.startsWith('/server/') && currentPath.startsWith('/server/')) {
-    // Extract the page name from item URL (e.g., "console" from "/server/console")
-    const itemPage = item.url.replace('/server/', '');
-    // Check if current path ends with the same page (e.g., "/server/12345/console" ends with "console")
-    isActive = currentPath.endsWith('/' + itemPage) || currentPath.includes('/server/' + itemPage);
+    isActive = normalizedCurrentPath === normalizedResolvedUrl ||
+      normalizedCurrentPath.startsWith(normalizedResolvedUrl + '/');
   } else {
     // For non-server pages, use exact or prefix match
-    isActive = currentPath === item.url || currentPath.startsWith(item.url + '/');
+    isActive = normalizedCurrentPath === normalizedResolvedUrl ||
+      normalizedCurrentPath.startsWith(normalizedResolvedUrl + '/');
   }
   
   const li = document.createElement('li');
@@ -323,7 +360,7 @@ function createNavItem(item) {
   
   const a = document.createElement('a');
   a.className = 'nav-link' + (isActive ? ' active' : '');
-  a.href = item.url;
+  a.href = resolvedUrl;
   a.setAttribute('aria-label', item.name);
   if (item.target) {
     a.target = item.target;
