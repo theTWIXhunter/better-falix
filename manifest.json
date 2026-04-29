@@ -88,6 +88,11 @@
       "js": ["features/general/Replace-account-category/index.js"],
       "run_at": "document_idle"
     },
+    {
+      "matches": ["https://client.falixnodes.net/*"],
+      "js": ["features/general/move-status-to-top/index.js"],
+      "run_at": "document_idle"
+    },
 
 
 
