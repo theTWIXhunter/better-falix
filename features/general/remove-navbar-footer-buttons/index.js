@@ -13,7 +13,7 @@ chrome.storage.sync.get({ removeLanguageSelector: false, enabled: true }, (data)
   function removeLanguageSelectors() {
     const els = document.querySelectorAll('.navbar-language-selector');
     const customizeBtn = document.getElementById('navbarCustomizeBtn');
-    const navbarFooter = document.querySelector('.navbar-footer');
+    const navbarActionsBar = document.querySelector('.navbar-footer .navbar-actions-bar');
     
     let removedCount = 0;
     
@@ -37,14 +37,11 @@ chrome.storage.sync.get({ removeLanguageSelector: false, enabled: true }, (data)
       }
     }
 
-    if (navbarFooter) {
+    if (navbarActionsBar) {
       try {
-        navbarFooter.classList.add('navbar-actions-bar');
-        while (navbarFooter.firstChild) {
-          navbarFooter.removeChild(navbarFooter.firstChild);
-        }
+        navbarActionsBar.remove();
       } catch (e) {
-        // ignore class update errors
+        // ignore removal errors
       }
     }
     
