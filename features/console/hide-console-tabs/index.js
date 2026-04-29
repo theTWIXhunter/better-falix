@@ -77,25 +77,19 @@ chrome.storage.sync.get({ hideConsoleTabs: false, enabled: true }, (data) => {
         shareBtn.innerHTML = '<svg class="svg-inline--fa" viewBox="0 0 512 512" width="1em" height="1em" fill="currentColor" aria-hidden="true"><path d="M307.8 18.4c-12 5-19.8 16.6-19.8 29.6l0 80-112 0c-97.2 0-176 78.8-176 176 0 113.3 81.5 163.9 100.2 174.1 2.5 1.4 5.3 1.9 8.1 1.9 10.9 0 19.7-8.9 19.7-19.7 0-7.5-4.3-14.4-9.8-19.5-9.4-8.8-22.2-26.4-22.2-56.7 0-53 43-96 96-96l96 0 0 80c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l160-160c12.5-12.5 12.5-32.8 0-45.3l-160-160c-9.2-9.2-22.9-11.9-34.9-6.9z"></path></svg> Share';
         shareLi.appendChild(shareBtn);
         
-        // Create view mode toggle item
-        const viewModeLi = document.createElement('li');
-        const viewModeBtn = document.createElement('button');
-        viewModeBtn.className = 'dropdown-item';
-        viewModeBtn.id = 'viewModeToggleAlt';
-        const viewModeIcon = document.createElement('span');
-        viewModeIcon.id = 'viewModeIconAlt';
-        viewModeIcon.innerHTML = '<svg class="svg-inline--fa" viewBox="0 0 512 512" width="1em" height="1em" fill="currentColor" aria-hidden="true"><path d="M232.5 5.2c14.9-6.9 32.1-6.9 47 0l218.6 101c8.5 3.9 13.9 12.4 13.9 21.8s-5.4 17.9-13.9 21.8l-218.6 101c-14.9 6.9-32.1 6.9-47 0L13.9 149.8C5.4 145.8 0 137.3 0 128s5.4-17.9 13.9-21.8L232.5 5.2zM48.1 218.4l164.3 75.9c27.7 12.8 59.6 12.8 87.3 0l164.3-75.9 34.1 15.8c8.5 3.9 13.9 12.4 13.9 21.8s-5.4 17.9-13.9 21.8l-218.6 101c-14.9 6.9-32.1 6.9-47 0L13.9 277.8C5.4 273.8 0 265.3 0 256s5.4-17.9 13.9-21.8l34.1-15.8zM13.9 362.2l34.1-15.8 164.3 75.9c27.7 12.8 59.6 12.8 87.3 0l164.3-75.9 34.1 15.8c8.5 3.9 13.9 12.4 13.9 21.8s-5.4 17.9-13.9 21.8l-218.6 101c-14.9 6.9-32.1 6.9-47 0L13.9 405.8C5.4 401.8 0 393.3 0 384s5.4-17.9 13.9-21.8z"></path></svg>';
-        const viewModeText = document.createElement('span');
-        viewModeText.id = 'viewModeTextAlt';
-        viewModeText.textContent = ' Simple';
-        viewModeBtn.appendChild(viewModeIcon);
-        viewModeBtn.appendChild(viewModeText);
-        viewModeLi.appendChild(viewModeBtn);
+        // Create support button item
+        const supportLi = document.createElement('li');
+        const supportBtn = document.createElement('button');
+        supportBtn.className = 'dropdown-item';
+        supportBtn.setAttribute('data-bs-toggle', 'modal');
+        supportBtn.setAttribute('data-bs-target', '#supportInfoModal');
+        supportBtn.innerHTML = '<svg class="svg-inline--fa" viewBox="0 0 512 512" width="1em" height="1em" fill="currentColor" aria-hidden="true"><path d="M367.2 412.5C335.9 434.9 297.5 448 256 448s-79.9-13.1-111.2-35.5l58-58c15.8 8.6 34 13.5 53.3 13.5s37.4-4.9 53.3-13.5l58 58zm90.7 .8c33.8-43.4 54-98 54-157.3S491.8 142.1 458 98.7c9-12.5 7.9-30.1-3.4-41.3S425.8 45 413.3 54C369.9 20.2 315.3 0 256 0S142.1 20.2 98.7 54c-12.5-9-30.1-7.9-41.3 3.4S45 86.2 54 98.7C20.2 142.1 0 196.7 0 256S20.2 369.9 54 413.3c-9 12.5-7.9 30.1 3.4 41.3S86.2 467 98.7 458c43.4 33.8 98 54 157.3 54s113.9-20.2 157.3-54c12.5 9 30.1 7.9 41.3-3.4s12.4-28.8 3.4-41.3zm-45.5-46.1l-58-58c8.6-15.8 13.5-34 13.5-53.3s-4.9-37.4-13.5-53.3l58-58C434.9 176.1 448 214.5 448 256s-13.1 79.9-35.5 111.2zM367.2 99.5l-58 58c-15.8-8.6-34-13.5-53.3-13.5s-37.4 4.9-53.3 13.5l-58-58C176.1 77.1 214.5 64 256 64s79.9 13.1 111.2 35.5zM157.5 309.3l-58 58C77.1 335.9 64 297.5 64 256s13.1-79.9 35.5-111.2l58 58c-8.6 15.8-13.5 34-13.5 53.3s4.9 37.4 13.5 53.3zM208 256a48 48 0 1 1 96 0 48 48 0 1 1 -96 0z"></path></svg> Support';
+        supportLi.appendChild(supportBtn);
         
         // Assemble dropdown
         dropdownMenu.appendChild(popupLi);
         dropdownMenu.appendChild(shareLi);
-        dropdownMenu.appendChild(viewModeLi);
+        dropdownMenu.appendChild(supportLi);
         dropdown.appendChild(dropdownBtn);
         dropdown.appendChild(dropdownMenu);
         
@@ -168,85 +162,6 @@ chrome.storage.sync.get({ hideConsoleTabs: false, enabled: true }, (data) => {
                 e.stopPropagation();
                 clickHiddenButton(retryOriginalShareBtn);
               });
-            }
-          }, 1000);
-        }
-        
-        if (originalViewModeToggle) {
-          // For view mode toggle, we need to observe changes to the original and sync them
-          const syncViewModeState = () => {
-            const originalIcon = document.getElementById('viewModeIcon');
-            const originalText = document.getElementById('viewModeText');
-            
-            if (originalIcon && viewModeIcon) {
-              // Use replaceChildren for security instead of innerHTML
-              viewModeIcon.replaceChildren(...Array.from(originalIcon.childNodes).map(node => node.cloneNode(true)));
-            }
-            if (originalText && viewModeText) {
-              viewModeText.textContent = originalText.textContent;
-            }
-          };
-          
-          // Initial sync
-          syncViewModeState();
-          
-          // Sync on click
-          viewModeBtn.addEventListener('click', (e) => {
-            console.log('[better-falix] hide-console-tabs: View mode button clicked');
-            e.preventDefault();
-            e.stopPropagation();
-            clickHiddenButton(originalViewModeToggle);
-            // Wait a bit for the DOM to update
-            setTimeout(syncViewModeState, 100);
-          });
-          
-          // Observe changes to the original button to keep in sync
-          const observer = new MutationObserver(syncViewModeState);
-          const originalIcon = document.getElementById('viewModeIcon');
-          const originalText = document.getElementById('viewModeText');
-          
-          if (originalIcon) {
-            observer.observe(originalIcon, { childList: true, subtree: true });
-          }
-          if (originalText) {
-            observer.observe(originalText, { childList: true, characterData: true, subtree: true });
-          }
-        } else {
-          // Retry finding the button after a delay
-          setTimeout(() => {
-            const retryOriginalViewModeToggle = document.getElementById('viewModeToggle');
-            if (retryOriginalViewModeToggle) {
-              const syncViewModeState = () => {
-                const originalIcon = document.getElementById('viewModeIcon');
-                const originalText = document.getElementById('viewModeText');
-                
-                if (originalIcon && viewModeIcon) {
-                  viewModeIcon.replaceChildren(...Array.from(originalIcon.childNodes).map(node => node.cloneNode(true)));
-                }
-                if (originalText && viewModeText) {
-                  viewModeText.textContent = originalText.textContent;
-                }
-              };
-              
-              syncViewModeState();
-              
-              viewModeBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                clickHiddenButton(retryOriginalViewModeToggle);
-                setTimeout(syncViewModeState, 100);
-              });
-              
-              const observer = new MutationObserver(syncViewModeState);
-              const originalIcon = document.getElementById('viewModeIcon');
-              const originalText = document.getElementById('viewModeText');
-              
-              if (originalIcon) {
-                observer.observe(originalIcon, { childList: true, subtree: true });
-              }
-              if (originalText) {
-                observer.observe(originalText, { childList: true, characterData: true, subtree: true });
-              }
             }
           }, 1000);
         }
