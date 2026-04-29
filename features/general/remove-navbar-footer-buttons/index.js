@@ -40,6 +40,9 @@ chrome.storage.sync.get({ removeLanguageSelector: false, enabled: true }, (data)
     if (navbarFooter) {
       try {
         navbarFooter.classList.add('navbar-actions-bar');
+        while (navbarFooter.firstChild) {
+          navbarFooter.removeChild(navbarFooter.firstChild);
+        }
       } catch (e) {
         // ignore class update errors
       }
