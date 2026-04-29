@@ -70,6 +70,9 @@ chrome.storage.sync.get(null, data => {
   
   const uploadCreateHoverToggle = document.getElementById('uploadCreateHover');
   if (uploadCreateHoverToggle) setToggleState(uploadCreateHoverToggle, !!data.uploadCreateHover);
+
+  const flattenMoveCopyDropdownToggle = document.getElementById('flattenMoveCopyDropdown');
+  if (flattenMoveCopyDropdownToggle) setToggleState(flattenMoveCopyDropdownToggle, !!data.flattenMoveCopyDropdown);
   
   const uploadCreateHoverCreateDelay = document.getElementById('uploadCreateHover_createDelay');
   if (uploadCreateHoverCreateDelay) uploadCreateHoverCreateDelay.value = data.uploadCreateHover_createDelay ?? 500;
@@ -248,6 +251,7 @@ if (exportSettingsBtn) {
         navbarHoverZoneWidth: parseInt(document.getElementById('navbarHoverZoneWidth')?.value) || 40,
         
         uploadCreateHover: document.getElementById('uploadCreateHover')?.getAttribute('aria-pressed') === 'true',
+        flattenMoveCopyDropdown: document.getElementById('flattenMoveCopyDropdown')?.getAttribute('aria-pressed') === 'true',
         uploadCreateHover_createDelay: parseInt(document.getElementById('uploadCreateHover_createDelay')?.value) || 500,
         uploadCreateHover_uploadDelay: parseInt(document.getElementById('uploadCreateHover_uploadDelay')?.value) || 0,
         
@@ -429,6 +433,15 @@ if (uploadCreateHoverToggle) {
     const state = this.getAttribute('aria-pressed') !== 'true';
     setToggleState(this, state);
     saveSetting('uploadCreateHover', state);
+  });
+}
+
+const flattenMoveCopyDropdownToggle = document.getElementById('flattenMoveCopyDropdown');
+if (flattenMoveCopyDropdownToggle) {
+  flattenMoveCopyDropdownToggle.addEventListener('click', function() {
+    const state = this.getAttribute('aria-pressed') !== 'true';
+    setToggleState(this, state);
+    saveSetting('flattenMoveCopyDropdown', state);
   });
 }
 
