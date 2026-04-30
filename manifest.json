@@ -178,6 +178,11 @@
       "js": ["features/logsharing/auto-collapse-log-analysis/index.js"],
       "run_at": "document_idle"
     },
+    {
+      "matches": ["https://client.falixnodes.net/shared-logs/*"],
+      "js": ["features/logsharing/better-log-detection/index.js"],
+      "run_at": "document_idle"
+    },
 
 
 
