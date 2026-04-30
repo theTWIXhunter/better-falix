@@ -11,13 +11,13 @@ chrome.storage.sync.get({ replaceFalixLogo: false, enabled: true, replaceFalixLo
   //  --------- START FEATURE ----------
 
   const BUILT_IN_CHOICES = {
-    'better-falix_normal_logo': chrome.runtime.getURL('assets/logos/better-falix_normal_logo.png'),
-    'falix_rainbow_gradient': chrome.runtime.getURL('assets/logos/falix_rainbow_gradient.png'),
-    'falix_rainbow_pride': chrome.runtime.getURL('assets/logos/falix_rainbow_pride.png'),
-    'TWIX_logo_falix': chrome.runtime.getURL('assets/logos/TWIX_logo.png'),
-    'TWIX_logoandname': chrome.runtime.getURL('assets/logos/TWIX_logoandname.png'),
-    'Falix_invaders_logo': chrome.runtime.getURL('assets/logos/falixinvaders_logo.png'),
-    'falix_pineapple_pizza': chrome.runtime.getURL('assets/logos/falix_pineapple_pizza.png')
+    'better-falix_normal_logo': chrome.runtime.getURL('assets/customlogos/better-falix_normal_logo.png'),
+    'falix_rainbow_gradient': chrome.runtime.getURL('assets/customlogos/falix_rainbow_gradient.png'),
+    'falix_rainbow_pride': chrome.runtime.getURL('assets/customlogos/falix_rainbow_pride.png'),
+    'TWIX_logo_falix': chrome.runtime.getURL('assets/customlogos/TWIX_logo.png'),
+    'TWIX_logoandname': chrome.runtime.getURL('assets/customlogos/TWIX_logoandname.png'),
+    'Falix_invaders_logo': chrome.runtime.getURL('assets/customlogos/falixinvaders_logo.png'),
+    'falix_pineapple_pizza': chrome.runtime.getURL('assets/customlogos/falix_pineapple_pizza.png')
   };
 
   // Get custom images from storage
