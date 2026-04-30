@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Better-Falix",
-  "version": "1.6.1",
+  "version": "1.6.2",
   "description": "A browser extension that enhances the Falixnodes client experience by adding custom features and improvements.",
   "icons": {
     "16": "assets/icons/icon16.png",
@@ -86,6 +86,11 @@
     {
       "matches": ["https://client.falixnodes.net/*"],
       "js": ["features/general/Replace-account-category/index.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://client.falixnodes.net/*"],
+      "js": ["features/general/move-status-to-top/index.js"],
       "run_at": "document_idle"
     },
 

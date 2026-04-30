@@ -1,4 +1,4 @@
-# Better Falix 1.6.1
+# Better Falix 1.6.2
 
 Better Falix is a browser extension that enhances the FalixNodes client-side experience by allowing you to customize and improve the website's navigation and interface.
 
@@ -49,6 +49,8 @@ Customize navbar sections and items with the visual editor. Features include:
 - **Remove SFTP info from upload:** Removes the SFTP info and its divider from the upload button dropdown for a cleaner UI.
 - **Upload/Create Hover:** Makes the Upload and Create buttons show their dropdowns when hovered.
 - **Better Editor Fullscreen:** Hide editor header and breadcrumb when using built-in fullscreen mode.
+- **Flatten move & copy dropdown:** Moves the contents outside the Move & Copy extra dropdown and removes it.
+- **Move server status to top:** Moves the server status widget back to the top of the navbar.
 
 ### Logs sharing
 

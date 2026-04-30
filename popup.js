@@ -187,6 +187,7 @@ const featureIds = [
   'inlineServerInfo',
   'navbarEditorV2Enabled',
   'timeFormat24h',
+  'moveStatusToTop',
   'hideParticipants'
 ];
 
@@ -314,6 +315,7 @@ document.addEventListener('DOMContentLoaded', () => {
     inlineServerInfo: false,
     navbarEditorV2Enabled: true,
     timeFormat24h: false,
+    moveStatusToTop: false,
     hideParticipants: false,
     popupActiveTab: 'features'
 
