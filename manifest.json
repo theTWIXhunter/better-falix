@@ -149,6 +149,11 @@
       "js": ["features/filemanager/better-editor-fullscreen/index.js"],
       "run_at": "document_idle"
     },
+    {
+      "matches": ["https://client.falixnodes.net/server/filemanager*", "https://client.falixnodes.net/server/*/filemanager*"],
+      "js": ["features/filemanager/force-bottom-navbar/index.js"],
+      "run_at": "document_start"
+    },
 
 
 
