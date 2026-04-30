@@ -73,6 +73,9 @@ chrome.storage.sync.get(null, data => {
 
   const flattenMoveCopyDropdownToggle = document.getElementById('flattenMoveCopyDropdown');
   if (flattenMoveCopyDropdownToggle) setToggleState(flattenMoveCopyDropdownToggle, !!data.flattenMoveCopyDropdown);
+
+  const forceBottomNavbarToggle = document.getElementById('forceBottomNavbar');
+  if (forceBottomNavbarToggle) setToggleState(forceBottomNavbarToggle, !!data.forceBottomNavbar);
   
   const uploadCreateHoverCreateDelay = document.getElementById('uploadCreateHover_createDelay');
   if (uploadCreateHoverCreateDelay) uploadCreateHoverCreateDelay.value = data.uploadCreateHover_createDelay ?? 500;
@@ -87,7 +90,21 @@ chrome.storage.sync.get(null, data => {
   if (replaceFalixLogoToggle) setToggleState(replaceFalixLogoToggle, !!data.replaceFalixLogo);
   
   const replaceFalixLogoChoice = document.getElementById('replaceFalixLogoChoice');
-  if (replaceFalixLogoChoice) replaceFalixLogoChoice.value = data.replaceFalixLogoChoice || 'better-falix_normal_logo';
+  if (replaceFalixLogoChoice) {
+    replaceFalixLogoChoice.value = data.replaceFalixLogoChoice || 'better-falix_normal_logo';
+    const uploadRow = document.getElementById('customLogoUploadRow');
+    if (uploadRow) {
+      uploadRow.style.display = replaceFalixLogoChoice.value === 'custom_upload' ? 'flex' : 'none';
+      chrome.storage.local.get(['customFalixLogoBase64'], localData => {
+        if (localData.customFalixLogoBase64) {
+          const preview = document.getElementById('customLogoPreview');
+          const removeBtn = document.getElementById('customLogoRemoveBtn');
+          if (preview) { preview.src = localData.customFalixLogoBase64; preview.style.display = 'block'; }
+          if (removeBtn) { removeBtn.style.display = 'inline-block'; }
+        }
+      });
+    }
+  }
   
   const navbarEditorV2Toggle = document.getElementById('navbarEditorV2Enabled');
   if (navbarEditorV2Toggle) setToggleState(navbarEditorV2Toggle, !!data.navbarEditorV2Enabled);
@@ -252,6 +269,7 @@ if (exportSettingsBtn) {
         
         uploadCreateHover: document.getElementById('uploadCreateHover')?.getAttribute('aria-pressed') === 'true',
         flattenMoveCopyDropdown: document.getElementById('flattenMoveCopyDropdown')?.getAttribute('aria-pressed') === 'true',
+        forceBottomNavbar: document.getElementById('forceBottomNavbar')?.getAttribute('aria-pressed') === 'true',
         uploadCreateHover_createDelay: parseInt(document.getElementById('uploadCreateHover_createDelay')?.value) || 500,
         uploadCreateHover_uploadDelay: parseInt(document.getElementById('uploadCreateHover_uploadDelay')?.value) || 0,
         
@@ -445,6 +463,15 @@ if (flattenMoveCopyDropdownToggle) {
   });
 }
 
+const forceBottomNavbarToggle = document.getElementById('forceBottomNavbar');
+if (forceBottomNavbarToggle) {
+  forceBottomNavbarToggle.addEventListener('click', function() {
+    const state = this.getAttribute('aria-pressed') !== 'true';
+    setToggleState(this, state);
+    saveSetting('forceBottomNavbar', state);
+  });
+}
+
 const uploadCreateHoverCreateDelay = document.getElementById('uploadCreateHover_createDelay');
 if (uploadCreateHoverCreateDelay) {
   uploadCreateHoverCreateDelay.addEventListener('input', function() {
@@ -490,6 +517,48 @@ const replaceFalixLogoChoice = document.getElementById('replaceFalixLogoChoice')
 if (replaceFalixLogoChoice) {
   replaceFalixLogoChoice.addEventListener('change', function() {
     saveSetting('replaceFalixLogoChoice', this.value);
+    const uploadRow = document.getElementById('customLogoUploadRow');
+    if (uploadRow) {
+      uploadRow.style.display = this.value === 'custom_upload' ? 'flex' : 'none';
+    }
+  });
+}
+
+const customLogoUploadBtn = document.getElementById('customLogoUploadBtn');
+const customLogoUploadInput = document.getElementById('customLogoUploadInput');
+const customLogoPreview = document.getElementById('customLogoPreview');
+const customLogoRemoveBtn = document.getElementById('customLogoRemoveBtn');
+
+if (customLogoUploadBtn && customLogoUploadInput) {
+  customLogoUploadBtn.addEventListener('click', () => customLogoUploadInput.click());
+  customLogoUploadInput.addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(r) {
+        const base64Data = r.target.result;
+        chrome.storage.local.set({ customFalixLogoBase64: base64Data }, () => {
+          if (customLogoPreview) {
+            customLogoPreview.src = base64Data;
+            customLogoPreview.style.display = 'block';
+          }
+          if (customLogoRemoveBtn) {
+            customLogoRemoveBtn.style.display = 'inline-block';
+          }
+        });
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+}
+
+if (customLogoRemoveBtn) {
+  customLogoRemoveBtn.addEventListener('click', () => {
+    chrome.storage.local.remove('customFalixLogoBase64', () => {
+      if (customLogoPreview) customLogoPreview.style.display = 'none';
+      customLogoRemoveBtn.style.display = 'none';
+      if (customLogoUploadInput) customLogoUploadInput.value = '';
+    });
   });
 }
 

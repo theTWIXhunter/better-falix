@@ -40,7 +40,7 @@ function applyCensoring() {
 
   // Server names
   if (config.serverName?.enabled) {
-    document.querySelectorAll('.current-server-name, .server-name').forEach(el => {
+    document.querySelectorAll('.current-server-name, .server-name, .navbar-srv-name').forEach(el => {
       if (el.textContent !== config.serverName.replacement) {
         el.textContent = config.serverName.replacement;
       }

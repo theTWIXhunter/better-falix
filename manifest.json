@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Better-Falix",
-  "version": "1.6.2",
+  "version": "1.6.3",
   "description": "A browser extension that enhances the Falixnodes client experience by adding custom features and improvements.",
   "icons": {
     "16": "assets/icons/icon16.png",
@@ -127,22 +127,6 @@
       "js": ["features/console/larger-server-name/index.js"],
       "run_at": "document_idle"
     },
-    {
-      "matches": ["https://client.falixnodes.net/server/console*", "https://client.falixnodes.net/server/*/console*"],
-      "js": ["features/console/remove-player-management/index.js"],
-      "run_at": "document_idle"
-    },
-        {
-      "matches": ["https://client.falixnodes.net/server/console*", "https://client.falixnodes.net/server/*/console*"],
-      "js": ["features/console/remove-max-players/index.js"],
-      "run_at": "document_idle"
-    },
-        {
-      "matches": ["https://client.falixnodes.net/server/console*", "https://client.falixnodes.net/server/*/console*"],
-      "js": ["features/console/remove-cpu-card/index.js"],
-      "run_at": "document_idle"
-    },
-
 
 
     {
@@ -164,6 +148,11 @@
       "matches": ["https://client.falixnodes.net/server/edit*", "https://client.falixnodes.net/server/*/edit*"],
       "js": ["features/filemanager/better-editor-fullscreen/index.js"],
       "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://client.falixnodes.net/server/filemanager*", "https://client.falixnodes.net/server/*/filemanager*"],
+      "js": ["features/filemanager/force-bottom-navbar/index.js"],
+      "run_at": "document_start"
     },
 
 
@@ -187,6 +176,11 @@
     {
       "matches": ["https://client.falixnodes.net/shared-logs/*"],
       "js": ["features/logsharing/auto-collapse-log-analysis/index.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://client.falixnodes.net/shared-logs/*"],
+      "js": ["features/logsharing/better-log-detection/index.js"],
       "run_at": "document_idle"
     },
 
@@ -236,7 +230,21 @@
 
 
 
-
+    {
+      "matches": ["https://client.falixnodes.net/server/console*", "https://client.falixnodes.net/server/*/console*"],
+      "js": ["features/archived/remove-player-management/index.js"],
+      "run_at": "document_idle"
+    },
+        {
+      "matches": ["https://client.falixnodes.net/server/console*", "https://client.falixnodes.net/server/*/console*"],
+      "js": ["features/archived/remove-max-players/index.js"],
+      "run_at": "document_idle"
+    },
+        {
+      "matches": ["https://client.falixnodes.net/server/console*", "https://client.falixnodes.net/server/*/console*"],
+      "js": ["features/archived/remove-cpu-card/index.js"],
+      "run_at": "document_idle"
+    },
     {
       "matches": ["https://client.falixnodes.net/server/*"],
       "js": ["features/archived/rename-config-to-properties/index.js"],
@@ -285,6 +293,20 @@
       "matches": ["https://client.falixnodes.net/*"],
       "js": ["themes/purple-mode/index.js"],
       "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "assets/customlogos/*.png",
+        "assets/customlogos/*.svg",
+        "assets/customlogos/*.jpg"
+      ],
+      "matches": [
+        "https://client.falixnodes.net/*",
+        "https://falixnodes.net/*",
+        "https://kb.falixnodes.net/*"
+      ]
     }
   ]
 }

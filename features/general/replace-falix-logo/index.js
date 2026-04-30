@@ -1,29 +1,36 @@
 // [better-falix] replace-falix-logo: Script loading
 console.log('[better-falix] replace-falix-logo: Script loading');
 
-chrome.storage.sync.get({ replaceFalixLogo: false, enabled: true, replaceFalixLogoChoice: 'better-falix_normal_logo' }, (data) => {
-  if (!data.enabled || !data.replaceFalixLogo) {
-    console.log('[better-falix] replace-falix-logo: Script disabled');
-    return;
-  }
-  console.log('[better-falix] replace-falix-logo: Script enabled');
+chrome.storage.sync.get({ replaceFalixLogo: false, enabled: true, replaceFalixLogoChoice: 'better-falix_normal_logo' }, (dataSync) => {
+  chrome.storage.local.get({ customFalixLogoBase64: null }, (dataLocal) => {
+    if (!dataSync.enabled || !dataSync.replaceFalixLogo) {
+      console.log('[better-falix] replace-falix-logo: Script disabled');
+      return;
+    }
+    console.log('[better-falix] replace-falix-logo: Script enabled');
 
-  //  --------- START FEATURE ----------
+    //  --------- START FEATURE ----------
 
-  const CHOICES = {
-    'better-falix_normal_logo': 'https://thetwixhunter.nekoweb.org/better-falix/icons/better-falix_normal_logo.png',
-    'falix_rainbow_gradient': 'https://thetwixhunter.nekoweb.org/better-falix/icons/falix_rainbow_gradient.png',
-    'falix_rainbow_pride': 'https://thetwixhunter.nekoweb.org/better-falix/icons/falix_rainbow_pride.png',
-    'TWIX_logo_falix': 'https://thetwixhunter.nekoweb.org/better-falix/icons/TWIX_logo.png',
-    'TWIX_logoandname': 'https://thetwixhunter.nekoweb.org/better-falix/icons/TWIX_logoandname.png',
-    'Falix_invaders_logo':'https://thetwixhunter.nekoweb.org/better-falix/icons/falixinvaders_logo.png',
-    'falix_pineapple_pizza': 'https://thetwixhunter.nekoweb.org/better-falix/icons/falix_pineapple_pizza.png'
-  };
+    const BUILT_IN_CHOICES = {
+      'better-falix_normal_logo': chrome.runtime.getURL('assets/customlogos/better-falix_normal_logo.png'),
+      'falix_rainbow_gradient': chrome.runtime.getURL('assets/customlogos/falix_rainbow_gradient.png'),
+      'falix_rainbow_pride': chrome.runtime.getURL('assets/customlogos/falix_rainbow_pride.png'),
+      'TWIX_logo_falix': chrome.runtime.getURL('assets/customlogos/TWIX_logo.png'),
+      'TWIX_logoandname': chrome.runtime.getURL('assets/customlogos/TWIX_logoandname.png'),
+      'Falix_invaders_logo': chrome.runtime.getURL('assets/customlogos/falixinvaders_logo.png'),
+      'falix_pineapple_pizza': chrome.runtime.getURL('assets/customlogos/falix_pineapple_pizza.png'),
+      'custom_upload': dataLocal.customFalixLogoBase64
+    };
 
-  const choice = data.replaceFalixLogoChoice || 'better-falix_normal_logo';
-  const logoUrl = CHOICES[choice] || CHOICES['better-falix_normal_logo'];
-  
-  let hasRunOnLoad = false;
+    const choice = dataSync.replaceFalixLogoChoice || 'better-falix_normal_logo';
+    const logoUrl = BUILT_IN_CHOICES[choice] || BUILT_IN_CHOICES['better-falix_normal_logo'];
+
+    if (!logoUrl) {
+      console.log('[better-falix] replace-falix-logo: No logo URL found');
+      return;
+    }
+    
+    let hasRunOnLoad = false;
 
   function replaceAllLogos() {
     try {
@@ -108,4 +115,5 @@ chrome.storage.sync.get({ replaceFalixLogo: false, enabled: true, replaceFalixLo
       console.log('[better-falix] replace-falix-logo: Script loaded successfully');
     } catch (e) {}
   }, 5000);
+  });
 });

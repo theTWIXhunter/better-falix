@@ -1,4 +1,4 @@
-# Better Falix 1.6.2
+# Better Falix 1.6.3
 
 Better Falix is a browser extension that enhances the FalixNodes client-side experience by allowing you to customize and improve the website's navigation and interface.
 
@@ -40,9 +40,6 @@ Customize navbar sections and items with the visual editor. Features include:
 - **Larger Server Name:** Makes the server name in the console titlebar larger and easier to read.
 - **Replace connect modal:** Removes all "How to connect" steps, DNS verification sections, and the "Server Name" row from the connect button for a cleaner look.
 - **Remove Premium Transfer Banner:** Removes the 'Welcome to Premium' transfer notification banner from the console.
-- **Remove Max Players card:** Removes the Max Players info card from the console interface.
-- **Remove Player Management:** Removes the Player Management info card from the console interface.
-- **Remove CPU Card:** Removes the CPU info card from the console interface.
 
 ### Filemanager
 
@@ -51,6 +48,7 @@ Customize navbar sections and items with the visual editor. Features include:
 - **Better Editor Fullscreen:** Hide editor header and breadcrumb when using built-in fullscreen mode.
 - **Flatten move & copy dropdown:** Moves the contents outside the Move & Copy extra dropdown and removes it.
 - **Move server status to top:** Moves the server status widget back to the top of the navbar.
+- **Force Upload/Create bottom navbar:** Forces the Upload/Create bottom navbar to always be visible no matter the scroll position (unless files selected)
 
 ### Logs sharing
 
@@ -72,6 +70,9 @@ Note: this category isn't visible by default, you can enable "staff features" in
 # ARCHIVED
 These features are archived because they are replaced, broken, or got implemented into the native page. Enabling them may cause issues or incompatibilities with other plugins or native features.
 
+- **Remove Max Players card:** Removes the Max Players info card from the console interface.
+- **Remove Player Management:** Removes the Player Management info card from the console interface.
+- **Remove CPU Card:** Removes the CPU info card from the console interface.
 - **Remove State Overlays:** Removes state overlays from the console. Configure which states to hide in settings.
 - **Rename Config to Properties:** Renames the "Config" navigation option to "Properties" in the Minecraft category for clarity.
 - **Rename Addons to Mods:** Renames the "Addons" navigation option to "Mods" in the Minecraft category for clarity.

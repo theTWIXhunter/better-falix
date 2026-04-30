@@ -1,8 +1,8 @@
 // [better-falix] remove-cpu-card: Script loading
 console.log('[better-falix] remove-cpu-card: Script loading');
 
-chrome.storage.sync.get({ removeCpuCard: false, enabled: true }, (data) => {
-  if (!data.enabled || !data.removeCpuCard) {
+chrome.storage.sync.get({ ARCHIVED_removeCpuCard: false, enabled: true }, (data) => {
+  if (!data.enabled || !data.ARCHIVED_removeCpuCard) {
     console.log('[better-falix] remove-cpu-card: Script disabled');
     return;
   }
@@ -10,7 +10,7 @@ chrome.storage.sync.get({ removeCpuCard: false, enabled: true }, (data) => {
 
   // --------- START FEATURE ----------
 
-  function removeCpuCard() {
+  function ARCHIVED_removeCpuCard() {
     // Find all info cards
     const cards = document.querySelectorAll('.compact-info-card');
     console.log('[better-falix] remove-cpu-card: Found', cards.length, 'compact info cards');
@@ -57,7 +57,7 @@ chrome.storage.sync.get({ removeCpuCard: false, enabled: true }, (data) => {
       
       if (cards.length > 0) {
         clearInterval(checkInterval);
-        removeCpuCard();
+        ARCHIVED_removeCpuCard();
       }
     }, 100);
 

@@ -1,8 +1,8 @@
 // [better-falix] Remove Player Management: Script loading
 console.log('[better-falix] Remove Player Management: Script loading');
 
-chrome.storage.sync.get({ removePlayerManagement: false, enabled: true }, (data) => {
-  if (!data.enabled || !data.removePlayerManagement) {
+chrome.storage.sync.get({ ARCHIVED_removePlayerManagement: false, enabled: true }, (data) => {
+  if (!data.enabled || !data.ARCHIVED_removePlayerManagement) {
     console.log('[better-falix] Remove Player Management: Script disabled');
     return;
   }
@@ -10,7 +10,7 @@ chrome.storage.sync.get({ removePlayerManagement: false, enabled: true }, (data)
 
   // --------- START FEATURE ----------
 
-  function removePlayerManagementCard() {
+  function ARCHIVED_removePlayerManagementCard() {
     // Find all compact info cards
     const infoCards = document.querySelectorAll('.compact-info-card');
     //console.log('[better-falix] Remove Player Management: Found', infoCards.length, 'compact info cards');
@@ -59,7 +59,7 @@ chrome.storage.sync.get({ removePlayerManagement: false, enabled: true }, (data)
       
       if (infoCards.length > 0) {
         clearInterval(checkInterval);
-        removePlayerManagementCard();
+        ARCHIVED_removePlayerManagementCard();
       }
     }, 100);
 

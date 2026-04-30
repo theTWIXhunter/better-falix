@@ -1,8 +1,8 @@
 // [better-falix] Remove Max Players: Script loading
 console.log('[better-falix] Remove Max Players: Script loading');
 
-chrome.storage.sync.get({ removeMaxPlayers: false, enabled: true }, (data) => {
-  if (!data.enabled || !data.removeMaxPlayers) {
+chrome.storage.sync.get({ ARCHIVED_removeMaxPlayers: false, enabled: true }, (data) => {
+  if (!data.enabled || !data.ARCHIVED_removeMaxPlayers) {
     console.log('[better-falix] Remove Max Players: Script disabled');
     return;
   }
@@ -10,7 +10,7 @@ chrome.storage.sync.get({ removeMaxPlayers: false, enabled: true }, (data) => {
 
   // --------- START FEATURE ----------
 
-  function removeMaxPlayersCard() {
+  function ARCHIVED_removeMaxPlayersCard() {
     // Find all compact info cards
     const infoCards = document.querySelectorAll('.compact-info-card');
     //console.log('[better-falix] Remove Max Players: Found', infoCards.length, 'compact info cards');
@@ -54,7 +54,7 @@ chrome.storage.sync.get({ removeMaxPlayers: false, enabled: true }, (data) => {
       
       if (infoCards.length > 0) {
         clearInterval(checkInterval);
-        removeMaxPlayersCard();
+        ARCHIVED_removeMaxPlayersCard();
       }
     }, 100);
 
