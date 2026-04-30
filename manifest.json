@@ -286,6 +286,20 @@
       "js": ["themes/purple-mode/index.js"],
       "run_at": "document_idle"
     }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "assets/customlogos/*.png",
+        "assets/customlogos/*.svg",
+        "assets/customlogos/*.jpg"
+      ],
+      "matches": [
+        "https://client.falixnodes.net/*",
+        "https://falixnodes.net/*",
+        "https://kb.falixnodes.net/*"
+      ]
+    }
   ]
 }
 

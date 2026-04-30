@@ -339,7 +339,15 @@
           <option value="TWIX_logoandname">TWIX Logo + "twix" text</option>
           <option value="Falix_invaders_logo">Falix Invaders Logo</option>
           <option value="falix_pineapple_pizza">Falix Pineapple Pizza</option>
+          <option value="custom_upload">Upload Custom Logo...</option>
         </select>
+      </div>
+      <div class="setting-row" id="customLogoUploadRow" style="display: none;">
+        <span class="setting-label">Your Logo</span>
+        <input type="file" id="customLogoUploadInput" accept="image/*" style="display: none;">
+        <button class="reset-btn" id="customLogoUploadBtn" style="margin-left: 0; background: #3b82f6;">Choose Image</button>
+        <img id="customLogoPreview" src="" alt="Preview" style="max-height: 30px; border-radius: 4px; display: none;">
+        <button class="reset-btn" id="customLogoRemoveBtn" style="margin-left: 10px; display: none;">Remove</button>
       </div>
     </div>
 
