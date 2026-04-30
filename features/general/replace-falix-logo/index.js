@@ -10,15 +10,19 @@ chrome.storage.sync.get({ replaceFalixLogo: false, enabled: true, replaceFalixLo
 
   //  --------- START FEATURE ----------
 
-  const CHOICES = {
-    'better-falix_normal_logo': 'https://thetwixhunter.nekoweb.org/better-falix/icons/better-falix_normal_logo.png',
-    'falix_rainbow_gradient': 'https://thetwixhunter.nekoweb.org/better-falix/icons/falix_rainbow_gradient.png',
-    'falix_rainbow_pride': 'https://thetwixhunter.nekoweb.org/better-falix/icons/falix_rainbow_pride.png',
-    'TWIX_logo_falix': 'https://thetwixhunter.nekoweb.org/better-falix/icons/TWIX_logo.png',
-    'TWIX_logoandname': 'https://thetwixhunter.nekoweb.org/better-falix/icons/TWIX_logoandname.png',
-    'Falix_invaders_logo':'https://thetwixhunter.nekoweb.org/better-falix/icons/falixinvaders_logo.png',
-    'falix_pineapple_pizza': 'https://thetwixhunter.nekoweb.org/better-falix/icons/falix_pineapple_pizza.png'
+  const BUILT_IN_CHOICES = {
+    'better-falix_normal_logo': chrome.runtime.getURL('assets/logos/better-falix_normal_logo.png'),
+    'falix_rainbow_gradient': chrome.runtime.getURL('assets/logos/falix_rainbow_gradient.png'),
+    'falix_rainbow_pride': chrome.runtime.getURL('assets/logos/falix_rainbow_pride.png'),
+    'TWIX_logo_falix': chrome.runtime.getURL('assets/logos/TWIX_logo.png'),
+    'TWIX_logoandname': chrome.runtime.getURL('assets/logos/TWIX_logoandname.png'),
+    'Falix_invaders_logo': chrome.runtime.getURL('assets/logos/falixinvaders_logo.png'),
+    'falix_pineapple_pizza': chrome.runtime.getURL('assets/logos/falix_pineapple_pizza.png')
   };
+
+  // Get custom images from storage
+  const customImages = data.replaceFalixLogoCustom || {};
+  const CHOICES = { ...BUILT_IN_CHOICES, ...customImages };
 
   const choice = data.replaceFalixLogoChoice || 'better-falix_normal_logo';
   const logoUrl = CHOICES[choice] || CHOICES['better-falix_normal_logo'];
