@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Better-Falix",
-  "version": "1.6.1",
+  "version": "1.6.2",
   "description": "A browser extension that enhances the Falixnodes client experience by adding custom features and improvements.",
   "icons": {
     "16": "assets/icons/icon16.png",
@@ -148,6 +148,11 @@
     {
       "matches": ["https://client.falixnodes.net/server/filemanager*", "https://client.falixnodes.net/server/*/filemanager*"],
       "js": ["features/filemanager/remove-sftp-upload/index.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://client.falixnodes.net/server/filemanager*", "https://client.falixnodes.net/server/*/filemanager*"],
+      "js": ["features/filemanager/flatten-move-copy-dropdown/index.js"],
       "run_at": "document_idle"
     },
     {
