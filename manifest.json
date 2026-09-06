@@ -42,7 +42,16 @@
   },
 
 
-  "content_scripts": [ 
+  "content_scripts": [
+    {
+      "matches": [
+        "https://client.falixnodes.net/*",
+        "https://falixnodes.net/*",
+        "https://kb.falixnodes.net/*"
+      ],
+      "js": ["features/utils/nextjs-class-compat.js"],
+      "run_at": "document_start"
+    },
     {
       "matches": ["https://client.falixnodes.net/*"],
       "js": ["navbar-editor/apply-navbar.js"],
